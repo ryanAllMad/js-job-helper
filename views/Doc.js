@@ -1,12 +1,10 @@
 import Head from './components/Head.js';
-
+import Footer from './components/Footer.js';
 // TODO
-// update routes to render correct ui
-// create form components
+// create secure gitignored key file
 // link up database to project
 // link up form components to database
-// create results ui
-// style components
+// fine tune state and rendering
 
 export default function Doc() {
 	return (
@@ -15,6 +13,7 @@ export default function Doc() {
 				<Head />
 				<body>
 					<div id="root" className='wrapper'></div>
+					<Footer />
 				</body>
 			</html>
 		</>

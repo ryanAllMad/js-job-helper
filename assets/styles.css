@@ -19,26 +19,7 @@
 	font-family: "Readex Pro", Arial, Helvetica, sans-serif;
 	font-size: 18px;
 }
-footer {
-	display: none;
-}
-
-header {
-	display: flex;
-}
 main {
-	display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: auto;
-    gap: 1em;
-	padding: 1em;
-}
-header {
-	flex-direction: row;
-	justify-content: space-between;
-	position: sticky;
-	background-color: #fff;
-	top: 0;
-	align-items: flex-end;
-	z-index: 2;
+	padding: 2em;
+    background-color: #9baeae;
 }

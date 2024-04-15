@@ -1,25 +1,34 @@
 import { hydrateRoot } from 'react-dom/client';
-import BodyContent from './components/BodyContent.js';
+import User from './components/User.js';
+import AddJob from './components/AddJob.js';
+import SearchJob from './components/SearchJob.js';
+import UpdateRequirements from './components/UpdateRequirements.js';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs/index.js';
 
 const router = createBrowserRouter([
 	{
 		path: '/',
-		element: <BodyContent />,
+		element: <User />,
 	},
 	{
-		path: '/company',
-		element: <div>search company</div>,
+		path: '/add-job',
+		element: <AddJob />,
 	},
 	{
-		path: '/enter-requirements',
-		element: <div>Enter requirements</div>,
+		path: '/update-requirements',
+		element: <UpdateRequirements />,
 	},
 	{
-		path: '/enter-responses',
-		element: <div>enter responses</div>,
+		path: '/search-job',
+		element: <SearchJob />,
 	},
 ]);
 
-
-hydrateRoot(document.getElementById('root'), <RouterProvider router={router} />);
+hydrateRoot(
+	document.getElementById('root'),
+	<LocalizationProvider dateAdapter={AdapterDayjs}>
+		<RouterProvider router={router} />
+	</LocalizationProvider>
+);
