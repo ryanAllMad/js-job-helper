@@ -1,13 +1,36 @@
 import express from 'express';
 import { renderToPipeableStream } from 'react-dom/server';
-import Doc from './views/Doc.js';
-import process from 'process';
+import dotenv from 'dotenv'
+import mongoose from 'mongoose';
+import Doc from'./views/Doc.js';
+import process from'process';
+import { userRouter } from './routes/userRoutes.js'
+import { requirementRouter } from './routes/requirementRoutes.js';
+import { responseRouter } from './routes/responseRoutes.js';
+import { experienceRouter } from './routes/experienceRoutes.js';
 
 
-
-//nvm use 21.7.2
+//nvm use 20 >=
 const app = express();
+dotenv.config({path: './config.env'})
+const db = process.env.MONGODB_CONNECTION_STRING
+const dbName = process.env.DB_NAME
 
+mongoose.connect(db, {
+	dbName: dbName
+}).then(() => {
+	console.log('connected!')
+})
+
+// api code:
+app.use(express.json())
+app.use('/api', userRouter)
+app.use('/api', requirementRouter)
+app.use('/api', responseRouter)
+app.use('/api', experienceRouter)
+
+
+// ui code:
 app.set('views', './views');
 
 app.use(express.urlencoded({ extended: false }));
@@ -36,6 +59,10 @@ function normalizePort(val) {
 
 	return false;
 }
+
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
+
 app.listen(port);
+
+

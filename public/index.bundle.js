@@ -42921,12 +42921,19 @@ const SearchJob = () => {
 
 
 
+//import { fetchOne } from '../../utils/utilities.cjs';
 
 const UpdateRequirements = () => {
   const [isClient, setIsClient] = react.useState(false);
+  //const requirementsDoc = fetchOne(
+  //	'661c15038dd29f00ad6f1738',
+  //	'requirements'
+  //).then((doc) =>
+  //	console.log(doc).catch(err => console.log(err)));
+  //const requirements = requirementsDoc.requirements;
   const requirements = [{
-    label: 'documenting codebase',
-    category: 'soft'
+    label: "document codebase",
+    cat: "soft"
   }];
   react.useEffect(() => {
     setIsClient(true);
