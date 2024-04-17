@@ -10,19 +10,12 @@ const UserExists = () => {
 	return (
 		<>
 			<Typography variant='h3'>{userDetails[0].name}</Typography>
-			<Typography variant='body1'>{userDetails[0].email}</Typography>
-			<Typography variant='body1'>
-				<Link href={userDetails[0].portfolio}>Portfolio</Link>
+			<Typography variant='body1'><Link href={`mailto:${userDetails[0].email}`}>{userDetails[0].email}</Link></Typography>
+			{userDetails[0].links.map((link) => (
+				<Typography key={userDetails[0].links.indexOf(link)} variant='body1'>
+				<Link target="_blank" href={link.href}>{link.title}</Link>
 			</Typography>
-			<Typography variant='body1'>
-				<Link href={userDetails[0].github}>Github</Link>
-			</Typography>
-			<Typography variant='body1'>
-				<Link href={userDetails[0].blog}>Blog</Link>
-			</Typography>
-			<Typography variant='body1'>
-				<Link href={userDetails[0].linked_in}>LinkedIn</Link>
-			</Typography>
+			))}
 		</>
 	);
 };

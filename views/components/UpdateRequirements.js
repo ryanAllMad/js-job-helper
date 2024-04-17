@@ -4,12 +4,12 @@ import {
 	Input,
 	InputLabel,
 	InputAdornment,
-	Button,
 	Paper,
 	Stack,
 } from '@mui/material';
 import Header from './Header.js';
 import AutoComplete from './AutoComplete.js';
+import ContainedButton from './ContainedButton.js';
 
 const UpdateRequirements = () => {
 	const [isClient, setIsClient] = React.useState(false);
@@ -54,7 +54,7 @@ const UpdateRequirements = () => {
 										multiline
 										endAdornment={
 											<InputAdornment position='end'>
-												<Button>Save</Button>
+												<ContainedButton>Save</ContainedButton>
 											</InputAdornment>
 										}
 									/>

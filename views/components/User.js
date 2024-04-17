@@ -1,8 +1,10 @@
 import * as React from 'react';
 import Header from './Header.js';
 import AddExperience from './AddExperience.js';
-import { Button, FormGroup, Stack, Paper, Typography } from '@mui/material';
-import StatefulInput from './StatefulInput.js';
+import { FormGroup, Stack, Paper, Typography } from '@mui/material';
+import BasicInput from './BasicInput.js';
+import ContainedButton from './ContainedButton.js';
+import UserLinkInputs from './UserLinkInputs.js';
 import fetchData from './getters/fetchData.js';
 
 const getUser = fetchData('http://localhost:3000/api/user');
@@ -18,14 +20,32 @@ const User = () => {
 	);
 	const [hasFullName, setHasFullName] = React.useState();
 	const [hasEmail, setHasEmail] = React.useState();
-	const [hasPort, setHasPort] = React.useState();
-	const [hasGithub, setHasGithub] = React.useState();
-	const [hasBlog, setHasBlog] = React.useState();
-	const [hasLink, setHasLink] = React.useState();
+	const [linkObject, setLinkObject] = React.useState([]);
+	const [title, setTitle] = React.useState();
+	const [link, setLink] = React.useState();
+	const [linkInputs, setLinkInputs] = React.useState([1]);
 
 	React.useEffect(() => {
 		setIsClient(true);
 	}, []);
+
+	const handleAddLink = () => {
+		setLinkInputs((prev) => prev.concat(prev.length))
+		console.log(linkInputs)
+	};
+	const handelTitleChange = (e) => {
+		setTitle(e.target.value);
+	};
+	const handleHrefChange = (e) => {
+		setLink(e.target.value);
+	};
+	const handleLinkSave = () => {
+		const newLinkObject = linkObject.concat({
+			title: title,
+			href: link,
+		});
+		setLinkObject(newLinkObject)
+	};
 
 	const handleSave = async () => {
 		const postUserName = await fetch('http://localhost:3000/api/user/', {
@@ -36,10 +56,7 @@ const User = () => {
 			body: JSON.stringify({
 				name: hasFullName,
 				email: hasEmail,
-				portfolio: hasPort,
-				github: hasGithub,
-				blog: hasBlog,
-				linked_in: hasLink,
+				links: linkObject,
 			}),
 		});
 		setInitialState(true);
@@ -61,14 +78,14 @@ const User = () => {
 							}}
 							elevation={2}
 						>
-							<Stack>
-								<FormGroup>
+							<Stack spacing={2}>
+								<FormGroup sx={{ marginTop: '1em'}}>
 									<Typography variant='h2'>
 										Your Info
 									</Typography>
 									{!initialState ? (
 										<>
-											<StatefulInput
+											<BasicInput
 												handelChange={(e) =>
 													setHasFullName(
 														e.target.value
@@ -76,48 +93,51 @@ const User = () => {
 												}
 												label='Full Name'
 											/>
-											<StatefulInput
+											<BasicInput
 												handelChange={(e) =>
 													setHasEmail(e.target.value)
 												}
 												buttonText='Enter'
 												label='Email'
 											/>
-											<StatefulInput
-												handelChange={(e) =>
-													setHasPort(e.target.value)
-												}
-												label='Portfolio'
-											/>
-											<StatefulInput
-												handelChange={(e) =>
-													setHasGithub(e.target.value)
-												}
-												label='Github'
-											/>
-											<StatefulInput
-												handelChange={(e) =>
-													setHasLink(e.target.value)
-												}
-												label='LinkedIn'
-											/>
-											<StatefulInput
-												handelChange={(e) =>
-													setHasBlog(e.target.value)
-												}
-												label='Blog'
-											/>
-											<Button onClick={handleSave}>
+											{linkInputs.map((link) => (
+												<UserLinkInputs
+													key={linkInputs.indexOf(
+														link
+													)}
+													handelTitleChange={
+														handelTitleChange
+													}
+													handleHrefChange={
+														handleHrefChange
+													}
+													handleLinkSave={
+														handleLinkSave
+													}
+												/>
+											))}
+											<ContainedButton
+												sx={{alignSelf: 'flex-end'}}
+												onClick={handleAddLink}
+											>
+												Add Another Link?
+											</ContainedButton>
+											<ContainedButton
+												onClick={handleSave}
+											>
 												Save
-											</Button>
+											</ContainedButton>
 										</>
 									) : (
 										<Suspense fallback={'...'}>
 											<UserExists />
+											<ContainedButton>
+												Edit
+											</ContainedButton>
 										</Suspense>
 									)}
 								</FormGroup>
-								<FormGroup>
+								<FormGroup sx={{ marginTop: '1em'}}>
 									<Typography variant='h2'>
 										Job Experience
 									</Typography>

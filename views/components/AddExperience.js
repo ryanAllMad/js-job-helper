@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {
-	Button,
 	FormControl,
 	InputLabel,
 	Input,
 	InputAdornment,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
+import ContainedButton from './ContainedButton.js';
 
 const AddExperience = () => {
 	return (
@@ -17,7 +17,7 @@ const AddExperience = () => {
 					type='text'
 					endAdornment={
 						<InputAdornment position='end'>
-							<Button>Enter</Button>
+							<ContainedButton>Enter</ContainedButton>
 						</InputAdornment>
 					}
 				/>
@@ -28,19 +28,14 @@ const AddExperience = () => {
 					type='text'
 					endAdornment={
 						<InputAdornment position='end'>
-							<Button>Enter</Button>
+							<ContainedButton>Enter</ContainedButton>
 						</InputAdornment>
 					}
 				/>
 			</FormControl>
 			<DatePicker label='Start Date' />
 			<DatePicker label='End Date' />
-			<Button
-				color='success'
-				variant='contained'
-			>
-				Add more experience?
-			</Button>
+			<ContainedButton>Add more experience?</ContainedButton>
 		</>
 	);
 };

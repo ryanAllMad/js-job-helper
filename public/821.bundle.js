@@ -253,32 +253,18 @@ const UserExists = () => {
       children: userDetails[0].name
     }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography/* default */.A, {
       variant: "body1",
-      children: userDetails[0].email
-    }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography/* default */.A, {
+      children: /*#__PURE__*/(0,jsx_runtime.jsx)(Link_Link, {
+        href: `mailto:${userDetails[0].email}`,
+        children: userDetails[0].email
+      })
+    }), userDetails[0].links.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(Typography/* default */.A, {
       variant: "body1",
       children: /*#__PURE__*/(0,jsx_runtime.jsx)(Link_Link, {
-        href: userDetails[0].portfolio,
-        children: "Portfolio"
+        target: "_blank",
+        href: link.href,
+        children: link.title
       })
-    }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography/* default */.A, {
-      variant: "body1",
-      children: /*#__PURE__*/(0,jsx_runtime.jsx)(Link_Link, {
-        href: userDetails[0].github,
-        children: "Github"
-      })
-    }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography/* default */.A, {
-      variant: "body1",
-      children: /*#__PURE__*/(0,jsx_runtime.jsx)(Link_Link, {
-        href: userDetails[0].blog,
-        children: "Blog"
-      })
-    }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography/* default */.A, {
-      variant: "body1",
-      children: /*#__PURE__*/(0,jsx_runtime.jsx)(Link_Link, {
-        href: userDetails[0].linked_in,
-        children: "LinkedIn"
-      })
-    })]
+    }, userDetails[0].links.indexOf(link)))]
   });
 };
 /* harmony default export */ const components_UserExists = (UserExists);

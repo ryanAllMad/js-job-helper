@@ -14,6 +14,7 @@ import {
 	Paper,
 } from '@mui/material';
 import { DatePicker} from '@mui/x-date-pickers';
+import ContainedButton from './ContainedButton.js';
 
 const AddJob = () => {
 	const [isClient, setIsClient] = React.useState(false);
@@ -47,7 +48,7 @@ const AddJob = () => {
 										type='text'
 										endAdornment={
 											<InputAdornment position='end'>
-												<Button>Enter</Button>
+												<ContainedButton>Enter</ContainedButton>
 											</InputAdornment>
 										}
 									/>
@@ -58,7 +59,7 @@ const AddJob = () => {
 										type='text'
 										endAdornment={
 											<InputAdornment position='end'>
-												<Button>Enter</Button>
+												<ContainedButton>Enter</ContainedButton>
 											</InputAdornment>
 										}
 									/>
@@ -69,7 +70,7 @@ const AddJob = () => {
 										type='text'
 										endAdornment={
 											<InputAdornment position='end'>
-												<Button>Enter</Button>
+												<ContainedButton>Enter</ContainedButton>
 											</InputAdornment>
 										}
 									/>

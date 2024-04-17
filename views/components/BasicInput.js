@@ -5,7 +5,7 @@ import {
 	Input,
 } from '@mui/material';
 
-const StatefulInput = (props) => {
+const BasicInput = (props) => {
 	const { label, handelChange } = props;
 	return (
 		<>
@@ -21,4 +21,4 @@ const StatefulInput = (props) => {
 	);
 };
 
-export default StatefulInput;
+export default BasicInput;

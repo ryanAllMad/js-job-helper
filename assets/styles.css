@@ -23,3 +23,6 @@ main {
 	padding: 2em;
     background-color: #9baeae;
 }
+.MuiFormGroup-root > *:not(:first-child) {
+    margin-top: 1em;
+}
