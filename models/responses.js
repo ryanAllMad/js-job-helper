@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const resonseSchema = new mongoose.Schema({
-	requirement: String,
+	requirement: { type: mongoose.Schema.ObjectId, ref: 'Requirements' },
 	response: String
 })
 

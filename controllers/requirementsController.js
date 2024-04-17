@@ -1,4 +1,5 @@
 import { Requirements } from "../models/requirements.js";
+import { updateOne } from "./handlerFactory.js";
 
 export const createRequirements = async (req, res) => {
 	try {
@@ -33,5 +34,21 @@ export const getRequirements = async (req, res) => {
 		});
 	}
 };
+export const getSingleRequirement = async (req, res) => {
+	try {
+		const requirement = await Requirements.findById(req.params.id).populate('requirements');
+		res.status(200).json({
+			status: 'success',
+			data: {
+				requirement,
+			},
+		});
+	} catch (err) {
+		res.status(404).json({
+			status: 'not found',
+			message: `${err}`,
+		});
+	}
+};
 
-
+export const updateRequirement = updateOne(Requirements)

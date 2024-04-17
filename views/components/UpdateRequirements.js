@@ -10,16 +10,10 @@ import {
 } from '@mui/material';
 import Header from './Header.js';
 import AutoComplete from './AutoComplete.js';
-//import { fetchOne } from '../../utils/utilities.cjs';
 
 const UpdateRequirements = () => {
 	const [isClient, setIsClient] = React.useState(false);
-	//const requirementsDoc = fetchOne(
-	//	'661c15038dd29f00ad6f1738',
-	//	'requirements'
-	//).then((doc) =>
-	//	console.log(doc).catch(err => console.log(err)));
-	//const requirements = requirementsDoc.requirements;
+
 	const requirements = [
 		{label: "document codebase", cat: "soft"}
 	]
@@ -53,7 +47,7 @@ const UpdateRequirements = () => {
 							</Stack>
 							<Stack padding='2em'>
 								<FormControl>
-									<InputLabel>Requirement</InputLabel>
+									<InputLabel>Response</InputLabel>
 									<Input
 										inputComponent='textarea'
 										rows={10}

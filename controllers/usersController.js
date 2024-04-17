@@ -1,4 +1,5 @@
 import { User } from '../models/users.js';
+import { updateOne } from './handlerFactory.js';
 
 export const createUser = async (req, res) => {
 	try {
@@ -22,9 +23,7 @@ export const getUser = async (req, res) => {
 		const user = await User.find();
 		res.status(200).json({
 			status: 'success',
-			data: {
-				user,
-			},
+			data: user,
 		});
 	} catch (err) {
 		res.status(404).json({
@@ -32,4 +31,6 @@ export const getUser = async (req, res) => {
 			message: `${err}`,
 		});
 	}
-};
+}
+
+export const updateUser = updateOne(User)

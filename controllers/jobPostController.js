@@ -1,13 +1,13 @@
-import { Response } from "../models/responses.js"
+import { JobPost } from "../models/job-post.js";
 import { updateOne } from "./handlerFactory.js";
 
-export const createResponse = async (req, res) => {
+export const createJobPost = async (req, res) => {
 	try {
-		const newResponse = await Response.create(req.body);
+		const newJobPost = await JobPost.create(req.body);
 		res.status(201).json({
 			status: 'success',
 			data: {
-				response: newResponse,
+				job_post: newJobPost
 			},
 		});
 	} catch (err) {
@@ -18,13 +18,13 @@ export const createResponse = async (req, res) => {
 	}
 };
 
-export const getResponse = async (req, res) => {
+export const getJobPost = async (req, res) => {
 	try {
-		const response = await Response.find();
+		const jobPost = await JobPost.find();
 		res.status(200).json({
 			status: 'success',
 			data: {
-				response,
+				jobPost,
 			},
 		});
 	} catch (err) {
@@ -34,12 +34,13 @@ export const getResponse = async (req, res) => {
 		});
 	}
 };
-export const getSingleResponseAndRequirement = async (req, res) => {
+
+export const getSingleJobPostAndRequirements = async (req, res) => {
 	try {
-		const response = await Response.findById(req.params.id).populate('requirement');
+		const requirement = await JobPost.findById(req.params.id).populate('requirements');
 		res.status(200).json({
 			status: 'success',
-			data: response,
+			data: requirement,
 		});
 	} catch (err) {
 		res.status(404).json({
@@ -49,4 +50,4 @@ export const getSingleResponseAndRequirement = async (req, res) => {
 	}
 };
 
-export const updateResponse = updateOne(Response)
+export const updateJobPost = updateOne(JobPost)
