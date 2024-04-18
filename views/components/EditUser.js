@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { redirect } from 'react-router-dom';
-import UserComponent from './UserComponent.js';
+import UserComponent from './Blocks/UserComponent.js';
 import fetchData from './getters/fetchData.js';
 
 const getUser = fetchData('http://localhost:3000/api/user');

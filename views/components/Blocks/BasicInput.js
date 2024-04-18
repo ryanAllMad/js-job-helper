@@ -6,15 +6,16 @@ import {
 } from '@mui/material';
 
 const BasicInput = (props) => {
-	const { label, handelChange, defaultValue } = props;
+	const { label, handleChange, defaultValue } = props;
 
 	return (
 		<>
 			<FormControl>
 				<InputLabel>{label}</InputLabel>
 				<Input
+					aria-labelledby={label}
 					defaultValue={defaultValue}
-					onChange={handelChange}
+					onChange={handleChange}
 					type='text'
 				/>
 			</FormControl>

@@ -4,39 +4,20 @@ import {
 	Input,
 	InputLabel,
 	InputAdornment,
-	Paper,
 	Stack,
 } from '@mui/material';
-import Header from './Header.js';
-import AutoComplete from './AutoComplete.js';
-import ContainedButton from './ContainedButton.js';
+import MainBody from '../Layout/MainBody.js';
+import AutoComplete from '../Blocks/AutoComplete.js';
+import ContainedButton from '../Blocks/ContainedButton.js';
 
 const UpdateRequirements = () => {
-	const [isClient, setIsClient] = React.useState(false);
-
 	const requirements = [
 		{label: "document codebase", cat: "soft"}
 	]
 
-	React.useEffect(() => {
-		setIsClient(true);
-	}, []);
-
 	return (
 		<>
-			{isClient && (
-				<>
-					<Header />
-					<main>
-						<Paper
-							sx={{
-								padding: '2em',
-								position: 'relative',
-								maxWidth: '1200px',
-								margin: '0 auto',
-							}}
-							elevation={2}
-						>
+			<MainBody>
 							<Stack padding='2em'>
 								<FormControl>
 									<AutoComplete
@@ -60,10 +41,7 @@ const UpdateRequirements = () => {
 									/>
 								</FormControl>
 							</Stack>
-						</Paper>
-					</main>
-				</>
-			)}
+						</MainBody>
 		</>
 	);
 };

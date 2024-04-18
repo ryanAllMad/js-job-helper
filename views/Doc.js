@@ -1,7 +1,7 @@
-import Head from './components/Head.js';
-import Footer from './components/Footer.js';
+import Head from './components/Layout/Head.js';
+import Footer from './components/Layout/Footer.js';
 // TODO
-// create secure gitignored key file
+
 // link up database to project
 // link up form components to database
 // fine tune state and rendering

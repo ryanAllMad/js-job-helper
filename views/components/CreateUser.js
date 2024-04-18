@@ -1,5 +1,5 @@
 import * as React from 'react';
-import UserComponent from './UserComponent.js';
+import UserComponent from './Blocks/UserComponent.js';
 
 
 const CreateUser = () => {
