@@ -7,8 +7,10 @@ import process from'process';
 import { userRouter } from './routes/userRoutes.js'
 import { requirementRouter } from './routes/requirementRoutes.js';
 import { responseRouter } from './routes/responseRoutes.js';
+import { linksRouter } from './routes/linksRouter.js';
 import { experienceRouter } from './routes/experienceRoutes.js';
 import { jobPostRouter } from './routes/jobPost.js';
+
 
 
 //nvm use 20 >=
@@ -25,11 +27,13 @@ mongoose.connect(db, {
 
 // api code:
 app.use(express.json())
+app.use('/api', linksRouter)
+app.use('/api', experienceRouter)
 app.use('/api', userRouter)
 app.use('/api', jobPostRouter)
 app.use('/api', requirementRouter)
 app.use('/api', responseRouter)
-app.use('/api', experienceRouter)
+
 
 
 // ui code:

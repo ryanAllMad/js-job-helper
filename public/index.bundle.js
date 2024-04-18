@@ -43864,13 +43864,6 @@ class AdapterDayjs {
 
 const router = createBrowserRouter([{
   path: '/',
-  loader: async () => {
-    const userExists = await fetch('http://localhost:3000/api/user');
-    if (userExists && userExists.data && userExists.data.length > 0) {
-      return redirect('/edit-user');
-    }
-    return null;
-  },
   element: /*#__PURE__*/(0,jsx_runtime.jsx)(components_UserLanding, {})
 }, {
   path: '/edit-user',

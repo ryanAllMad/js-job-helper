@@ -20,7 +20,7 @@ export const createUser = async (req, res) => {
 
 export const getUser = async (req, res) => {
 	try {
-		const user = await User.find();
+		const user = await User.find().populate('links').populate('experience');
 		res.status(200).json({
 			status: 'success',
 			data: user,

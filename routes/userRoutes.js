@@ -3,7 +3,7 @@ import { createUser, getUser, updateUser } from '../controllers/usersController.
 
 export const userRouter = express.Router()
 
-userRouter.get('/user/', getUser)
+userRouter.get('/user', getUser)
 userRouter.post('/user', createUser)
 userRouter.post('/user/:id', updateUser)
 

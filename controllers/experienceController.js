@@ -1,4 +1,5 @@
 import { Experience } from "../models/experience.js";
+import { updateOne, getOne } from "./handlerFactory.js";
 
 export const createExperience = async (req, res) => {
 	try {
@@ -33,3 +34,6 @@ export const getExperience = async (req, res) => {
 		});
 	}
 };
+
+export const getSingleExperience = getOne(Experience)
+export const updateExperience = updateOne(Experience)

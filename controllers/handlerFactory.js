@@ -12,3 +12,20 @@ export const updateOne = Model => async(req, res, next) => {
 		data: document
 	})
 }
+
+export const getOne = Model => async (req, res) => {
+	try {
+		const document = await Model.findById(req.params.id);
+		res.status(200).json({
+			status: 'success',
+			data: {
+				document,
+			},
+		});
+	} catch (err) {
+		res.status(404).json({
+			status: 'not found',
+			message: `${err}`,
+		});
+	}
+};
