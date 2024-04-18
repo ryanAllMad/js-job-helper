@@ -5,19 +5,10 @@ import { FormGroup, Stack, Paper, Typography } from '@mui/material';
 import BasicInput from './BasicInput.js';
 import ContainedButton from './ContainedButton.js';
 import UserLinkInputs from './UserLinkInputs.js';
-import fetchData from './getters/fetchData.js';
 
-const getUser = fetchData('http://localhost:3000/api/user');
 
-const UserExists = React.lazy(() => import('./UserExists.js'));
-const Suspense = React.Suspense;
-
-const User = () => {
+const CreateUser = () => {
 	const [isClient, setIsClient] = React.useState(false);
-	const userDetails = getUser.read();
-	const [initialState, setInitialState] = React.useState(
-		userDetails.length > 0
-	);
 	const [hasFullName, setHasFullName] = React.useState();
 	const [hasEmail, setHasEmail] = React.useState();
 	const [linkObject, setLinkObject] = React.useState([]);
@@ -30,8 +21,7 @@ const User = () => {
 	}, []);
 
 	const handleAddLink = () => {
-		setLinkInputs((prev) => prev.concat(prev.length))
-		console.log(linkInputs)
+		setLinkInputs((prev) => prev.concat(prev.length));
 	};
 	const handelTitleChange = (e) => {
 		setTitle(e.target.value);
@@ -44,11 +34,11 @@ const User = () => {
 			title: title,
 			href: link,
 		});
-		setLinkObject(newLinkObject)
+		setLinkObject(newLinkObject);
 	};
 
 	const handleSave = async () => {
-		const postUserName = await fetch('http://localhost:3000/api/user/', {
+		const postUserName = await fetch(fetchUrl, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -59,9 +49,9 @@ const User = () => {
 				links: linkObject,
 			}),
 		});
-		setInitialState(true);
 		return postUserName.json();
 	};
+
 
 	return (
 		<>
@@ -79,13 +69,12 @@ const User = () => {
 							elevation={2}
 						>
 							<Stack spacing={2}>
-								<FormGroup sx={{ marginTop: '1em'}}>
+								<FormGroup sx={{ marginTop: '1em' }}>
 									<Typography variant='h2'>
 										Your Info
 									</Typography>
-									{!initialState ? (
-										<>
 											<BasicInput
+												defaultValue=""
 												handelChange={(e) =>
 													setHasFullName(
 														e.target.value
@@ -94,6 +83,7 @@ const User = () => {
 												label='Full Name'
 											/>
 											<BasicInput
+												defaultValue=""
 												handelChange={(e) =>
 													setHasEmail(e.target.value)
 												}
@@ -101,43 +91,34 @@ const User = () => {
 												label='Email'
 											/>
 											{linkInputs.map((link) => (
-												<UserLinkInputs
-													key={linkInputs.indexOf(
-														link
-													)}
-													handelTitleChange={
-														handelTitleChange
-													}
-													handleHrefChange={
-														handleHrefChange
-													}
-													handleLinkSave={
-														handleLinkSave
-													}
-												/>
-											))}
+														<UserLinkInputs
+															key={linkInputs.indexOf(
+																link
+															)}
+															defaultTitleValue=''
+															defaultHrefValue=''
+															handelTitleChange={
+																handelTitleChange
+															}
+															handleHrefChange={
+																handleHrefChange
+															}
+															handleLinkSave={
+																handleLinkSave
+															}
+														/>
+												))}
 											<ContainedButton
-												sx={{alignSelf: 'flex-end'}}
+												sx={{ alignSelf: 'flex-end' }}
 												onClick={handleAddLink}
 											>
 												Add Another Link?
 											</ContainedButton>
-											<ContainedButton
-												onClick={handleSave}
-											>
-												Save
-											</ContainedButton>
-										</>
-									) : (
-										<Suspense fallback={'...'}>
-											<UserExists />
-											<ContainedButton>
-												Edit
-											</ContainedButton>
-										</Suspense>
-									)}
+										<ContainedButton onClick={handleSave}>
+											Save
+										</ContainedButton>
 								</FormGroup>
-								<FormGroup sx={{ marginTop: '1em'}}>
+								<FormGroup sx={{ marginTop: '1em' }}>
 									<Typography variant='h2'>
 										Job Experience
 									</Typography>
@@ -152,4 +133,4 @@ const User = () => {
 	);
 };
 
-export default User;
+export default CreateUser;

@@ -6,13 +6,14 @@ import {
 } from '@mui/material';
 
 const BasicInput = (props) => {
-	const { label, handelChange } = props;
+	const { label, handelChange, defaultValue } = props;
+
 	return (
 		<>
 			<FormControl>
 				<InputLabel>{label}</InputLabel>
 				<Input
-					defaultValue={''}
+					defaultValue={defaultValue}
 					onChange={handelChange}
 					type='text'
 				/>

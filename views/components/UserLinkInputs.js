@@ -9,7 +9,7 @@ import {
 import ContainedButton from './ContainedButton.js';
 
 const UserLinkInputs = (props) => {
-	const { key, handleLinkSave, handelTitleChange, handleHrefChange } = props;
+	const { key, handleLinkSave, handelTitleChange, handleHrefChange, defaultHrefValue, defaultTitleValue } = props;
 	const [buttonText, setButtonText] = React.useState('Add')
 	const [buttonState, setButtonStte] = React.useState(false)
 
@@ -28,7 +28,7 @@ const UserLinkInputs = (props) => {
 				<InputLabel>Title</InputLabel>
 				<Input
 					disabled={buttonState}
-					defaultValue={''}
+					defaultValue={defaultTitleValue}
 					onChange={handelTitleChange}
 					type='text'
 				/>
@@ -39,7 +39,7 @@ const UserLinkInputs = (props) => {
 				<InputLabel>Href</InputLabel>
 				<Input
 					disabled={buttonState}
-					defaultValue={''}
+					defaultValue={defaultHrefValue}
 					onChange={handleHrefChange}
 					type='text'
 				/>

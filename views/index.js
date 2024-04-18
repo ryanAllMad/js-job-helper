@@ -1,5 +1,6 @@
 import { hydrateRoot } from 'react-dom/client';
-import User from './components/User.js';
+import EditUser from './components/EditUser.js'
+import UserLanding from './components/UserLanding.js';
 import AddJob from './components/AddJob.js';
 import SearchJob from './components/SearchJob.js';
 import UpdateRequirements from './components/UpdateRequirements.js';
@@ -10,7 +11,11 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs/index.js';
 const router = createBrowserRouter([
 	{
 		path: '/',
-		element: <User />,
+		element: <UserLanding />,
+	},
+	{
+		path: '/edit-user',
+		element: <EditUser />,
 	},
 	{
 		path: '/add-job',
