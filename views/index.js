@@ -4,7 +4,7 @@ import UserLanding from './components/UserLanding.js';
 import AddJob from './components/AddJob.js';
 import SearchJob from './components/SearchJob.js';
 import UpdateRequirements from './components/UpdateRequirements.js';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, redirect } from 'react-router-dom';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs/index.js';
 
@@ -15,6 +15,13 @@ const router = createBrowserRouter([
 	},
 	{
 		path: '/edit-user',
+		loader: async () => {
+			const userExists = await fetch('http://localhost:3000/api/user')
+			if (!userExists || !userExists.data ||  userExists.data.length === 0) {
+				return redirect('/')
+			}
+			return null
+		},
 		element: <EditUser />,
 	},
 	{
