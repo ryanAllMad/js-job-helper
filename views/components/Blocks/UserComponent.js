@@ -1,29 +1,42 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { FormGroup } from '@mui/material';
+import { FormGroup, Input } from '@mui/material';
 import BasicInput from './BasicInput.js';
 import ContainedButton from './ContainedButton.js';
+import { Controller, useForm } from 'react-hook-form';
+import fetchData from '../getters/fetchData.js';
+
+const getLinks = fetchData('http://localhost:3000/api/links')
+const getExperience = fetchData('http://localhost:3000/api/experience')
 
 const UserComponent = (props) => {
-	const [isClient, setIsClient] = React.useState(false);
-	const [hasFullName, setHasFullName] = React.useState();
-	const [hasEmail, setHasEmail] = React.useState();
+	const { fetchUrl, linkUrl, experienceUrl, linkButtonText, experienceButtonText } = props;
+	const {control, handleSubmit} = useForm()
+	const allSavedLinks = getLinks.read()
+	const allSavedExperience = getExperience.read()
 
-	const { fetchUrl, nameDefault, emailDefault } = props;
-
+	let linksArr = []
+	let expArr = []
 	React.useEffect(() => {
-		setIsClient(true);
-	}, []);
+		if(allSavedLinks && allSavedLinks.length > 0) {
+			allSavedLinks.forEach((li) => linksArr.push(li._id))
+		}
+		if (allSavedExperience) {
+			allSavedExperience.forEach((li) => expArr.push(li._id))
+		}
+	}, [allSavedLinks, allSavedExperience])
 
-	const handleSave = async () => {
+	const handleSave = async (data) => {
 		const postUserName = await fetch(fetchUrl, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({
-				name: hasFullName,
-				email: hasEmail,
+				name: data.fullName,
+				email: data.email,
+				links: linksArr,
+				experience: expArr
 			}),
 		});
 		return postUserName.json();
@@ -31,38 +44,51 @@ const UserComponent = (props) => {
 
 	return (
 		<>
-			{isClient && (
-				<>
-					<FormGroup sx={{ marginTop: '1em' }}>
-						<BasicInput
-							defaultValue={nameDefault}
-							handleChange={(e) => setHasFullName(e.target.value)}
-							label='Full Name'
-						/>
-						<BasicInput
-							defaultValue={emailDefault}
-							handleChange={(e) => setHasEmail(e.target.value)}
-							buttonText='Enter'
-							label='Email'
-						/>
-						<ContainedButton onClick={handleSave}>
-							Save
-						</ContainedButton>
-					</FormGroup>
-					<FormGroup>
-							<Link
-								to={'/links'}
-							>
-								Add Links?
-							</Link>
-							<Link
-								to={'/experience'}
-							>
-								Add Experience?
-							</Link>
-					</FormGroup>
-				</>
-			)}
+			<form onSubmit={handleSubmit((data) => handleSave(data))}>
+				<FormGroup sx={{ marginTop: '1em' }}>
+					<BasicInput id="fullName" label='Full Name'>
+						<Controller
+								control={control}
+								name='fullName'
+								render={({
+									field: { onChange, onBlur, value, ref },
+								}) => (
+									<Input
+										onChange={onChange}
+										onBlur={onBlur}
+										value={value}
+										inputRef={ref}
+										type='text'
+										aria-labelledby='email'
+									/>
+								)}
+							/>
+					</BasicInput>
+					<BasicInput id="email" label='Email'>
+					<Controller
+								control={control}
+								name='email'
+								render={({
+									field: { onChange, onBlur, value, ref },
+								}) => (
+									<Input
+										onChange={onChange}
+										onBlur={onBlur}
+										value={value}
+										inputRef={ref}
+										type='text'
+										aria-labelledby='email'
+									/>
+								)}
+							/>
+					</BasicInput>
+					<ContainedButton type='submit'>Save</ContainedButton>
+				</FormGroup>
+			</form>
+			<FormGroup>
+				<Link to={linkUrl}>{linkButtonText}</Link>
+				<Link to={experienceUrl}>{experienceButtonText}</Link>
+			</FormGroup>
 		</>
 	);
 };

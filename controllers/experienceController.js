@@ -23,9 +23,7 @@ export const getExperience = async (req, res) => {
 		const experience = await Experience.find();
 		res.status(200).json({
 			status: 'success',
-			data: {
-				experience,
-			},
+			data: experience,
 		});
 	} catch (err) {
 		res.status(404).json({

@@ -19583,12 +19583,12 @@ function BasicDialog(props) {
 const ContainedButton = props => {
   const {
     children,
-    disabled,
+    type,
     onClick,
     sx
   } = props;
   return /*#__PURE__*/(0,jsx_runtime.jsx)(Button_Button, {
-    disabled: disabled,
+    type: type,
     onClick: onClick,
     variant: "contained",
     sx: {
@@ -39063,20 +39063,16 @@ const DatePicker = /*#__PURE__*/react.forwardRef(function DatePicker(inProps, re
 
 const BasicInput = props => {
   const {
+    children,
     label,
-    handleChange,
-    defaultValue
+    id
   } = props;
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
     children: /*#__PURE__*/(0,jsx_runtime.jsxs)(FormControl_FormControl, {
       children: [/*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
+        id: id,
         children: label
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-        "aria-labelledby": label,
-        defaultValue: defaultValue,
-        onChange: handleChange,
-        type: "text"
-      })]
+      }), children]
     })
   });
 };
@@ -41851,70 +41847,6 @@ function AddLinks() {
     })
   });
 }
-;// CONCATENATED MODULE: ./views/components/Blocks/UserComponent.js
-
-
-
-
-
-
-const UserComponent = props => {
-  const [isClient, setIsClient] = react.useState(false);
-  const [hasFullName, setHasFullName] = react.useState();
-  const [hasEmail, setHasEmail] = react.useState();
-  const {
-    fetchUrl,
-    nameDefault,
-    emailDefault
-  } = props;
-  react.useEffect(() => {
-    setIsClient(true);
-  }, []);
-  const handleSave = async () => {
-    const postUserName = await fetch(fetchUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: hasFullName,
-        email: hasEmail
-      })
-    });
-    return postUserName.json();
-  };
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
-    children: isClient && /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
-      children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
-        sx: {
-          marginTop: '1em'
-        },
-        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
-          defaultValue: nameDefault,
-          handleChange: e => setHasFullName(e.target.value),
-          label: "Full Name"
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
-          defaultValue: emailDefault,
-          handleChange: e => setHasEmail(e.target.value),
-          buttonText: "Enter",
-          label: "Email"
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-          onClick: handleSave,
-          children: "Save"
-        })]
-      }), /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
-        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Link, {
-          to: '/links',
-          children: "Add Links?"
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Link, {
-          to: '/experience',
-          children: "Add Experience?"
-        })]
-      })]
-    })
-  });
-};
-/* harmony default export */ const Blocks_UserComponent = (UserComponent);
 ;// CONCATENATED MODULE: ./views/components/getters/wrapPromise.js
 const wrapPromise = promise => {
   let status = 'pending';
@@ -41953,7 +41885,132 @@ const fetchData = url => {
   return getters_wrapPromise(promise);
 };
 /* harmony default export */ const getters_fetchData = (fetchData);
+;// CONCATENATED MODULE: ./views/components/Blocks/UserComponent.js
+
+
+
+
+
+
+
+
+const getLinks = getters_fetchData('http://localhost:3000/api/links');
+const getExperience = getters_fetchData('http://localhost:3000/api/experience');
+const UserComponent = props => {
+  const {
+    fetchUrl,
+    linkUrl,
+    experienceUrl,
+    linkButtonText,
+    experienceButtonText
+  } = props;
+  const {
+    control,
+    handleSubmit
+  } = useForm();
+  const allSavedLinks = getLinks.read();
+  const allSavedExperience = getExperience.read();
+  let linksArr = [];
+  let expArr = [];
+  react.useEffect(() => {
+    if (allSavedLinks && allSavedLinks.length > 0) {
+      allSavedLinks.forEach(li => linksArr.push(li._id));
+    }
+    if (allSavedExperience) {
+      allSavedExperience.forEach(li => expArr.push(li._id));
+    }
+  }, [allSavedLinks, allSavedExperience]);
+  const handleSave = async data => {
+    const postUserName = await fetch(fetchUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: data.fullName,
+        email: data.email,
+        links: linksArr,
+        experience: expArr
+      })
+    });
+    return postUserName.json();
+  };
+  return /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+    children: [/*#__PURE__*/(0,jsx_runtime.jsx)("form", {
+      onSubmit: handleSubmit(data => handleSave(data)),
+      children: /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
+        sx: {
+          marginTop: '1em'
+        },
+        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
+          id: "fullName",
+          label: "Full Name",
+          children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: "fullName",
+            render: _ref => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  value,
+                  ref
+                }
+              } = _ref;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                inputRef: ref,
+                type: "text",
+                "aria-labelledby": "email"
+              });
+            }
+          })
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
+          id: "email",
+          label: "Email",
+          children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: "email",
+            render: _ref2 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  value,
+                  ref
+                }
+              } = _ref2;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                inputRef: ref,
+                type: "text",
+                "aria-labelledby": "email"
+              });
+            }
+          })
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+          type: "submit",
+          children: "Save"
+        })]
+      })
+    }), /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
+      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Link, {
+        to: linkUrl,
+        children: linkButtonText
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Link, {
+        to: experienceUrl,
+        children: experienceButtonText
+      })]
+    })]
+  });
+};
+/* harmony default export */ const Blocks_UserComponent = (UserComponent);
 ;// CONCATENATED MODULE: ./views/components/EditUser.js
+
 
 
 
@@ -41964,8 +42021,10 @@ const EditUser = () => {
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
     children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_UserComponent, {
       fetchUrl: `http://localhost:3000/api/user/${userDetails[0]._id}`,
-      nameDefault: userDetails[0].name,
-      emailDefault: userDetails[0].email
+      linkUrl: "/edit-links",
+      experienceUrl: "edit-links",
+      linkButtonText: "Edit links?",
+      experienceButtonText: "Edit experience?"
     })
   });
 };
@@ -42433,8 +42492,10 @@ const CreateUser = () => {
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
     children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_UserComponent, {
       fetchUrl: "http://localhost:3000/api/user",
-      nameDefault: "",
-      emailDefault: ""
+      linkUrl: "/link",
+      experienceUrl: "/experience",
+      linkButtonText: "Add Link?",
+      experienceButtonText: "Add Experience?"
     })
   });
 };
