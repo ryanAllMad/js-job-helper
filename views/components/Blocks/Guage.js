@@ -8,12 +8,12 @@ import {
 
 const Guage = (props) => {
 	const {value} = props
-	const [color, setColor] = React.useState('red')
+	const [color, setColor] = React.useState('#aa2e25')
 	React.useEffect(() => {
 		if(value > 70) {
-			setColor('green')
+			setColor('#357a38')
 		} else {
-			setColor('red')
+			setColor('#aa2e25')
 		}
 	})
 	return (

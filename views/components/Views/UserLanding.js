@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Stack, Paper, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import MainBody from '../Layout/MainBody.js';
 import fetchData from '../getters/fetchData.js';
-import UserExists from '../UserExists.js';
+import EditUser from '../EditUser.js';
 import CreateUser from '../CreateUser.js';
 
 const getUser = fetchData('http://localhost:3000/api/user');
@@ -15,7 +15,7 @@ const UserLanding = () => {
 				<Stack spacing={2}>
 					<Typography variant='h2'>Your Info</Typography>
 					{userDetails && userDetails.length > 0 ? (
-						<UserExists />
+						<EditUser />
 					) : (
 						<CreateUser />
 					)}

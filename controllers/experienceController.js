@@ -1,14 +1,12 @@
 import { Experience } from "../models/experience.js";
-import { updateOne, getOne } from "./handlerFactory.js";
+import { updateOne, getOne, deleteOne } from "./handlerFactory.js";
 
 export const createExperience = async (req, res) => {
 	try {
 		const newExperience = await Experience.create(req.body);
 		res.status(201).json({
 			status: 'success',
-			data: {
-				experience: newExperience,
-			},
+			data: newExperience,
 		});
 	} catch (err) {
 		res.status(400).json({
@@ -35,3 +33,4 @@ export const getExperience = async (req, res) => {
 
 export const getSingleExperience = getOne(Experience)
 export const updateExperience = updateOne(Experience)
+export const deleteExperience = deleteOne(Experience)

@@ -1,20 +1,20 @@
 import * as React from 'react';
+import ContainedButton from './ContainedButton.js';
 import {
 	FormControl,
 	Grid,
 	InputLabel,
-	Typography,
 } from '@mui/material';
 
 const UserLinkInputs = (props) => {
 	const {
 		titleInput,
-		hrefInput
+		hrefInput,
+		deleteOne
 	} = props;
 
 	return (
 		<>
-			<Typography variant='h4'>Add Link</Typography>
 			<Grid
 				fullWidth
 				container
@@ -24,7 +24,7 @@ const UserLinkInputs = (props) => {
 			>
 				<Grid
 					xs={12}
-					md={6}
+					md={3}
 					item
 				>
 					<FormControl>
@@ -34,7 +34,7 @@ const UserLinkInputs = (props) => {
 				</Grid>
 				<Grid
 					xs={12}
-					md={6}
+					md={3}
 					item
 				>
 					<FormControl>
@@ -42,6 +42,21 @@ const UserLinkInputs = (props) => {
 						{hrefInput}
 					</FormControl>
 				</Grid>
+				<Grid
+					xs={12}
+					md={3}
+					item
+				>
+					<ContainedButton type="submit">Save Link</ContainedButton>
+				</Grid>
+				<Grid
+					xs={12}
+					md={3}
+					item
+				>
+					<ContainedButton onClick={deleteOne} type="button">Delete Link</ContainedButton>
+				</Grid>
+
 			</Grid>
 		</>
 	);

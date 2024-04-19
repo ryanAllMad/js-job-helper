@@ -1,14 +1,12 @@
 import { Links } from '../models/links.js';
-import { updateOne, getOne } from './handlerFactory.js';
+import { updateOne, getOne, deleteOne } from './handlerFactory.js';
 
 export const createLinks = async (req, res) => {
 	try {
 		const newLinks = await Links.create(req.body);
 		res.status(201).json({
 			status: 'success',
-			data: {
-				links: newLinks,
-			},
+			data: newLinks,
 		});
 	} catch (err) {
 		res.status(400).json({
@@ -36,3 +34,5 @@ export const getLinks = async (req, res) => {
 export const getSingleLinks = getOne(Links)
 
 export const updateLink = updateOne(Links)
+
+export const deleteLink = deleteOne(Links)

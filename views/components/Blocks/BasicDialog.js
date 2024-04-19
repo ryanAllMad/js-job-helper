@@ -8,17 +8,13 @@ import {
 	DialogContentText,
 	DialogTitle,
 } from '@mui/material';
+import EmptyMainDialogBG from '../Layout/EmptyMainDialogBG.js';
 
 export default function BasicDialog(props) {
 	const [isClient, setIsClient] = React.useState(false);
-	const navigate = useNavigate()
-	const close = () => navigate('/')
-	const {
-		children,
-		dialogTitle,
-		dialogContent,
-		submitFormFunc
-	} = props;
+	const navigate = useNavigate();
+	const close = () => navigate('/');
+	const { children, dialogTitle, dialogContent, submitFormFunc } = props;
 
 	React.useEffect(() => {
 		setIsClient(true);
@@ -26,18 +22,18 @@ export default function BasicDialog(props) {
 
 	const onSubmitForm = () => {
 		handleClose();
-		submitFormFunc()
-	}
+		submitFormFunc();
+	};
 
 	const handleClose = () => {
-		return close()
+		return close();
 	};
-	
 
 	return (
 		<>
-			{isClient && 
-						<Dialog
+			{isClient && (
+				<EmptyMainDialogBG>
+					<Dialog
 						open
 						onClose={handleClose}
 						PaperProps={{
@@ -47,7 +43,9 @@ export default function BasicDialog(props) {
 					>
 						<DialogTitle>{dialogTitle}</DialogTitle>
 						<DialogContent>
-							<DialogContentText>{dialogContent}</DialogContentText>
+							<DialogContentText>
+								{dialogContent}
+							</DialogContentText>
 							{children}
 						</DialogContent>
 						<DialogActions>
@@ -55,7 +53,8 @@ export default function BasicDialog(props) {
 							<Button type='submit'>Submit</Button>
 						</DialogActions>
 					</Dialog>
-			}
+				</EmptyMainDialogBG>
+			)}
 		</>
 	);
 }

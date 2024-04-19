@@ -11,23 +11,26 @@ const Header = () => {
 						container
 						spacing={4}
 						component='ul'
-						sx={{ listStyle: 'none'}}
+						sx={{ listStyle: 'none', marginTop: '0'}}
 					>
 						<Grid
 							item
 							component='li'
+							sx={{ paddingTop: '16px'}}
 						>
 							<NavLink to='/'>User Info</NavLink>
 						</Grid>
 						<Grid
 							item
 							component='li'
+							sx={{ paddingTop: '16px'}}
 						>
 							<NavLink to='/add-job'>Add a Job</NavLink>
 						</Grid>
 						<Grid
 							item
 							component='li'
+							sx={{ paddingTop: '16px'}}
 						>
 							<NavLink to='/update-requirements'>
 								Update Requirements
@@ -36,6 +39,7 @@ const Header = () => {
 						<Grid
 							item
 							component='li'
+							sx={{ paddingTop: '16px'}}
 						>
 							<NavLink to='/search-job'>Search Job</NavLink>
 						</Grid>
