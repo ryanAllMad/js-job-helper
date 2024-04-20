@@ -19101,9 +19101,11 @@ const ContainedButton = props => {
     children,
     type,
     onClick,
-    sx
+    sx,
+    disabled
   } = props;
   return /*#__PURE__*/(0,jsx_runtime.jsx)(Button_Button, {
+    disabled: disabled,
     type: type,
     onClick: onClick,
     variant: "contained",
@@ -19125,7 +19127,9 @@ const UserLinkInputs = props => {
   const {
     titleInput,
     hrefInput,
-    deleteOne
+    deleteOne,
+    saveText,
+    saveDisabled
   } = props;
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
     children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Grid_Grid, {
@@ -19157,8 +19161,9 @@ const UserLinkInputs = props => {
         md: 3,
         item: true,
         children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+          disabled: saveDisabled,
           type: "submit",
-          children: "Save Link"
+          children: saveText
         })
       }), /*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
         xs: 12,
@@ -21765,16 +21770,19 @@ function useForm(props = {}) {
 
 //# sourceMappingURL=index.esm.mjs.map
 
-;// CONCATENATED MODULE: ./views/components/Blocks/LinksComponent.js
+;// CONCATENATED MODULE: ./views/components/Blocks/LinksForm.js
 
 
 
 
 
-function LinksComponent(props) {
+const LinksForm = props => {
   const {
     handleSubmit,
-    control
+    control,
+    formState: {
+      isValid
+    }
   } = useForm();
   const {
     key,
@@ -21783,6 +21791,7 @@ function LinksComponent(props) {
     defaultHref,
     deleteOne
   } = props;
+  const [saveText, setSaveText] = react.useState('Save Links');
   const handleSave = async data => {
     const postUserName = await fetch(fetchUrl, {
       method: 'POST',
@@ -21794,21 +21803,232 @@ function LinksComponent(props) {
         href: data.href
       })
     });
+    if (postUserName.status === 201) {
+      setSaveText('Saved!');
+    }
     return postUserName.json();
+  };
+  return /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
+    dialogTitle: "Links",
+    dialogContent: "Add portfolio, github, linkedIn, or other links to go into your resume.",
+    onSubmit: handleSubmit(data => handleSave(data)),
+    children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_UserLinkInputs, {
+      saveText: saveText,
+      saveDisabled: !isValid,
+      deleteOne: deleteOne,
+      titleInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+        control: control,
+        name: "title",
+        rules: {
+          required: true
+        },
+        render: _ref => {
+          let {
+            field: {
+              onChange,
+              onBlur,
+              value,
+              ref
+            }
+          } = _ref;
+          return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+            onChange: onChange,
+            onBlur: onBlur,
+            value: value,
+            inputRef: ref,
+            type: "text"
+          });
+        },
+        defaultValue: defaultTitle
+      }),
+      hrefInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+        control: control,
+        name: "href",
+        rules: {
+          required: true
+        },
+        render: _ref2 => {
+          let {
+            field: {
+              onChange,
+              onBlur,
+              value,
+              ref
+            }
+          } = _ref2;
+          return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+            onChange: onChange,
+            onBlur: onBlur,
+            value: value,
+            inputRef: ref,
+            type: "text"
+          });
+        },
+        defaultValue: defaultHref
+      })
+    })
+  }, key);
+};
+/* harmony default export */ const Blocks_LinksForm = (LinksForm);
+;// CONCATENATED MODULE: ./views/components/CreateLinks.js
+
+
+
+const CreateLinks = props => {
+  const {
+    key,
+    deleteOne
+  } = props;
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_LinksForm, {
+    fetchUrl: "http://localhost:3000/api/links",
+    defaultTitle: "",
+    defaultHref: "",
+    deleteOne: deleteOne
+  }, key);
+};
+/* harmony default export */ const components_CreateLinks = (CreateLinks);
+;// CONCATENATED MODULE: ./views/components/EditLinks.js
+
+
+
+const EditLinks = props => {
+  const {
+    linkId,
+    defaultTitle,
+    defaultHref,
+    deleteOne,
+    control
+  } = props;
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_LinksForm, {
+    fetchUrl: `http://localhost:3000/api/links/${linkId}`,
+    defaultTitle: defaultTitle,
+    defaultHref: defaultHref
+  }, linkId);
+};
+/* harmony default export */ const components_EditLinks = (EditLinks);
+;// CONCATENATED MODULE: ./views/components/Blocks/LinksComponent.js
+
+
+
+
+
+
+
+
+const getLinks = getters_fetchData('http://localhost:3000/api/links');
+function LinksComponent() {
+  const allSavedLinks = getLinks.read();
+  const {
+    control
+  } = useForm();
+  const {
+    isValid
+  } = useFormState({
+    control
+  });
+  const [linksArr, setLinksArr] = react.useState([]);
+  const [newLinksArr, setNewLinksArr] = react.useState([]);
+  react.useEffect(() => {
+    if (allSavedLinks && allSavedLinks.length > 0) {
+      setLinksArr(allSavedLinks);
+    }
+  }, [allSavedLinks, linksArr]);
+  const deleteThisLink = async id => {
+    const promise = await fetch(`http://localhost:3000/api/links/${id}`, {
+      method: 'DELETE'
+    });
+    if (allSavedLinks && allSavedLinks.length > 0) {
+      setLinksArr(allSavedLinks);
+    }
+    return promise;
+  };
+  const deleteNewLinks = id => {
+    if (newLinksArr.length === 1) {
+      setNewLinksArr([]);
+    } else {
+      setNewLinksArr(prev => prev.splice(id, 1));
+    }
+  };
+  const addMoreLinks = () => {
+    setNewLinksArr(prev => prev.concat(prev.length));
   };
   return /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
     children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
       variant: "body2",
       children: "Add Link"
-    }), /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
-      dialogTitle: "Links",
-      dialogContent: "Add portfolio, github, linkedIn, or other links to go into your resume.",
-      onSubmit: handleSubmit(data => handleSave(data)),
-      children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_UserLinkInputs, {
-        deleteOne: deleteOne,
-        titleInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+    }), /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
+      children: [linksArr.length > 0 && linksArr.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(components_EditLinks, {
+        linkId: link._id,
+        defaultTitle: link.title,
+        defaultHref: link.href,
+        deleteOne: () => deleteThisLink(link._id)
+      })), newLinksArr.length > 0 && newLinksArr.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(components_CreateLinks, {
+        deleteOne: () => deleteNewLinks(newLinksArr.indexOf(link))
+      }, newLinksArr.indexOf(link)))]
+    }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+      disabled: !isValid,
+      type: "button",
+      onClick: addMoreLinks,
+      children: "Add More Links?"
+    })]
+  });
+}
+;// CONCATENATED MODULE: ./views/components/Blocks/ExperienceForm.js
+
+
+
+
+
+
+const ExperienceForm = props => {
+  const {
+    handleSubmit,
+    control,
+    formState: {
+      isDirty,
+      isValid
+    }
+  } = useForm();
+  const {
+    key,
+    fetchUrl,
+    companyNameDefault,
+    jobTitleDefault,
+    startDateDefault,
+    endDateDefault,
+    deleteOne
+  } = props;
+  const [saveText, setSaveText] = react.useState('Save Experience?');
+  const handleSave = async data => {
+    const postUserName = await fetch(fetchUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        company: data.companyName,
+        title: data.jobTitle,
+        year_started: data.startDate,
+        year_ended: data.endDate
+      })
+    });
+    if (postUserName.status === 201) {
+      setSaveText('Saved!');
+    }
+    return postUserName.json();
+  };
+  return /*#__PURE__*/(0,jsx_runtime.jsxs)("form", {
+    onSubmit: handleSubmit(data => handleSave(data)),
+    children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
+      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
+        id: "companyName",
+        label: "Company Name",
+        children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
           control: control,
-          name: "title",
+          name: "companyName",
+          rules: {
+            required: 'Please enter the company name'
+          },
           render: _ref => {
             let {
               field: {
@@ -21823,14 +22043,21 @@ function LinksComponent(props) {
               onBlur: onBlur,
               value: value,
               inputRef: ref,
-              type: "text"
+              type: "text",
+              "aria-labelledby": "companyName"
             });
           },
-          defaultValue: defaultTitle
-        }),
-        hrefInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+          defaultValue: companyNameDefault
+        })
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
+        id: "jobTitle",
+        label: "Job Title",
+        children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
           control: control,
-          name: "href",
+          name: "jobTitle",
+          rules: {
+            required: 'Please enter the position title you held in this role'
+          },
           render: _ref2 => {
             let {
               field: {
@@ -21845,205 +22072,94 @@ function LinksComponent(props) {
               onBlur: onBlur,
               value: value,
               inputRef: ref,
-              type: "text"
+              type: "text",
+              "aria-labelledby": "jobTitle"
             });
           },
-          defaultValue: defaultHref
+          defaultValue: jobTitleDefault
         })
-      })
-    }, key)]
-  });
-}
-;// CONCATENATED MODULE: ./views/components/EditLinks.js
-
-
-
-const EditLinks = props => {
-  const {
-    linkId,
-    defaultTitle,
-    defaultHref,
-    deleteOne
-  } = props;
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(LinksComponent, {
-    fetchUrl: `http://localhost:3000/api/links/${linkId}`,
-    defaultTitle: defaultTitle,
-    defaultHref: defaultHref,
-    deleteOne: deleteOne
-  }, linkId);
-};
-/* harmony default export */ const components_EditLinks = (EditLinks);
-;// CONCATENATED MODULE: ./views/components/Blocks/ExperienceComponent.js
-
-
-
-
-
-
-function ExperienceComponent(props) {
-  const {
-    handleSubmit,
-    control
-  } = useForm();
-  const {
-    key,
-    fetchUrl,
-    companyNameDefault,
-    jobTitleDefault,
-    startDateDefault,
-    endDateDefault,
-    deleteOne
-  } = props;
-  const handleSave = async data => {
-    const postUserName = await fetch(fetchUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        company: data.companyName,
-        title: data.jobTitle,
-        year_started: data.startDate,
-        year_ended: data.endDate
-      })
-    });
-    return postUserName.json();
-  };
-  return /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
-    children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-      variant: "body2",
-      children: "Work Experience"
-    }), /*#__PURE__*/(0,jsx_runtime.jsxs)("form", {
-      onSubmit: handleSubmit(data => handleSave(data)),
-      children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
-        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
-          id: "companyName",
-          label: "Company Name",
-          children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-            control: control,
-            name: "companyName",
-            render: _ref => {
-              let {
-                field: {
-                  onChange,
-                  onBlur,
-                  value,
-                  ref
-                }
-              } = _ref;
-              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-                onChange: onChange,
-                onBlur: onBlur,
-                value: value,
-                inputRef: ref,
-                type: "text",
-                "aria-labelledby": "companyName"
-              });
-            },
-            defaultValue: companyNameDefault
-          })
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
-          id: "jobTitle",
-          label: "Job Title",
-          children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-            control: control,
-            name: "jobTitle",
-            render: _ref2 => {
-              let {
-                field: {
-                  onChange,
-                  onBlur,
-                  value,
-                  ref
-                }
-              } = _ref2;
-              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-                onChange: onChange,
-                onBlur: onBlur,
-                value: value,
-                inputRef: ref,
-                type: "text",
-                "aria-labelledby": "jobTitle"
-              });
-            },
-            defaultValue: jobTitleDefault
-          })
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-          control: control,
-          name: "startDate",
-          render: _ref3 => {
-            let {
-              field: {
-                onChange,
-                onBlur,
-                ref,
-                value
-              }
-            } = _ref3;
-            return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-              type: "date",
-              inputRef: ref,
-              onChange: onChange,
-              onBlur: onBlur,
-              value: value,
-              label: "Start Date"
-            });
-          },
-          defaultValue: startDateDefault
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-          control: control,
-          name: "endDate",
-          render: _ref4 => {
-            let {
-              field: {
-                onChange,
-                onBlur,
-                ref,
-                value
-              }
-            } = _ref4;
-            return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-              type: "date",
-              onChange: onChange,
-              onBlur: onBlur,
-              inputRef: ref,
-              value: value,
-              label: "End Date"
-            });
-          },
-          defaultValue: endDateDefault
-        })]
-      }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Grid_Grid, {
-        fullWidth: true,
-        container: true,
-        spacing: 2,
-        alignItems: "center",
-        justifyContent: "center",
-        sx: {
-          marginTop: '0'
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+        control: control,
+        name: "startDate",
+        rules: {
+          required: 'Please enter the first date you started in this position'
         },
-        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
-          item: true,
-          xs: 12,
-          md: 6,
-          children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-            type: "submit",
-            children: "Save Experience"
-          })
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
-          item: true,
-          xs: 12,
-          md: 6,
-          children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-            onClick: deleteOne,
-            type: "button",
-            children: "Delete Experience"
-          })
-        })]
+        render: _ref3 => {
+          let {
+            field: {
+              onChange,
+              onBlur,
+              ref,
+              value
+            }
+          } = _ref3;
+          return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+            type: "date",
+            inputRef: ref,
+            onChange: onChange,
+            onBlur: onBlur,
+            value: value,
+            label: "Start Date"
+          });
+        },
+        defaultValue: startDateDefault
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+        control: control,
+        name: "endDate",
+        rules: {
+          required: 'Please Enter the date of your last day in this position'
+        },
+        render: _ref4 => {
+          let {
+            field: {
+              onChange,
+              onBlur,
+              ref,
+              value
+            }
+          } = _ref4;
+          return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+            type: "date",
+            onChange: onChange,
+            onBlur: onBlur,
+            inputRef: ref,
+            value: value,
+            label: "End Date"
+          });
+        },
+        defaultValue: endDateDefault
       })]
-    }, key)]
-  });
-}
+    }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Grid_Grid, {
+      fullWidth: true,
+      container: true,
+      spacing: 2,
+      alignItems: "center",
+      justifyContent: "center",
+      sx: {
+        marginTop: '0'
+      },
+      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
+        item: true,
+        xs: 12,
+        md: 6,
+        children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+          type: "submit",
+          children: saveText
+        })
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
+        item: true,
+        xs: 12,
+        md: 6,
+        children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+          onClick: deleteOne,
+          type: "button",
+          children: "Delete Experience"
+        })
+      })]
+    })]
+  }, key);
+};
+/* harmony default export */ const Blocks_ExperienceForm = (ExperienceForm);
 ;// CONCATENATED MODULE: ./views/components/EditExperience.js
 
 
@@ -22057,7 +22173,7 @@ const EditExperience = props => {
     endDateDefault,
     deleteOne
   } = props;
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(ExperienceComponent, {
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ExperienceForm, {
     fetchUrl: `http://localhost:3000/api/experience/${expId}`,
     companyNameDefault: companyNameDefault,
     jobTitleDefault: jobTitleDefault,
@@ -22067,23 +22183,6 @@ const EditExperience = props => {
   }, expId);
 };
 /* harmony default export */ const components_EditExperience = (EditExperience);
-;// CONCATENATED MODULE: ./views/components/CreateLinks.js
-
-
-
-const CreateLinks = props => {
-  const {
-    key,
-    deleteOne
-  } = props;
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(LinksComponent, {
-    fetchUrl: "http://localhost:3000/api/links",
-    defaultTitle: "",
-    defaultHref: "",
-    deleteOne: deleteOne
-  }, key);
-};
-/* harmony default export */ const components_CreateLinks = (CreateLinks);
 ;// CONCATENATED MODULE: ./views/components/CreateExperience.js
 
 
@@ -22093,7 +22192,7 @@ const CreateExperience = props => {
     key,
     deleteOne
   } = props;
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(ExperienceComponent, {
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ExperienceForm, {
     fetchUrl: "http://localhost:3000/api/experience",
     companyNameDefault: "",
     jobTitleDefault: "",
@@ -22103,7 +22202,7 @@ const CreateExperience = props => {
   }, key);
 };
 /* harmony default export */ const components_CreateExperience = (CreateExperience);
-;// CONCATENATED MODULE: ./views/components/Blocks/UserComponent.js
+;// CONCATENATED MODULE: ./views/components/Blocks/ExperienceComponent.js
 
 
 
@@ -22112,40 +22211,22 @@ const CreateExperience = props => {
 
 
 
-
-
-
-const getLinks = getters_fetchData('http://localhost:3000/api/links');
 const getExperience = getters_fetchData('http://localhost:3000/api/experience');
-const UserComponent = props => {
+function ExperienceComponent() {
   const {
-    fetchUrl,
-    emailDefault,
-    fullNameDefault
-  } = props;
-  const {
-    control,
-    handleSubmit
+    formState: {
+      isDirty,
+      isValid
+    }
   } = useForm();
-  const allSavedLinks = getLinks.read();
   const allSavedExperience = getExperience.read();
-  const linksArrIds = [];
-  const expArrIds = [];
-  const [linksArr, setLinksArr] = react.useState([]);
   const [expArr, setExpArr] = react.useState([]);
-  const [newLinksArr, setNewLinksArr] = react.useState([]);
   const [newExpsArr, setNewExpsArr] = react.useState([]);
   react.useEffect(() => {
-    if (allSavedLinks && allSavedLinks.length > 0) {
-      setLinksArr(allSavedLinks);
-      allSavedLinks.forEach(li => linksArrIds.push(li._id));
-    }
     if (allSavedExperience && allSavedExperience.length > 0) {
       setExpArr(allSavedExperience);
-      allSavedExperience.forEach(li => expArrIds.push(li._id));
     }
-    console.log(newLinksArr);
-  }, [allSavedLinks, allSavedExperience, linksArr, expArr, newLinksArr]);
+  }, [allSavedExperience, expArr]);
   const parseDate = date => {
     const dateFormat = new Date(date);
     const year = dateFormat.getFullYear();
@@ -22157,20 +22238,8 @@ const UserComponent = props => {
     });
     return `${year}-${month}-${day}`;
   };
-  const addMoreLinks = () => {
-    setNewLinksArr(prev => prev.concat(prev.length));
-  };
   const addMoreExp = () => {
     setNewExpsArr(prev => prev.concat(prev.length));
-  };
-  const deleteThisLink = async id => {
-    const promise = await fetch(`http://localhost:3000/api/links/${id}`, {
-      method: 'DELETE'
-    });
-    if (allSavedLinks && allSavedLinks.length > 0) {
-      setLinksArr(allSavedLinks);
-    }
-    return promise;
   };
   const deleteThisExp = async id => {
     const promise = await fetch(`http://localhost:3000/api/experience/${id}`, {
@@ -22181,13 +22250,6 @@ const UserComponent = props => {
     }
     return promise;
   };
-  const deleteNewLinks = id => {
-    if (newLinksArr.length === 1) {
-      setNewLinksArr([]);
-    } else {
-      setNewLinksArr(prev => prev.splice(id, 1));
-    }
-  };
   const deleteNewExp = id => {
     if (newExpsArr.length === 1) {
       setNewExpsArr([]);
@@ -22195,6 +22257,65 @@ const UserComponent = props => {
       setNewExpsArr(prev => prev.splice(id, 1));
     }
   };
+  return /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+    children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+      variant: "body2",
+      children: "Work Experience"
+    }), /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
+      children: [expArr.length > 0 && expArr.map(exp => /*#__PURE__*/(0,jsx_runtime.jsx)(components_EditExperience, {
+        expId: exp._id,
+        companyNameDefault: exp.company,
+        jobTitleDefault: exp.title,
+        startDateDefault: parseDate(exp.year_started),
+        endDateDefault: parseDate(exp.year_ended),
+        deleteOne: () => deleteThisExp(exp._id),
+        onAddExp: addMoreExp
+      })), newExpsArr.length > 0 && newExpsArr.map(exp => /*#__PURE__*/(0,jsx_runtime.jsx)(components_CreateExperience, {
+        onAddExp: addMoreExp,
+        deleteOne: () => deleteNewExp(newExpsArr.indexOf(exp))
+      }, newExpsArr.indexOf(exp)))]
+    }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+      disabled: !isValid,
+      onClick: addMoreExp,
+      type: "button",
+      children: "Add More Experience?"
+    })]
+  });
+}
+;// CONCATENATED MODULE: ./views/components/Blocks/UserComponent.js
+
+
+
+
+
+
+
+
+
+const UserComponent_getExperience = getters_fetchData('http://localhost:3000/api/experience');
+const UserComponent_getLinks = getters_fetchData('http://localhost:3000/api/links');
+const UserComponent = props => {
+  const {
+    fetchUrl,
+    emailDefault,
+    fullNameDefault
+  } = props;
+  const {
+    control,
+    handleSubmit
+  } = useForm();
+  const allSavedExperience = UserComponent_getExperience.read();
+  const allSavedLinks = UserComponent_getLinks.read();
+  const expArrIds = [];
+  const linksArrIds = [];
+  react.useEffect(() => {
+    if (allSavedExperience && allSavedExperience.length > 0) {
+      allSavedExperience.forEach(li => expArrIds.push(li._id));
+    }
+    if (allSavedLinks && allSavedLinks.length > 0) {
+      allSavedLinks.forEach(li => linksArrIds.push(li._id));
+    }
+  }, [allSavedExperience, allSavedLinks, expArrIds, linksArrIds]);
   const handleSave = async data => {
     const postUserName = await fetch(fetchUrl, {
       method: 'POST',
@@ -22274,35 +22395,7 @@ const UserComponent = props => {
           children: "Save"
         })]
       })
-    }), /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
-      children: [linksArr.length > 0 && linksArr.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(components_EditLinks, {
-        linkId: link._id,
-        defaultTitle: link.title,
-        defaultHref: link.href,
-        deleteOne: () => deleteThisLink(link._id)
-      })), newLinksArr.length > 0 && newLinksArr.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(components_CreateLinks, {
-        deleteOne: () => deleteNewLinks(newLinksArr.indexOf(link))
-      }, newLinksArr.indexOf(link))), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-        type: "button",
-        onClick: addMoreLinks,
-        children: "Add More Links?"
-      })]
-    }), /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
-      children: [expArr.length > 0 && expArr.map(exp => /*#__PURE__*/(0,jsx_runtime.jsx)(components_EditExperience, {
-        expId: exp._id,
-        companyNameDefault: exp.company,
-        jobTitleDefault: exp.title,
-        startDateDefault: parseDate(exp.year_started),
-        endDateDefault: parseDate(exp.year_ended),
-        deleteOne: () => deleteThisExp(exp._id)
-      })), newExpsArr.length > 0 && newExpsArr.map(exp => /*#__PURE__*/(0,jsx_runtime.jsx)(components_CreateExperience, {
-        deleteOne: () => deleteNewExp(newExpsArr.indexOf(exp))
-      }, newExpsArr.indexOf(exp))), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-        onClick: addMoreExp,
-        type: "button",
-        children: "Add More Experience?"
-      })]
-    })]
+    }), /*#__PURE__*/(0,jsx_runtime.jsx)(LinksComponent, {}), /*#__PURE__*/(0,jsx_runtime.jsx)(ExperienceComponent, {})]
   });
 };
 /* harmony default export */ const Blocks_UserComponent = (UserComponent);

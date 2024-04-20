@@ -1,15 +1,14 @@
 import * as React from 'react';
-import LinksComponent from './Blocks/LinksComponent.js';
+import LinksForm from './Blocks/LinksForm.js';
 
 const EditLinks = (props) => {
-	const { linkId, defaultTitle, defaultHref, deleteOne } = props;
+	const { linkId, defaultTitle, defaultHref, deleteOne, control } = props;
 	return (
-		<LinksComponent
+		<LinksForm
 			key={linkId}
 			fetchUrl={`http://localhost:3000/api/links/${linkId}`}
 			defaultTitle={defaultTitle}
 			defaultHref={defaultHref}
-			deleteOne={deleteOne}
 		/>
 	);
 };

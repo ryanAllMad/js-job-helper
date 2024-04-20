@@ -1,75 +1,68 @@
 import * as React from 'react';
-import { Input, Typography } from '@mui/material';
-import UserLinkInputs from './UserLinkInputs.js';
-import { useForm, Controller } from 'react-hook-form';
+import { FormGroup, Typography } from '@mui/material';
+import CreateLinks from '../CreateLinks.js'
+import EditLinks from '../EditLinks.js'
+import ContainedButton from './ContainedButton.js';
+import fetchData from '../getters/fetchData.js';
+import { useForm, useFormState } from 'react-hook-form';
 
-export default function LinksComponent(props) {
-	const { handleSubmit, control } = useForm();
-	const { key, fetchUrl, defaultTitle, defaultHref, deleteOne } = props
+const getLinks = fetchData('http://localhost:3000/api/links');
 
-	const handleSave = async (data) => {
-		const postUserName = await fetch(fetchUrl, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				title: data.title,
-				href: data.href,
-			}),
-		});
-		return postUserName.json();
-	};
+export default function LinksComponent() {
+	const allSavedLinks = getLinks.read();
+	const {control} = useForm()
+	const {isValid} = useFormState({control})
+	const [linksArr, setLinksArr] = React.useState([]);
+	const [newLinksArr, setNewLinksArr] = React.useState([]);
 
+
+	React.useEffect(() => {
+		if (allSavedLinks && allSavedLinks.length > 0) {
+			setLinksArr(allSavedLinks);
+		}
+
+	}, [allSavedLinks, linksArr]);
+
+
+	const deleteThisLink = async (id) => {
+		const promise = await fetch(`http://localhost:3000/api/links/${id}`, {
+			method: 'DELETE'
+		})
+		if (allSavedLinks && allSavedLinks.length > 0) {
+			setLinksArr(allSavedLinks);
+		}
+		return promise
+	}
+	const deleteNewLinks = (id) => {
+		if(newLinksArr.length === 1) {
+			setNewLinksArr([])
+		} else {
+			setNewLinksArr((prev) => prev.splice(id, 1))
+		}
+	}
+	const addMoreLinks = () => {
+		setNewLinksArr((prev) => prev.concat(prev.length))
+	}
+	
 	return (
 		<>
 			<Typography variant='body2'>Add Link</Typography>
-			<form
-				key={key}
-				dialogTitle='Links'
-				dialogContent='Add portfolio, github, linkedIn, or other links to go into your resume.'
-				onSubmit={handleSubmit((data) => handleSave(data))}
-			>
-				<UserLinkInputs
-					deleteOne={deleteOne}
-					titleInput={
-						<Controller
-							control={control}
-							name='title'
-							render={({
-								field: { onChange, onBlur, value, ref },
-							}) => (
-								<Input
-									onChange={onChange}
-									onBlur={onBlur}
-									value={value}
-									inputRef={ref}
-									type='text'
-								/>
-							)}
-							defaultValue={defaultTitle}
+			<FormGroup>
+				{linksArr.length > 0 &&
+					linksArr.map((link) => (
+						<EditLinks
+							linkId={link._id}
+							defaultTitle={link.title}
+							defaultHref={link.href}
+							deleteOne={() => deleteThisLink(link._id)}
 						/>
-					}
-					hrefInput={
-						<Controller
-							control={control}
-							name='href'
-							render={({
-								field: { onChange, onBlur, value, ref },
-							}) => (
-								<Input
-									onChange={onChange}
-									onBlur={onBlur}
-									value={value}
-									inputRef={ref}
-									type='text'
-								/>
-							)}
-							defaultValue={defaultHref}
-						/>
-					}
-				/>
-			</form>
+					))}
+				{newLinksArr.length > 0 &&
+					newLinksArr.map((link) => (
+						<CreateLinks key={newLinksArr.indexOf(link)} deleteOne={() => deleteNewLinks(newLinksArr.indexOf(link))} />
+					))}
+			</FormGroup>
+			<ContainedButton disabled={!isValid} type='button' onClick={addMoreLinks}>Add More Links?</ContainedButton>
 		</>
 	);
 }

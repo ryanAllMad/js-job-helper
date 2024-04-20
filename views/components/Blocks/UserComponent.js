@@ -2,85 +2,33 @@ import * as React from 'react';
 import { FormGroup, Input } from '@mui/material';
 import BasicInput from './BasicInput.js';
 import ContainedButton from './ContainedButton.js';
-import EditLinks from '../EditLinks.js';
-import EditExperience from '../EditExperience.js';
-import CreateLinks from '../CreateLinks.js';
-import CreateExperience from '../CreateExperience.js';
+import LinksComponent from './LinksComponent.js';
+import ExperienceComponent from './ExperienceComponent.js';
 import { Controller, useForm } from 'react-hook-form';
 import fetchData from '../getters/fetchData.js';
 
-const getLinks = fetchData('http://localhost:3000/api/links');
+
 const getExperience = fetchData('http://localhost:3000/api/experience');
+const getLinks = fetchData('http://localhost:3000/api/links');
+
 
 const UserComponent = (props) => {
 	const { fetchUrl, emailDefault, fullNameDefault } = props;
 	const { control, handleSubmit } = useForm();
-	const allSavedLinks = getLinks.read();
 	const allSavedExperience = getExperience.read();
-	const linksArrIds = [];
+	const allSavedLinks = getLinks.read();
 	const expArrIds = [];
-	const [linksArr, setLinksArr] = React.useState([]);
-	const [expArr, setExpArr] = React.useState([]);
-	const [newLinksArr, setNewLinksArr] = React.useState([]);
-	const [newExpsArr, setNewExpsArr] = React.useState([]);
+	const linksArrIds = [];
 
 	React.useEffect(() => {
-		if (allSavedLinks && allSavedLinks.length > 0) {
-			setLinksArr(allSavedLinks);
-			allSavedLinks.forEach((li) => linksArrIds.push(li._id));
-		}
 		if (allSavedExperience && allSavedExperience.length > 0) {
-			setExpArr(allSavedExperience);
 			allSavedExperience.forEach((li) => expArrIds.push(li._id));
 		}
-		console.log(newLinksArr)
-	}, [allSavedLinks, allSavedExperience, linksArr, expArr, newLinksArr]);
-
-	const parseDate = (date) => {
-		const dateFormat = new Date(date);
-		const year = dateFormat.getFullYear();
-		const month = dateFormat.toLocaleString('en-US', { month: '2-digit' });
-		const day = dateFormat.toLocaleString('en-US', { day: '2-digit' });
-		return `${year}-${month}-${day}`;
-	};
-	const addMoreLinks = () => {
-		setNewLinksArr((prev) => prev.concat(prev.length))
-	}
-	const addMoreExp = () => {
-		setNewExpsArr((prev) => prev.concat(prev.length))
-	}
-	const deleteThisLink = async (id) => {
-		const promise = await fetch(`http://localhost:3000/api/links/${id}`, {
-			method: 'DELETE'
-		})
 		if (allSavedLinks && allSavedLinks.length > 0) {
-			setLinksArr(allSavedLinks);
+			allSavedLinks.forEach((li) => linksArrIds.push(li._id));
 		}
-		return promise
-	}
-	const deleteThisExp = async (id) => {
-			const promise = await fetch(`http://localhost:3000/api/experience/${id}`, {
-				method: 'DELETE'
-			})
-			if (allSavedExperience && allSavedExperience.length > 0) {
-				setExpArr(allSavedExperience);
-			}
-			return promise
-	}
-	const deleteNewLinks = (id) => {
-		if(newLinksArr.length === 1) {
-			setNewLinksArr([])
-		} else {
-			setNewLinksArr((prev) => prev.splice(id, 1))
-		}
-	}
-	const deleteNewExp = (id) => {
-		if(newExpsArr.length === 1) {
-			setNewExpsArr([])
-		} else {
-			setNewExpsArr((prev) => prev.splice(id, 1))
-		}
-	}
+	}, [allSavedExperience, allSavedLinks, expArrIds, linksArrIds]);
+
 	const handleSave = async (data) => {
 		const postUserName = await fetch(fetchUrl, {
 			method: 'POST',
@@ -148,43 +96,8 @@ const UserComponent = (props) => {
 					<ContainedButton type='submit'>Save</ContainedButton>
 				</FormGroup>
 			</form>
-			<FormGroup>
-				{linksArr.length > 0 &&
-					linksArr.map((link) => (
-						<EditLinks
-							linkId={link._id}
-							defaultTitle={link.title}
-							defaultHref={link.href}
-							deleteOne={() => deleteThisLink(link._id)}
-						/>
-					))}
-				{newLinksArr.length > 0 &&
-					newLinksArr.map((link) => (
-						<CreateLinks key={newLinksArr.indexOf(link)} deleteOne={() => deleteNewLinks(newLinksArr.indexOf(link))} />
-					))}
-					<ContainedButton type='button' onClick={addMoreLinks}>Add More Links?</ContainedButton>
-			</FormGroup>
-			<FormGroup>
-				{expArr.length > 0 &&
-					expArr.map((exp) => (
-						<EditExperience
-							expId={exp._id}
-							companyNameDefault={exp.company}
-							jobTitleDefault={exp.title}
-							startDateDefault={parseDate(exp.year_started)}
-							endDateDefault={parseDate(exp.year_ended)}
-							deleteOne={() => deleteThisExp(exp._id)}
-						/>
-					))}
-				
-				{newExpsArr.length > 0 &&
-					newExpsArr.map((exp) => (
-						<CreateExperience key={newExpsArr.indexOf(exp)} deleteOne={() => deleteNewExp(newExpsArr.indexOf(exp))} />
-					))}
-				<ContainedButton onClick={addMoreExp} type='button'>
-					Add More Experience?
-				</ContainedButton>
-			</FormGroup>
+			<LinksComponent />
+			<ExperienceComponent />
 		</>
 	);
 };

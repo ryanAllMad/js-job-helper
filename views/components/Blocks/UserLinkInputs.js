@@ -10,7 +10,9 @@ const UserLinkInputs = (props) => {
 	const {
 		titleInput,
 		hrefInput,
-		deleteOne
+		deleteOne,
+		saveText,
+		saveDisabled
 	} = props;
 
 	return (
@@ -47,7 +49,7 @@ const UserLinkInputs = (props) => {
 					md={3}
 					item
 				>
-					<ContainedButton type="submit">Save Link</ContainedButton>
+					<ContainedButton disabled={saveDisabled} type="submit">{saveText}</ContainedButton>
 				</Grid>
 				<Grid
 					xs={12}
@@ -56,7 +58,6 @@ const UserLinkInputs = (props) => {
 				>
 					<ContainedButton onClick={deleteOne} type="button">Delete Link</ContainedButton>
 				</Grid>
-
 			</Grid>
 		</>
 	);

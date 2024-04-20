@@ -1,10 +1,10 @@
 import * as React from 'react';
-import LinksComponent from './Blocks/LinksComponent.js';
+import LinksForm from './Blocks/LinksForm.js';
 
 const CreateLinks = (props) => {
 	const { key, deleteOne } = props;
 	return (
-		<LinksComponent
+		<LinksForm
 			key={key}
 			fetchUrl='http://localhost:3000/api/links'
 			defaultTitle=''

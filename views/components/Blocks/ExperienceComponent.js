@@ -1,134 +1,82 @@
 import * as React from 'react';
-import BasicInput from './BasicInput.js';
 import ContainedButton from './ContainedButton.js';
-import { FormGroup, Input, Grid, Typography } from '@mui/material';
-import { useForm, Controller } from 'react-hook-form';
+import EditExperience from '../EditExperience.js';
+import CreateExperience from '../CreateExperience.js';
+import { FormGroup, Typography } from '@mui/material';
+import { useForm } from 'react-hook-form';
+import fetchData from '../getters/fetchData.js';
 
-export default function ExperienceComponent(props) {
-	const { handleSubmit, control } = useForm();
-	const { key, fetchUrl, companyNameDefault, jobTitleDefault, startDateDefault, endDateDefault, deleteOne } = props
 
-	const handleSave = async (data) => {
-		const postUserName = await fetch(
-			fetchUrl,
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					company: data.companyName,
-					title: data.jobTitle,
-					year_started: data.startDate,
-					year_ended: data.endDate
-				}),
-			}
-		);
-		return postUserName.json();
+const getExperience = fetchData('http://localhost:3000/api/experience');
+
+export default function ExperienceComponent() {
+	const { formState: { isDirty, isValid } } = useForm();
+	const allSavedExperience = getExperience.read();
+
+	const [expArr, setExpArr] = React.useState([]);
+	const [newExpsArr, setNewExpsArr] = React.useState([]);
+
+	React.useEffect(() => {
+		if (allSavedExperience && allSavedExperience.length > 0) {
+			setExpArr(allSavedExperience);
+		}
+	}, [allSavedExperience, expArr]);
+
+	const parseDate = (date) => {
+		const dateFormat = new Date(date);
+		const year = dateFormat.getFullYear();
+		const month = dateFormat.toLocaleString('en-US', { month: '2-digit' });
+		const day = dateFormat.toLocaleString('en-US', { day: '2-digit' });
+		return `${year}-${month}-${day}`;
 	};
+
+	const addMoreExp = () => {
+		setNewExpsArr((prev) => prev.concat(prev.length))
+	}
+
+	const deleteThisExp = async (id) => {
+			const promise = await fetch(`http://localhost:3000/api/experience/${id}`, {
+				method: 'DELETE'
+			})
+			if (allSavedExperience && allSavedExperience.length > 0) {
+				setExpArr(allSavedExperience);
+			}
+			return promise
+	}
+
+	const deleteNewExp = (id) => {
+		if(newExpsArr.length === 1) {
+			setNewExpsArr([])
+		} else {
+			setNewExpsArr((prev) => prev.splice(id, 1))
+		}
+	}
 	return (
 		<>
 			<Typography variant='body2'>Work Experience</Typography>
-			<form
-				key={key}
-				onSubmit={handleSubmit((data) => handleSave(data))}
-			>
-				<FormGroup>
-					<BasicInput
-						id='companyName'
-						label='Company Name'
-					>
-						<Controller
-							control={control}
-							name='companyName'
-							render={({
-								field: { onChange, onBlur, value, ref },
-							}) => (
-								<Input
-									onChange={onChange}
-									onBlur={onBlur}
-									value={value}
-									inputRef={ref}
-									type='text'
-									aria-labelledby='companyName'
-								/>
-							)}
-							defaultValue={companyNameDefault}
+			<FormGroup>
+				{expArr.length > 0 &&
+					expArr.map((exp) => (
+						<EditExperience
+							expId={exp._id}
+							companyNameDefault={exp.company}
+							jobTitleDefault={exp.title}
+							startDateDefault={parseDate(exp.year_started)}
+							endDateDefault={parseDate(exp.year_ended)}
+							deleteOne={() => deleteThisExp(exp._id)}
+							onAddExp={addMoreExp}
 						/>
-					</BasicInput>
-					<BasicInput
-						id='jobTitle'
-						label='Job Title'
-					>
-						<Controller
-							control={control}
-							name='jobTitle'
-							render={({
-								field: { onChange, onBlur, value, ref },
-							}) => (
-								<Input
-									onChange={onChange}
-									onBlur={onBlur}
-									value={value}
-									inputRef={ref}
-									type='text'
-									aria-labelledby='jobTitle'
-								/>
-							)}
-							defaultValue={jobTitleDefault}
-						/>
-					</BasicInput>
-					<Controller
-						control={control}
-						name='startDate'
-						render={({
-							field: { onChange, onBlur, ref, value },
-						}) => (
-							<Input
-								type='date'
-								inputRef={ref}
-								onChange={onChange}
-								onBlur={onBlur}
-								value={value}
-								label='Start Date'
-							/>
-						)}
-						defaultValue={startDateDefault}
-					/>
-					<Controller
-						control={control}
-						name='endDate'
-						render={({
-							field: { onChange, onBlur, ref, value },
-						}) => (
-							<Input
-								type="date"
-								onChange={onChange}
-								onBlur={onBlur}
-								inputRef={ref}
-								value={value}
-								label='End Date'
-							/>
-						)}
-						defaultValue={endDateDefault}
-					/>
-				</FormGroup>
-				<Grid
-				fullWidth
-				container
-				spacing={2}
-				alignItems='center'
-				justifyContent='center'
-				sx={{ marginTop: '0'}}
-			>
-				<Grid item xs={12} md={6}>
-				<ContainedButton type='submit'>Save Experience</ContainedButton>
-				</Grid>
-				<Grid item xs={12} md={6}>
-					<ContainedButton onClick={deleteOne} type="button">Delete Experience</ContainedButton>
-				</Grid>
-				</Grid>
-			</form>
+					))}
+				
+				{newExpsArr.length > 0 &&
+					newExpsArr.map((exp) => (
+						<CreateExperience onAddExp={addMoreExp} key={newExpsArr.indexOf(exp)} deleteOne={() => deleteNewExp(newExpsArr.indexOf(exp))} />
+					))}
+			</FormGroup>
+
+			<ContainedButton disabled={!isValid} onClick={addMoreExp} type='button'>
+					Add More Experience?
+				</ContainedButton>
 		</>
 	);
 }

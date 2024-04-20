@@ -1,10 +1,10 @@
 import * as React from 'react';
-import ExperienceComponent from './Blocks/ExperienceComponent.js';
+import ExperienceForm from './Blocks/ExperienceForm.js';
 
 const CreateExperience = (props) => {
-	const {key, deleteOne} = props
+	const { key, deleteOne } = props
 	return (
-		<ExperienceComponent
+		<ExperienceForm
 			key={key}
 			fetchUrl='http://localhost:3000/api/experience'
 			companyNameDefault=''
