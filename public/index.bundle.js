@@ -15827,44 +15827,6 @@ const MainBody = props => {
   });
 };
 /* harmony default export */ const Layout_MainBody = (MainBody);
-;// CONCATENATED MODULE: ./views/components/getters/wrapPromise.js
-const wrapPromise = promise => {
-  let status = 'pending';
-  let response;
-  const suspender = promise.then(res => {
-    status = 'success';
-    response = res;
-  }, err => {
-    status = 'error';
-    response = err;
-  });
-  const read = () => {
-    switch (status) {
-      case 'pending':
-        throw suspender;
-      case 'error':
-        throw response;
-      default:
-        return response;
-    }
-  };
-  return {
-    read
-  };
-};
-/* harmony default export */ const getters_wrapPromise = (wrapPromise);
-;// CONCATENATED MODULE: ./views/components/getters/fetchData.js
-
-const fetchData = url => {
-  const promise = fetch(url, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }).then(res => res.json()).then(res => res.data);
-  return getters_wrapPromise(promise);
-};
-/* harmony default export */ const getters_fetchData = (fetchData);
 ;// CONCATENATED MODULE: ./node_modules/@mui/material/FormGroup/formGroupClasses.js
 
 
@@ -16988,2197 +16950,6 @@ const Input = /*#__PURE__*/react.forwardRef(function Input(inProps, ref) {
  false ? 0 : void 0;
 Input.muiName = 'Input';
 /* harmony default export */ const Input_Input = (Input);
-;// CONCATENATED MODULE: ./node_modules/@mui/utils/isMuiElement/isMuiElement.js
-
-function isMuiElement(element, muiNames) {
-  var _muiName, _element$type;
-  return /*#__PURE__*/react.isValidElement(element) && muiNames.indexOf( // For server components `muiName` is avaialble in element.type._payload.value.muiName
-  // relevant info - https://github.com/facebook/react/blob/2807d781a08db8e9873687fccc25c0f12b4fb3d4/packages/react/src/ReactLazy.js#L45
-  // eslint-disable-next-line no-underscore-dangle
-  (_muiName = element.type.muiName) != null ? _muiName : (_element$type = element.type) == null || (_element$type = _element$type._payload) == null || (_element$type = _element$type.value) == null ? void 0 : _element$type.muiName) !== -1;
-}
-;// CONCATENATED MODULE: ./node_modules/@mui/material/utils/isMuiElement.js
-
-/* harmony default export */ const utils_isMuiElement = (isMuiElement);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/FormControl/formControlClasses.js
-
-
-function getFormControlUtilityClasses(slot) {
-  return generateUtilityClass_generateUtilityClass('MuiFormControl', slot);
-}
-const formControlClasses = generateUtilityClasses('MuiFormControl', ['root', 'marginNone', 'marginNormal', 'marginDense', 'fullWidth', 'disabled']);
-/* harmony default export */ const FormControl_formControlClasses = ((/* unused pure expression or super */ null && (formControlClasses)));
-;// CONCATENATED MODULE: ./node_modules/@mui/material/FormControl/FormControl.js
-'use client';
-
-
-
-const FormControl_excluded = ["children", "className", "color", "component", "disabled", "error", "focused", "fullWidth", "hiddenLabel", "margin", "required", "size", "variant"];
-
-
-
-
-
-
-
-
-
-
-
-
-const FormControl_useUtilityClasses = ownerState => {
-  const {
-    classes,
-    margin,
-    fullWidth
-  } = ownerState;
-  const slots = {
-    root: ['root', margin !== 'none' && `margin${utils_capitalize(margin)}`, fullWidth && 'fullWidth']
-  };
-  return composeClasses(slots, getFormControlUtilityClasses, classes);
-};
-const FormControlRoot = styles_styled('div', {
-  name: 'MuiFormControl',
-  slot: 'Root',
-  overridesResolver: ({
-    ownerState
-  }, styles) => {
-    return (0,esm_extends/* default */.A)({}, styles.root, styles[`margin${utils_capitalize(ownerState.margin)}`], ownerState.fullWidth && styles.fullWidth);
-  }
-})(({
-  ownerState
-}) => (0,esm_extends/* default */.A)({
-  display: 'inline-flex',
-  flexDirection: 'column',
-  position: 'relative',
-  // Reset fieldset default style.
-  minWidth: 0,
-  padding: 0,
-  margin: 0,
-  border: 0,
-  verticalAlign: 'top'
-}, ownerState.margin === 'normal' && {
-  marginTop: 16,
-  marginBottom: 8
-}, ownerState.margin === 'dense' && {
-  marginTop: 8,
-  marginBottom: 4
-}, ownerState.fullWidth && {
-  width: '100%'
-}));
-
-/**
- * Provides context such as filled/focused/error/required for form inputs.
- * Relying on the context provides high flexibility and ensures that the state always stays
- * consistent across the children of the `FormControl`.
- * This context is used by the following components:
- *
- *  - FormLabel
- *  - FormHelperText
- *  - Input
- *  - InputLabel
- *
- * You can find one composition example below and more going to [the demos](/material-ui/react-text-field/#components).
- *
- * ```jsx
- * <FormControl>
- *   <InputLabel htmlFor="my-input">Email address</InputLabel>
- *   <Input id="my-input" aria-describedby="my-helper-text" />
- *   <FormHelperText id="my-helper-text">We'll never share your email.</FormHelperText>
- * </FormControl>
- * ```
- *
- * ⚠️ Only one `InputBase` can be used within a FormControl because it creates visual inconsistencies.
- * For instance, only one input can be focused at the same time, the state shouldn't be shared.
- */
-const FormControl = /*#__PURE__*/react.forwardRef(function FormControl(inProps, ref) {
-  const props = useThemeProps_useThemeProps({
-    props: inProps,
-    name: 'MuiFormControl'
-  });
-  const {
-      children,
-      className,
-      color = 'primary',
-      component = 'div',
-      disabled = false,
-      error = false,
-      focused: visuallyFocused,
-      fullWidth = false,
-      hiddenLabel = false,
-      margin = 'none',
-      required = false,
-      size = 'medium',
-      variant = 'outlined'
-    } = props,
-    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, FormControl_excluded);
-  const ownerState = (0,esm_extends/* default */.A)({}, props, {
-    color,
-    component,
-    disabled,
-    error,
-    fullWidth,
-    hiddenLabel,
-    margin,
-    required,
-    size,
-    variant
-  });
-  const classes = FormControl_useUtilityClasses(ownerState);
-  const [adornedStart, setAdornedStart] = react.useState(() => {
-    // We need to iterate through the children and find the Input in order
-    // to fully support server-side rendering.
-    let initialAdornedStart = false;
-    if (children) {
-      react.Children.forEach(children, child => {
-        if (!utils_isMuiElement(child, ['Input', 'Select'])) {
-          return;
-        }
-        const input = utils_isMuiElement(child, ['Select']) ? child.props.input : child;
-        if (input && isAdornedStart(input.props)) {
-          initialAdornedStart = true;
-        }
-      });
-    }
-    return initialAdornedStart;
-  });
-  const [filled, setFilled] = react.useState(() => {
-    // We need to iterate through the children and find the Input in order
-    // to fully support server-side rendering.
-    let initialFilled = false;
-    if (children) {
-      react.Children.forEach(children, child => {
-        if (!utils_isMuiElement(child, ['Input', 'Select'])) {
-          return;
-        }
-        if (isFilled(child.props, true) || isFilled(child.props.inputProps, true)) {
-          initialFilled = true;
-        }
-      });
-    }
-    return initialFilled;
-  });
-  const [focusedState, setFocused] = react.useState(false);
-  if (disabled && focusedState) {
-    setFocused(false);
-  }
-  const focused = visuallyFocused !== undefined && !disabled ? visuallyFocused : focusedState;
-  let registerEffect;
-  if (false) {}
-  const childContext = react.useMemo(() => {
-    return {
-      adornedStart,
-      setAdornedStart,
-      color,
-      disabled,
-      error,
-      filled,
-      focused,
-      fullWidth,
-      hiddenLabel,
-      size,
-      onBlur: () => {
-        setFocused(false);
-      },
-      onEmpty: () => {
-        setFilled(false);
-      },
-      onFilled: () => {
-        setFilled(true);
-      },
-      onFocus: () => {
-        setFocused(true);
-      },
-      registerEffect,
-      required,
-      variant
-    };
-  }, [adornedStart, color, disabled, error, filled, focused, fullWidth, hiddenLabel, registerEffect, required, size, variant]);
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(FormControl_FormControlContext.Provider, {
-    value: childContext,
-    children: /*#__PURE__*/(0,jsx_runtime.jsx)(FormControlRoot, (0,esm_extends/* default */.A)({
-      as: component,
-      ownerState: ownerState,
-      className: dist_clsx(classes.root, className),
-      ref: ref
-    }, other, {
-      children: children
-    }))
-  });
-});
- false ? 0 : void 0;
-/* harmony default export */ const FormControl_FormControl = (FormControl);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/FormLabel/formLabelClasses.js
-
-
-function getFormLabelUtilityClasses(slot) {
-  return generateUtilityClass_generateUtilityClass('MuiFormLabel', slot);
-}
-const formLabelClasses = generateUtilityClasses('MuiFormLabel', ['root', 'colorSecondary', 'focused', 'disabled', 'error', 'filled', 'required', 'asterisk']);
-/* harmony default export */ const FormLabel_formLabelClasses = (formLabelClasses);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/FormLabel/FormLabel.js
-'use client';
-
-
-
-const FormLabel_excluded = ["children", "className", "color", "component", "disabled", "error", "filled", "focused", "required"];
-
-
-
-
-
-
-
-
-
-
-
-const FormLabel_useUtilityClasses = ownerState => {
-  const {
-    classes,
-    color,
-    focused,
-    disabled,
-    error,
-    filled,
-    required
-  } = ownerState;
-  const slots = {
-    root: ['root', `color${utils_capitalize(color)}`, disabled && 'disabled', error && 'error', filled && 'filled', focused && 'focused', required && 'required'],
-    asterisk: ['asterisk', error && 'error']
-  };
-  return composeClasses(slots, getFormLabelUtilityClasses, classes);
-};
-const FormLabelRoot = styles_styled('label', {
-  name: 'MuiFormLabel',
-  slot: 'Root',
-  overridesResolver: ({
-    ownerState
-  }, styles) => {
-    return (0,esm_extends/* default */.A)({}, styles.root, ownerState.color === 'secondary' && styles.colorSecondary, ownerState.filled && styles.filled);
-  }
-})(({
-  theme,
-  ownerState
-}) => (0,esm_extends/* default */.A)({
-  color: (theme.vars || theme).palette.text.secondary
-}, theme.typography.body1, {
-  lineHeight: '1.4375em',
-  padding: 0,
-  position: 'relative',
-  [`&.${FormLabel_formLabelClasses.focused}`]: {
-    color: (theme.vars || theme).palette[ownerState.color].main
-  },
-  [`&.${FormLabel_formLabelClasses.disabled}`]: {
-    color: (theme.vars || theme).palette.text.disabled
-  },
-  [`&.${FormLabel_formLabelClasses.error}`]: {
-    color: (theme.vars || theme).palette.error.main
-  }
-}));
-const AsteriskComponent = styles_styled('span', {
-  name: 'MuiFormLabel',
-  slot: 'Asterisk',
-  overridesResolver: (props, styles) => styles.asterisk
-})(({
-  theme
-}) => ({
-  [`&.${FormLabel_formLabelClasses.error}`]: {
-    color: (theme.vars || theme).palette.error.main
-  }
-}));
-const FormLabel = /*#__PURE__*/react.forwardRef(function FormLabel(inProps, ref) {
-  const props = useThemeProps_useThemeProps({
-    props: inProps,
-    name: 'MuiFormLabel'
-  });
-  const {
-      children,
-      className,
-      component = 'label'
-    } = props,
-    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, FormLabel_excluded);
-  const muiFormControl = useFormControl();
-  const fcs = formControlState({
-    props,
-    muiFormControl,
-    states: ['color', 'required', 'focused', 'disabled', 'error', 'filled']
-  });
-  const ownerState = (0,esm_extends/* default */.A)({}, props, {
-    color: fcs.color || 'primary',
-    component,
-    disabled: fcs.disabled,
-    error: fcs.error,
-    filled: fcs.filled,
-    focused: fcs.focused,
-    required: fcs.required
-  });
-  const classes = FormLabel_useUtilityClasses(ownerState);
-  return /*#__PURE__*/(0,jsx_runtime.jsxs)(FormLabelRoot, (0,esm_extends/* default */.A)({
-    as: component,
-    ownerState: ownerState,
-    className: dist_clsx(classes.root, className),
-    ref: ref
-  }, other, {
-    children: [children, fcs.required && /*#__PURE__*/(0,jsx_runtime.jsxs)(AsteriskComponent, {
-      ownerState: ownerState,
-      "aria-hidden": true,
-      className: classes.asterisk,
-      children: ["\u2009", '*']
-    })]
-  }));
-});
- false ? 0 : void 0;
-/* harmony default export */ const FormLabel_FormLabel = (FormLabel);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/InputLabel/inputLabelClasses.js
-
-
-function getInputLabelUtilityClasses(slot) {
-  return generateUtilityClass_generateUtilityClass('MuiInputLabel', slot);
-}
-const inputLabelClasses = generateUtilityClasses('MuiInputLabel', ['root', 'focused', 'disabled', 'error', 'required', 'asterisk', 'formControl', 'sizeSmall', 'shrink', 'animated', 'standard', 'filled', 'outlined']);
-/* harmony default export */ const InputLabel_inputLabelClasses = ((/* unused pure expression or super */ null && (inputLabelClasses)));
-;// CONCATENATED MODULE: ./node_modules/@mui/material/InputLabel/InputLabel.js
-'use client';
-
-
-
-const InputLabel_excluded = ["disableAnimation", "margin", "shrink", "variant", "className"];
-
-
-
-
-
-
-
-
-
-
-
-
-const InputLabel_useUtilityClasses = ownerState => {
-  const {
-    classes,
-    formControl,
-    size,
-    shrink,
-    disableAnimation,
-    variant,
-    required
-  } = ownerState;
-  const slots = {
-    root: ['root', formControl && 'formControl', !disableAnimation && 'animated', shrink && 'shrink', size && size !== 'normal' && `size${utils_capitalize(size)}`, variant],
-    asterisk: [required && 'asterisk']
-  };
-  const composedClasses = composeClasses(slots, getInputLabelUtilityClasses, classes);
-  return (0,esm_extends/* default */.A)({}, classes, composedClasses);
-};
-const InputLabelRoot = styles_styled(FormLabel_FormLabel, {
-  shouldForwardProp: prop => styles_rootShouldForwardProp(prop) || prop === 'classes',
-  name: 'MuiInputLabel',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const {
-      ownerState
-    } = props;
-    return [{
-      [`& .${FormLabel_formLabelClasses.asterisk}`]: styles.asterisk
-    }, styles.root, ownerState.formControl && styles.formControl, ownerState.size === 'small' && styles.sizeSmall, ownerState.shrink && styles.shrink, !ownerState.disableAnimation && styles.animated, ownerState.focused && styles.focused, styles[ownerState.variant]];
-  }
-})(({
-  theme,
-  ownerState
-}) => (0,esm_extends/* default */.A)({
-  display: 'block',
-  transformOrigin: 'top left',
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  maxWidth: '100%'
-}, ownerState.formControl && {
-  position: 'absolute',
-  left: 0,
-  top: 0,
-  // slight alteration to spec spacing to match visual spec result
-  transform: 'translate(0, 20px) scale(1)'
-}, ownerState.size === 'small' && {
-  // Compensation for the `Input.inputSizeSmall` style.
-  transform: 'translate(0, 17px) scale(1)'
-}, ownerState.shrink && {
-  transform: 'translate(0, -1.5px) scale(0.75)',
-  transformOrigin: 'top left',
-  maxWidth: '133%'
-}, !ownerState.disableAnimation && {
-  transition: theme.transitions.create(['color', 'transform', 'max-width'], {
-    duration: theme.transitions.duration.shorter,
-    easing: theme.transitions.easing.easeOut
-  })
-}, ownerState.variant === 'filled' && (0,esm_extends/* default */.A)({
-  // Chrome's autofill feature gives the input field a yellow background.
-  // Since the input field is behind the label in the HTML tree,
-  // the input field is drawn last and hides the label with an opaque background color.
-  // zIndex: 1 will raise the label above opaque background-colors of input.
-  zIndex: 1,
-  pointerEvents: 'none',
-  transform: 'translate(12px, 16px) scale(1)',
-  maxWidth: 'calc(100% - 24px)'
-}, ownerState.size === 'small' && {
-  transform: 'translate(12px, 13px) scale(1)'
-}, ownerState.shrink && (0,esm_extends/* default */.A)({
-  userSelect: 'none',
-  pointerEvents: 'auto',
-  transform: 'translate(12px, 7px) scale(0.75)',
-  maxWidth: 'calc(133% - 24px)'
-}, ownerState.size === 'small' && {
-  transform: 'translate(12px, 4px) scale(0.75)'
-})), ownerState.variant === 'outlined' && (0,esm_extends/* default */.A)({
-  // see comment above on filled.zIndex
-  zIndex: 1,
-  pointerEvents: 'none',
-  transform: 'translate(14px, 16px) scale(1)',
-  maxWidth: 'calc(100% - 24px)'
-}, ownerState.size === 'small' && {
-  transform: 'translate(14px, 9px) scale(1)'
-}, ownerState.shrink && {
-  userSelect: 'none',
-  pointerEvents: 'auto',
-  // Theoretically, we should have (8+5)*2/0.75 = 34px
-  // but it feels a better when it bleeds a bit on the left, so 32px.
-  maxWidth: 'calc(133% - 32px)',
-  transform: 'translate(14px, -9px) scale(0.75)'
-})));
-const InputLabel = /*#__PURE__*/react.forwardRef(function InputLabel(inProps, ref) {
-  const props = useThemeProps_useThemeProps({
-    name: 'MuiInputLabel',
-    props: inProps
-  });
-  const {
-      disableAnimation = false,
-      shrink: shrinkProp,
-      className
-    } = props,
-    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, InputLabel_excluded);
-  const muiFormControl = useFormControl();
-  let shrink = shrinkProp;
-  if (typeof shrink === 'undefined' && muiFormControl) {
-    shrink = muiFormControl.filled || muiFormControl.focused || muiFormControl.adornedStart;
-  }
-  const fcs = formControlState({
-    props,
-    muiFormControl,
-    states: ['size', 'variant', 'required', 'focused']
-  });
-  const ownerState = (0,esm_extends/* default */.A)({}, props, {
-    disableAnimation,
-    formControl: muiFormControl,
-    shrink,
-    size: fcs.size,
-    variant: fcs.variant,
-    required: fcs.required,
-    focused: fcs.focused
-  });
-  const classes = InputLabel_useUtilityClasses(ownerState);
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(InputLabelRoot, (0,esm_extends/* default */.A)({
-    "data-shrink": shrink,
-    ownerState: ownerState,
-    ref: ref,
-    className: dist_clsx(classes.root, className)
-  }, other, {
-    classes: classes
-  }));
-});
- false ? 0 : void 0;
-/* harmony default export */ const InputLabel_InputLabel = (InputLabel);
-;// CONCATENATED MODULE: ./views/components/Blocks/BasicInput.js
-
-
-
-const BasicInput = props => {
-  const {
-    children,
-    label,
-    id
-  } = props;
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
-    children: /*#__PURE__*/(0,jsx_runtime.jsxs)(FormControl_FormControl, {
-      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
-        id: id,
-        children: label
-      }), children]
-    })
-  });
-};
-/* harmony default export */ const Blocks_BasicInput = (BasicInput);
-;// CONCATENATED MODULE: ./node_modules/@mui/utils/useEventCallback/useEventCallback.js
-'use client';
-
-
-
-
-/**
- * Inspired by https://github.com/facebook/react/issues/14099#issuecomment-440013892
- * See RFC in https://github.com/reactjs/rfcs/pull/220
- */
-
-function useEventCallback(fn) {
-  const ref = react.useRef(fn);
-  useEnhancedEffect_useEnhancedEffect(() => {
-    ref.current = fn;
-  });
-  return react.useRef((...args) =>
-  // @ts-expect-error hide `this`
-  (0, ref.current)(...args)).current;
-}
-/* harmony default export */ const useEventCallback_useEventCallback = (useEventCallback);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/utils/useEventCallback.js
-'use client';
-
-
-/* harmony default export */ const utils_useEventCallback = (useEventCallback_useEventCallback);
-;// CONCATENATED MODULE: ./node_modules/@mui/utils/useLazyRef/useLazyRef.js
-'use client';
-
-
-const UNINITIALIZED = {};
-
-/**
- * A React.useRef() that is initialized lazily with a function. Note that it accepts an optional
- * initialization argument, so the initialization function doesn't need to be an inline closure.
- *
- * @usage
- *   const ref = useLazyRef(sortColumns, columns)
- */
-function useLazyRef(init, initArg) {
-  const ref = react.useRef(UNINITIALIZED);
-  if (ref.current === UNINITIALIZED) {
-    ref.current = init(initArg);
-  }
-  return ref;
-}
-;// CONCATENATED MODULE: ./node_modules/@mui/utils/useOnMount/useOnMount.js
-'use client';
-
-
-const EMPTY = [];
-
-/**
- * A React.useEffect equivalent that runs once, when the component is mounted.
- */
-function useOnMount(fn) {
-  /* eslint-disable react-hooks/exhaustive-deps */
-  react.useEffect(fn, EMPTY);
-  /* eslint-enable react-hooks/exhaustive-deps */
-}
-;// CONCATENATED MODULE: ./node_modules/@mui/utils/useTimeout/useTimeout.js
-'use client';
-
-
-
-class Timeout {
-  constructor() {
-    this.currentId = null;
-    this.clear = () => {
-      if (this.currentId !== null) {
-        clearTimeout(this.currentId);
-        this.currentId = null;
-      }
-    };
-    this.disposeEffect = () => {
-      return this.clear;
-    };
-  }
-  static create() {
-    return new Timeout();
-  }
-  /**
-   * Executes `fn` after `delay`, clearing any previously scheduled call.
-   */
-  start(delay, fn) {
-    this.clear();
-    this.currentId = setTimeout(() => {
-      this.currentId = null;
-      fn();
-    }, delay);
-  }
-}
-function useTimeout() {
-  const timeout = useLazyRef(Timeout.create).current;
-  useOnMount(timeout.disposeEffect);
-  return timeout;
-}
-;// CONCATENATED MODULE: ./node_modules/@mui/utils/useIsFocusVisible/useIsFocusVisible.js
-'use client';
-
-// based on https://github.com/WICG/focus-visible/blob/v4.1.5/src/focus-visible.js
-
-
-let hadKeyboardEvent = true;
-let hadFocusVisibleRecently = false;
-const hadFocusVisibleRecentlyTimeout = new Timeout();
-const inputTypesWhitelist = {
-  text: true,
-  search: true,
-  url: true,
-  tel: true,
-  email: true,
-  password: true,
-  number: true,
-  date: true,
-  month: true,
-  week: true,
-  time: true,
-  datetime: true,
-  'datetime-local': true
-};
-
-/**
- * Computes whether the given element should automatically trigger the
- * `focus-visible` class being added, i.e. whether it should always match
- * `:focus-visible` when focused.
- * @param {Element} node
- * @returns {boolean}
- */
-function focusTriggersKeyboardModality(node) {
-  const {
-    type,
-    tagName
-  } = node;
-  if (tagName === 'INPUT' && inputTypesWhitelist[type] && !node.readOnly) {
-    return true;
-  }
-  if (tagName === 'TEXTAREA' && !node.readOnly) {
-    return true;
-  }
-  if (node.isContentEditable) {
-    return true;
-  }
-  return false;
-}
-
-/**
- * Keep track of our keyboard modality state with `hadKeyboardEvent`.
- * If the most recent user interaction was via the keyboard;
- * and the key press did not include a meta, alt/option, or control key;
- * then the modality is keyboard. Otherwise, the modality is not keyboard.
- * @param {KeyboardEvent} event
- */
-function handleKeyDown(event) {
-  if (event.metaKey || event.altKey || event.ctrlKey) {
-    return;
-  }
-  hadKeyboardEvent = true;
-}
-
-/**
- * If at any point a user clicks with a pointing device, ensure that we change
- * the modality away from keyboard.
- * This avoids the situation where a user presses a key on an already focused
- * element, and then clicks on a different element, focusing it with a
- * pointing device, while we still think we're in keyboard modality.
- */
-function handlePointerDown() {
-  hadKeyboardEvent = false;
-}
-function handleVisibilityChange() {
-  if (this.visibilityState === 'hidden') {
-    // If the tab becomes active again, the browser will handle calling focus
-    // on the element (Safari actually calls it twice).
-    // If this tab change caused a blur on an element with focus-visible,
-    // re-apply the class when the user switches back to the tab.
-    if (hadFocusVisibleRecently) {
-      hadKeyboardEvent = true;
-    }
-  }
-}
-function prepare(doc) {
-  doc.addEventListener('keydown', handleKeyDown, true);
-  doc.addEventListener('mousedown', handlePointerDown, true);
-  doc.addEventListener('pointerdown', handlePointerDown, true);
-  doc.addEventListener('touchstart', handlePointerDown, true);
-  doc.addEventListener('visibilitychange', handleVisibilityChange, true);
-}
-function teardown(doc) {
-  doc.removeEventListener('keydown', handleKeyDown, true);
-  doc.removeEventListener('mousedown', handlePointerDown, true);
-  doc.removeEventListener('pointerdown', handlePointerDown, true);
-  doc.removeEventListener('touchstart', handlePointerDown, true);
-  doc.removeEventListener('visibilitychange', handleVisibilityChange, true);
-}
-function isFocusVisible(event) {
-  const {
-    target
-  } = event;
-  try {
-    return target.matches(':focus-visible');
-  } catch (error) {
-    // Browsers not implementing :focus-visible will throw a SyntaxError.
-    // We use our own heuristic for those browsers.
-    // Rethrow might be better if it's not the expected error but do we really
-    // want to crash if focus-visible malfunctioned?
-  }
-
-  // No need for validFocusTarget check. The user does that by attaching it to
-  // focusable events only.
-  return hadKeyboardEvent || focusTriggersKeyboardModality(target);
-}
-function useIsFocusVisible() {
-  const ref = react.useCallback(node => {
-    if (node != null) {
-      prepare(node.ownerDocument);
-    }
-  }, []);
-  const isFocusVisibleRef = react.useRef(false);
-
-  /**
-   * Should be called if a blur event is fired
-   */
-  function handleBlurVisible() {
-    // checking against potential state variable does not suffice if we focus and blur synchronously.
-    // React wouldn't have time to trigger a re-render so `focusVisible` would be stale.
-    // Ideally we would adjust `isFocusVisible(event)` to look at `relatedTarget` for blur events.
-    // This doesn't work in IE11 due to https://github.com/facebook/react/issues/3751
-    // TODO: check again if React releases their internal changes to focus event handling (https://github.com/facebook/react/pull/19186).
-    if (isFocusVisibleRef.current) {
-      // To detect a tab/window switch, we look for a blur event followed
-      // rapidly by a visibility change.
-      // If we don't see a visibility change within 100ms, it's probably a
-      // regular focus change.
-      hadFocusVisibleRecently = true;
-      hadFocusVisibleRecentlyTimeout.start(100, () => {
-        hadFocusVisibleRecently = false;
-      });
-      isFocusVisibleRef.current = false;
-      return true;
-    }
-    return false;
-  }
-
-  /**
-   * Should be called if a blur event is fired
-   */
-  function handleFocusVisible(event) {
-    if (isFocusVisible(event)) {
-      isFocusVisibleRef.current = true;
-      return true;
-    }
-    return false;
-  }
-  return {
-    isFocusVisibleRef,
-    onFocus: handleFocusVisible,
-    onBlur: handleBlurVisible,
-    ref
-  };
-}
-;// CONCATENATED MODULE: ./node_modules/@mui/material/utils/useIsFocusVisible.js
-'use client';
-
-
-/* harmony default export */ const utils_useIsFocusVisible = (useIsFocusVisible);
-;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-  return self;
-}
-;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js
-function _setPrototypeOf(o, p) {
-  _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
-    o.__proto__ = p;
-    return o;
-  };
-  return _setPrototypeOf(o, p);
-}
-;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js
-
-function _inheritsLoose(subClass, superClass) {
-  subClass.prototype = Object.create(superClass.prototype);
-  subClass.prototype.constructor = subClass;
-  _setPrototypeOf(subClass, superClass);
-}
-;// CONCATENATED MODULE: ./node_modules/react-transition-group/esm/TransitionGroupContext.js
-
-/* harmony default export */ const TransitionGroupContext = (react.createContext(null));
-;// CONCATENATED MODULE: ./node_modules/react-transition-group/esm/utils/ChildMapping.js
-
-/**
- * Given `this.props.children`, return an object mapping key to child.
- *
- * @param {*} children `this.props.children`
- * @return {object} Mapping of key to child
- */
-
-function getChildMapping(children, mapFn) {
-  var mapper = function mapper(child) {
-    return mapFn && (0,react.isValidElement)(child) ? mapFn(child) : child;
-  };
-
-  var result = Object.create(null);
-  if (children) react.Children.map(children, function (c) {
-    return c;
-  }).forEach(function (child) {
-    // run the map function here instead so that the key is the computed one
-    result[child.key] = mapper(child);
-  });
-  return result;
-}
-/**
- * When you're adding or removing children some may be added or removed in the
- * same render pass. We want to show *both* since we want to simultaneously
- * animate elements in and out. This function takes a previous set of keys
- * and a new set of keys and merges them with its best guess of the correct
- * ordering. In the future we may expose some of the utilities in
- * ReactMultiChild to make this easy, but for now React itself does not
- * directly have this concept of the union of prevChildren and nextChildren
- * so we implement it here.
- *
- * @param {object} prev prev children as returned from
- * `ReactTransitionChildMapping.getChildMapping()`.
- * @param {object} next next children as returned from
- * `ReactTransitionChildMapping.getChildMapping()`.
- * @return {object} a key set that contains all keys in `prev` and all keys
- * in `next` in a reasonable order.
- */
-
-function mergeChildMappings(prev, next) {
-  prev = prev || {};
-  next = next || {};
-
-  function getValueForKey(key) {
-    return key in next ? next[key] : prev[key];
-  } // For each key of `next`, the list of keys to insert before that key in
-  // the combined list
-
-
-  var nextKeysPending = Object.create(null);
-  var pendingKeys = [];
-
-  for (var prevKey in prev) {
-    if (prevKey in next) {
-      if (pendingKeys.length) {
-        nextKeysPending[prevKey] = pendingKeys;
-        pendingKeys = [];
-      }
-    } else {
-      pendingKeys.push(prevKey);
-    }
-  }
-
-  var i;
-  var childMapping = {};
-
-  for (var nextKey in next) {
-    if (nextKeysPending[nextKey]) {
-      for (i = 0; i < nextKeysPending[nextKey].length; i++) {
-        var pendingNextKey = nextKeysPending[nextKey][i];
-        childMapping[nextKeysPending[nextKey][i]] = getValueForKey(pendingNextKey);
-      }
-    }
-
-    childMapping[nextKey] = getValueForKey(nextKey);
-  } // Finally, add the keys which didn't appear before any key in `next`
-
-
-  for (i = 0; i < pendingKeys.length; i++) {
-    childMapping[pendingKeys[i]] = getValueForKey(pendingKeys[i]);
-  }
-
-  return childMapping;
-}
-
-function getProp(child, prop, props) {
-  return props[prop] != null ? props[prop] : child.props[prop];
-}
-
-function getInitialChildMapping(props, onExited) {
-  return getChildMapping(props.children, function (child) {
-    return (0,react.cloneElement)(child, {
-      onExited: onExited.bind(null, child),
-      in: true,
-      appear: getProp(child, 'appear', props),
-      enter: getProp(child, 'enter', props),
-      exit: getProp(child, 'exit', props)
-    });
-  });
-}
-function getNextChildMapping(nextProps, prevChildMapping, onExited) {
-  var nextChildMapping = getChildMapping(nextProps.children);
-  var children = mergeChildMappings(prevChildMapping, nextChildMapping);
-  Object.keys(children).forEach(function (key) {
-    var child = children[key];
-    if (!(0,react.isValidElement)(child)) return;
-    var hasPrev = (key in prevChildMapping);
-    var hasNext = (key in nextChildMapping);
-    var prevChild = prevChildMapping[key];
-    var isLeaving = (0,react.isValidElement)(prevChild) && !prevChild.props.in; // item is new (entering)
-
-    if (hasNext && (!hasPrev || isLeaving)) {
-      // console.log('entering', key)
-      children[key] = (0,react.cloneElement)(child, {
-        onExited: onExited.bind(null, child),
-        in: true,
-        exit: getProp(child, 'exit', nextProps),
-        enter: getProp(child, 'enter', nextProps)
-      });
-    } else if (!hasNext && hasPrev && !isLeaving) {
-      // item is old (exiting)
-      // console.log('leaving', key)
-      children[key] = (0,react.cloneElement)(child, {
-        in: false
-      });
-    } else if (hasNext && hasPrev && (0,react.isValidElement)(prevChild)) {
-      // item hasn't changed transition states
-      // copy over the last transition props;
-      // console.log('unchanged', key)
-      children[key] = (0,react.cloneElement)(child, {
-        onExited: onExited.bind(null, child),
-        in: prevChild.props.in,
-        exit: getProp(child, 'exit', nextProps),
-        enter: getProp(child, 'enter', nextProps)
-      });
-    }
-  });
-  return children;
-}
-;// CONCATENATED MODULE: ./node_modules/react-transition-group/esm/TransitionGroup.js
-
-
-
-
-
-
-
-
-
-var values = Object.values || function (obj) {
-  return Object.keys(obj).map(function (k) {
-    return obj[k];
-  });
-};
-
-var defaultProps = {
-  component: 'div',
-  childFactory: function childFactory(child) {
-    return child;
-  }
-};
-/**
- * The `<TransitionGroup>` component manages a set of transition components
- * (`<Transition>` and `<CSSTransition>`) in a list. Like with the transition
- * components, `<TransitionGroup>` is a state machine for managing the mounting
- * and unmounting of components over time.
- *
- * Consider the example below. As items are removed or added to the TodoList the
- * `in` prop is toggled automatically by the `<TransitionGroup>`.
- *
- * Note that `<TransitionGroup>`  does not define any animation behavior!
- * Exactly _how_ a list item animates is up to the individual transition
- * component. This means you can mix and match animations across different list
- * items.
- */
-
-var TransitionGroup = /*#__PURE__*/function (_React$Component) {
-  _inheritsLoose(TransitionGroup, _React$Component);
-
-  function TransitionGroup(props, context) {
-    var _this;
-
-    _this = _React$Component.call(this, props, context) || this;
-
-    var handleExited = _this.handleExited.bind(_assertThisInitialized(_this)); // Initial children should all be entering, dependent on appear
-
-
-    _this.state = {
-      contextValue: {
-        isMounting: true
-      },
-      handleExited: handleExited,
-      firstRender: true
-    };
-    return _this;
-  }
-
-  var _proto = TransitionGroup.prototype;
-
-  _proto.componentDidMount = function componentDidMount() {
-    this.mounted = true;
-    this.setState({
-      contextValue: {
-        isMounting: false
-      }
-    });
-  };
-
-  _proto.componentWillUnmount = function componentWillUnmount() {
-    this.mounted = false;
-  };
-
-  TransitionGroup.getDerivedStateFromProps = function getDerivedStateFromProps(nextProps, _ref) {
-    var prevChildMapping = _ref.children,
-        handleExited = _ref.handleExited,
-        firstRender = _ref.firstRender;
-    return {
-      children: firstRender ? getInitialChildMapping(nextProps, handleExited) : getNextChildMapping(nextProps, prevChildMapping, handleExited),
-      firstRender: false
-    };
-  } // node is `undefined` when user provided `nodeRef` prop
-  ;
-
-  _proto.handleExited = function handleExited(child, node) {
-    var currentChildMapping = getChildMapping(this.props.children);
-    if (child.key in currentChildMapping) return;
-
-    if (child.props.onExited) {
-      child.props.onExited(node);
-    }
-
-    if (this.mounted) {
-      this.setState(function (state) {
-        var children = (0,esm_extends/* default */.A)({}, state.children);
-
-        delete children[child.key];
-        return {
-          children: children
-        };
-      });
-    }
-  };
-
-  _proto.render = function render() {
-    var _this$props = this.props,
-        Component = _this$props.component,
-        childFactory = _this$props.childFactory,
-        props = (0,objectWithoutPropertiesLoose/* default */.A)(_this$props, ["component", "childFactory"]);
-
-    var contextValue = this.state.contextValue;
-    var children = values(this.state.children).map(childFactory);
-    delete props.appear;
-    delete props.enter;
-    delete props.exit;
-
-    if (Component === null) {
-      return /*#__PURE__*/react.createElement(TransitionGroupContext.Provider, {
-        value: contextValue
-      }, children);
-    }
-
-    return /*#__PURE__*/react.createElement(TransitionGroupContext.Provider, {
-      value: contextValue
-    }, /*#__PURE__*/react.createElement(Component, props, children));
-  };
-
-  return TransitionGroup;
-}(react.Component);
-
-TransitionGroup.propTypes =  false ? 0 : {};
-TransitionGroup.defaultProps = defaultProps;
-/* harmony default export */ const esm_TransitionGroup = (TransitionGroup);
-// EXTERNAL MODULE: ./node_modules/@emotion/react/dist/emotion-react.browser.esm.js
-var emotion_react_browser_esm = __webpack_require__(7437);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/ButtonBase/Ripple.js
-'use client';
-
-
-
-
-
-/**
- * @ignore - internal component.
- */
-
-function Ripple(props) {
-  const {
-    className,
-    classes,
-    pulsate = false,
-    rippleX,
-    rippleY,
-    rippleSize,
-    in: inProp,
-    onExited,
-    timeout
-  } = props;
-  const [leaving, setLeaving] = react.useState(false);
-  const rippleClassName = dist_clsx(className, classes.ripple, classes.rippleVisible, pulsate && classes.ripplePulsate);
-  const rippleStyles = {
-    width: rippleSize,
-    height: rippleSize,
-    top: -(rippleSize / 2) + rippleY,
-    left: -(rippleSize / 2) + rippleX
-  };
-  const childClassName = dist_clsx(classes.child, leaving && classes.childLeaving, pulsate && classes.childPulsate);
-  if (!inProp && !leaving) {
-    setLeaving(true);
-  }
-  react.useEffect(() => {
-    if (!inProp && onExited != null) {
-      // react-transition-group#onExited
-      const timeoutId = setTimeout(onExited, timeout);
-      return () => {
-        clearTimeout(timeoutId);
-      };
-    }
-    return undefined;
-  }, [onExited, inProp, timeout]);
-  return /*#__PURE__*/(0,jsx_runtime.jsx)("span", {
-    className: rippleClassName,
-    style: rippleStyles,
-    children: /*#__PURE__*/(0,jsx_runtime.jsx)("span", {
-      className: childClassName
-    })
-  });
-}
- false ? 0 : void 0;
-/* harmony default export */ const ButtonBase_Ripple = (Ripple);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/ButtonBase/touchRippleClasses.js
-
-
-function getTouchRippleUtilityClass(slot) {
-  return generateUtilityClass('MuiTouchRipple', slot);
-}
-const touchRippleClasses = generateUtilityClasses('MuiTouchRipple', ['root', 'ripple', 'rippleVisible', 'ripplePulsate', 'child', 'childLeaving', 'childPulsate']);
-/* harmony default export */ const ButtonBase_touchRippleClasses = (touchRippleClasses);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/ButtonBase/TouchRipple.js
-'use client';
-
-
-
-const TouchRipple_excluded = ["center", "classes", "className"];
-let _ = t => t,
-  _t,
-  _t2,
-  _t3,
-  _t4;
-
-
-
-
-
-
-
-
-
-
-
-const DURATION = 550;
-const DELAY_RIPPLE = 80;
-const enterKeyframe = (0,emotion_react_browser_esm/* keyframes */.i7)(_t || (_t = _`
-  0% {
-    transform: scale(0);
-    opacity: 0.1;
-  }
-
-  100% {
-    transform: scale(1);
-    opacity: 0.3;
-  }
-`));
-const exitKeyframe = (0,emotion_react_browser_esm/* keyframes */.i7)(_t2 || (_t2 = _`
-  0% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-  }
-`));
-const pulsateKeyframe = (0,emotion_react_browser_esm/* keyframes */.i7)(_t3 || (_t3 = _`
-  0% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(0.92);
-  }
-
-  100% {
-    transform: scale(1);
-  }
-`));
-const TouchRippleRoot = styles_styled('span', {
-  name: 'MuiTouchRipple',
-  slot: 'Root'
-})({
-  overflow: 'hidden',
-  pointerEvents: 'none',
-  position: 'absolute',
-  zIndex: 0,
-  top: 0,
-  right: 0,
-  bottom: 0,
-  left: 0,
-  borderRadius: 'inherit'
-});
-
-// This `styled()` function invokes keyframes. `styled-components` only supports keyframes
-// in string templates. Do not convert these styles in JS object as it will break.
-const TouchRippleRipple = styles_styled(ButtonBase_Ripple, {
-  name: 'MuiTouchRipple',
-  slot: 'Ripple'
-})(_t4 || (_t4 = _`
-  opacity: 0;
-  position: absolute;
-
-  &.${0} {
-    opacity: 0.3;
-    transform: scale(1);
-    animation-name: ${0};
-    animation-duration: ${0}ms;
-    animation-timing-function: ${0};
-  }
-
-  &.${0} {
-    animation-duration: ${0}ms;
-  }
-
-  & .${0} {
-    opacity: 1;
-    display: block;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background-color: currentColor;
-  }
-
-  & .${0} {
-    opacity: 0;
-    animation-name: ${0};
-    animation-duration: ${0}ms;
-    animation-timing-function: ${0};
-  }
-
-  & .${0} {
-    position: absolute;
-    /* @noflip */
-    left: 0px;
-    top: 0;
-    animation-name: ${0};
-    animation-duration: 2500ms;
-    animation-timing-function: ${0};
-    animation-iteration-count: infinite;
-    animation-delay: 200ms;
-  }
-`), ButtonBase_touchRippleClasses.rippleVisible, enterKeyframe, DURATION, ({
-  theme
-}) => theme.transitions.easing.easeInOut, ButtonBase_touchRippleClasses.ripplePulsate, ({
-  theme
-}) => theme.transitions.duration.shorter, ButtonBase_touchRippleClasses.child, ButtonBase_touchRippleClasses.childLeaving, exitKeyframe, DURATION, ({
-  theme
-}) => theme.transitions.easing.easeInOut, ButtonBase_touchRippleClasses.childPulsate, pulsateKeyframe, ({
-  theme
-}) => theme.transitions.easing.easeInOut);
-
-/**
- * @ignore - internal component.
- *
- * TODO v5: Make private
- */
-const TouchRipple = /*#__PURE__*/react.forwardRef(function TouchRipple(inProps, ref) {
-  const props = useThemeProps_useThemeProps({
-    props: inProps,
-    name: 'MuiTouchRipple'
-  });
-  const {
-      center: centerProp = false,
-      classes = {},
-      className
-    } = props,
-    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, TouchRipple_excluded);
-  const [ripples, setRipples] = react.useState([]);
-  const nextKey = react.useRef(0);
-  const rippleCallback = react.useRef(null);
-  react.useEffect(() => {
-    if (rippleCallback.current) {
-      rippleCallback.current();
-      rippleCallback.current = null;
-    }
-  }, [ripples]);
-
-  // Used to filter out mouse emulated events on mobile.
-  const ignoringMouseDown = react.useRef(false);
-  // We use a timer in order to only show the ripples for touch "click" like events.
-  // We don't want to display the ripple for touch scroll events.
-  const startTimer = useTimeout();
-
-  // This is the hook called once the previous timeout is ready.
-  const startTimerCommit = react.useRef(null);
-  const container = react.useRef(null);
-  const startCommit = react.useCallback(params => {
-    const {
-      pulsate,
-      rippleX,
-      rippleY,
-      rippleSize,
-      cb
-    } = params;
-    setRipples(oldRipples => [...oldRipples, /*#__PURE__*/(0,jsx_runtime.jsx)(TouchRippleRipple, {
-      classes: {
-        ripple: dist_clsx(classes.ripple, ButtonBase_touchRippleClasses.ripple),
-        rippleVisible: dist_clsx(classes.rippleVisible, ButtonBase_touchRippleClasses.rippleVisible),
-        ripplePulsate: dist_clsx(classes.ripplePulsate, ButtonBase_touchRippleClasses.ripplePulsate),
-        child: dist_clsx(classes.child, ButtonBase_touchRippleClasses.child),
-        childLeaving: dist_clsx(classes.childLeaving, ButtonBase_touchRippleClasses.childLeaving),
-        childPulsate: dist_clsx(classes.childPulsate, ButtonBase_touchRippleClasses.childPulsate)
-      },
-      timeout: DURATION,
-      pulsate: pulsate,
-      rippleX: rippleX,
-      rippleY: rippleY,
-      rippleSize: rippleSize
-    }, nextKey.current)]);
-    nextKey.current += 1;
-    rippleCallback.current = cb;
-  }, [classes]);
-  const start = react.useCallback((event = {}, options = {}, cb = () => {}) => {
-    const {
-      pulsate = false,
-      center = centerProp || options.pulsate,
-      fakeElement = false // For test purposes
-    } = options;
-    if ((event == null ? void 0 : event.type) === 'mousedown' && ignoringMouseDown.current) {
-      ignoringMouseDown.current = false;
-      return;
-    }
-    if ((event == null ? void 0 : event.type) === 'touchstart') {
-      ignoringMouseDown.current = true;
-    }
-    const element = fakeElement ? null : container.current;
-    const rect = element ? element.getBoundingClientRect() : {
-      width: 0,
-      height: 0,
-      left: 0,
-      top: 0
-    };
-
-    // Get the size of the ripple
-    let rippleX;
-    let rippleY;
-    let rippleSize;
-    if (center || event === undefined || event.clientX === 0 && event.clientY === 0 || !event.clientX && !event.touches) {
-      rippleX = Math.round(rect.width / 2);
-      rippleY = Math.round(rect.height / 2);
-    } else {
-      const {
-        clientX,
-        clientY
-      } = event.touches && event.touches.length > 0 ? event.touches[0] : event;
-      rippleX = Math.round(clientX - rect.left);
-      rippleY = Math.round(clientY - rect.top);
-    }
-    if (center) {
-      rippleSize = Math.sqrt((2 * rect.width ** 2 + rect.height ** 2) / 3);
-
-      // For some reason the animation is broken on Mobile Chrome if the size is even.
-      if (rippleSize % 2 === 0) {
-        rippleSize += 1;
-      }
-    } else {
-      const sizeX = Math.max(Math.abs((element ? element.clientWidth : 0) - rippleX), rippleX) * 2 + 2;
-      const sizeY = Math.max(Math.abs((element ? element.clientHeight : 0) - rippleY), rippleY) * 2 + 2;
-      rippleSize = Math.sqrt(sizeX ** 2 + sizeY ** 2);
-    }
-
-    // Touche devices
-    if (event != null && event.touches) {
-      // check that this isn't another touchstart due to multitouch
-      // otherwise we will only clear a single timer when unmounting while two
-      // are running
-      if (startTimerCommit.current === null) {
-        // Prepare the ripple effect.
-        startTimerCommit.current = () => {
-          startCommit({
-            pulsate,
-            rippleX,
-            rippleY,
-            rippleSize,
-            cb
-          });
-        };
-        // Delay the execution of the ripple effect.
-        // We have to make a tradeoff with this delay value.
-        startTimer.start(DELAY_RIPPLE, () => {
-          if (startTimerCommit.current) {
-            startTimerCommit.current();
-            startTimerCommit.current = null;
-          }
-        });
-      }
-    } else {
-      startCommit({
-        pulsate,
-        rippleX,
-        rippleY,
-        rippleSize,
-        cb
-      });
-    }
-  }, [centerProp, startCommit, startTimer]);
-  const pulsate = react.useCallback(() => {
-    start({}, {
-      pulsate: true
-    });
-  }, [start]);
-  const stop = react.useCallback((event, cb) => {
-    startTimer.clear();
-
-    // The touch interaction occurs too quickly.
-    // We still want to show ripple effect.
-    if ((event == null ? void 0 : event.type) === 'touchend' && startTimerCommit.current) {
-      startTimerCommit.current();
-      startTimerCommit.current = null;
-      startTimer.start(0, () => {
-        stop(event, cb);
-      });
-      return;
-    }
-    startTimerCommit.current = null;
-    setRipples(oldRipples => {
-      if (oldRipples.length > 0) {
-        return oldRipples.slice(1);
-      }
-      return oldRipples;
-    });
-    rippleCallback.current = cb;
-  }, [startTimer]);
-  react.useImperativeHandle(ref, () => ({
-    pulsate,
-    start,
-    stop
-  }), [pulsate, start, stop]);
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(TouchRippleRoot, (0,esm_extends/* default */.A)({
-    className: dist_clsx(ButtonBase_touchRippleClasses.root, classes.root, className),
-    ref: container
-  }, other, {
-    children: /*#__PURE__*/(0,jsx_runtime.jsx)(esm_TransitionGroup, {
-      component: null,
-      exit: true,
-      children: ripples
-    })
-  }));
-});
- false ? 0 : void 0;
-/* harmony default export */ const ButtonBase_TouchRipple = (TouchRipple);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/ButtonBase/buttonBaseClasses.js
-
-
-function getButtonBaseUtilityClass(slot) {
-  return generateUtilityClass_generateUtilityClass('MuiButtonBase', slot);
-}
-const buttonBaseClasses = generateUtilityClasses('MuiButtonBase', ['root', 'disabled', 'focusVisible']);
-/* harmony default export */ const ButtonBase_buttonBaseClasses = (buttonBaseClasses);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/ButtonBase/ButtonBase.js
-'use client';
-
-
-
-const ButtonBase_excluded = ["action", "centerRipple", "children", "className", "component", "disabled", "disableRipple", "disableTouchRipple", "focusRipple", "focusVisibleClassName", "LinkComponent", "onBlur", "onClick", "onContextMenu", "onDragLeave", "onFocus", "onFocusVisible", "onKeyDown", "onKeyUp", "onMouseDown", "onMouseLeave", "onMouseUp", "onTouchEnd", "onTouchMove", "onTouchStart", "tabIndex", "TouchRippleProps", "touchRippleRef", "type"];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const ButtonBase_useUtilityClasses = ownerState => {
-  const {
-    disabled,
-    focusVisible,
-    focusVisibleClassName,
-    classes
-  } = ownerState;
-  const slots = {
-    root: ['root', disabled && 'disabled', focusVisible && 'focusVisible']
-  };
-  const composedClasses = composeClasses(slots, getButtonBaseUtilityClass, classes);
-  if (focusVisible && focusVisibleClassName) {
-    composedClasses.root += ` ${focusVisibleClassName}`;
-  }
-  return composedClasses;
-};
-const ButtonBaseRoot = styles_styled('button', {
-  name: 'MuiButtonBase',
-  slot: 'Root',
-  overridesResolver: (props, styles) => styles.root
-})({
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  position: 'relative',
-  boxSizing: 'border-box',
-  WebkitTapHighlightColor: 'transparent',
-  backgroundColor: 'transparent',
-  // Reset default value
-  // We disable the focus ring for mouse, touch and keyboard users.
-  outline: 0,
-  border: 0,
-  margin: 0,
-  // Remove the margin in Safari
-  borderRadius: 0,
-  padding: 0,
-  // Remove the padding in Firefox
-  cursor: 'pointer',
-  userSelect: 'none',
-  verticalAlign: 'middle',
-  MozAppearance: 'none',
-  // Reset
-  WebkitAppearance: 'none',
-  // Reset
-  textDecoration: 'none',
-  // So we take precedent over the style of a native <a /> element.
-  color: 'inherit',
-  '&::-moz-focus-inner': {
-    borderStyle: 'none' // Remove Firefox dotted outline.
-  },
-  [`&.${ButtonBase_buttonBaseClasses.disabled}`]: {
-    pointerEvents: 'none',
-    // Disable link interactions
-    cursor: 'default'
-  },
-  '@media print': {
-    colorAdjust: 'exact'
-  }
-});
-
-/**
- * `ButtonBase` contains as few styles as possible.
- * It aims to be a simple building block for creating a button.
- * It contains a load of style reset and some focus/ripple logic.
- */
-const ButtonBase = /*#__PURE__*/react.forwardRef(function ButtonBase(inProps, ref) {
-  const props = useThemeProps_useThemeProps({
-    props: inProps,
-    name: 'MuiButtonBase'
-  });
-  const {
-      action,
-      centerRipple = false,
-      children,
-      className,
-      component = 'button',
-      disabled = false,
-      disableRipple = false,
-      disableTouchRipple = false,
-      focusRipple = false,
-      LinkComponent = 'a',
-      onBlur,
-      onClick,
-      onContextMenu,
-      onDragLeave,
-      onFocus,
-      onFocusVisible,
-      onKeyDown,
-      onKeyUp,
-      onMouseDown,
-      onMouseLeave,
-      onMouseUp,
-      onTouchEnd,
-      onTouchMove,
-      onTouchStart,
-      tabIndex = 0,
-      TouchRippleProps,
-      touchRippleRef,
-      type
-    } = props,
-    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, ButtonBase_excluded);
-  const buttonRef = react.useRef(null);
-  const rippleRef = react.useRef(null);
-  const handleRippleRef = utils_useForkRef(rippleRef, touchRippleRef);
-  const {
-    isFocusVisibleRef,
-    onFocus: handleFocusVisible,
-    onBlur: handleBlurVisible,
-    ref: focusVisibleRef
-  } = utils_useIsFocusVisible();
-  const [focusVisible, setFocusVisible] = react.useState(false);
-  if (disabled && focusVisible) {
-    setFocusVisible(false);
-  }
-  react.useImperativeHandle(action, () => ({
-    focusVisible: () => {
-      setFocusVisible(true);
-      buttonRef.current.focus();
-    }
-  }), []);
-  const [mountedState, setMountedState] = react.useState(false);
-  react.useEffect(() => {
-    setMountedState(true);
-  }, []);
-  const enableTouchRipple = mountedState && !disableRipple && !disabled;
-  react.useEffect(() => {
-    if (focusVisible && focusRipple && !disableRipple && mountedState) {
-      rippleRef.current.pulsate();
-    }
-  }, [disableRipple, focusRipple, focusVisible, mountedState]);
-  function useRippleHandler(rippleAction, eventCallback, skipRippleAction = disableTouchRipple) {
-    return utils_useEventCallback(event => {
-      if (eventCallback) {
-        eventCallback(event);
-      }
-      const ignore = skipRippleAction;
-      if (!ignore && rippleRef.current) {
-        rippleRef.current[rippleAction](event);
-      }
-      return true;
-    });
-  }
-  const handleMouseDown = useRippleHandler('start', onMouseDown);
-  const handleContextMenu = useRippleHandler('stop', onContextMenu);
-  const handleDragLeave = useRippleHandler('stop', onDragLeave);
-  const handleMouseUp = useRippleHandler('stop', onMouseUp);
-  const handleMouseLeave = useRippleHandler('stop', event => {
-    if (focusVisible) {
-      event.preventDefault();
-    }
-    if (onMouseLeave) {
-      onMouseLeave(event);
-    }
-  });
-  const handleTouchStart = useRippleHandler('start', onTouchStart);
-  const handleTouchEnd = useRippleHandler('stop', onTouchEnd);
-  const handleTouchMove = useRippleHandler('stop', onTouchMove);
-  const handleBlur = useRippleHandler('stop', event => {
-    handleBlurVisible(event);
-    if (isFocusVisibleRef.current === false) {
-      setFocusVisible(false);
-    }
-    if (onBlur) {
-      onBlur(event);
-    }
-  }, false);
-  const handleFocus = utils_useEventCallback(event => {
-    // Fix for https://github.com/facebook/react/issues/7769
-    if (!buttonRef.current) {
-      buttonRef.current = event.currentTarget;
-    }
-    handleFocusVisible(event);
-    if (isFocusVisibleRef.current === true) {
-      setFocusVisible(true);
-      if (onFocusVisible) {
-        onFocusVisible(event);
-      }
-    }
-    if (onFocus) {
-      onFocus(event);
-    }
-  });
-  const isNonNativeButton = () => {
-    const button = buttonRef.current;
-    return component && component !== 'button' && !(button.tagName === 'A' && button.href);
-  };
-
-  /**
-   * IE11 shim for https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/repeat
-   */
-  const keydownRef = react.useRef(false);
-  const handleKeyDown = utils_useEventCallback(event => {
-    // Check if key is already down to avoid repeats being counted as multiple activations
-    if (focusRipple && !keydownRef.current && focusVisible && rippleRef.current && event.key === ' ') {
-      keydownRef.current = true;
-      rippleRef.current.stop(event, () => {
-        rippleRef.current.start(event);
-      });
-    }
-    if (event.target === event.currentTarget && isNonNativeButton() && event.key === ' ') {
-      event.preventDefault();
-    }
-    if (onKeyDown) {
-      onKeyDown(event);
-    }
-
-    // Keyboard accessibility for non interactive elements
-    if (event.target === event.currentTarget && isNonNativeButton() && event.key === 'Enter' && !disabled) {
-      event.preventDefault();
-      if (onClick) {
-        onClick(event);
-      }
-    }
-  });
-  const handleKeyUp = utils_useEventCallback(event => {
-    // calling preventDefault in keyUp on a <button> will not dispatch a click event if Space is pressed
-    // https://codesandbox.io/p/sandbox/button-keyup-preventdefault-dn7f0
-    if (focusRipple && event.key === ' ' && rippleRef.current && focusVisible && !event.defaultPrevented) {
-      keydownRef.current = false;
-      rippleRef.current.stop(event, () => {
-        rippleRef.current.pulsate(event);
-      });
-    }
-    if (onKeyUp) {
-      onKeyUp(event);
-    }
-
-    // Keyboard accessibility for non interactive elements
-    if (onClick && event.target === event.currentTarget && isNonNativeButton() && event.key === ' ' && !event.defaultPrevented) {
-      onClick(event);
-    }
-  });
-  let ComponentProp = component;
-  if (ComponentProp === 'button' && (other.href || other.to)) {
-    ComponentProp = LinkComponent;
-  }
-  const buttonProps = {};
-  if (ComponentProp === 'button') {
-    buttonProps.type = type === undefined ? 'button' : type;
-    buttonProps.disabled = disabled;
-  } else {
-    if (!other.href && !other.to) {
-      buttonProps.role = 'button';
-    }
-    if (disabled) {
-      buttonProps['aria-disabled'] = disabled;
-    }
-  }
-  const handleRef = utils_useForkRef(ref, focusVisibleRef, buttonRef);
-  if (false) {}
-  const ownerState = (0,esm_extends/* default */.A)({}, props, {
-    centerRipple,
-    component,
-    disabled,
-    disableRipple,
-    disableTouchRipple,
-    focusRipple,
-    tabIndex,
-    focusVisible
-  });
-  const classes = ButtonBase_useUtilityClasses(ownerState);
-  return /*#__PURE__*/(0,jsx_runtime.jsxs)(ButtonBaseRoot, (0,esm_extends/* default */.A)({
-    as: ComponentProp,
-    className: dist_clsx(classes.root, className),
-    ownerState: ownerState,
-    onBlur: handleBlur,
-    onClick: onClick,
-    onContextMenu: handleContextMenu,
-    onFocus: handleFocus,
-    onKeyDown: handleKeyDown,
-    onKeyUp: handleKeyUp,
-    onMouseDown: handleMouseDown,
-    onMouseLeave: handleMouseLeave,
-    onMouseUp: handleMouseUp,
-    onDragLeave: handleDragLeave,
-    onTouchEnd: handleTouchEnd,
-    onTouchMove: handleTouchMove,
-    onTouchStart: handleTouchStart,
-    ref: handleRef,
-    tabIndex: disabled ? -1 : tabIndex,
-    type: type
-  }, buttonProps, other, {
-    children: [children, enableTouchRipple ?
-    /*#__PURE__*/
-    /* TouchRipple is only needed client-side, x2 boost on the server. */
-    (0,jsx_runtime.jsx)(ButtonBase_TouchRipple, (0,esm_extends/* default */.A)({
-      ref: handleRippleRef,
-      center: centerRipple
-    }, TouchRippleProps)) : null]
-  }));
-});
- false ? 0 : void 0;
-/* harmony default export */ const ButtonBase_ButtonBase = (ButtonBase);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/Button/buttonClasses.js
-
-
-function getButtonUtilityClass(slot) {
-  return generateUtilityClass_generateUtilityClass('MuiButton', slot);
-}
-const buttonClasses = generateUtilityClasses('MuiButton', ['root', 'text', 'textInherit', 'textPrimary', 'textSecondary', 'textSuccess', 'textError', 'textInfo', 'textWarning', 'outlined', 'outlinedInherit', 'outlinedPrimary', 'outlinedSecondary', 'outlinedSuccess', 'outlinedError', 'outlinedInfo', 'outlinedWarning', 'contained', 'containedInherit', 'containedPrimary', 'containedSecondary', 'containedSuccess', 'containedError', 'containedInfo', 'containedWarning', 'disableElevation', 'focusVisible', 'disabled', 'colorInherit', 'colorPrimary', 'colorSecondary', 'colorSuccess', 'colorError', 'colorInfo', 'colorWarning', 'textSizeSmall', 'textSizeMedium', 'textSizeLarge', 'outlinedSizeSmall', 'outlinedSizeMedium', 'outlinedSizeLarge', 'containedSizeSmall', 'containedSizeMedium', 'containedSizeLarge', 'sizeMedium', 'sizeSmall', 'sizeLarge', 'fullWidth', 'startIcon', 'endIcon', 'icon', 'iconSizeSmall', 'iconSizeMedium', 'iconSizeLarge']);
-/* harmony default export */ const Button_buttonClasses = (buttonClasses);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/ButtonGroup/ButtonGroupContext.js
-
-/**
- * @ignore - internal component.
- */
-const ButtonGroupContext = /*#__PURE__*/react.createContext({});
-if (false) {}
-/* harmony default export */ const ButtonGroup_ButtonGroupContext = (ButtonGroupContext);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/ButtonGroup/ButtonGroupButtonContext.js
-
-/**
- * @ignore - internal component.
- */
-const ButtonGroupButtonContext = /*#__PURE__*/react.createContext(undefined);
-if (false) {}
-/* harmony default export */ const ButtonGroup_ButtonGroupButtonContext = (ButtonGroupButtonContext);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/Button/Button.js
-'use client';
-
-
-
-const Button_excluded = ["children", "color", "component", "className", "disabled", "disableElevation", "disableFocusRipple", "endIcon", "focusVisibleClassName", "fullWidth", "size", "startIcon", "type", "variant"];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const Button_useUtilityClasses = ownerState => {
-  const {
-    color,
-    disableElevation,
-    fullWidth,
-    size,
-    variant,
-    classes
-  } = ownerState;
-  const slots = {
-    root: ['root', variant, `${variant}${utils_capitalize(color)}`, `size${utils_capitalize(size)}`, `${variant}Size${utils_capitalize(size)}`, `color${utils_capitalize(color)}`, disableElevation && 'disableElevation', fullWidth && 'fullWidth'],
-    label: ['label'],
-    startIcon: ['icon', 'startIcon', `iconSize${utils_capitalize(size)}`],
-    endIcon: ['icon', 'endIcon', `iconSize${utils_capitalize(size)}`]
-  };
-  const composedClasses = composeClasses(slots, getButtonUtilityClass, classes);
-  return (0,esm_extends/* default */.A)({}, classes, composedClasses);
-};
-const commonIconStyles = ownerState => (0,esm_extends/* default */.A)({}, ownerState.size === 'small' && {
-  '& > *:nth-of-type(1)': {
-    fontSize: 18
-  }
-}, ownerState.size === 'medium' && {
-  '& > *:nth-of-type(1)': {
-    fontSize: 20
-  }
-}, ownerState.size === 'large' && {
-  '& > *:nth-of-type(1)': {
-    fontSize: 22
-  }
-});
-const ButtonRoot = styles_styled(ButtonBase_ButtonBase, {
-  shouldForwardProp: prop => styles_rootShouldForwardProp(prop) || prop === 'classes',
-  name: 'MuiButton',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const {
-      ownerState
-    } = props;
-    return [styles.root, styles[ownerState.variant], styles[`${ownerState.variant}${utils_capitalize(ownerState.color)}`], styles[`size${utils_capitalize(ownerState.size)}`], styles[`${ownerState.variant}Size${utils_capitalize(ownerState.size)}`], ownerState.color === 'inherit' && styles.colorInherit, ownerState.disableElevation && styles.disableElevation, ownerState.fullWidth && styles.fullWidth];
-  }
-})(({
-  theme,
-  ownerState
-}) => {
-  var _theme$palette$getCon, _theme$palette;
-  const inheritContainedBackgroundColor = theme.palette.mode === 'light' ? theme.palette.grey[300] : theme.palette.grey[800];
-  const inheritContainedHoverBackgroundColor = theme.palette.mode === 'light' ? theme.palette.grey.A100 : theme.palette.grey[700];
-  return (0,esm_extends/* default */.A)({}, theme.typography.button, {
-    minWidth: 64,
-    padding: '6px 16px',
-    borderRadius: (theme.vars || theme).shape.borderRadius,
-    transition: theme.transitions.create(['background-color', 'box-shadow', 'border-color', 'color'], {
-      duration: theme.transitions.duration.short
-    }),
-    '&:hover': (0,esm_extends/* default */.A)({
-      textDecoration: 'none',
-      backgroundColor: theme.vars ? `rgba(${theme.vars.palette.text.primaryChannel} / ${theme.vars.palette.action.hoverOpacity})` : (0,colorManipulator/* alpha */.X4)(theme.palette.text.primary, theme.palette.action.hoverOpacity),
-      // Reset on touch devices, it doesn't add specificity
-      '@media (hover: none)': {
-        backgroundColor: 'transparent'
-      }
-    }, ownerState.variant === 'text' && ownerState.color !== 'inherit' && {
-      backgroundColor: theme.vars ? `rgba(${theme.vars.palette[ownerState.color].mainChannel} / ${theme.vars.palette.action.hoverOpacity})` : (0,colorManipulator/* alpha */.X4)(theme.palette[ownerState.color].main, theme.palette.action.hoverOpacity),
-      // Reset on touch devices, it doesn't add specificity
-      '@media (hover: none)': {
-        backgroundColor: 'transparent'
-      }
-    }, ownerState.variant === 'outlined' && ownerState.color !== 'inherit' && {
-      border: `1px solid ${(theme.vars || theme).palette[ownerState.color].main}`,
-      backgroundColor: theme.vars ? `rgba(${theme.vars.palette[ownerState.color].mainChannel} / ${theme.vars.palette.action.hoverOpacity})` : (0,colorManipulator/* alpha */.X4)(theme.palette[ownerState.color].main, theme.palette.action.hoverOpacity),
-      // Reset on touch devices, it doesn't add specificity
-      '@media (hover: none)': {
-        backgroundColor: 'transparent'
-      }
-    }, ownerState.variant === 'contained' && {
-      backgroundColor: theme.vars ? theme.vars.palette.Button.inheritContainedHoverBg : inheritContainedHoverBackgroundColor,
-      boxShadow: (theme.vars || theme).shadows[4],
-      // Reset on touch devices, it doesn't add specificity
-      '@media (hover: none)': {
-        boxShadow: (theme.vars || theme).shadows[2],
-        backgroundColor: (theme.vars || theme).palette.grey[300]
-      }
-    }, ownerState.variant === 'contained' && ownerState.color !== 'inherit' && {
-      backgroundColor: (theme.vars || theme).palette[ownerState.color].dark,
-      // Reset on touch devices, it doesn't add specificity
-      '@media (hover: none)': {
-        backgroundColor: (theme.vars || theme).palette[ownerState.color].main
-      }
-    }),
-    '&:active': (0,esm_extends/* default */.A)({}, ownerState.variant === 'contained' && {
-      boxShadow: (theme.vars || theme).shadows[8]
-    }),
-    [`&.${Button_buttonClasses.focusVisible}`]: (0,esm_extends/* default */.A)({}, ownerState.variant === 'contained' && {
-      boxShadow: (theme.vars || theme).shadows[6]
-    }),
-    [`&.${Button_buttonClasses.disabled}`]: (0,esm_extends/* default */.A)({
-      color: (theme.vars || theme).palette.action.disabled
-    }, ownerState.variant === 'outlined' && {
-      border: `1px solid ${(theme.vars || theme).palette.action.disabledBackground}`
-    }, ownerState.variant === 'contained' && {
-      color: (theme.vars || theme).palette.action.disabled,
-      boxShadow: (theme.vars || theme).shadows[0],
-      backgroundColor: (theme.vars || theme).palette.action.disabledBackground
-    })
-  }, ownerState.variant === 'text' && {
-    padding: '6px 8px'
-  }, ownerState.variant === 'text' && ownerState.color !== 'inherit' && {
-    color: (theme.vars || theme).palette[ownerState.color].main
-  }, ownerState.variant === 'outlined' && {
-    padding: '5px 15px',
-    border: '1px solid currentColor'
-  }, ownerState.variant === 'outlined' && ownerState.color !== 'inherit' && {
-    color: (theme.vars || theme).palette[ownerState.color].main,
-    border: theme.vars ? `1px solid rgba(${theme.vars.palette[ownerState.color].mainChannel} / 0.5)` : `1px solid ${(0,colorManipulator/* alpha */.X4)(theme.palette[ownerState.color].main, 0.5)}`
-  }, ownerState.variant === 'contained' && {
-    color: theme.vars ?
-    // this is safe because grey does not change between default light/dark mode
-    theme.vars.palette.text.primary : (_theme$palette$getCon = (_theme$palette = theme.palette).getContrastText) == null ? void 0 : _theme$palette$getCon.call(_theme$palette, theme.palette.grey[300]),
-    backgroundColor: theme.vars ? theme.vars.palette.Button.inheritContainedBg : inheritContainedBackgroundColor,
-    boxShadow: (theme.vars || theme).shadows[2]
-  }, ownerState.variant === 'contained' && ownerState.color !== 'inherit' && {
-    color: (theme.vars || theme).palette[ownerState.color].contrastText,
-    backgroundColor: (theme.vars || theme).palette[ownerState.color].main
-  }, ownerState.color === 'inherit' && {
-    color: 'inherit',
-    borderColor: 'currentColor'
-  }, ownerState.size === 'small' && ownerState.variant === 'text' && {
-    padding: '4px 5px',
-    fontSize: theme.typography.pxToRem(13)
-  }, ownerState.size === 'large' && ownerState.variant === 'text' && {
-    padding: '8px 11px',
-    fontSize: theme.typography.pxToRem(15)
-  }, ownerState.size === 'small' && ownerState.variant === 'outlined' && {
-    padding: '3px 9px',
-    fontSize: theme.typography.pxToRem(13)
-  }, ownerState.size === 'large' && ownerState.variant === 'outlined' && {
-    padding: '7px 21px',
-    fontSize: theme.typography.pxToRem(15)
-  }, ownerState.size === 'small' && ownerState.variant === 'contained' && {
-    padding: '4px 10px',
-    fontSize: theme.typography.pxToRem(13)
-  }, ownerState.size === 'large' && ownerState.variant === 'contained' && {
-    padding: '8px 22px',
-    fontSize: theme.typography.pxToRem(15)
-  }, ownerState.fullWidth && {
-    width: '100%'
-  });
-}, ({
-  ownerState
-}) => ownerState.disableElevation && {
-  boxShadow: 'none',
-  '&:hover': {
-    boxShadow: 'none'
-  },
-  [`&.${Button_buttonClasses.focusVisible}`]: {
-    boxShadow: 'none'
-  },
-  '&:active': {
-    boxShadow: 'none'
-  },
-  [`&.${Button_buttonClasses.disabled}`]: {
-    boxShadow: 'none'
-  }
-});
-const ButtonStartIcon = styles_styled('span', {
-  name: 'MuiButton',
-  slot: 'StartIcon',
-  overridesResolver: (props, styles) => {
-    const {
-      ownerState
-    } = props;
-    return [styles.startIcon, styles[`iconSize${utils_capitalize(ownerState.size)}`]];
-  }
-})(({
-  ownerState
-}) => (0,esm_extends/* default */.A)({
-  display: 'inherit',
-  marginRight: 8,
-  marginLeft: -4
-}, ownerState.size === 'small' && {
-  marginLeft: -2
-}, commonIconStyles(ownerState)));
-const ButtonEndIcon = styles_styled('span', {
-  name: 'MuiButton',
-  slot: 'EndIcon',
-  overridesResolver: (props, styles) => {
-    const {
-      ownerState
-    } = props;
-    return [styles.endIcon, styles[`iconSize${utils_capitalize(ownerState.size)}`]];
-  }
-})(({
-  ownerState
-}) => (0,esm_extends/* default */.A)({
-  display: 'inherit',
-  marginRight: -4,
-  marginLeft: 8
-}, ownerState.size === 'small' && {
-  marginRight: -2
-}, commonIconStyles(ownerState)));
-const Button = /*#__PURE__*/react.forwardRef(function Button(inProps, ref) {
-  // props priority: `inProps` > `contextProps` > `themeDefaultProps`
-  const contextProps = react.useContext(ButtonGroup_ButtonGroupContext);
-  const buttonGroupButtonContextPositionClassName = react.useContext(ButtonGroup_ButtonGroupButtonContext);
-  const resolvedProps = resolveProps(contextProps, inProps);
-  const props = useThemeProps_useThemeProps({
-    props: resolvedProps,
-    name: 'MuiButton'
-  });
-  const {
-      children,
-      color = 'primary',
-      component = 'button',
-      className,
-      disabled = false,
-      disableElevation = false,
-      disableFocusRipple = false,
-      endIcon: endIconProp,
-      focusVisibleClassName,
-      fullWidth = false,
-      size = 'medium',
-      startIcon: startIconProp,
-      type,
-      variant = 'text'
-    } = props,
-    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, Button_excluded);
-  const ownerState = (0,esm_extends/* default */.A)({}, props, {
-    color,
-    component,
-    disabled,
-    disableElevation,
-    disableFocusRipple,
-    fullWidth,
-    size,
-    type,
-    variant
-  });
-  const classes = Button_useUtilityClasses(ownerState);
-  const startIcon = startIconProp && /*#__PURE__*/(0,jsx_runtime.jsx)(ButtonStartIcon, {
-    className: classes.startIcon,
-    ownerState: ownerState,
-    children: startIconProp
-  });
-  const endIcon = endIconProp && /*#__PURE__*/(0,jsx_runtime.jsx)(ButtonEndIcon, {
-    className: classes.endIcon,
-    ownerState: ownerState,
-    children: endIconProp
-  });
-  const positionClassName = buttonGroupButtonContextPositionClassName || '';
-  return /*#__PURE__*/(0,jsx_runtime.jsxs)(ButtonRoot, (0,esm_extends/* default */.A)({
-    ownerState: ownerState,
-    className: dist_clsx(contextProps.className, classes.root, className, positionClassName),
-    component: component,
-    disabled: disabled,
-    focusRipple: !disableFocusRipple,
-    focusVisibleClassName: dist_clsx(classes.focusVisible, focusVisibleClassName),
-    ref: ref,
-    type: type
-  }, other, {
-    classes: classes,
-    children: [startIcon, children, endIcon]
-  }));
-});
- false ? 0 : void 0;
-/* harmony default export */ const Button_Button = (Button);
-;// CONCATENATED MODULE: ./views/components/Blocks/ContainedButton.js
-
-
-
-const ContainedButton = props => {
-  const {
-    children,
-    type,
-    onClick,
-    sx,
-    disabled
-  } = props;
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(Button_Button, {
-    disabled: disabled,
-    type: type,
-    onClick: onClick,
-    variant: "contained",
-    sx: {
-      ...sx,
-      maxWidth: 250
-    },
-    size: "medium",
-    children: children
-  });
-};
-/* harmony default export */ const Blocks_ContainedButton = (ContainedButton);
-;// CONCATENATED MODULE: ./views/components/Blocks/UserLinkInputs.js
-
-
-
-
-const UserLinkInputs = props => {
-  const {
-    titleInput,
-    hrefInput,
-    deleteOne,
-    saveText,
-    saveDisabled
-  } = props;
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
-    children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Grid_Grid, {
-      fullWidth: true,
-      container: true,
-      spacing: 2,
-      alignItems: "center",
-      justifyContent: "center",
-      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
-        xs: 12,
-        md: 3,
-        item: true,
-        children: /*#__PURE__*/(0,jsx_runtime.jsxs)(FormControl_FormControl, {
-          children: [/*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
-            children: "Title"
-          }), titleInput]
-        })
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
-        xs: 12,
-        md: 3,
-        item: true,
-        children: /*#__PURE__*/(0,jsx_runtime.jsxs)(FormControl_FormControl, {
-          children: [/*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
-            children: "Href"
-          }), hrefInput]
-        })
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
-        xs: 12,
-        md: 3,
-        item: true,
-        children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-          disabled: saveDisabled,
-          type: "submit",
-          children: saveText
-        })
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
-        xs: 12,
-        md: 3,
-        item: true,
-        children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-          onClick: deleteOne,
-          type: "button",
-          children: "Delete Link"
-        })
-      })]
-    })
-  });
-};
-/* harmony default export */ const Blocks_UserLinkInputs = (UserLinkInputs);
 ;// CONCATENATED MODULE: ./node_modules/react-hook-form/dist/index.esm.mjs
 
 
@@ -21770,211 +19541,2188 @@ function useForm(props = {}) {
 
 //# sourceMappingURL=index.esm.mjs.map
 
-;// CONCATENATED MODULE: ./views/components/Blocks/LinksForm.js
+;// CONCATENATED MODULE: ./node_modules/@mui/utils/isMuiElement/isMuiElement.js
+
+function isMuiElement(element, muiNames) {
+  var _muiName, _element$type;
+  return /*#__PURE__*/react.isValidElement(element) && muiNames.indexOf( // For server components `muiName` is avaialble in element.type._payload.value.muiName
+  // relevant info - https://github.com/facebook/react/blob/2807d781a08db8e9873687fccc25c0f12b4fb3d4/packages/react/src/ReactLazy.js#L45
+  // eslint-disable-next-line no-underscore-dangle
+  (_muiName = element.type.muiName) != null ? _muiName : (_element$type = element.type) == null || (_element$type = _element$type._payload) == null || (_element$type = _element$type.value) == null ? void 0 : _element$type.muiName) !== -1;
+}
+;// CONCATENATED MODULE: ./node_modules/@mui/material/utils/isMuiElement.js
+
+/* harmony default export */ const utils_isMuiElement = (isMuiElement);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/FormControl/formControlClasses.js
+
+
+function getFormControlUtilityClasses(slot) {
+  return generateUtilityClass_generateUtilityClass('MuiFormControl', slot);
+}
+const formControlClasses = generateUtilityClasses('MuiFormControl', ['root', 'marginNone', 'marginNormal', 'marginDense', 'fullWidth', 'disabled']);
+/* harmony default export */ const FormControl_formControlClasses = ((/* unused pure expression or super */ null && (formControlClasses)));
+;// CONCATENATED MODULE: ./node_modules/@mui/material/FormControl/FormControl.js
+'use client';
+
+
+
+const FormControl_excluded = ["children", "className", "color", "component", "disabled", "error", "focused", "fullWidth", "hiddenLabel", "margin", "required", "size", "variant"];
 
 
 
 
 
-const LinksForm = props => {
+
+
+
+
+
+
+
+const FormControl_useUtilityClasses = ownerState => {
   const {
-    handleSubmit,
-    control,
-    formState: {
-      isValid
-    }
-  } = useForm();
-  const {
-    key,
-    fetchUrl,
-    defaultTitle,
-    defaultHref,
-    deleteOne
-  } = props;
-  const [saveText, setSaveText] = react.useState('Save Links');
-  const handleSave = async data => {
-    const postUserName = await fetch(fetchUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        title: data.title,
-        href: data.href
-      })
-    });
-    if (postUserName.status === 201) {
-      setSaveText('Saved!');
-    }
-    return postUserName.json();
+    classes,
+    margin,
+    fullWidth
+  } = ownerState;
+  const slots = {
+    root: ['root', margin !== 'none' && `margin${utils_capitalize(margin)}`, fullWidth && 'fullWidth']
   };
-  return /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
-    dialogTitle: "Links",
-    dialogContent: "Add portfolio, github, linkedIn, or other links to go into your resume.",
-    onSubmit: handleSubmit(data => handleSave(data)),
-    children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_UserLinkInputs, {
-      saveText: saveText,
-      saveDisabled: !isValid,
-      deleteOne: deleteOne,
-      titleInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-        control: control,
-        name: "title",
-        rules: {
-          required: true
-        },
-        render: _ref => {
-          let {
-            field: {
-              onChange,
-              onBlur,
-              value,
-              ref
-            }
-          } = _ref;
-          return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-            onChange: onChange,
-            onBlur: onBlur,
-            value: value,
-            inputRef: ref,
-            type: "text"
-          });
-        },
-        defaultValue: defaultTitle
-      }),
-      hrefInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-        control: control,
-        name: "href",
-        rules: {
-          required: true
-        },
-        render: _ref2 => {
-          let {
-            field: {
-              onChange,
-              onBlur,
-              value,
-              ref
-            }
-          } = _ref2;
-          return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-            onChange: onChange,
-            onBlur: onBlur,
-            value: value,
-            inputRef: ref,
-            type: "text"
-          });
-        },
-        defaultValue: defaultHref
-      })
-    })
-  }, key);
+  return composeClasses(slots, getFormControlUtilityClasses, classes);
 };
-/* harmony default export */ const Blocks_LinksForm = (LinksForm);
-;// CONCATENATED MODULE: ./views/components/CreateLinks.js
+const FormControlRoot = styles_styled('div', {
+  name: 'MuiFormControl',
+  slot: 'Root',
+  overridesResolver: ({
+    ownerState
+  }, styles) => {
+    return (0,esm_extends/* default */.A)({}, styles.root, styles[`margin${utils_capitalize(ownerState.margin)}`], ownerState.fullWidth && styles.fullWidth);
+  }
+})(({
+  ownerState
+}) => (0,esm_extends/* default */.A)({
+  display: 'inline-flex',
+  flexDirection: 'column',
+  position: 'relative',
+  // Reset fieldset default style.
+  minWidth: 0,
+  padding: 0,
+  margin: 0,
+  border: 0,
+  verticalAlign: 'top'
+}, ownerState.margin === 'normal' && {
+  marginTop: 16,
+  marginBottom: 8
+}, ownerState.margin === 'dense' && {
+  marginTop: 8,
+  marginBottom: 4
+}, ownerState.fullWidth && {
+  width: '100%'
+}));
 
-
-
-const CreateLinks = props => {
-  const {
-    key,
-    deleteOne
-  } = props;
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_LinksForm, {
-    fetchUrl: "http://localhost:3000/api/links",
-    defaultTitle: "",
-    defaultHref: "",
-    deleteOne: deleteOne
-  }, key);
-};
-/* harmony default export */ const components_CreateLinks = (CreateLinks);
-;// CONCATENATED MODULE: ./views/components/EditLinks.js
-
-
-
-const EditLinks = props => {
-  const {
-    linkId,
-    defaultTitle,
-    defaultHref,
-    deleteOne,
-    control
-  } = props;
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_LinksForm, {
-    fetchUrl: `http://localhost:3000/api/links/${linkId}`,
-    defaultTitle: defaultTitle,
-    defaultHref: defaultHref
-  }, linkId);
-};
-/* harmony default export */ const components_EditLinks = (EditLinks);
-;// CONCATENATED MODULE: ./views/components/Blocks/LinksComponent.js
-
-
-
-
-
-
-
-
-const getLinks = getters_fetchData('http://localhost:3000/api/links');
-function LinksComponent() {
-  const allSavedLinks = getLinks.read();
-  const {
-    control
-  } = useForm();
-  const {
-    isValid
-  } = useFormState({
-    control
+/**
+ * Provides context such as filled/focused/error/required for form inputs.
+ * Relying on the context provides high flexibility and ensures that the state always stays
+ * consistent across the children of the `FormControl`.
+ * This context is used by the following components:
+ *
+ *  - FormLabel
+ *  - FormHelperText
+ *  - Input
+ *  - InputLabel
+ *
+ * You can find one composition example below and more going to [the demos](/material-ui/react-text-field/#components).
+ *
+ * ```jsx
+ * <FormControl>
+ *   <InputLabel htmlFor="my-input">Email address</InputLabel>
+ *   <Input id="my-input" aria-describedby="my-helper-text" />
+ *   <FormHelperText id="my-helper-text">We'll never share your email.</FormHelperText>
+ * </FormControl>
+ * ```
+ *
+ * ⚠️ Only one `InputBase` can be used within a FormControl because it creates visual inconsistencies.
+ * For instance, only one input can be focused at the same time, the state shouldn't be shared.
+ */
+const FormControl = /*#__PURE__*/react.forwardRef(function FormControl(inProps, ref) {
+  const props = useThemeProps_useThemeProps({
+    props: inProps,
+    name: 'MuiFormControl'
   });
-  const [linksArr, setLinksArr] = react.useState([]);
-  const [newLinksArr, setNewLinksArr] = react.useState([]);
-  react.useEffect(() => {
-    if (allSavedLinks && allSavedLinks.length > 0) {
-      setLinksArr(allSavedLinks);
+  const {
+      children,
+      className,
+      color = 'primary',
+      component = 'div',
+      disabled = false,
+      error = false,
+      focused: visuallyFocused,
+      fullWidth = false,
+      hiddenLabel = false,
+      margin = 'none',
+      required = false,
+      size = 'medium',
+      variant = 'outlined'
+    } = props,
+    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, FormControl_excluded);
+  const ownerState = (0,esm_extends/* default */.A)({}, props, {
+    color,
+    component,
+    disabled,
+    error,
+    fullWidth,
+    hiddenLabel,
+    margin,
+    required,
+    size,
+    variant
+  });
+  const classes = FormControl_useUtilityClasses(ownerState);
+  const [adornedStart, setAdornedStart] = react.useState(() => {
+    // We need to iterate through the children and find the Input in order
+    // to fully support server-side rendering.
+    let initialAdornedStart = false;
+    if (children) {
+      react.Children.forEach(children, child => {
+        if (!utils_isMuiElement(child, ['Input', 'Select'])) {
+          return;
+        }
+        const input = utils_isMuiElement(child, ['Select']) ? child.props.input : child;
+        if (input && isAdornedStart(input.props)) {
+          initialAdornedStart = true;
+        }
+      });
     }
-  }, [allSavedLinks, linksArr]);
-  const deleteThisLink = async id => {
-    const promise = await fetch(`http://localhost:3000/api/links/${id}`, {
-      method: 'DELETE'
-    });
-    if (allSavedLinks && allSavedLinks.length > 0) {
-      setLinksArr(allSavedLinks);
+    return initialAdornedStart;
+  });
+  const [filled, setFilled] = react.useState(() => {
+    // We need to iterate through the children and find the Input in order
+    // to fully support server-side rendering.
+    let initialFilled = false;
+    if (children) {
+      react.Children.forEach(children, child => {
+        if (!utils_isMuiElement(child, ['Input', 'Select'])) {
+          return;
+        }
+        if (isFilled(child.props, true) || isFilled(child.props.inputProps, true)) {
+          initialFilled = true;
+        }
+      });
     }
-    return promise;
+    return initialFilled;
+  });
+  const [focusedState, setFocused] = react.useState(false);
+  if (disabled && focusedState) {
+    setFocused(false);
+  }
+  const focused = visuallyFocused !== undefined && !disabled ? visuallyFocused : focusedState;
+  let registerEffect;
+  if (false) {}
+  const childContext = react.useMemo(() => {
+    return {
+      adornedStart,
+      setAdornedStart,
+      color,
+      disabled,
+      error,
+      filled,
+      focused,
+      fullWidth,
+      hiddenLabel,
+      size,
+      onBlur: () => {
+        setFocused(false);
+      },
+      onEmpty: () => {
+        setFilled(false);
+      },
+      onFilled: () => {
+        setFilled(true);
+      },
+      onFocus: () => {
+        setFocused(true);
+      },
+      registerEffect,
+      required,
+      variant
+    };
+  }, [adornedStart, color, disabled, error, filled, focused, fullWidth, hiddenLabel, registerEffect, required, size, variant]);
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(FormControl_FormControlContext.Provider, {
+    value: childContext,
+    children: /*#__PURE__*/(0,jsx_runtime.jsx)(FormControlRoot, (0,esm_extends/* default */.A)({
+      as: component,
+      ownerState: ownerState,
+      className: dist_clsx(classes.root, className),
+      ref: ref
+    }, other, {
+      children: children
+    }))
+  });
+});
+ false ? 0 : void 0;
+/* harmony default export */ const FormControl_FormControl = (FormControl);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/FormLabel/formLabelClasses.js
+
+
+function getFormLabelUtilityClasses(slot) {
+  return generateUtilityClass_generateUtilityClass('MuiFormLabel', slot);
+}
+const formLabelClasses = generateUtilityClasses('MuiFormLabel', ['root', 'colorSecondary', 'focused', 'disabled', 'error', 'filled', 'required', 'asterisk']);
+/* harmony default export */ const FormLabel_formLabelClasses = (formLabelClasses);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/FormLabel/FormLabel.js
+'use client';
+
+
+
+const FormLabel_excluded = ["children", "className", "color", "component", "disabled", "error", "filled", "focused", "required"];
+
+
+
+
+
+
+
+
+
+
+
+const FormLabel_useUtilityClasses = ownerState => {
+  const {
+    classes,
+    color,
+    focused,
+    disabled,
+    error,
+    filled,
+    required
+  } = ownerState;
+  const slots = {
+    root: ['root', `color${utils_capitalize(color)}`, disabled && 'disabled', error && 'error', filled && 'filled', focused && 'focused', required && 'required'],
+    asterisk: ['asterisk', error && 'error']
   };
-  const deleteNewLinks = id => {
-    if (newLinksArr.length === 1) {
-      setNewLinksArr([]);
-    } else {
-      setNewLinksArr(prev => prev.splice(id, 1));
-    }
-  };
-  const addMoreLinks = () => {
-    setNewLinksArr(prev => prev.concat(prev.length));
-  };
-  return /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
-    children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-      variant: "body2",
-      children: "Add Link"
-    }), /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
-      children: [linksArr.length > 0 && linksArr.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(components_EditLinks, {
-        linkId: link._id,
-        defaultTitle: link.title,
-        defaultHref: link.href,
-        deleteOne: () => deleteThisLink(link._id)
-      })), newLinksArr.length > 0 && newLinksArr.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(components_CreateLinks, {
-        deleteOne: () => deleteNewLinks(newLinksArr.indexOf(link))
-      }, newLinksArr.indexOf(link)))]
-    }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-      disabled: !isValid,
-      type: "button",
-      onClick: addMoreLinks,
-      children: "Add More Links?"
+  return composeClasses(slots, getFormLabelUtilityClasses, classes);
+};
+const FormLabelRoot = styles_styled('label', {
+  name: 'MuiFormLabel',
+  slot: 'Root',
+  overridesResolver: ({
+    ownerState
+  }, styles) => {
+    return (0,esm_extends/* default */.A)({}, styles.root, ownerState.color === 'secondary' && styles.colorSecondary, ownerState.filled && styles.filled);
+  }
+})(({
+  theme,
+  ownerState
+}) => (0,esm_extends/* default */.A)({
+  color: (theme.vars || theme).palette.text.secondary
+}, theme.typography.body1, {
+  lineHeight: '1.4375em',
+  padding: 0,
+  position: 'relative',
+  [`&.${FormLabel_formLabelClasses.focused}`]: {
+    color: (theme.vars || theme).palette[ownerState.color].main
+  },
+  [`&.${FormLabel_formLabelClasses.disabled}`]: {
+    color: (theme.vars || theme).palette.text.disabled
+  },
+  [`&.${FormLabel_formLabelClasses.error}`]: {
+    color: (theme.vars || theme).palette.error.main
+  }
+}));
+const AsteriskComponent = styles_styled('span', {
+  name: 'MuiFormLabel',
+  slot: 'Asterisk',
+  overridesResolver: (props, styles) => styles.asterisk
+})(({
+  theme
+}) => ({
+  [`&.${FormLabel_formLabelClasses.error}`]: {
+    color: (theme.vars || theme).palette.error.main
+  }
+}));
+const FormLabel = /*#__PURE__*/react.forwardRef(function FormLabel(inProps, ref) {
+  const props = useThemeProps_useThemeProps({
+    props: inProps,
+    name: 'MuiFormLabel'
+  });
+  const {
+      children,
+      className,
+      component = 'label'
+    } = props,
+    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, FormLabel_excluded);
+  const muiFormControl = useFormControl();
+  const fcs = formControlState({
+    props,
+    muiFormControl,
+    states: ['color', 'required', 'focused', 'disabled', 'error', 'filled']
+  });
+  const ownerState = (0,esm_extends/* default */.A)({}, props, {
+    color: fcs.color || 'primary',
+    component,
+    disabled: fcs.disabled,
+    error: fcs.error,
+    filled: fcs.filled,
+    focused: fcs.focused,
+    required: fcs.required
+  });
+  const classes = FormLabel_useUtilityClasses(ownerState);
+  return /*#__PURE__*/(0,jsx_runtime.jsxs)(FormLabelRoot, (0,esm_extends/* default */.A)({
+    as: component,
+    ownerState: ownerState,
+    className: dist_clsx(classes.root, className),
+    ref: ref
+  }, other, {
+    children: [children, fcs.required && /*#__PURE__*/(0,jsx_runtime.jsxs)(AsteriskComponent, {
+      ownerState: ownerState,
+      "aria-hidden": true,
+      className: classes.asterisk,
+      children: ["\u2009", '*']
     })]
+  }));
+});
+ false ? 0 : void 0;
+/* harmony default export */ const FormLabel_FormLabel = (FormLabel);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/InputLabel/inputLabelClasses.js
+
+
+function getInputLabelUtilityClasses(slot) {
+  return generateUtilityClass_generateUtilityClass('MuiInputLabel', slot);
+}
+const inputLabelClasses = generateUtilityClasses('MuiInputLabel', ['root', 'focused', 'disabled', 'error', 'required', 'asterisk', 'formControl', 'sizeSmall', 'shrink', 'animated', 'standard', 'filled', 'outlined']);
+/* harmony default export */ const InputLabel_inputLabelClasses = ((/* unused pure expression or super */ null && (inputLabelClasses)));
+;// CONCATENATED MODULE: ./node_modules/@mui/material/InputLabel/InputLabel.js
+'use client';
+
+
+
+const InputLabel_excluded = ["disableAnimation", "margin", "shrink", "variant", "className"];
+
+
+
+
+
+
+
+
+
+
+
+
+const InputLabel_useUtilityClasses = ownerState => {
+  const {
+    classes,
+    formControl,
+    size,
+    shrink,
+    disableAnimation,
+    variant,
+    required
+  } = ownerState;
+  const slots = {
+    root: ['root', formControl && 'formControl', !disableAnimation && 'animated', shrink && 'shrink', size && size !== 'normal' && `size${utils_capitalize(size)}`, variant],
+    asterisk: [required && 'asterisk']
+  };
+  const composedClasses = composeClasses(slots, getInputLabelUtilityClasses, classes);
+  return (0,esm_extends/* default */.A)({}, classes, composedClasses);
+};
+const InputLabelRoot = styles_styled(FormLabel_FormLabel, {
+  shouldForwardProp: prop => styles_rootShouldForwardProp(prop) || prop === 'classes',
+  name: 'MuiInputLabel',
+  slot: 'Root',
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [{
+      [`& .${FormLabel_formLabelClasses.asterisk}`]: styles.asterisk
+    }, styles.root, ownerState.formControl && styles.formControl, ownerState.size === 'small' && styles.sizeSmall, ownerState.shrink && styles.shrink, !ownerState.disableAnimation && styles.animated, ownerState.focused && styles.focused, styles[ownerState.variant]];
+  }
+})(({
+  theme,
+  ownerState
+}) => (0,esm_extends/* default */.A)({
+  display: 'block',
+  transformOrigin: 'top left',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  maxWidth: '100%'
+}, ownerState.formControl && {
+  position: 'absolute',
+  left: 0,
+  top: 0,
+  // slight alteration to spec spacing to match visual spec result
+  transform: 'translate(0, 20px) scale(1)'
+}, ownerState.size === 'small' && {
+  // Compensation for the `Input.inputSizeSmall` style.
+  transform: 'translate(0, 17px) scale(1)'
+}, ownerState.shrink && {
+  transform: 'translate(0, -1.5px) scale(0.75)',
+  transformOrigin: 'top left',
+  maxWidth: '133%'
+}, !ownerState.disableAnimation && {
+  transition: theme.transitions.create(['color', 'transform', 'max-width'], {
+    duration: theme.transitions.duration.shorter,
+    easing: theme.transitions.easing.easeOut
+  })
+}, ownerState.variant === 'filled' && (0,esm_extends/* default */.A)({
+  // Chrome's autofill feature gives the input field a yellow background.
+  // Since the input field is behind the label in the HTML tree,
+  // the input field is drawn last and hides the label with an opaque background color.
+  // zIndex: 1 will raise the label above opaque background-colors of input.
+  zIndex: 1,
+  pointerEvents: 'none',
+  transform: 'translate(12px, 16px) scale(1)',
+  maxWidth: 'calc(100% - 24px)'
+}, ownerState.size === 'small' && {
+  transform: 'translate(12px, 13px) scale(1)'
+}, ownerState.shrink && (0,esm_extends/* default */.A)({
+  userSelect: 'none',
+  pointerEvents: 'auto',
+  transform: 'translate(12px, 7px) scale(0.75)',
+  maxWidth: 'calc(133% - 24px)'
+}, ownerState.size === 'small' && {
+  transform: 'translate(12px, 4px) scale(0.75)'
+})), ownerState.variant === 'outlined' && (0,esm_extends/* default */.A)({
+  // see comment above on filled.zIndex
+  zIndex: 1,
+  pointerEvents: 'none',
+  transform: 'translate(14px, 16px) scale(1)',
+  maxWidth: 'calc(100% - 24px)'
+}, ownerState.size === 'small' && {
+  transform: 'translate(14px, 9px) scale(1)'
+}, ownerState.shrink && {
+  userSelect: 'none',
+  pointerEvents: 'auto',
+  // Theoretically, we should have (8+5)*2/0.75 = 34px
+  // but it feels a better when it bleeds a bit on the left, so 32px.
+  maxWidth: 'calc(133% - 32px)',
+  transform: 'translate(14px, -9px) scale(0.75)'
+})));
+const InputLabel = /*#__PURE__*/react.forwardRef(function InputLabel(inProps, ref) {
+  const props = useThemeProps_useThemeProps({
+    name: 'MuiInputLabel',
+    props: inProps
+  });
+  const {
+      disableAnimation = false,
+      shrink: shrinkProp,
+      className
+    } = props,
+    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, InputLabel_excluded);
+  const muiFormControl = useFormControl();
+  let shrink = shrinkProp;
+  if (typeof shrink === 'undefined' && muiFormControl) {
+    shrink = muiFormControl.filled || muiFormControl.focused || muiFormControl.adornedStart;
+  }
+  const fcs = formControlState({
+    props,
+    muiFormControl,
+    states: ['size', 'variant', 'required', 'focused']
+  });
+  const ownerState = (0,esm_extends/* default */.A)({}, props, {
+    disableAnimation,
+    formControl: muiFormControl,
+    shrink,
+    size: fcs.size,
+    variant: fcs.variant,
+    required: fcs.required,
+    focused: fcs.focused
+  });
+  const classes = InputLabel_useUtilityClasses(ownerState);
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(InputLabelRoot, (0,esm_extends/* default */.A)({
+    "data-shrink": shrink,
+    ownerState: ownerState,
+    ref: ref,
+    className: dist_clsx(classes.root, className)
+  }, other, {
+    classes: classes
+  }));
+});
+ false ? 0 : void 0;
+/* harmony default export */ const InputLabel_InputLabel = (InputLabel);
+;// CONCATENATED MODULE: ./views/components/Blocks/BasicInput.js
+
+
+
+const BasicInput = props => {
+  const {
+    children,
+    label,
+    id
+  } = props;
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
+    children: /*#__PURE__*/(0,jsx_runtime.jsxs)(FormControl_FormControl, {
+      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
+        id: id,
+        children: label
+      }), children]
+    })
+  });
+};
+/* harmony default export */ const Blocks_BasicInput = (BasicInput);
+;// CONCATENATED MODULE: ./node_modules/@mui/utils/useEventCallback/useEventCallback.js
+'use client';
+
+
+
+
+/**
+ * Inspired by https://github.com/facebook/react/issues/14099#issuecomment-440013892
+ * See RFC in https://github.com/reactjs/rfcs/pull/220
+ */
+
+function useEventCallback(fn) {
+  const ref = react.useRef(fn);
+  useEnhancedEffect_useEnhancedEffect(() => {
+    ref.current = fn;
+  });
+  return react.useRef((...args) =>
+  // @ts-expect-error hide `this`
+  (0, ref.current)(...args)).current;
+}
+/* harmony default export */ const useEventCallback_useEventCallback = (useEventCallback);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/utils/useEventCallback.js
+'use client';
+
+
+/* harmony default export */ const utils_useEventCallback = (useEventCallback_useEventCallback);
+;// CONCATENATED MODULE: ./node_modules/@mui/utils/useLazyRef/useLazyRef.js
+'use client';
+
+
+const UNINITIALIZED = {};
+
+/**
+ * A React.useRef() that is initialized lazily with a function. Note that it accepts an optional
+ * initialization argument, so the initialization function doesn't need to be an inline closure.
+ *
+ * @usage
+ *   const ref = useLazyRef(sortColumns, columns)
+ */
+function useLazyRef(init, initArg) {
+  const ref = react.useRef(UNINITIALIZED);
+  if (ref.current === UNINITIALIZED) {
+    ref.current = init(initArg);
+  }
+  return ref;
+}
+;// CONCATENATED MODULE: ./node_modules/@mui/utils/useOnMount/useOnMount.js
+'use client';
+
+
+const EMPTY = [];
+
+/**
+ * A React.useEffect equivalent that runs once, when the component is mounted.
+ */
+function useOnMount(fn) {
+  /* eslint-disable react-hooks/exhaustive-deps */
+  react.useEffect(fn, EMPTY);
+  /* eslint-enable react-hooks/exhaustive-deps */
+}
+;// CONCATENATED MODULE: ./node_modules/@mui/utils/useTimeout/useTimeout.js
+'use client';
+
+
+
+class Timeout {
+  constructor() {
+    this.currentId = null;
+    this.clear = () => {
+      if (this.currentId !== null) {
+        clearTimeout(this.currentId);
+        this.currentId = null;
+      }
+    };
+    this.disposeEffect = () => {
+      return this.clear;
+    };
+  }
+  static create() {
+    return new Timeout();
+  }
+  /**
+   * Executes `fn` after `delay`, clearing any previously scheduled call.
+   */
+  start(delay, fn) {
+    this.clear();
+    this.currentId = setTimeout(() => {
+      this.currentId = null;
+      fn();
+    }, delay);
+  }
+}
+function useTimeout() {
+  const timeout = useLazyRef(Timeout.create).current;
+  useOnMount(timeout.disposeEffect);
+  return timeout;
+}
+;// CONCATENATED MODULE: ./node_modules/@mui/utils/useIsFocusVisible/useIsFocusVisible.js
+'use client';
+
+// based on https://github.com/WICG/focus-visible/blob/v4.1.5/src/focus-visible.js
+
+
+let hadKeyboardEvent = true;
+let hadFocusVisibleRecently = false;
+const hadFocusVisibleRecentlyTimeout = new Timeout();
+const inputTypesWhitelist = {
+  text: true,
+  search: true,
+  url: true,
+  tel: true,
+  email: true,
+  password: true,
+  number: true,
+  date: true,
+  month: true,
+  week: true,
+  time: true,
+  datetime: true,
+  'datetime-local': true
+};
+
+/**
+ * Computes whether the given element should automatically trigger the
+ * `focus-visible` class being added, i.e. whether it should always match
+ * `:focus-visible` when focused.
+ * @param {Element} node
+ * @returns {boolean}
+ */
+function focusTriggersKeyboardModality(node) {
+  const {
+    type,
+    tagName
+  } = node;
+  if (tagName === 'INPUT' && inputTypesWhitelist[type] && !node.readOnly) {
+    return true;
+  }
+  if (tagName === 'TEXTAREA' && !node.readOnly) {
+    return true;
+  }
+  if (node.isContentEditable) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Keep track of our keyboard modality state with `hadKeyboardEvent`.
+ * If the most recent user interaction was via the keyboard;
+ * and the key press did not include a meta, alt/option, or control key;
+ * then the modality is keyboard. Otherwise, the modality is not keyboard.
+ * @param {KeyboardEvent} event
+ */
+function handleKeyDown(event) {
+  if (event.metaKey || event.altKey || event.ctrlKey) {
+    return;
+  }
+  hadKeyboardEvent = true;
+}
+
+/**
+ * If at any point a user clicks with a pointing device, ensure that we change
+ * the modality away from keyboard.
+ * This avoids the situation where a user presses a key on an already focused
+ * element, and then clicks on a different element, focusing it with a
+ * pointing device, while we still think we're in keyboard modality.
+ */
+function handlePointerDown() {
+  hadKeyboardEvent = false;
+}
+function handleVisibilityChange() {
+  if (this.visibilityState === 'hidden') {
+    // If the tab becomes active again, the browser will handle calling focus
+    // on the element (Safari actually calls it twice).
+    // If this tab change caused a blur on an element with focus-visible,
+    // re-apply the class when the user switches back to the tab.
+    if (hadFocusVisibleRecently) {
+      hadKeyboardEvent = true;
+    }
+  }
+}
+function prepare(doc) {
+  doc.addEventListener('keydown', handleKeyDown, true);
+  doc.addEventListener('mousedown', handlePointerDown, true);
+  doc.addEventListener('pointerdown', handlePointerDown, true);
+  doc.addEventListener('touchstart', handlePointerDown, true);
+  doc.addEventListener('visibilitychange', handleVisibilityChange, true);
+}
+function teardown(doc) {
+  doc.removeEventListener('keydown', handleKeyDown, true);
+  doc.removeEventListener('mousedown', handlePointerDown, true);
+  doc.removeEventListener('pointerdown', handlePointerDown, true);
+  doc.removeEventListener('touchstart', handlePointerDown, true);
+  doc.removeEventListener('visibilitychange', handleVisibilityChange, true);
+}
+function isFocusVisible(event) {
+  const {
+    target
+  } = event;
+  try {
+    return target.matches(':focus-visible');
+  } catch (error) {
+    // Browsers not implementing :focus-visible will throw a SyntaxError.
+    // We use our own heuristic for those browsers.
+    // Rethrow might be better if it's not the expected error but do we really
+    // want to crash if focus-visible malfunctioned?
+  }
+
+  // No need for validFocusTarget check. The user does that by attaching it to
+  // focusable events only.
+  return hadKeyboardEvent || focusTriggersKeyboardModality(target);
+}
+function useIsFocusVisible() {
+  const ref = react.useCallback(node => {
+    if (node != null) {
+      prepare(node.ownerDocument);
+    }
+  }, []);
+  const isFocusVisibleRef = react.useRef(false);
+
+  /**
+   * Should be called if a blur event is fired
+   */
+  function handleBlurVisible() {
+    // checking against potential state variable does not suffice if we focus and blur synchronously.
+    // React wouldn't have time to trigger a re-render so `focusVisible` would be stale.
+    // Ideally we would adjust `isFocusVisible(event)` to look at `relatedTarget` for blur events.
+    // This doesn't work in IE11 due to https://github.com/facebook/react/issues/3751
+    // TODO: check again if React releases their internal changes to focus event handling (https://github.com/facebook/react/pull/19186).
+    if (isFocusVisibleRef.current) {
+      // To detect a tab/window switch, we look for a blur event followed
+      // rapidly by a visibility change.
+      // If we don't see a visibility change within 100ms, it's probably a
+      // regular focus change.
+      hadFocusVisibleRecently = true;
+      hadFocusVisibleRecentlyTimeout.start(100, () => {
+        hadFocusVisibleRecently = false;
+      });
+      isFocusVisibleRef.current = false;
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Should be called if a blur event is fired
+   */
+  function handleFocusVisible(event) {
+    if (isFocusVisible(event)) {
+      isFocusVisibleRef.current = true;
+      return true;
+    }
+    return false;
+  }
+  return {
+    isFocusVisibleRef,
+    onFocus: handleFocusVisible,
+    onBlur: handleBlurVisible,
+    ref
+  };
+}
+;// CONCATENATED MODULE: ./node_modules/@mui/material/utils/useIsFocusVisible.js
+'use client';
+
+
+/* harmony default export */ const utils_useIsFocusVisible = (useIsFocusVisible);
+;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+  return self;
+}
+;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+  return _setPrototypeOf(o, p);
+}
+;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js
+
+function _inheritsLoose(subClass, superClass) {
+  subClass.prototype = Object.create(superClass.prototype);
+  subClass.prototype.constructor = subClass;
+  _setPrototypeOf(subClass, superClass);
+}
+;// CONCATENATED MODULE: ./node_modules/react-transition-group/esm/TransitionGroupContext.js
+
+/* harmony default export */ const TransitionGroupContext = (react.createContext(null));
+;// CONCATENATED MODULE: ./node_modules/react-transition-group/esm/utils/ChildMapping.js
+
+/**
+ * Given `this.props.children`, return an object mapping key to child.
+ *
+ * @param {*} children `this.props.children`
+ * @return {object} Mapping of key to child
+ */
+
+function getChildMapping(children, mapFn) {
+  var mapper = function mapper(child) {
+    return mapFn && (0,react.isValidElement)(child) ? mapFn(child) : child;
+  };
+
+  var result = Object.create(null);
+  if (children) react.Children.map(children, function (c) {
+    return c;
+  }).forEach(function (child) {
+    // run the map function here instead so that the key is the computed one
+    result[child.key] = mapper(child);
+  });
+  return result;
+}
+/**
+ * When you're adding or removing children some may be added or removed in the
+ * same render pass. We want to show *both* since we want to simultaneously
+ * animate elements in and out. This function takes a previous set of keys
+ * and a new set of keys and merges them with its best guess of the correct
+ * ordering. In the future we may expose some of the utilities in
+ * ReactMultiChild to make this easy, but for now React itself does not
+ * directly have this concept of the union of prevChildren and nextChildren
+ * so we implement it here.
+ *
+ * @param {object} prev prev children as returned from
+ * `ReactTransitionChildMapping.getChildMapping()`.
+ * @param {object} next next children as returned from
+ * `ReactTransitionChildMapping.getChildMapping()`.
+ * @return {object} a key set that contains all keys in `prev` and all keys
+ * in `next` in a reasonable order.
+ */
+
+function mergeChildMappings(prev, next) {
+  prev = prev || {};
+  next = next || {};
+
+  function getValueForKey(key) {
+    return key in next ? next[key] : prev[key];
+  } // For each key of `next`, the list of keys to insert before that key in
+  // the combined list
+
+
+  var nextKeysPending = Object.create(null);
+  var pendingKeys = [];
+
+  for (var prevKey in prev) {
+    if (prevKey in next) {
+      if (pendingKeys.length) {
+        nextKeysPending[prevKey] = pendingKeys;
+        pendingKeys = [];
+      }
+    } else {
+      pendingKeys.push(prevKey);
+    }
+  }
+
+  var i;
+  var childMapping = {};
+
+  for (var nextKey in next) {
+    if (nextKeysPending[nextKey]) {
+      for (i = 0; i < nextKeysPending[nextKey].length; i++) {
+        var pendingNextKey = nextKeysPending[nextKey][i];
+        childMapping[nextKeysPending[nextKey][i]] = getValueForKey(pendingNextKey);
+      }
+    }
+
+    childMapping[nextKey] = getValueForKey(nextKey);
+  } // Finally, add the keys which didn't appear before any key in `next`
+
+
+  for (i = 0; i < pendingKeys.length; i++) {
+    childMapping[pendingKeys[i]] = getValueForKey(pendingKeys[i]);
+  }
+
+  return childMapping;
+}
+
+function getProp(child, prop, props) {
+  return props[prop] != null ? props[prop] : child.props[prop];
+}
+
+function getInitialChildMapping(props, onExited) {
+  return getChildMapping(props.children, function (child) {
+    return (0,react.cloneElement)(child, {
+      onExited: onExited.bind(null, child),
+      in: true,
+      appear: getProp(child, 'appear', props),
+      enter: getProp(child, 'enter', props),
+      exit: getProp(child, 'exit', props)
+    });
   });
 }
-;// CONCATENATED MODULE: ./views/components/Blocks/ExperienceForm.js
+function getNextChildMapping(nextProps, prevChildMapping, onExited) {
+  var nextChildMapping = getChildMapping(nextProps.children);
+  var children = mergeChildMappings(prevChildMapping, nextChildMapping);
+  Object.keys(children).forEach(function (key) {
+    var child = children[key];
+    if (!(0,react.isValidElement)(child)) return;
+    var hasPrev = (key in prevChildMapping);
+    var hasNext = (key in nextChildMapping);
+    var prevChild = prevChildMapping[key];
+    var isLeaving = (0,react.isValidElement)(prevChild) && !prevChild.props.in; // item is new (entering)
 
+    if (hasNext && (!hasPrev || isLeaving)) {
+      // console.log('entering', key)
+      children[key] = (0,react.cloneElement)(child, {
+        onExited: onExited.bind(null, child),
+        in: true,
+        exit: getProp(child, 'exit', nextProps),
+        enter: getProp(child, 'enter', nextProps)
+      });
+    } else if (!hasNext && hasPrev && !isLeaving) {
+      // item is old (exiting)
+      // console.log('leaving', key)
+      children[key] = (0,react.cloneElement)(child, {
+        in: false
+      });
+    } else if (hasNext && hasPrev && (0,react.isValidElement)(prevChild)) {
+      // item hasn't changed transition states
+      // copy over the last transition props;
+      // console.log('unchanged', key)
+      children[key] = (0,react.cloneElement)(child, {
+        onExited: onExited.bind(null, child),
+        in: prevChild.props.in,
+        exit: getProp(child, 'exit', nextProps),
+        enter: getProp(child, 'enter', nextProps)
+      });
+    }
+  });
+  return children;
+}
+;// CONCATENATED MODULE: ./node_modules/react-transition-group/esm/TransitionGroup.js
+
+
+
+
+
+
+
+
+
+var values = Object.values || function (obj) {
+  return Object.keys(obj).map(function (k) {
+    return obj[k];
+  });
+};
+
+var defaultProps = {
+  component: 'div',
+  childFactory: function childFactory(child) {
+    return child;
+  }
+};
+/**
+ * The `<TransitionGroup>` component manages a set of transition components
+ * (`<Transition>` and `<CSSTransition>`) in a list. Like with the transition
+ * components, `<TransitionGroup>` is a state machine for managing the mounting
+ * and unmounting of components over time.
+ *
+ * Consider the example below. As items are removed or added to the TodoList the
+ * `in` prop is toggled automatically by the `<TransitionGroup>`.
+ *
+ * Note that `<TransitionGroup>`  does not define any animation behavior!
+ * Exactly _how_ a list item animates is up to the individual transition
+ * component. This means you can mix and match animations across different list
+ * items.
+ */
+
+var TransitionGroup = /*#__PURE__*/function (_React$Component) {
+  _inheritsLoose(TransitionGroup, _React$Component);
+
+  function TransitionGroup(props, context) {
+    var _this;
+
+    _this = _React$Component.call(this, props, context) || this;
+
+    var handleExited = _this.handleExited.bind(_assertThisInitialized(_this)); // Initial children should all be entering, dependent on appear
+
+
+    _this.state = {
+      contextValue: {
+        isMounting: true
+      },
+      handleExited: handleExited,
+      firstRender: true
+    };
+    return _this;
+  }
+
+  var _proto = TransitionGroup.prototype;
+
+  _proto.componentDidMount = function componentDidMount() {
+    this.mounted = true;
+    this.setState({
+      contextValue: {
+        isMounting: false
+      }
+    });
+  };
+
+  _proto.componentWillUnmount = function componentWillUnmount() {
+    this.mounted = false;
+  };
+
+  TransitionGroup.getDerivedStateFromProps = function getDerivedStateFromProps(nextProps, _ref) {
+    var prevChildMapping = _ref.children,
+        handleExited = _ref.handleExited,
+        firstRender = _ref.firstRender;
+    return {
+      children: firstRender ? getInitialChildMapping(nextProps, handleExited) : getNextChildMapping(nextProps, prevChildMapping, handleExited),
+      firstRender: false
+    };
+  } // node is `undefined` when user provided `nodeRef` prop
+  ;
+
+  _proto.handleExited = function handleExited(child, node) {
+    var currentChildMapping = getChildMapping(this.props.children);
+    if (child.key in currentChildMapping) return;
+
+    if (child.props.onExited) {
+      child.props.onExited(node);
+    }
+
+    if (this.mounted) {
+      this.setState(function (state) {
+        var children = (0,esm_extends/* default */.A)({}, state.children);
+
+        delete children[child.key];
+        return {
+          children: children
+        };
+      });
+    }
+  };
+
+  _proto.render = function render() {
+    var _this$props = this.props,
+        Component = _this$props.component,
+        childFactory = _this$props.childFactory,
+        props = (0,objectWithoutPropertiesLoose/* default */.A)(_this$props, ["component", "childFactory"]);
+
+    var contextValue = this.state.contextValue;
+    var children = values(this.state.children).map(childFactory);
+    delete props.appear;
+    delete props.enter;
+    delete props.exit;
+
+    if (Component === null) {
+      return /*#__PURE__*/react.createElement(TransitionGroupContext.Provider, {
+        value: contextValue
+      }, children);
+    }
+
+    return /*#__PURE__*/react.createElement(TransitionGroupContext.Provider, {
+      value: contextValue
+    }, /*#__PURE__*/react.createElement(Component, props, children));
+  };
+
+  return TransitionGroup;
+}(react.Component);
+
+TransitionGroup.propTypes =  false ? 0 : {};
+TransitionGroup.defaultProps = defaultProps;
+/* harmony default export */ const esm_TransitionGroup = (TransitionGroup);
+// EXTERNAL MODULE: ./node_modules/@emotion/react/dist/emotion-react.browser.esm.js
+var emotion_react_browser_esm = __webpack_require__(7437);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/ButtonBase/Ripple.js
+'use client';
+
+
+
+
+
+/**
+ * @ignore - internal component.
+ */
+
+function Ripple(props) {
+  const {
+    className,
+    classes,
+    pulsate = false,
+    rippleX,
+    rippleY,
+    rippleSize,
+    in: inProp,
+    onExited,
+    timeout
+  } = props;
+  const [leaving, setLeaving] = react.useState(false);
+  const rippleClassName = dist_clsx(className, classes.ripple, classes.rippleVisible, pulsate && classes.ripplePulsate);
+  const rippleStyles = {
+    width: rippleSize,
+    height: rippleSize,
+    top: -(rippleSize / 2) + rippleY,
+    left: -(rippleSize / 2) + rippleX
+  };
+  const childClassName = dist_clsx(classes.child, leaving && classes.childLeaving, pulsate && classes.childPulsate);
+  if (!inProp && !leaving) {
+    setLeaving(true);
+  }
+  react.useEffect(() => {
+    if (!inProp && onExited != null) {
+      // react-transition-group#onExited
+      const timeoutId = setTimeout(onExited, timeout);
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }
+    return undefined;
+  }, [onExited, inProp, timeout]);
+  return /*#__PURE__*/(0,jsx_runtime.jsx)("span", {
+    className: rippleClassName,
+    style: rippleStyles,
+    children: /*#__PURE__*/(0,jsx_runtime.jsx)("span", {
+      className: childClassName
+    })
+  });
+}
+ false ? 0 : void 0;
+/* harmony default export */ const ButtonBase_Ripple = (Ripple);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/ButtonBase/touchRippleClasses.js
+
+
+function getTouchRippleUtilityClass(slot) {
+  return generateUtilityClass('MuiTouchRipple', slot);
+}
+const touchRippleClasses = generateUtilityClasses('MuiTouchRipple', ['root', 'ripple', 'rippleVisible', 'ripplePulsate', 'child', 'childLeaving', 'childPulsate']);
+/* harmony default export */ const ButtonBase_touchRippleClasses = (touchRippleClasses);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/ButtonBase/TouchRipple.js
+'use client';
+
+
+
+const TouchRipple_excluded = ["center", "classes", "className"];
+let _ = t => t,
+  _t,
+  _t2,
+  _t3,
+  _t4;
+
+
+
+
+
+
+
+
+
+
+
+const DURATION = 550;
+const DELAY_RIPPLE = 80;
+const enterKeyframe = (0,emotion_react_browser_esm/* keyframes */.i7)(_t || (_t = _`
+  0% {
+    transform: scale(0);
+    opacity: 0.1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+`));
+const exitKeyframe = (0,emotion_react_browser_esm/* keyframes */.i7)(_t2 || (_t2 = _`
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+`));
+const pulsateKeyframe = (0,emotion_react_browser_esm/* keyframes */.i7)(_t3 || (_t3 = _`
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.92);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+`));
+const TouchRippleRoot = styles_styled('span', {
+  name: 'MuiTouchRipple',
+  slot: 'Root'
+})({
+  overflow: 'hidden',
+  pointerEvents: 'none',
+  position: 'absolute',
+  zIndex: 0,
+  top: 0,
+  right: 0,
+  bottom: 0,
+  left: 0,
+  borderRadius: 'inherit'
+});
+
+// This `styled()` function invokes keyframes. `styled-components` only supports keyframes
+// in string templates. Do not convert these styles in JS object as it will break.
+const TouchRippleRipple = styles_styled(ButtonBase_Ripple, {
+  name: 'MuiTouchRipple',
+  slot: 'Ripple'
+})(_t4 || (_t4 = _`
+  opacity: 0;
+  position: absolute;
+
+  &.${0} {
+    opacity: 0.3;
+    transform: scale(1);
+    animation-name: ${0};
+    animation-duration: ${0}ms;
+    animation-timing-function: ${0};
+  }
+
+  &.${0} {
+    animation-duration: ${0}ms;
+  }
+
+  & .${0} {
+    opacity: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: currentColor;
+  }
+
+  & .${0} {
+    opacity: 0;
+    animation-name: ${0};
+    animation-duration: ${0}ms;
+    animation-timing-function: ${0};
+  }
+
+  & .${0} {
+    position: absolute;
+    /* @noflip */
+    left: 0px;
+    top: 0;
+    animation-name: ${0};
+    animation-duration: 2500ms;
+    animation-timing-function: ${0};
+    animation-iteration-count: infinite;
+    animation-delay: 200ms;
+  }
+`), ButtonBase_touchRippleClasses.rippleVisible, enterKeyframe, DURATION, ({
+  theme
+}) => theme.transitions.easing.easeInOut, ButtonBase_touchRippleClasses.ripplePulsate, ({
+  theme
+}) => theme.transitions.duration.shorter, ButtonBase_touchRippleClasses.child, ButtonBase_touchRippleClasses.childLeaving, exitKeyframe, DURATION, ({
+  theme
+}) => theme.transitions.easing.easeInOut, ButtonBase_touchRippleClasses.childPulsate, pulsateKeyframe, ({
+  theme
+}) => theme.transitions.easing.easeInOut);
+
+/**
+ * @ignore - internal component.
+ *
+ * TODO v5: Make private
+ */
+const TouchRipple = /*#__PURE__*/react.forwardRef(function TouchRipple(inProps, ref) {
+  const props = useThemeProps_useThemeProps({
+    props: inProps,
+    name: 'MuiTouchRipple'
+  });
+  const {
+      center: centerProp = false,
+      classes = {},
+      className
+    } = props,
+    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, TouchRipple_excluded);
+  const [ripples, setRipples] = react.useState([]);
+  const nextKey = react.useRef(0);
+  const rippleCallback = react.useRef(null);
+  react.useEffect(() => {
+    if (rippleCallback.current) {
+      rippleCallback.current();
+      rippleCallback.current = null;
+    }
+  }, [ripples]);
+
+  // Used to filter out mouse emulated events on mobile.
+  const ignoringMouseDown = react.useRef(false);
+  // We use a timer in order to only show the ripples for touch "click" like events.
+  // We don't want to display the ripple for touch scroll events.
+  const startTimer = useTimeout();
+
+  // This is the hook called once the previous timeout is ready.
+  const startTimerCommit = react.useRef(null);
+  const container = react.useRef(null);
+  const startCommit = react.useCallback(params => {
+    const {
+      pulsate,
+      rippleX,
+      rippleY,
+      rippleSize,
+      cb
+    } = params;
+    setRipples(oldRipples => [...oldRipples, /*#__PURE__*/(0,jsx_runtime.jsx)(TouchRippleRipple, {
+      classes: {
+        ripple: dist_clsx(classes.ripple, ButtonBase_touchRippleClasses.ripple),
+        rippleVisible: dist_clsx(classes.rippleVisible, ButtonBase_touchRippleClasses.rippleVisible),
+        ripplePulsate: dist_clsx(classes.ripplePulsate, ButtonBase_touchRippleClasses.ripplePulsate),
+        child: dist_clsx(classes.child, ButtonBase_touchRippleClasses.child),
+        childLeaving: dist_clsx(classes.childLeaving, ButtonBase_touchRippleClasses.childLeaving),
+        childPulsate: dist_clsx(classes.childPulsate, ButtonBase_touchRippleClasses.childPulsate)
+      },
+      timeout: DURATION,
+      pulsate: pulsate,
+      rippleX: rippleX,
+      rippleY: rippleY,
+      rippleSize: rippleSize
+    }, nextKey.current)]);
+    nextKey.current += 1;
+    rippleCallback.current = cb;
+  }, [classes]);
+  const start = react.useCallback((event = {}, options = {}, cb = () => {}) => {
+    const {
+      pulsate = false,
+      center = centerProp || options.pulsate,
+      fakeElement = false // For test purposes
+    } = options;
+    if ((event == null ? void 0 : event.type) === 'mousedown' && ignoringMouseDown.current) {
+      ignoringMouseDown.current = false;
+      return;
+    }
+    if ((event == null ? void 0 : event.type) === 'touchstart') {
+      ignoringMouseDown.current = true;
+    }
+    const element = fakeElement ? null : container.current;
+    const rect = element ? element.getBoundingClientRect() : {
+      width: 0,
+      height: 0,
+      left: 0,
+      top: 0
+    };
+
+    // Get the size of the ripple
+    let rippleX;
+    let rippleY;
+    let rippleSize;
+    if (center || event === undefined || event.clientX === 0 && event.clientY === 0 || !event.clientX && !event.touches) {
+      rippleX = Math.round(rect.width / 2);
+      rippleY = Math.round(rect.height / 2);
+    } else {
+      const {
+        clientX,
+        clientY
+      } = event.touches && event.touches.length > 0 ? event.touches[0] : event;
+      rippleX = Math.round(clientX - rect.left);
+      rippleY = Math.round(clientY - rect.top);
+    }
+    if (center) {
+      rippleSize = Math.sqrt((2 * rect.width ** 2 + rect.height ** 2) / 3);
+
+      // For some reason the animation is broken on Mobile Chrome if the size is even.
+      if (rippleSize % 2 === 0) {
+        rippleSize += 1;
+      }
+    } else {
+      const sizeX = Math.max(Math.abs((element ? element.clientWidth : 0) - rippleX), rippleX) * 2 + 2;
+      const sizeY = Math.max(Math.abs((element ? element.clientHeight : 0) - rippleY), rippleY) * 2 + 2;
+      rippleSize = Math.sqrt(sizeX ** 2 + sizeY ** 2);
+    }
+
+    // Touche devices
+    if (event != null && event.touches) {
+      // check that this isn't another touchstart due to multitouch
+      // otherwise we will only clear a single timer when unmounting while two
+      // are running
+      if (startTimerCommit.current === null) {
+        // Prepare the ripple effect.
+        startTimerCommit.current = () => {
+          startCommit({
+            pulsate,
+            rippleX,
+            rippleY,
+            rippleSize,
+            cb
+          });
+        };
+        // Delay the execution of the ripple effect.
+        // We have to make a tradeoff with this delay value.
+        startTimer.start(DELAY_RIPPLE, () => {
+          if (startTimerCommit.current) {
+            startTimerCommit.current();
+            startTimerCommit.current = null;
+          }
+        });
+      }
+    } else {
+      startCommit({
+        pulsate,
+        rippleX,
+        rippleY,
+        rippleSize,
+        cb
+      });
+    }
+  }, [centerProp, startCommit, startTimer]);
+  const pulsate = react.useCallback(() => {
+    start({}, {
+      pulsate: true
+    });
+  }, [start]);
+  const stop = react.useCallback((event, cb) => {
+    startTimer.clear();
+
+    // The touch interaction occurs too quickly.
+    // We still want to show ripple effect.
+    if ((event == null ? void 0 : event.type) === 'touchend' && startTimerCommit.current) {
+      startTimerCommit.current();
+      startTimerCommit.current = null;
+      startTimer.start(0, () => {
+        stop(event, cb);
+      });
+      return;
+    }
+    startTimerCommit.current = null;
+    setRipples(oldRipples => {
+      if (oldRipples.length > 0) {
+        return oldRipples.slice(1);
+      }
+      return oldRipples;
+    });
+    rippleCallback.current = cb;
+  }, [startTimer]);
+  react.useImperativeHandle(ref, () => ({
+    pulsate,
+    start,
+    stop
+  }), [pulsate, start, stop]);
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(TouchRippleRoot, (0,esm_extends/* default */.A)({
+    className: dist_clsx(ButtonBase_touchRippleClasses.root, classes.root, className),
+    ref: container
+  }, other, {
+    children: /*#__PURE__*/(0,jsx_runtime.jsx)(esm_TransitionGroup, {
+      component: null,
+      exit: true,
+      children: ripples
+    })
+  }));
+});
+ false ? 0 : void 0;
+/* harmony default export */ const ButtonBase_TouchRipple = (TouchRipple);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/ButtonBase/buttonBaseClasses.js
+
+
+function getButtonBaseUtilityClass(slot) {
+  return generateUtilityClass_generateUtilityClass('MuiButtonBase', slot);
+}
+const buttonBaseClasses = generateUtilityClasses('MuiButtonBase', ['root', 'disabled', 'focusVisible']);
+/* harmony default export */ const ButtonBase_buttonBaseClasses = (buttonBaseClasses);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/ButtonBase/ButtonBase.js
+'use client';
+
+
+
+const ButtonBase_excluded = ["action", "centerRipple", "children", "className", "component", "disabled", "disableRipple", "disableTouchRipple", "focusRipple", "focusVisibleClassName", "LinkComponent", "onBlur", "onClick", "onContextMenu", "onDragLeave", "onFocus", "onFocusVisible", "onKeyDown", "onKeyUp", "onMouseDown", "onMouseLeave", "onMouseUp", "onTouchEnd", "onTouchMove", "onTouchStart", "tabIndex", "TouchRippleProps", "touchRippleRef", "type"];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const ButtonBase_useUtilityClasses = ownerState => {
+  const {
+    disabled,
+    focusVisible,
+    focusVisibleClassName,
+    classes
+  } = ownerState;
+  const slots = {
+    root: ['root', disabled && 'disabled', focusVisible && 'focusVisible']
+  };
+  const composedClasses = composeClasses(slots, getButtonBaseUtilityClass, classes);
+  if (focusVisible && focusVisibleClassName) {
+    composedClasses.root += ` ${focusVisibleClassName}`;
+  }
+  return composedClasses;
+};
+const ButtonBaseRoot = styles_styled('button', {
+  name: 'MuiButtonBase',
+  slot: 'Root',
+  overridesResolver: (props, styles) => styles.root
+})({
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  position: 'relative',
+  boxSizing: 'border-box',
+  WebkitTapHighlightColor: 'transparent',
+  backgroundColor: 'transparent',
+  // Reset default value
+  // We disable the focus ring for mouse, touch and keyboard users.
+  outline: 0,
+  border: 0,
+  margin: 0,
+  // Remove the margin in Safari
+  borderRadius: 0,
+  padding: 0,
+  // Remove the padding in Firefox
+  cursor: 'pointer',
+  userSelect: 'none',
+  verticalAlign: 'middle',
+  MozAppearance: 'none',
+  // Reset
+  WebkitAppearance: 'none',
+  // Reset
+  textDecoration: 'none',
+  // So we take precedent over the style of a native <a /> element.
+  color: 'inherit',
+  '&::-moz-focus-inner': {
+    borderStyle: 'none' // Remove Firefox dotted outline.
+  },
+  [`&.${ButtonBase_buttonBaseClasses.disabled}`]: {
+    pointerEvents: 'none',
+    // Disable link interactions
+    cursor: 'default'
+  },
+  '@media print': {
+    colorAdjust: 'exact'
+  }
+});
+
+/**
+ * `ButtonBase` contains as few styles as possible.
+ * It aims to be a simple building block for creating a button.
+ * It contains a load of style reset and some focus/ripple logic.
+ */
+const ButtonBase = /*#__PURE__*/react.forwardRef(function ButtonBase(inProps, ref) {
+  const props = useThemeProps_useThemeProps({
+    props: inProps,
+    name: 'MuiButtonBase'
+  });
+  const {
+      action,
+      centerRipple = false,
+      children,
+      className,
+      component = 'button',
+      disabled = false,
+      disableRipple = false,
+      disableTouchRipple = false,
+      focusRipple = false,
+      LinkComponent = 'a',
+      onBlur,
+      onClick,
+      onContextMenu,
+      onDragLeave,
+      onFocus,
+      onFocusVisible,
+      onKeyDown,
+      onKeyUp,
+      onMouseDown,
+      onMouseLeave,
+      onMouseUp,
+      onTouchEnd,
+      onTouchMove,
+      onTouchStart,
+      tabIndex = 0,
+      TouchRippleProps,
+      touchRippleRef,
+      type
+    } = props,
+    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, ButtonBase_excluded);
+  const buttonRef = react.useRef(null);
+  const rippleRef = react.useRef(null);
+  const handleRippleRef = utils_useForkRef(rippleRef, touchRippleRef);
+  const {
+    isFocusVisibleRef,
+    onFocus: handleFocusVisible,
+    onBlur: handleBlurVisible,
+    ref: focusVisibleRef
+  } = utils_useIsFocusVisible();
+  const [focusVisible, setFocusVisible] = react.useState(false);
+  if (disabled && focusVisible) {
+    setFocusVisible(false);
+  }
+  react.useImperativeHandle(action, () => ({
+    focusVisible: () => {
+      setFocusVisible(true);
+      buttonRef.current.focus();
+    }
+  }), []);
+  const [mountedState, setMountedState] = react.useState(false);
+  react.useEffect(() => {
+    setMountedState(true);
+  }, []);
+  const enableTouchRipple = mountedState && !disableRipple && !disabled;
+  react.useEffect(() => {
+    if (focusVisible && focusRipple && !disableRipple && mountedState) {
+      rippleRef.current.pulsate();
+    }
+  }, [disableRipple, focusRipple, focusVisible, mountedState]);
+  function useRippleHandler(rippleAction, eventCallback, skipRippleAction = disableTouchRipple) {
+    return utils_useEventCallback(event => {
+      if (eventCallback) {
+        eventCallback(event);
+      }
+      const ignore = skipRippleAction;
+      if (!ignore && rippleRef.current) {
+        rippleRef.current[rippleAction](event);
+      }
+      return true;
+    });
+  }
+  const handleMouseDown = useRippleHandler('start', onMouseDown);
+  const handleContextMenu = useRippleHandler('stop', onContextMenu);
+  const handleDragLeave = useRippleHandler('stop', onDragLeave);
+  const handleMouseUp = useRippleHandler('stop', onMouseUp);
+  const handleMouseLeave = useRippleHandler('stop', event => {
+    if (focusVisible) {
+      event.preventDefault();
+    }
+    if (onMouseLeave) {
+      onMouseLeave(event);
+    }
+  });
+  const handleTouchStart = useRippleHandler('start', onTouchStart);
+  const handleTouchEnd = useRippleHandler('stop', onTouchEnd);
+  const handleTouchMove = useRippleHandler('stop', onTouchMove);
+  const handleBlur = useRippleHandler('stop', event => {
+    handleBlurVisible(event);
+    if (isFocusVisibleRef.current === false) {
+      setFocusVisible(false);
+    }
+    if (onBlur) {
+      onBlur(event);
+    }
+  }, false);
+  const handleFocus = utils_useEventCallback(event => {
+    // Fix for https://github.com/facebook/react/issues/7769
+    if (!buttonRef.current) {
+      buttonRef.current = event.currentTarget;
+    }
+    handleFocusVisible(event);
+    if (isFocusVisibleRef.current === true) {
+      setFocusVisible(true);
+      if (onFocusVisible) {
+        onFocusVisible(event);
+      }
+    }
+    if (onFocus) {
+      onFocus(event);
+    }
+  });
+  const isNonNativeButton = () => {
+    const button = buttonRef.current;
+    return component && component !== 'button' && !(button.tagName === 'A' && button.href);
+  };
+
+  /**
+   * IE11 shim for https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/repeat
+   */
+  const keydownRef = react.useRef(false);
+  const handleKeyDown = utils_useEventCallback(event => {
+    // Check if key is already down to avoid repeats being counted as multiple activations
+    if (focusRipple && !keydownRef.current && focusVisible && rippleRef.current && event.key === ' ') {
+      keydownRef.current = true;
+      rippleRef.current.stop(event, () => {
+        rippleRef.current.start(event);
+      });
+    }
+    if (event.target === event.currentTarget && isNonNativeButton() && event.key === ' ') {
+      event.preventDefault();
+    }
+    if (onKeyDown) {
+      onKeyDown(event);
+    }
+
+    // Keyboard accessibility for non interactive elements
+    if (event.target === event.currentTarget && isNonNativeButton() && event.key === 'Enter' && !disabled) {
+      event.preventDefault();
+      if (onClick) {
+        onClick(event);
+      }
+    }
+  });
+  const handleKeyUp = utils_useEventCallback(event => {
+    // calling preventDefault in keyUp on a <button> will not dispatch a click event if Space is pressed
+    // https://codesandbox.io/p/sandbox/button-keyup-preventdefault-dn7f0
+    if (focusRipple && event.key === ' ' && rippleRef.current && focusVisible && !event.defaultPrevented) {
+      keydownRef.current = false;
+      rippleRef.current.stop(event, () => {
+        rippleRef.current.pulsate(event);
+      });
+    }
+    if (onKeyUp) {
+      onKeyUp(event);
+    }
+
+    // Keyboard accessibility for non interactive elements
+    if (onClick && event.target === event.currentTarget && isNonNativeButton() && event.key === ' ' && !event.defaultPrevented) {
+      onClick(event);
+    }
+  });
+  let ComponentProp = component;
+  if (ComponentProp === 'button' && (other.href || other.to)) {
+    ComponentProp = LinkComponent;
+  }
+  const buttonProps = {};
+  if (ComponentProp === 'button') {
+    buttonProps.type = type === undefined ? 'button' : type;
+    buttonProps.disabled = disabled;
+  } else {
+    if (!other.href && !other.to) {
+      buttonProps.role = 'button';
+    }
+    if (disabled) {
+      buttonProps['aria-disabled'] = disabled;
+    }
+  }
+  const handleRef = utils_useForkRef(ref, focusVisibleRef, buttonRef);
+  if (false) {}
+  const ownerState = (0,esm_extends/* default */.A)({}, props, {
+    centerRipple,
+    component,
+    disabled,
+    disableRipple,
+    disableTouchRipple,
+    focusRipple,
+    tabIndex,
+    focusVisible
+  });
+  const classes = ButtonBase_useUtilityClasses(ownerState);
+  return /*#__PURE__*/(0,jsx_runtime.jsxs)(ButtonBaseRoot, (0,esm_extends/* default */.A)({
+    as: ComponentProp,
+    className: dist_clsx(classes.root, className),
+    ownerState: ownerState,
+    onBlur: handleBlur,
+    onClick: onClick,
+    onContextMenu: handleContextMenu,
+    onFocus: handleFocus,
+    onKeyDown: handleKeyDown,
+    onKeyUp: handleKeyUp,
+    onMouseDown: handleMouseDown,
+    onMouseLeave: handleMouseLeave,
+    onMouseUp: handleMouseUp,
+    onDragLeave: handleDragLeave,
+    onTouchEnd: handleTouchEnd,
+    onTouchMove: handleTouchMove,
+    onTouchStart: handleTouchStart,
+    ref: handleRef,
+    tabIndex: disabled ? -1 : tabIndex,
+    type: type
+  }, buttonProps, other, {
+    children: [children, enableTouchRipple ?
+    /*#__PURE__*/
+    /* TouchRipple is only needed client-side, x2 boost on the server. */
+    (0,jsx_runtime.jsx)(ButtonBase_TouchRipple, (0,esm_extends/* default */.A)({
+      ref: handleRippleRef,
+      center: centerRipple
+    }, TouchRippleProps)) : null]
+  }));
+});
+ false ? 0 : void 0;
+/* harmony default export */ const ButtonBase_ButtonBase = (ButtonBase);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/Button/buttonClasses.js
+
+
+function getButtonUtilityClass(slot) {
+  return generateUtilityClass_generateUtilityClass('MuiButton', slot);
+}
+const buttonClasses = generateUtilityClasses('MuiButton', ['root', 'text', 'textInherit', 'textPrimary', 'textSecondary', 'textSuccess', 'textError', 'textInfo', 'textWarning', 'outlined', 'outlinedInherit', 'outlinedPrimary', 'outlinedSecondary', 'outlinedSuccess', 'outlinedError', 'outlinedInfo', 'outlinedWarning', 'contained', 'containedInherit', 'containedPrimary', 'containedSecondary', 'containedSuccess', 'containedError', 'containedInfo', 'containedWarning', 'disableElevation', 'focusVisible', 'disabled', 'colorInherit', 'colorPrimary', 'colorSecondary', 'colorSuccess', 'colorError', 'colorInfo', 'colorWarning', 'textSizeSmall', 'textSizeMedium', 'textSizeLarge', 'outlinedSizeSmall', 'outlinedSizeMedium', 'outlinedSizeLarge', 'containedSizeSmall', 'containedSizeMedium', 'containedSizeLarge', 'sizeMedium', 'sizeSmall', 'sizeLarge', 'fullWidth', 'startIcon', 'endIcon', 'icon', 'iconSizeSmall', 'iconSizeMedium', 'iconSizeLarge']);
+/* harmony default export */ const Button_buttonClasses = (buttonClasses);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/ButtonGroup/ButtonGroupContext.js
+
+/**
+ * @ignore - internal component.
+ */
+const ButtonGroupContext = /*#__PURE__*/react.createContext({});
+if (false) {}
+/* harmony default export */ const ButtonGroup_ButtonGroupContext = (ButtonGroupContext);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/ButtonGroup/ButtonGroupButtonContext.js
+
+/**
+ * @ignore - internal component.
+ */
+const ButtonGroupButtonContext = /*#__PURE__*/react.createContext(undefined);
+if (false) {}
+/* harmony default export */ const ButtonGroup_ButtonGroupButtonContext = (ButtonGroupButtonContext);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/Button/Button.js
+'use client';
+
+
+
+const Button_excluded = ["children", "color", "component", "className", "disabled", "disableElevation", "disableFocusRipple", "endIcon", "focusVisibleClassName", "fullWidth", "size", "startIcon", "type", "variant"];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const Button_useUtilityClasses = ownerState => {
+  const {
+    color,
+    disableElevation,
+    fullWidth,
+    size,
+    variant,
+    classes
+  } = ownerState;
+  const slots = {
+    root: ['root', variant, `${variant}${utils_capitalize(color)}`, `size${utils_capitalize(size)}`, `${variant}Size${utils_capitalize(size)}`, `color${utils_capitalize(color)}`, disableElevation && 'disableElevation', fullWidth && 'fullWidth'],
+    label: ['label'],
+    startIcon: ['icon', 'startIcon', `iconSize${utils_capitalize(size)}`],
+    endIcon: ['icon', 'endIcon', `iconSize${utils_capitalize(size)}`]
+  };
+  const composedClasses = composeClasses(slots, getButtonUtilityClass, classes);
+  return (0,esm_extends/* default */.A)({}, classes, composedClasses);
+};
+const commonIconStyles = ownerState => (0,esm_extends/* default */.A)({}, ownerState.size === 'small' && {
+  '& > *:nth-of-type(1)': {
+    fontSize: 18
+  }
+}, ownerState.size === 'medium' && {
+  '& > *:nth-of-type(1)': {
+    fontSize: 20
+  }
+}, ownerState.size === 'large' && {
+  '& > *:nth-of-type(1)': {
+    fontSize: 22
+  }
+});
+const ButtonRoot = styles_styled(ButtonBase_ButtonBase, {
+  shouldForwardProp: prop => styles_rootShouldForwardProp(prop) || prop === 'classes',
+  name: 'MuiButton',
+  slot: 'Root',
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [styles.root, styles[ownerState.variant], styles[`${ownerState.variant}${utils_capitalize(ownerState.color)}`], styles[`size${utils_capitalize(ownerState.size)}`], styles[`${ownerState.variant}Size${utils_capitalize(ownerState.size)}`], ownerState.color === 'inherit' && styles.colorInherit, ownerState.disableElevation && styles.disableElevation, ownerState.fullWidth && styles.fullWidth];
+  }
+})(({
+  theme,
+  ownerState
+}) => {
+  var _theme$palette$getCon, _theme$palette;
+  const inheritContainedBackgroundColor = theme.palette.mode === 'light' ? theme.palette.grey[300] : theme.palette.grey[800];
+  const inheritContainedHoverBackgroundColor = theme.palette.mode === 'light' ? theme.palette.grey.A100 : theme.palette.grey[700];
+  return (0,esm_extends/* default */.A)({}, theme.typography.button, {
+    minWidth: 64,
+    padding: '6px 16px',
+    borderRadius: (theme.vars || theme).shape.borderRadius,
+    transition: theme.transitions.create(['background-color', 'box-shadow', 'border-color', 'color'], {
+      duration: theme.transitions.duration.short
+    }),
+    '&:hover': (0,esm_extends/* default */.A)({
+      textDecoration: 'none',
+      backgroundColor: theme.vars ? `rgba(${theme.vars.palette.text.primaryChannel} / ${theme.vars.palette.action.hoverOpacity})` : (0,colorManipulator/* alpha */.X4)(theme.palette.text.primary, theme.palette.action.hoverOpacity),
+      // Reset on touch devices, it doesn't add specificity
+      '@media (hover: none)': {
+        backgroundColor: 'transparent'
+      }
+    }, ownerState.variant === 'text' && ownerState.color !== 'inherit' && {
+      backgroundColor: theme.vars ? `rgba(${theme.vars.palette[ownerState.color].mainChannel} / ${theme.vars.palette.action.hoverOpacity})` : (0,colorManipulator/* alpha */.X4)(theme.palette[ownerState.color].main, theme.palette.action.hoverOpacity),
+      // Reset on touch devices, it doesn't add specificity
+      '@media (hover: none)': {
+        backgroundColor: 'transparent'
+      }
+    }, ownerState.variant === 'outlined' && ownerState.color !== 'inherit' && {
+      border: `1px solid ${(theme.vars || theme).palette[ownerState.color].main}`,
+      backgroundColor: theme.vars ? `rgba(${theme.vars.palette[ownerState.color].mainChannel} / ${theme.vars.palette.action.hoverOpacity})` : (0,colorManipulator/* alpha */.X4)(theme.palette[ownerState.color].main, theme.palette.action.hoverOpacity),
+      // Reset on touch devices, it doesn't add specificity
+      '@media (hover: none)': {
+        backgroundColor: 'transparent'
+      }
+    }, ownerState.variant === 'contained' && {
+      backgroundColor: theme.vars ? theme.vars.palette.Button.inheritContainedHoverBg : inheritContainedHoverBackgroundColor,
+      boxShadow: (theme.vars || theme).shadows[4],
+      // Reset on touch devices, it doesn't add specificity
+      '@media (hover: none)': {
+        boxShadow: (theme.vars || theme).shadows[2],
+        backgroundColor: (theme.vars || theme).palette.grey[300]
+      }
+    }, ownerState.variant === 'contained' && ownerState.color !== 'inherit' && {
+      backgroundColor: (theme.vars || theme).palette[ownerState.color].dark,
+      // Reset on touch devices, it doesn't add specificity
+      '@media (hover: none)': {
+        backgroundColor: (theme.vars || theme).palette[ownerState.color].main
+      }
+    }),
+    '&:active': (0,esm_extends/* default */.A)({}, ownerState.variant === 'contained' && {
+      boxShadow: (theme.vars || theme).shadows[8]
+    }),
+    [`&.${Button_buttonClasses.focusVisible}`]: (0,esm_extends/* default */.A)({}, ownerState.variant === 'contained' && {
+      boxShadow: (theme.vars || theme).shadows[6]
+    }),
+    [`&.${Button_buttonClasses.disabled}`]: (0,esm_extends/* default */.A)({
+      color: (theme.vars || theme).palette.action.disabled
+    }, ownerState.variant === 'outlined' && {
+      border: `1px solid ${(theme.vars || theme).palette.action.disabledBackground}`
+    }, ownerState.variant === 'contained' && {
+      color: (theme.vars || theme).palette.action.disabled,
+      boxShadow: (theme.vars || theme).shadows[0],
+      backgroundColor: (theme.vars || theme).palette.action.disabledBackground
+    })
+  }, ownerState.variant === 'text' && {
+    padding: '6px 8px'
+  }, ownerState.variant === 'text' && ownerState.color !== 'inherit' && {
+    color: (theme.vars || theme).palette[ownerState.color].main
+  }, ownerState.variant === 'outlined' && {
+    padding: '5px 15px',
+    border: '1px solid currentColor'
+  }, ownerState.variant === 'outlined' && ownerState.color !== 'inherit' && {
+    color: (theme.vars || theme).palette[ownerState.color].main,
+    border: theme.vars ? `1px solid rgba(${theme.vars.palette[ownerState.color].mainChannel} / 0.5)` : `1px solid ${(0,colorManipulator/* alpha */.X4)(theme.palette[ownerState.color].main, 0.5)}`
+  }, ownerState.variant === 'contained' && {
+    color: theme.vars ?
+    // this is safe because grey does not change between default light/dark mode
+    theme.vars.palette.text.primary : (_theme$palette$getCon = (_theme$palette = theme.palette).getContrastText) == null ? void 0 : _theme$palette$getCon.call(_theme$palette, theme.palette.grey[300]),
+    backgroundColor: theme.vars ? theme.vars.palette.Button.inheritContainedBg : inheritContainedBackgroundColor,
+    boxShadow: (theme.vars || theme).shadows[2]
+  }, ownerState.variant === 'contained' && ownerState.color !== 'inherit' && {
+    color: (theme.vars || theme).palette[ownerState.color].contrastText,
+    backgroundColor: (theme.vars || theme).palette[ownerState.color].main
+  }, ownerState.color === 'inherit' && {
+    color: 'inherit',
+    borderColor: 'currentColor'
+  }, ownerState.size === 'small' && ownerState.variant === 'text' && {
+    padding: '4px 5px',
+    fontSize: theme.typography.pxToRem(13)
+  }, ownerState.size === 'large' && ownerState.variant === 'text' && {
+    padding: '8px 11px',
+    fontSize: theme.typography.pxToRem(15)
+  }, ownerState.size === 'small' && ownerState.variant === 'outlined' && {
+    padding: '3px 9px',
+    fontSize: theme.typography.pxToRem(13)
+  }, ownerState.size === 'large' && ownerState.variant === 'outlined' && {
+    padding: '7px 21px',
+    fontSize: theme.typography.pxToRem(15)
+  }, ownerState.size === 'small' && ownerState.variant === 'contained' && {
+    padding: '4px 10px',
+    fontSize: theme.typography.pxToRem(13)
+  }, ownerState.size === 'large' && ownerState.variant === 'contained' && {
+    padding: '8px 22px',
+    fontSize: theme.typography.pxToRem(15)
+  }, ownerState.fullWidth && {
+    width: '100%'
+  });
+}, ({
+  ownerState
+}) => ownerState.disableElevation && {
+  boxShadow: 'none',
+  '&:hover': {
+    boxShadow: 'none'
+  },
+  [`&.${Button_buttonClasses.focusVisible}`]: {
+    boxShadow: 'none'
+  },
+  '&:active': {
+    boxShadow: 'none'
+  },
+  [`&.${Button_buttonClasses.disabled}`]: {
+    boxShadow: 'none'
+  }
+});
+const ButtonStartIcon = styles_styled('span', {
+  name: 'MuiButton',
+  slot: 'StartIcon',
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [styles.startIcon, styles[`iconSize${utils_capitalize(ownerState.size)}`]];
+  }
+})(({
+  ownerState
+}) => (0,esm_extends/* default */.A)({
+  display: 'inherit',
+  marginRight: 8,
+  marginLeft: -4
+}, ownerState.size === 'small' && {
+  marginLeft: -2
+}, commonIconStyles(ownerState)));
+const ButtonEndIcon = styles_styled('span', {
+  name: 'MuiButton',
+  slot: 'EndIcon',
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [styles.endIcon, styles[`iconSize${utils_capitalize(ownerState.size)}`]];
+  }
+})(({
+  ownerState
+}) => (0,esm_extends/* default */.A)({
+  display: 'inherit',
+  marginRight: -4,
+  marginLeft: 8
+}, ownerState.size === 'small' && {
+  marginRight: -2
+}, commonIconStyles(ownerState)));
+const Button = /*#__PURE__*/react.forwardRef(function Button(inProps, ref) {
+  // props priority: `inProps` > `contextProps` > `themeDefaultProps`
+  const contextProps = react.useContext(ButtonGroup_ButtonGroupContext);
+  const buttonGroupButtonContextPositionClassName = react.useContext(ButtonGroup_ButtonGroupButtonContext);
+  const resolvedProps = resolveProps(contextProps, inProps);
+  const props = useThemeProps_useThemeProps({
+    props: resolvedProps,
+    name: 'MuiButton'
+  });
+  const {
+      children,
+      color = 'primary',
+      component = 'button',
+      className,
+      disabled = false,
+      disableElevation = false,
+      disableFocusRipple = false,
+      endIcon: endIconProp,
+      focusVisibleClassName,
+      fullWidth = false,
+      size = 'medium',
+      startIcon: startIconProp,
+      type,
+      variant = 'text'
+    } = props,
+    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, Button_excluded);
+  const ownerState = (0,esm_extends/* default */.A)({}, props, {
+    color,
+    component,
+    disabled,
+    disableElevation,
+    disableFocusRipple,
+    fullWidth,
+    size,
+    type,
+    variant
+  });
+  const classes = Button_useUtilityClasses(ownerState);
+  const startIcon = startIconProp && /*#__PURE__*/(0,jsx_runtime.jsx)(ButtonStartIcon, {
+    className: classes.startIcon,
+    ownerState: ownerState,
+    children: startIconProp
+  });
+  const endIcon = endIconProp && /*#__PURE__*/(0,jsx_runtime.jsx)(ButtonEndIcon, {
+    className: classes.endIcon,
+    ownerState: ownerState,
+    children: endIconProp
+  });
+  const positionClassName = buttonGroupButtonContextPositionClassName || '';
+  return /*#__PURE__*/(0,jsx_runtime.jsxs)(ButtonRoot, (0,esm_extends/* default */.A)({
+    ownerState: ownerState,
+    className: dist_clsx(contextProps.className, classes.root, className, positionClassName),
+    component: component,
+    disabled: disabled,
+    focusRipple: !disableFocusRipple,
+    focusVisibleClassName: dist_clsx(classes.focusVisible, focusVisibleClassName),
+    ref: ref,
+    type: type
+  }, other, {
+    classes: classes,
+    children: [startIcon, children, endIcon]
+  }));
+});
+ false ? 0 : void 0;
+/* harmony default export */ const Button_Button = (Button);
+;// CONCATENATED MODULE: ./views/components/Blocks/ContainedButton.js
+
+
+
+const ContainedButton = props => {
+  const {
+    children,
+    type,
+    onClick,
+    sx,
+    disabled
+  } = props;
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(Button_Button, {
+    disabled: disabled,
+    type: type,
+    onClick: onClick,
+    variant: "contained",
+    sx: {
+      ...sx,
+      maxWidth: 250
+    },
+    size: "medium",
+    children: children
+  });
+};
+/* harmony default export */ const Blocks_ContainedButton = (ContainedButton);
+;// CONCATENATED MODULE: ./views/components/Blocks/UserLinkInputs.js
+
+
+
+
+const UserLinkInputs = props => {
+  const {
+    titleInput,
+    hrefInput,
+    deleteOne,
+    key
+  } = props;
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
+    children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Grid_Grid, {
+      fullWidth: true,
+      container: true,
+      spacing: 2,
+      alignItems: "center",
+      justifyContent: "center",
+      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
+        xs: 12,
+        md: 4,
+        item: true,
+        children: /*#__PURE__*/(0,jsx_runtime.jsxs)(FormControl_FormControl, {
+          children: [/*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
+            children: "Title"
+          }), titleInput]
+        })
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
+        xs: 12,
+        md: 4,
+        item: true,
+        children: /*#__PURE__*/(0,jsx_runtime.jsxs)(FormControl_FormControl, {
+          children: [/*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
+            children: "Href"
+          }), hrefInput]
+        })
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
+        xs: 12,
+        md: 4,
+        item: true,
+        children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+          onClick: deleteOne,
+          type: "button",
+          children: "Delete Link"
+        })
+      })]
+    }, key)
+  });
+};
+/* harmony default export */ const Blocks_UserLinkInputs = (UserLinkInputs);
+;// CONCATENATED MODULE: ./views/components/Blocks/ExperienceForm.js
 
 
 
@@ -21982,154 +21730,23 @@ function LinksComponent() {
 
 const ExperienceForm = props => {
   const {
-    handleSubmit,
-    control,
-    formState: {
-      isDirty,
-      isValid
-    }
-  } = useForm();
-  const {
-    key,
-    fetchUrl,
-    companyNameDefault,
-    jobTitleDefault,
-    startDateDefault,
-    endDateDefault,
-    deleteOne
+    companyNameComp,
+    jobTitleComp,
+    startDateComp,
+    endDateComp,
+    deleteOne,
+    key
   } = props;
-  const [saveText, setSaveText] = react.useState('Save Experience?');
-  const handleSave = async data => {
-    const postUserName = await fetch(fetchUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        company: data.companyName,
-        title: data.jobTitle,
-        year_started: data.startDate,
-        year_ended: data.endDate
-      })
-    });
-    if (postUserName.status === 201) {
-      setSaveText('Saved!');
-    }
-    return postUserName.json();
-  };
-  return /*#__PURE__*/(0,jsx_runtime.jsxs)("form", {
-    onSubmit: handleSubmit(data => handleSave(data)),
-    children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
-      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
-        id: "companyName",
-        label: "Company Name",
-        children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-          control: control,
-          name: "companyName",
-          rules: {
-            required: 'Please enter the company name'
-          },
-          render: _ref => {
-            let {
-              field: {
-                onChange,
-                onBlur,
-                value,
-                ref
-              }
-            } = _ref;
-            return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-              onChange: onChange,
-              onBlur: onBlur,
-              value: value,
-              inputRef: ref,
-              type: "text",
-              "aria-labelledby": "companyName"
-            });
-          },
-          defaultValue: companyNameDefault
-        })
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
-        id: "jobTitle",
-        label: "Job Title",
-        children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-          control: control,
-          name: "jobTitle",
-          rules: {
-            required: 'Please enter the position title you held in this role'
-          },
-          render: _ref2 => {
-            let {
-              field: {
-                onChange,
-                onBlur,
-                value,
-                ref
-              }
-            } = _ref2;
-            return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-              onChange: onChange,
-              onBlur: onBlur,
-              value: value,
-              inputRef: ref,
-              type: "text",
-              "aria-labelledby": "jobTitle"
-            });
-          },
-          defaultValue: jobTitleDefault
-        })
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-        control: control,
-        name: "startDate",
-        rules: {
-          required: 'Please enter the first date you started in this position'
-        },
-        render: _ref3 => {
-          let {
-            field: {
-              onChange,
-              onBlur,
-              ref,
-              value
-            }
-          } = _ref3;
-          return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-            type: "date",
-            inputRef: ref,
-            onChange: onChange,
-            onBlur: onBlur,
-            value: value,
-            label: "Start Date"
-          });
-        },
-        defaultValue: startDateDefault
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-        control: control,
-        name: "endDate",
-        rules: {
-          required: 'Please Enter the date of your last day in this position'
-        },
-        render: _ref4 => {
-          let {
-            field: {
-              onChange,
-              onBlur,
-              ref,
-              value
-            }
-          } = _ref4;
-          return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-            type: "date",
-            onChange: onChange,
-            onBlur: onBlur,
-            inputRef: ref,
-            value: value,
-            label: "End Date"
-          });
-        },
-        defaultValue: endDateDefault
-      })]
-    }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Grid_Grid, {
+  return /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
+    children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
+      id: "companyName",
+      label: "Company Name",
+      children: companyNameComp
+    }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
+      id: "jobTitle",
+      label: "Job Title",
+      children: jobTitleComp
+    }), startDateComp, endDateComp, /*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
       fullWidth: true,
       container: true,
       spacing: 2,
@@ -22138,71 +21755,58 @@ const ExperienceForm = props => {
       sx: {
         marginTop: '0'
       },
-      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
+      children: /*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
         item: true,
         xs: 12,
-        md: 6,
-        children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-          type: "submit",
-          children: saveText
-        })
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
-        item: true,
-        xs: 12,
-        md: 6,
         children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
           onClick: deleteOne,
           type: "button",
           children: "Delete Experience"
         })
-      })]
+      })
     })]
   }, key);
 };
 /* harmony default export */ const Blocks_ExperienceForm = (ExperienceForm);
-;// CONCATENATED MODULE: ./views/components/EditExperience.js
-
-
-
-const EditExperience = props => {
-  const {
-    expId,
-    companyNameDefault,
-    jobTitleDefault,
-    startDateDefault,
-    endDateDefault,
-    deleteOne
-  } = props;
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ExperienceForm, {
-    fetchUrl: `http://localhost:3000/api/experience/${expId}`,
-    companyNameDefault: companyNameDefault,
-    jobTitleDefault: jobTitleDefault,
-    startDateDefault: startDateDefault,
-    endDateDefault: endDateDefault,
-    deleteOne: deleteOne
-  }, expId);
+;// CONCATENATED MODULE: ./views/components/getters/wrapPromise.js
+const wrapPromise = promise => {
+  let status = 'pending';
+  let response;
+  const suspender = promise.then(res => {
+    status = 'success';
+    response = res;
+  }, err => {
+    status = 'error';
+    response = err;
+  });
+  const read = () => {
+    switch (status) {
+      case 'pending':
+        throw suspender;
+      case 'error':
+        throw response;
+      default:
+        return response;
+    }
+  };
+  return {
+    read
+  };
 };
-/* harmony default export */ const components_EditExperience = (EditExperience);
-;// CONCATENATED MODULE: ./views/components/CreateExperience.js
+/* harmony default export */ const getters_wrapPromise = (wrapPromise);
+;// CONCATENATED MODULE: ./views/components/getters/fetchData.js
 
-
-
-const CreateExperience = props => {
-  const {
-    key,
-    deleteOne
-  } = props;
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ExperienceForm, {
-    fetchUrl: "http://localhost:3000/api/experience",
-    companyNameDefault: "",
-    jobTitleDefault: "",
-    startDateDefault: "",
-    endDateDefault: "",
-    deleteOne: deleteOne
-  }, key);
+const fetchData = url => {
+  const promise = fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(res => res.json()).then(res => res.data);
+  return getters_wrapPromise(promise);
 };
-/* harmony default export */ const components_CreateExperience = (CreateExperience);
-;// CONCATENATED MODULE: ./views/components/Blocks/ExperienceComponent.js
+/* harmony default export */ const getters_fetchData = (fetchData);
+;// CONCATENATED MODULE: ./views/components/Blocks/EditUserComponent.js
 
 
 
@@ -22211,22 +21815,63 @@ const CreateExperience = props => {
 
 
 
-const getExperience = getters_fetchData('http://localhost:3000/api/experience');
-function ExperienceComponent() {
+
+const getUser = getters_fetchData('http://localhost:3000/api/user');
+const EditUserComponent = () => {
+  const userDetails = getUser.read();
+  const allSavedLinks = userDetails && userDetails.length > 0 ? userDetails[0].links : null;
+  const allSavedExp = userDetails && userDetails.length > 0 ? userDetails[0].experience : null;
   const {
+    handleSubmit,
+    control,
     formState: {
-      isDirty,
       isValid
     }
   } = useForm();
-  const allSavedExperience = getExperience.read();
+  const [linksArr, setLinksArr] = react.useState([]);
+  const [newLinksArr, setNewLinksArr] = react.useState([]);
   const [expArr, setExpArr] = react.useState([]);
   const [newExpsArr, setNewExpsArr] = react.useState([]);
   react.useEffect(() => {
-    if (allSavedExperience && allSavedExperience.length > 0) {
-      setExpArr(allSavedExperience);
+    if (allSavedLinks && allSavedLinks.length > 0) {
+      setLinksArr(allSavedLinks);
     }
-  }, [allSavedExperience, expArr]);
+    if (allSavedExp && allSavedExp.length > 0) {
+      setExpArr(allSavedExp);
+    }
+  }, [linksArr, expArr, userDetails]);
+  const addMoreLinks = () => {
+    setNewLinksArr(prev => prev.concat(prev.length));
+  };
+  const deleteNewLinks = id => {
+    if (newLinksArr.length === 1) {
+      setNewLinksArr([]);
+    } else {
+      setNewLinksArr(prev => prev.splice(id, 1));
+    }
+  };
+  const addMoreExp = () => {
+    setNewExpsArr(prev => prev.concat(prev.length));
+  };
+  const deleteNewExp = id => {
+    if (newExpsArr.length === 1) {
+      setNewExpsArr([]);
+    } else {
+      setNewExpsArr(prev => prev.splice(id, 1));
+    }
+  };
+  const deleteThisLink = async id => {
+    const promise = await fetch(`http://localhost:3000/api/user/links/${id}/${userDetails[0]._id}`, {
+      method: 'DELETE'
+    });
+    return promise;
+  };
+  const deleteThisExp = async id => {
+    const promise = await fetch(`http://localhost:3000/api/user/experience/${id}/${userDetails[0]._id}`, {
+      method: 'DELETE'
+    });
+    return promise;
+  };
   const parseDate = date => {
     const dateFormat = new Date(date);
     const year = dateFormat.getFullYear();
@@ -22238,86 +21883,132 @@ function ExperienceComponent() {
     });
     return `${year}-${month}-${day}`;
   };
-  const addMoreExp = () => {
-    setNewExpsArr(prev => prev.concat(prev.length));
-  };
-  const deleteThisExp = async id => {
-    const promise = await fetch(`http://localhost:3000/api/experience/${id}`, {
-      method: 'DELETE'
+  const getEditedLinkData = data => {
+    let linksArr = [];
+    if (!allSavedLinks || allSavedLinks.length === 0) {
+      return;
+    }
+    const dataExist = allSavedLinks.filter(l => l._id);
+    const linkIds = dataExist.map(d => d._id);
+    linkIds.forEach(link => {
+      let obj = {};
+      const linkTitle = `link_title_${link}`;
+      const linkHref = `link_href_${link}`;
+      if (linkTitle) {
+        obj['title'] = data[linkTitle];
+      }
+      if (linkHref) {
+        obj['href'] = data[linkHref];
+      }
+      obj['_id'] = link;
+      linksArr.push(obj);
     });
-    if (allSavedExperience && allSavedExperience.length > 0) {
-      setExpArr(allSavedExperience);
-    }
-    return promise;
+    return linksArr;
   };
-  const deleteNewExp = id => {
-    if (newExpsArr.length === 1) {
-      setNewExpsArr([]);
-    } else {
-      setNewExpsArr(prev => prev.splice(id, 1));
-    }
+  const getNewLinkData = data => {
+    let linksArr = [];
+    const dataKeys = Object.keys(data);
+    const linkData = dataKeys.filter(d => d.includes('link_title'));
+    linkData.forEach((key, idx) => {
+      let obj = {};
+      const linkTitle = `link_title_${idx}`;
+      const linkHref = `link_href_${idx}`;
+      if (!linkTitle) {
+        return;
+      }
+      if (linkTitle) {
+        obj['title'] = data[linkTitle];
+      }
+      if (linkHref) {
+        obj['href'] = data[linkHref];
+      }
+      linksArr.push(obj);
+    });
+    return linksArr;
   };
-  return /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
-    children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-      variant: "body2",
-      children: "Work Experience"
-    }), /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
-      children: [expArr.length > 0 && expArr.map(exp => /*#__PURE__*/(0,jsx_runtime.jsx)(components_EditExperience, {
-        expId: exp._id,
-        companyNameDefault: exp.company,
-        jobTitleDefault: exp.title,
-        startDateDefault: parseDate(exp.year_started),
-        endDateDefault: parseDate(exp.year_ended),
-        deleteOne: () => deleteThisExp(exp._id),
-        onAddExp: addMoreExp
-      })), newExpsArr.length > 0 && newExpsArr.map(exp => /*#__PURE__*/(0,jsx_runtime.jsx)(components_CreateExperience, {
-        onAddExp: addMoreExp,
-        deleteOne: () => deleteNewExp(newExpsArr.indexOf(exp))
-      }, newExpsArr.indexOf(exp)))]
-    }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-      disabled: !isValid,
-      onClick: addMoreExp,
-      type: "button",
-      children: "Add More Experience?"
-    })]
-  });
-}
-;// CONCATENATED MODULE: ./views/components/Blocks/UserComponent.js
-
-
-
-
-
-
-
-
-
-const UserComponent_getExperience = getters_fetchData('http://localhost:3000/api/experience');
-const UserComponent_getLinks = getters_fetchData('http://localhost:3000/api/links');
-const UserComponent = props => {
-  const {
-    fetchUrl,
-    emailDefault,
-    fullNameDefault
-  } = props;
-  const {
-    control,
-    handleSubmit
-  } = useForm();
-  const allSavedExperience = UserComponent_getExperience.read();
-  const allSavedLinks = UserComponent_getLinks.read();
-  const expArrIds = [];
-  const linksArrIds = [];
-  react.useEffect(() => {
-    if (allSavedExperience && allSavedExperience.length > 0) {
-      allSavedExperience.forEach(li => expArrIds.push(li._id));
+  const getEditedExperienceData = data => {
+    let expArr = [];
+    if (!allSavedExp || allSavedExp.length === 0) {
+      return;
     }
-    if (allSavedLinks && allSavedLinks.length > 0) {
-      allSavedLinks.forEach(li => linksArrIds.push(li._id));
-    }
-  }, [allSavedExperience, allSavedLinks, expArrIds, linksArrIds]);
+    const dataExist = allSavedExp.filter(l => l._id);
+    const expIds = dataExist.map(d => d._id);
+    expIds.forEach(exp => {
+      let obj = {};
+      const expCompany = `company_name_${exp}`;
+      const expTitle = `job_title_${exp}`;
+      const expStart = `start_date_${exp}`;
+      const expEnd = `end_date_${exp}`;
+      if (expCompany) {
+        obj['company'] = data[expCompany];
+      }
+      if (expTitle) {
+        obj['title'] = data[expTitle];
+      }
+      if (expStart) {
+        obj['year_started'] = data[expStart];
+      }
+      if (expEnd) {
+        obj['year_ended'] = data[expEnd];
+      }
+      obj['_id'] = exp;
+      expArr.push(obj);
+    });
+    return expArr;
+  };
+  const getNewExperienceData = data => {
+    let expArr = [];
+    const dataKeys = Object.keys(data);
+    const expData = dataKeys.filter(d => d.includes('job_title_'));
+    expData.forEach((key, idx) => {
+      let obj = {};
+      const expCompany = `company_name_${idx}`;
+      if (!expCompany) {
+        return;
+      }
+      const expTitle = `job_title_${idx}`;
+      const expStart = `start_date_${idx}`;
+      const expEnd = `end_date_${idx}`;
+      if (expCompany) {
+        obj['company'] = data[expCompany];
+      }
+      if (expTitle) {
+        obj['title'] = data[expTitle];
+      }
+      if (expStart) {
+        obj['year_started'] = data[expStart];
+      }
+      if (expEnd) {
+        obj['year_ended'] = data[expEnd];
+      }
+      expArr.push(obj);
+    });
+    return expArr;
+  };
   const handleSave = async data => {
-    const postUserName = await fetch(fetchUrl, {
+    let validNewLinks = [];
+    let validNewExp = [];
+    let editedLinks = getEditedLinkData(data);
+    const newLinks = getNewLinkData(data);
+    let editedExp = getEditedExperienceData(data);
+    const newExp = getNewExperienceData(data);
+    if (newLinks && newLinks.length > 0) {
+      validNewLinks = newLinks.filter(li => li.title !== undefined);
+      if (editedLinks && editedLinks.length > 0) {
+        validNewLinks.forEach(link => editedLinks.push(link));
+      } else {
+        editedLinks = validNewLinks;
+      }
+    }
+    if (newExp && newExp.length > 0) {
+      validNewExp = newExp.filter(ex => ex.title !== undefined);
+      if (editedExp && editedExp.length > 0) {
+        validNewExp.forEach(exp => editedExp.push(exp));
+      } else {
+        editedExp = validNewExp;
+      }
+    }
+    const postUserName = await fetch(`http://localhost:3000/api/user/${userDetails[0]._id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -22325,14 +22016,16 @@ const UserComponent = props => {
       body: JSON.stringify({
         name: data.fullName,
         email: data.email,
-        links: linksArrIds,
-        experience: expArrIds
+        $set: {
+          links: editedLinks,
+          experience: editedExp
+        }
       })
     });
     return postUserName.json();
   };
-  return /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
-    children: [/*#__PURE__*/(0,jsx_runtime.jsx)("form", {
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
+    children: /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
       onSubmit: handleSubmit(data => handleSave(data)),
       children: /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
         sx: {
@@ -22344,6 +22037,9 @@ const UserComponent = props => {
           children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
             control: control,
             name: "fullName",
+            rules: {
+              required: true
+            },
             render: _ref => {
               let {
                 field: {
@@ -22362,7 +22058,7 @@ const UserComponent = props => {
                 "aria-labelledby": "email"
               });
             },
-            defaultValue: fullNameDefault
+            defaultValue: userDetails[0].name
           })
         }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
           id: "email",
@@ -22370,6 +22066,9 @@ const UserComponent = props => {
           children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
             control: control,
             name: "email",
+            rules: {
+              required: true
+            },
             render: _ref2 => {
               let {
                 field: {
@@ -22388,48 +22087,700 @@ const UserComponent = props => {
                 "aria-labelledby": "email"
               });
             },
-            defaultValue: emailDefault
+            defaultValue: userDetails[0].email
           })
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          variant: "body2",
+          children: "Add Links"
+        }), /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
+          children: [linksArr.length > 0 && linksArr.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_UserLinkInputs, {
+            defaultHref: link.href,
+            deleteOne: () => deleteThisLink(link._id),
+            titleInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+              control: control,
+              name: `link_title_${link._id}`,
+              rules: {
+                required: true
+              },
+              render: _ref3 => {
+                let {
+                  field: {
+                    onChange,
+                    onBlur,
+                    value,
+                    ref
+                  }
+                } = _ref3;
+                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                  onChange: onChange,
+                  onBlur: onBlur,
+                  value: value,
+                  inputRef: ref,
+                  type: "text"
+                });
+              },
+              defaultValue: link.title
+            }),
+            hrefInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+              control: control,
+              name: `link_href_${link._id}`,
+              rules: {
+                required: true
+              },
+              render: _ref4 => {
+                let {
+                  field: {
+                    onChange,
+                    onBlur,
+                    value,
+                    ref
+                  }
+                } = _ref4;
+                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                  onChange: onChange,
+                  onBlur: onBlur,
+                  value: value,
+                  inputRef: ref,
+                  type: "text"
+                });
+              },
+              defaultValue: link.href
+            })
+          }, link._id)), newLinksArr.length > 0 && newLinksArr.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_UserLinkInputs, {
+            deleteOne: () => deleteNewLinks(newLinksArr.indexOf(link)),
+            titleInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+              control: control,
+              name: `link_title_${newLinksArr.indexOf(link)}`,
+              rules: {
+                required: true
+              },
+              render: _ref5 => {
+                let {
+                  field: {
+                    onChange,
+                    onBlur,
+                    value,
+                    ref
+                  }
+                } = _ref5;
+                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                  onChange: onChange,
+                  onBlur: onBlur,
+                  value: value,
+                  inputRef: ref,
+                  type: "text"
+                });
+              },
+              defaultValue: ""
+            }),
+            hrefInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+              control: control,
+              name: `link_href_${newLinksArr.indexOf(link)}`,
+              rules: {
+                required: true
+              },
+              render: _ref6 => {
+                let {
+                  field: {
+                    onChange,
+                    onBlur,
+                    value,
+                    ref
+                  }
+                } = _ref6;
+                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                  onChange: onChange,
+                  onBlur: onBlur,
+                  value: value,
+                  inputRef: ref,
+                  type: "text"
+                });
+              },
+              defaultValue: ""
+            })
+          }, newLinksArr.indexOf(link))), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+            type: "button",
+            onClick: addMoreLinks,
+            children: "Add More Links?"
+          })]
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          variant: "body2",
+          children: "Work Experience"
+        }), expArr.length > 0 && expArr.map(exp => /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ExperienceForm, {
+          deleteOne: () => deleteThisExp(exp._id),
+          companyNameComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `company_name_${exp._id}`,
+            rules: {
+              required: 'Please enter the company name'
+            },
+            render: _ref7 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  value,
+                  ref
+                }
+              } = _ref7;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                inputRef: ref,
+                type: "text",
+                "aria-labelledby": "companyName"
+              });
+            },
+            defaultValue: exp.company
+          }),
+          jobTitleComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `job_title_${exp._id}`,
+            rules: {
+              required: 'Please enter the position title you held in this role'
+            },
+            render: _ref8 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  value,
+                  ref
+                }
+              } = _ref8;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                inputRef: ref,
+                type: "text",
+                "aria-labelledby": "jobTitle"
+              });
+            },
+            defaultValue: exp.title
+          }),
+          startDateComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `start_date_${exp._id}`,
+            rules: {
+              required: 'Please enter the first date you started in this position'
+            },
+            render: _ref9 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  ref,
+                  value
+                }
+              } = _ref9;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                type: "date",
+                inputRef: ref,
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                label: "Start Date"
+              });
+            },
+            defaultValue: parseDate(exp.year_started)
+          }),
+          endDateComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `end_date_${exp._id}`,
+            rules: {
+              required: 'Please Enter the date of your last day in this position'
+            },
+            render: _ref10 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  ref,
+                  value
+                }
+              } = _ref10;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                type: "date",
+                onChange: onChange,
+                onBlur: onBlur,
+                inputRef: ref,
+                value: value,
+                label: "End Date"
+              });
+            },
+            defaultValue: parseDate(exp.year_ended)
+          })
+        }, exp._id)), newExpsArr.length > 0 && newExpsArr.map(exp => /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ExperienceForm, {
+          deleteOne: () => deleteNewExp(newExpsArr.indexOf(exp)),
+          companyNameComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `company_name_${newExpsArr.indexOf(exp)}`,
+            rules: {
+              required: 'Please enter the company name'
+            },
+            render: _ref11 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  value,
+                  ref
+                }
+              } = _ref11;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                inputRef: ref,
+                type: "text",
+                "aria-labelledby": "companyName"
+              });
+            },
+            defaultValue: ""
+          }),
+          jobTitleComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `job_title_${newExpsArr.indexOf(exp)}`,
+            rules: {
+              required: 'Please enter the position title you held in this role'
+            },
+            render: _ref12 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  value,
+                  ref
+                }
+              } = _ref12;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                inputRef: ref,
+                type: "text",
+                "aria-labelledby": "jobTitle"
+              });
+            },
+            defaultValue: ""
+          }),
+          startDateComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `start_date_${newExpsArr.indexOf(exp)}`,
+            rules: {
+              required: 'Please enter the first date you started in this position'
+            },
+            render: _ref13 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  ref,
+                  value
+                }
+              } = _ref13;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                type: "date",
+                inputRef: ref,
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                label: "Start Date"
+              });
+            },
+            defaultValue: ""
+          }),
+          endDateComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `end_date_${newExpsArr.indexOf(exp)}`,
+            rules: {
+              required: 'Please Enter the date of your last day in this position'
+            },
+            render: _ref14 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  ref,
+                  value
+                }
+              } = _ref14;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                type: "date",
+                onChange: onChange,
+                onBlur: onBlur,
+                inputRef: ref,
+                value: value,
+                label: "End Date"
+              });
+            },
+            defaultValue: ""
+          })
+        }, newExpsArr.indexOf(exp))), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+          onClick: addMoreExp,
+          type: "button",
+          children: "Add More Experience?"
         }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+          disabled: !isValid,
           type: "submit",
           children: "Save"
         })]
       })
-    }), /*#__PURE__*/(0,jsx_runtime.jsx)(LinksComponent, {}), /*#__PURE__*/(0,jsx_runtime.jsx)(ExperienceComponent, {})]
-  });
-};
-/* harmony default export */ const Blocks_UserComponent = (UserComponent);
-;// CONCATENATED MODULE: ./views/components/EditUser.js
-
-
-
-
-const getUser = getters_fetchData('http://localhost:3000/api/user');
-const EditUser = () => {
-  const userDetails = getUser.read();
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
-    children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_UserComponent, {
-      fetchUrl: `http://localhost:3000/api/user/${userDetails[0]._id}`,
-      fullNameDefault: userDetails[0].name,
-      emailDefault: userDetails[0].email
     })
   });
 };
-/* harmony default export */ const components_EditUser = (EditUser);
-;// CONCATENATED MODULE: ./views/components/CreateUser.js
+/* harmony default export */ const Blocks_EditUserComponent = (EditUserComponent);
+;// CONCATENATED MODULE: ./views/components/Blocks/CreateUserComponent.js
 
 
 
-const CreateUser = () => {
+
+
+
+
+
+const CreateUserComponent = () => {
+  const {
+    handleSubmit,
+    control,
+    formState: {
+      isValid
+    }
+  } = useForm();
+  const [newLinksArr, setNewLinksArr] = react.useState([]);
+  const [newExpsArr, setNewExpsArr] = react.useState([]);
+  const addMoreLinks = () => {
+    setNewLinksArr(prev => prev.concat(prev.length));
+  };
+  const deleteNewLinks = id => {
+    if (newLinksArr.length === 1) {
+      setNewLinksArr([]);
+    } else {
+      setNewLinksArr(prev => prev.splice(id, 1));
+    }
+  };
+  const addMoreExp = () => {
+    setNewExpsArr(prev => prev.concat(prev.length));
+  };
+  const deleteNewExp = id => {
+    if (newExpsArr.length === 1) {
+      setNewExpsArr([]);
+    } else {
+      setNewExpsArr(prev => prev.splice(id, 1));
+    }
+  };
+  const getNewLinkData = data => {
+    let linksArr = [];
+    const dataKeys = Object.keys(data);
+    const linkData = dataKeys.filter(d => d.includes('link_title'));
+    linkData.forEach((key, idx) => {
+      let obj = {};
+      const linkTitle = `link_title_${idx}`;
+      const linkHref = `link_href_${idx}`;
+      if (linkTitle) {
+        obj['title'] = data[linkTitle];
+      }
+      if (linkHref) {
+        obj['href'] = data[linkHref];
+      }
+      linksArr.push(obj);
+    });
+    return linksArr;
+  };
+  const getNewExperienceData = data => {
+    let expArr = [];
+    const dataKeys = Object.keys(data);
+    const expData = dataKeys.filter(d => d.includes('job_title_'));
+    expData.forEach((key, idx) => {
+      let obj = {};
+      const expCompany = `company_name_${idx}`;
+      const expTitle = `job_title_${idx}`;
+      const expStart = `start_date_${idx}`;
+      const expEnd = `end_date_${idx}`;
+      if (expCompany) {
+        obj['company'] = data[expCompany];
+      }
+      if (expTitle) {
+        obj['title'] = data[expTitle];
+      }
+      if (expStart) {
+        obj['year_started'] = data[expStart];
+      }
+      if (expEnd) {
+        obj['year_ended'] = data[expEnd];
+      }
+      expArr.push(obj);
+    });
+    return expArr;
+  };
+  const handleSave = async data => {
+    const newLinks = getNewLinkData(data);
+    const newExp = getNewExperienceData(data);
+    const postUserName = await fetch('http://localhost:3000/api/user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: data.fullName,
+        email: data.email,
+        links: newLinks,
+        experience: newExp
+      })
+    });
+    return postUserName.json();
+  };
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
-    children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_UserComponent, {
-      fetchUrl: "http://localhost:3000/api/user",
-      fullNameDefault: "",
-      emailDefault: ""
+    children: /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
+      onSubmit: handleSubmit(data => handleSave(data)),
+      children: /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
+        sx: {
+          marginTop: '1em'
+        },
+        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
+          id: "fullName",
+          label: "Full Name",
+          children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: "fullName",
+            rules: {
+              required: true
+            },
+            render: _ref => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  value,
+                  ref
+                }
+              } = _ref;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                inputRef: ref,
+                type: "text",
+                "aria-labelledby": "email"
+              });
+            },
+            defaultValue: ""
+          })
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
+          id: "email",
+          label: "Email",
+          children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: "email",
+            rules: {
+              required: true
+            },
+            render: _ref2 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  value,
+                  ref
+                }
+              } = _ref2;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                inputRef: ref,
+                type: "text",
+                "aria-labelledby": "email"
+              });
+            },
+            defaultValue: ""
+          })
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          variant: "body2",
+          children: "Add Links"
+        }), /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
+          children: [newLinksArr.length > 0 && newLinksArr.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_UserLinkInputs, {
+            deleteOne: () => deleteNewLinks(newLinksArr.indexOf(link)),
+            titleInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+              control: control,
+              name: `link_title_${newLinksArr.indexOf(link)}`,
+              rules: {
+                required: true
+              },
+              render: _ref3 => {
+                let {
+                  field: {
+                    onChange,
+                    onBlur,
+                    value,
+                    ref
+                  }
+                } = _ref3;
+                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                  onChange: onChange,
+                  onBlur: onBlur,
+                  value: value,
+                  inputRef: ref,
+                  type: "text"
+                });
+              },
+              defaultValue: ""
+            }),
+            hrefInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+              control: control,
+              name: `link_href_${newLinksArr.indexOf(link)}`,
+              rules: {
+                required: true
+              },
+              render: _ref4 => {
+                let {
+                  field: {
+                    onChange,
+                    onBlur,
+                    value,
+                    ref
+                  }
+                } = _ref4;
+                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                  onChange: onChange,
+                  onBlur: onBlur,
+                  value: value,
+                  inputRef: ref,
+                  type: "text"
+                });
+              },
+              defaultValue: ""
+            })
+          }, newLinksArr.indexOf(link))), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+            type: "button",
+            onClick: addMoreLinks,
+            children: "Add More Links?"
+          })]
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          variant: "body2",
+          children: "Work Experience"
+        }), newExpsArr.length > 0 && newExpsArr.map(exp => /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ExperienceForm, {
+          deleteOne: () => deleteNewExp(newExpsArr.indexOf(exp)),
+          companyNameComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `company_name_${newExpsArr.indexOf(exp)}`,
+            rules: {
+              required: 'Please enter the company name'
+            },
+            render: _ref5 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  value,
+                  ref
+                }
+              } = _ref5;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                inputRef: ref,
+                type: "text",
+                "aria-labelledby": "companyName"
+              });
+            },
+            defaultValue: ""
+          }),
+          jobTitleComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `job_title_${newExpsArr.indexOf(exp)}`,
+            rules: {
+              required: 'Please enter the position title you held in this role'
+            },
+            render: _ref6 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  value,
+                  ref
+                }
+              } = _ref6;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                inputRef: ref,
+                type: "text",
+                "aria-labelledby": "jobTitle"
+              });
+            },
+            defaultValue: ""
+          }),
+          startDateComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `start_date_${newExpsArr.indexOf(exp)}`,
+            rules: {
+              required: 'Please enter the first date you started in this position'
+            },
+            render: _ref7 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  ref,
+                  value
+                }
+              } = _ref7;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                type: "date",
+                inputRef: ref,
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                label: "Start Date"
+              });
+            },
+            defaultValue: ""
+          }),
+          endDateComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `end_date_${newExpsArr.indexOf(exp)}`,
+            rules: {
+              required: 'Please Enter the date of your last day in this position'
+            },
+            render: _ref8 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  ref,
+                  value
+                }
+              } = _ref8;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                type: "date",
+                onChange: onChange,
+                onBlur: onBlur,
+                inputRef: ref,
+                value: value,
+                label: "End Date"
+              });
+            },
+            defaultValue: ""
+          })
+        }, newExpsArr.indexOf(exp))), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+          onClick: addMoreExp,
+          type: "button",
+          children: "Add More Experience?"
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+          disabled: !isValid,
+          type: "submit",
+          children: "Save"
+        })]
+      })
     })
   });
 };
-/* harmony default export */ const components_CreateUser = (CreateUser);
+/* harmony default export */ const Blocks_CreateUserComponent = (CreateUserComponent);
 ;// CONCATENATED MODULE: ./views/components/Views/UserLanding.js
 
 
@@ -22438,9 +22789,9 @@ const CreateUser = () => {
 
 
 
-const UserLanding_getUser = getters_fetchData('http://localhost:3000/api/user');
+const UserLanding_getUser = getters_fetchData(`http://localhost:3000/api/user`);
 const UserLanding = () => {
-  const userDetails = UserLanding_getUser.read();
+  const userExists = UserLanding_getUser.read();
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
     children: /*#__PURE__*/(0,jsx_runtime.jsx)(Layout_MainBody, {
       children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
@@ -22448,7 +22799,7 @@ const UserLanding = () => {
         children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
           variant: "h2",
           children: "Your Info"
-        }), userDetails && userDetails.length > 0 ? /*#__PURE__*/(0,jsx_runtime.jsx)(components_EditUser, {}) : /*#__PURE__*/(0,jsx_runtime.jsx)(components_CreateUser, {})]
+        }), userExists && userExists.length > 0 ? /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_EditUserComponent, {}) : /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_CreateUserComponent, {})]
       })
     })
   });
