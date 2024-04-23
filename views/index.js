@@ -12,17 +12,6 @@ const router = createBrowserRouter([
 		path: '/',
 		element: <UserLanding />,
 	},
-	//{
-	//	path: '/edit-user',
-	//	loader: async () => {
-	//		const userExists = await fetch('http://localhost:3000/api/user')
-	//		if (!userExists || !userExists.data ||  userExists.data.length === 0) {
-	//			return redirect('/')
-	//		}
-	//		return null
-	//	},
-	//	element: <EditUser />,
-	//},
 	{
 		path: '/add-job',
 		element: <AddJob />,

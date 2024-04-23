@@ -10,7 +10,7 @@ import fetchData from '../getters/fetchData.js';
 const getUser = fetchData('http://localhost:3000/api/user');
 
 const EditUserComponent = () => {
-	const userDetails = getUser.read();
+	const userDetails = getUser.read()
 	const allSavedLinks = userDetails && userDetails.length > 0 ? userDetails[0].links : null;
 	const allSavedExp = userDetails && userDetails.length > 0 ? userDetails[0].experience : null;
 	const {
@@ -18,19 +18,10 @@ const EditUserComponent = () => {
 		control,
 		formState: { isValid },
 	} = useForm();
-	const [linksArr, setLinksArr] = React.useState([]);
+	const [linksArr, setLinksArr] = React.useState(allSavedLinks);
 	const [newLinksArr, setNewLinksArr] = React.useState([]);
-	const [expArr, setExpArr] = React.useState([]);
+	const [expArr, setExpArr] = React.useState(allSavedExp);
 	const [newExpsArr, setNewExpsArr] = React.useState([]);
-
-	React.useEffect(() => {
-		if (allSavedLinks && allSavedLinks.length > 0) {
-			setLinksArr(allSavedLinks);
-		}
-		if (allSavedExp && allSavedExp.length > 0) {
-			setExpArr(allSavedExp);
-		}
-	}, [linksArr, expArr, userDetails]);
 
 	const addMoreLinks = () => {
 		setNewLinksArr((prev) => prev.concat(prev.length));
@@ -59,6 +50,8 @@ const EditUserComponent = () => {
 		const promise = await fetch(`http://localhost:3000/api/user/links/${id}/${userDetails[0]._id}`, {
 			method: 'DELETE'
 		})
+		const newLinksArr = userDetails[0].links.filter((link) => link._id !== id)
+		setLinksArr(newLinksArr)
 		return promise
 	}
 
@@ -66,6 +59,8 @@ const EditUserComponent = () => {
 		const promise = await fetch(`http://localhost:3000/api/user/experience/${id}/${userDetails[0]._id}`, {
 			method: 'DELETE'
 		})
+		const newExpArr = userDetails[0].experience.filter((exp) => exp._id !== id)
+		setExpArr(newExpArr)
 		return promise
 }
 

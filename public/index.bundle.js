@@ -21828,18 +21828,10 @@ const EditUserComponent = () => {
       isValid
     }
   } = useForm();
-  const [linksArr, setLinksArr] = react.useState([]);
+  const [linksArr, setLinksArr] = react.useState(allSavedLinks);
   const [newLinksArr, setNewLinksArr] = react.useState([]);
-  const [expArr, setExpArr] = react.useState([]);
+  const [expArr, setExpArr] = react.useState(allSavedExp);
   const [newExpsArr, setNewExpsArr] = react.useState([]);
-  react.useEffect(() => {
-    if (allSavedLinks && allSavedLinks.length > 0) {
-      setLinksArr(allSavedLinks);
-    }
-    if (allSavedExp && allSavedExp.length > 0) {
-      setExpArr(allSavedExp);
-    }
-  }, [linksArr, expArr, userDetails]);
   const addMoreLinks = () => {
     setNewLinksArr(prev => prev.concat(prev.length));
   };
@@ -21864,12 +21856,16 @@ const EditUserComponent = () => {
     const promise = await fetch(`http://localhost:3000/api/user/links/${id}/${userDetails[0]._id}`, {
       method: 'DELETE'
     });
+    const newLinksArr = userDetails[0].links.filter(link => link._id !== id);
+    setLinksArr(newLinksArr);
     return promise;
   };
   const deleteThisExp = async id => {
     const promise = await fetch(`http://localhost:3000/api/user/experience/${id}/${userDetails[0]._id}`, {
       method: 'DELETE'
     });
+    const newExpArr = userDetails[0].experience.filter(exp => exp._id !== id);
+    setExpArr(newExpArr);
     return promise;
   };
   const parseDate = date => {
@@ -47174,19 +47170,7 @@ class AdapterDayjs {
 const router = createBrowserRouter([{
   path: '/',
   element: /*#__PURE__*/(0,jsx_runtime.jsx)(Views_UserLanding, {})
-},
-//{
-//	path: '/edit-user',
-//	loader: async () => {
-//		const userExists = await fetch('http://localhost:3000/api/user')
-//		if (!userExists || !userExists.data ||  userExists.data.length === 0) {
-//			return redirect('/')
-//		}
-//		return null
-//	},
-//	element: <EditUser />,
-//},
-{
+}, {
   path: '/add-job',
   element: /*#__PURE__*/(0,jsx_runtime.jsx)(Views_AddJob, {})
 }, {
