@@ -219,7 +219,7 @@ const CreateUserComponent = () => {
 							type='button'
 							onClick={addMoreLinks}
 						>
-							Add More Links?
+							Add Links?
 						</ContainedButton>
 					</FormGroup>
 					<Typography variant='body2'>Work Experience</Typography>
@@ -348,7 +348,7 @@ const CreateUserComponent = () => {
 						onClick={addMoreExp}
 						type='button'
 					>
-						Add More Experience?
+						Add Experience?
 					</ContainedButton>
 					<ContainedButton
 						disabled={!isValid}

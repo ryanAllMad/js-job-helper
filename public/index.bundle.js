@@ -22197,7 +22197,7 @@ const EditUserComponent = () => {
           }, newLinksArr.indexOf(link))), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
             type: "button",
             onClick: addMoreLinks,
-            children: "Add More Links?"
+            children: "Add Links?"
           })]
         }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
           variant: "body2",
@@ -22417,7 +22417,7 @@ const EditUserComponent = () => {
         }, newExpsArr.indexOf(exp))), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
           onClick: addMoreExp,
           type: "button",
-          children: "Add More Experience?"
+          children: "Add Experience?"
         }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
           disabled: !isValid,
           type: "submit",
@@ -22652,7 +22652,7 @@ const CreateUserComponent = () => {
           }, newLinksArr.indexOf(link))), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
             type: "button",
             onClick: addMoreLinks,
-            children: "Add More Links?"
+            children: "Add Links?"
           })]
         }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
           variant: "body2",
@@ -22766,7 +22766,7 @@ const CreateUserComponent = () => {
         }, newExpsArr.indexOf(exp))), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
           onClick: addMoreExp,
           type: "button",
-          children: "Add More Experience?"
+          children: "Add Experience?"
         }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
           disabled: !isValid,
           type: "submit",
