@@ -6,9 +6,7 @@ export const createJobPost = async (req, res) => {
 		const newJobPost = await JobPost.create(req.body);
 		res.status(201).json({
 			status: 'success',
-			data: {
-				job_post: newJobPost
-			},
+			data:  newJobPost,
 		});
 	} catch (err) {
 		res.status(400).json({
@@ -35,7 +33,7 @@ export const getJobPost = async (req, res) => {
 	}
 };
 
-export const getSingleJobPostAndRequirements = async (req, res) => {
+export const getSingleJobPost = async (req, res) => {
 	try {
 		const requirement = await JobPost.findById(req.params.id).populate('requirements');
 		res.status(200).json({

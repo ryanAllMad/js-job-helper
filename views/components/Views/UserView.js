@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Typography, Link } from '@mui/material';
-import fetchData from './getters/fetchData.js';
+import fetchData from '../getters/fetchData.js';
 
 const getUser = fetchData('http://localhost:3000/api/user');
 

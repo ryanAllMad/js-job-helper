@@ -5,8 +5,7 @@ import mongoose from 'mongoose';
 import Doc from'./views/Doc.js';
 import process from'process';
 import { userRouter } from './routes/userRoutes.js'
-import { requirementRouter } from './routes/requirementRoutes.js';
-import { responseRouter } from './routes/responseRoutes.js';
+import { requirementsRouter } from './routes/requirementRoutes.js';
 import { jobPostRouter } from './routes/jobPost.js';
 
 
@@ -27,8 +26,7 @@ mongoose.connect(db, {
 app.use(express.json())
 app.use('/api', userRouter)
 app.use('/api', jobPostRouter)
-app.use('/api', requirementRouter)
-app.use('/api', responseRouter)
+app.use('/api', requirementsRouter)
 
 
 

@@ -1,6 +1,6 @@
 import { hydrateRoot } from 'react-dom/client';
 import UserLanding from './components/Views/UserLanding.js';
-import AddJob from './components/Views/AddJob.js';
+import JobsLanding from './components/Views/JobsLanding.js';
 import SearchJob from './components/Views/SearchJob.js';
 import UpdateRequirements from './components/Views/UpdateRequirements.js';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
@@ -14,7 +14,7 @@ const router = createBrowserRouter([
 	},
 	{
 		path: '/add-job',
-		element: <AddJob />,
+		element: <JobsLanding />,
 	},
 	{
 		path: '/update-requirements',

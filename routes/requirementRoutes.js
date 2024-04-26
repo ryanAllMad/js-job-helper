@@ -1,10 +1,10 @@
 import express from 'express';
-import { createRequirements, getRequirements, getSingleRequirement, updateRequirement } from '../controllers/requirementsController.js';
+import { createRequirements, getRequirements, getSingleRequirement, updateRequirements } from '../controllers/requirementsController.js';
 
 
-export const requirementRouter = express.Router()
+export const requirementsRouter = express.Router()
 
-requirementRouter.get('/requirements', getRequirements)
-requirementRouter.post('/requirements', createRequirements)
-requirementRouter.get('/requirements/:id', getSingleRequirement)
-requirementRouter.post('/requirements/:id', updateRequirement)
+requirementsRouter.post('/requirements', createRequirements)
+requirementsRouter.get('/requirements', getRequirements)
+requirementsRouter.get('/requirements/:id', getSingleRequirement)
+requirementsRouter.post('/requirements/:id', updateRequirements)

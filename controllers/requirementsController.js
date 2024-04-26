@@ -1,14 +1,12 @@
-import { Requirements } from "../models/requirements.js";
+import { Requirements } from "../models/requirements.js"
 import { updateOne } from "./handlerFactory.js";
 
 export const createRequirements = async (req, res) => {
 	try {
-		const newRequirements = await Requirements.create(req.body);
+		const newRequirements = await Requirements.insertMany(req.body);
 		res.status(201).json({
 			status: 'success',
-			data: {
-				requirements: newRequirements
-			},
+			data: newRequirements,
 		});
 	} catch (err) {
 		res.status(400).json({
@@ -23,9 +21,7 @@ export const getRequirements = async (req, res) => {
 		const requirements = await Requirements.find();
 		res.status(200).json({
 			status: 'success',
-			data: {
-				requirements,
-			},
+			data: requirements,
 		});
 	} catch (err) {
 		res.status(404).json({
@@ -36,12 +32,10 @@ export const getRequirements = async (req, res) => {
 };
 export const getSingleRequirement = async (req, res) => {
 	try {
-		const requirement = await Requirements.findById(req.params.id).populate('requirements');
+		const requirement = await Requirements.findById(req.params.id);
 		res.status(200).json({
 			status: 'success',
-			data: {
-				requirement,
-			},
+			data: requirement,
 		});
 	} catch (err) {
 		res.status(404).json({
@@ -51,4 +45,4 @@ export const getSingleRequirement = async (req, res) => {
 	}
 };
 
-export const updateRequirement = updateOne(Requirements)
+export const updateRequirements = updateOne(Requirements)

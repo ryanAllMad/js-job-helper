@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FormControl, Paper, Stack } from '@mui/material';
 import MainBody from '../Layout/MainBody.js';
-import PositionView from '../Blocks/PositionView.js';
+import PositionView from './PositionView.js';
 import AutoComplete from '../Blocks/AutoComplete.js';
 
 const SearchJob = () => {

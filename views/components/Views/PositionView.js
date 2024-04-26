@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Chip, Typography, Paper, Stack } from '@mui/material';
-import Guage from './Guage.js';
+import Guage from '../Blocks/Guage.js';
 
 const PositionView = (props) => {
 	const {company, jobTitle, jobFunction, dateApplied, requirements, guageValue} = props
