@@ -13,8 +13,7 @@ const JobsLanding = () => {
 		<>
 			<MainBody sx={{ paddingTop: '200px' }}>
 				<Stack spacing={2}>
-					<Typography variant='h2'>Your Info</Typography>
-					{/*{jobsExist && jobsExist.length > 0 ? (<EditJob />) : (<CreateJob />)}*/}
+					<Typography variant='h2'>Enter Job Post Info</Typography>
 					<CreateJob />
 				</Stack>
 			</MainBody>

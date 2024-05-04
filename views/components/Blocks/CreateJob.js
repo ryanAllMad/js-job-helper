@@ -1,6 +1,5 @@
 import * as React from 'react';
 import BasicInput from './BasicInput.js';
-import AutoComplete from './AutoComplete.js';
 import Guage from './Guage.js';
 import {
 	Autocomplete,
@@ -14,6 +13,7 @@ import { createFilterOptions } from '@mui/material/Autocomplete/index.js';
 import ContainedButton from './ContainedButton.js';
 import { useForm, Controller } from 'react-hook-form';
 import fetchData from '../getters/fetchData.js';
+import Resume from '../Views/Resume.js';
 
 const getRequirements = fetchData('http://localhost:3000/api/requirements');
 
@@ -25,15 +25,27 @@ const CreateJob = () => {
 		handleSubmit,
 		formState: { isValid },
 	} = useForm();
-	const { control: controlReq, handleSubmit: handleSubmitRequirements } =
+	const {
+		control: controlReq,
+		handleSubmit: handleSubmitRequirements,
+		formState: { isSubmitSuccessful },
+	} = useForm();
+	const { control: controlRes, handleSubmit: handleSubmitResponses, reset } =
 		useForm();
 	const [reqIds, setReqIds] = React.useState(null);
+	const [reqTitles, setReqTitles] = React.useState([]);
+	const [requirementsArray, setRequirementsArray] = React.useState([])
+	const [value, setValue] = React.useState(0)
+	const [responseState, setResponseState] = React.useState(false)
+	const [resumeLocation, setResumeLocation] = React.useState('')
 
 	const theRequirements = getRequirements.read();
 	const hasRequirements = theRequirements.length > 0 ? theRequirements : null;
-	const value = 75;
+
 
 	const handleSaveJob = async (data) => {
+		const parsedCompanyName = data.company.toLowerCase().replace(' ', '-')
+		setResumeLocation(`${parsedCompanyName}`)
 		const postJob = await fetch('http://localhost:3000/api/job-post', {
 			method: 'POST',
 			headers: {
@@ -41,19 +53,67 @@ const CreateJob = () => {
 			},
 			body: JSON.stringify({
 				job_title: data.jobTitle,
-				company_name: data.company,
+				company_name: parsedCompanyName,
 				job_function: data.jobFunction,
 				date_applied: data.dateApplied,
-				requirements: reqIds.map((req) => req._id),
+				requirements: reqIds,
 			}),
 		});
+		setResponseState(true)
 		return postJob.json();
 	};
+	const getRequirementsUpdated = async () => {
+		try {
+			const reqPromise = await fetch(
+				'http://localhost:3000/api/requirements/',
+				{
+					method: 'GET',
+				}
+			)
+				.then((res) => res.json())
+				.then((res) => {
+					if (res.status === 'success') {
+						if (!res.data) {
+							console.log('no data');
+						}
+						return res.data;
+					} else {
+						console.log(res.status);
+					}
+				});
+			return reqPromise;
+		} catch (err) {
+			console.log(err);
+		}
+	};
+	React.useEffect(() => {
+		if (isSubmitSuccessful) {
+			getRequirementsUpdated().then((res) => {
+				const newIds = [];
+				const newReqs = []
+				const reqsValue = []
+				res.forEach((d) => {
+					if (reqTitles.includes(d.req_title)) {
+						newIds.push(d._id);
+						newReqs.push(d)
+					}
+					if(requirementsArray.includes(d.res_content)) {
+						reqsValue.push(d.res_content)
+					}
+				});
+				setReqIds(newIds);
+				setRequirementsArray(newReqs)
+				setValue((newReqs.length - reqsValue.length)/newReqs.length * 100 )
+			});
+		}
+
+	}, [isSubmitSuccessful, setRequirementsArray]);
 
 	const handleSaveRequirements = async (data) => {
-		const dataIdsToSave = data.requirements.filter((d) => d._id);
-		setReqIds(dataIdsToSave);
+		const newReqTitles = [];
 		const newDataToSave = data.requirements.filter((d) => !d._id);
+		data.requirements.forEach((d) => newReqTitles.push(d.req_title));
+		setReqTitles(newReqTitles);
 		if (data.requirements && newDataToSave) {
 			const postRequirements = await fetch(
 				'http://localhost:3000/api/requirements',
@@ -67,6 +127,24 @@ const CreateJob = () => {
 			);
 			return postRequirements.json();
 		}
+	};
+	const handleAddResponse = async (data, id) => {
+		const newRequirementsArr = requirementsArray.filter((d) => d._id !== id)
+		const updateRequirement = await fetch(
+			`http://localhost:3000/api/requirements/${id}`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					res_content: data.response,
+				}),
+			}
+		);
+		setRequirementsArray(newRequirementsArr)
+		reset()
+		return updateRequirement.json();
 	};
 
 	return (
@@ -82,7 +160,7 @@ const CreateJob = () => {
 					<ContainedButton type='submit'>Save All</ContainedButton>
 					<FormControl>
 						<Typography
-							variant='h3'
+							variant='h2'
 							id='requirements'
 						>
 							Requirements
@@ -146,6 +224,12 @@ const CreateJob = () => {
 					onSubmit={handleSubmit((data) => handleSaveJob(data))}
 				>
 					<Stack>
+					<Typography
+							variant='h2'
+							id='job-post-form-heading'
+						>
+							Job You're Applying to
+						</Typography>
 						<ContainedButton
 							disabled={!isValid}
 							type='submit'
@@ -249,6 +333,55 @@ const CreateJob = () => {
 						</BasicInput>
 					</Stack>
 				</form>
+			)}
+			{requirementsArray && requirementsArray.length > 0 && responseState && (
+				<form
+					key={3}
+					style={{ display: 'flex', flexFlow: 'row wrap'}}
+					onSubmit={handleSubmitResponses((data) =>
+						handleAddResponse(data, requirementsArray[0]._id)
+					)}
+				>
+					<Typography
+							variant='h2'
+							id='qualifications'
+						>
+							Qualifications
+						</Typography>
+					<BasicInput
+						sx={{width: '-webkit-fill-available', paddingRight: '15px'}}
+						label={`Add qualifications for: ${requirementsArray[0].req_title}`}
+						id='add-response'
+					>
+						<Controller
+							control={controlRes}
+							name='response'
+							rules={{ required: true }}
+							render={({
+								field: { onChange, onBlur, value, ref },
+							}) => (
+								<Input
+									onChange={onChange}
+									onBlur={onBlur}
+									placeholder={requirementsArray[0].res_content ? requirementsArray[0].res_content : ''}
+									value={value}
+									inputRef={ref}
+									type='text'
+									multiline
+									rows={4}
+									aria-labelledby='add-response'
+								/>
+							)}
+							defaultValue=''
+						/>
+					</BasicInput>
+					<ContainedButton sx={{marginTop: '1em'}} type='submit'>
+						Add Response
+					</ContainedButton>
+				</form>
+			)}
+			{requirementsArray && requirementsArray.length === 0 && responseState && (
+				<Resume guageValue={value} fetchUrl={`http://localhost:3000/api/job-post/${resumeLocation}`} />
 			)}
 		</>
 	);

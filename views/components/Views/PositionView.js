@@ -22,9 +22,7 @@ const PositionView = (props) => {
 					<Typography>{company}</Typography>
 					<Typography>{jobFunction}</Typography>
 					<Typography>{dateApplied}</Typography>
-					{requirements.map((r) => (
-						<Chip key={r.label.toLowerCase()} label={r.label} />
-					))}
+					{requirements && requirements.length > 0 && requirements.map((req) => (<Typography>{req.res_content}</Typography>))}
 				</Stack>
 			</Paper>
 		</>

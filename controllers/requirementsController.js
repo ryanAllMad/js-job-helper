@@ -30,6 +30,22 @@ export const getRequirements = async (req, res) => {
 		});
 	}
 };
+
+export const getRequirementsByTitles = async (req, res) => {
+	try {
+		const requirements = await Requirements.find();
+		res.status(200).json({
+			status: 'success',
+			data: requirements,
+		});
+	} catch (err) {
+		res.status(404).json({
+			status: 'not found',
+			message: `${err}`,
+		});
+	}
+};
+
 export const getSingleRequirement = async (req, res) => {
 	try {
 		const requirement = await Requirements.findById(req.params.id);

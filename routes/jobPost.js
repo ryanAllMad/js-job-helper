@@ -6,5 +6,5 @@ export const jobPostRouter = express.Router()
 
 jobPostRouter.get('/job-post', getJobPost)
 jobPostRouter.post('/job-post', createJobPost)
-jobPostRouter.get('/job-post/:id', getSingleJobPost)
+jobPostRouter.get('/job-post/:company_name', getSingleJobPost)
 jobPostRouter.post('/job-post/:id', updateJobPost)

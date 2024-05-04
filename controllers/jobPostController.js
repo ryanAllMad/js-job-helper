@@ -35,7 +35,8 @@ export const getJobPost = async (req, res) => {
 
 export const getSingleJobPost = async (req, res) => {
 	try {
-		const requirement = await JobPost.findById(req.params.id).populate('requirements');
+		const title = req.params.company_name
+		const requirement = await JobPost.find({ company_name: title }).populate('requirements');
 		res.status(200).json({
 			status: 'success',
 			data: requirement,
