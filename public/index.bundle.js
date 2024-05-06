@@ -22689,532 +22689,6 @@ const UserLanding = () => {
   });
 };
 /* harmony default export */ const Views_UserLanding = (UserLanding);
-;// CONCATENATED MODULE: ./node_modules/@mui/system/esm/createBox.js
-'use client';
-
-
-
-const createBox_excluded = ["className", "component"];
-
-
-
-
-
-
-function createBox(options = {}) {
-  const {
-    themeId,
-    defaultTheme,
-    defaultClassName = 'MuiBox-root',
-    generateClassName
-  } = options;
-  const BoxRoot = (0,styled_engine["default"])('div', {
-    shouldForwardProp: prop => prop !== 'theme' && prop !== 'sx' && prop !== 'as'
-  })(styleFunctionSx/* default */.A);
-  const Box = /*#__PURE__*/react.forwardRef(function Box(inProps, ref) {
-    const theme = esm_useTheme(defaultTheme);
-    const _extendSxProp = (0,extendSxProp/* default */.A)(inProps),
-      {
-        className,
-        component = 'div'
-      } = _extendSxProp,
-      other = (0,objectWithoutPropertiesLoose/* default */.A)(_extendSxProp, createBox_excluded);
-    return /*#__PURE__*/(0,jsx_runtime.jsx)(BoxRoot, (0,esm_extends/* default */.A)({
-      as: component,
-      ref: ref,
-      className: dist_clsx(className, generateClassName ? generateClassName(defaultClassName) : defaultClassName),
-      theme: themeId ? theme[themeId] || theme : theme
-    }, other));
-  });
-  return Box;
-}
-;// CONCATENATED MODULE: ./node_modules/@mui/material/Box/boxClasses.js
-
-const boxClasses = generateUtilityClasses('MuiBox', ['root']);
-/* harmony default export */ const Box_boxClasses = (boxClasses);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/Box/Box.js
-'use client';
-
-
-
-
-
-
-
-const Box_defaultTheme = styles_createTheme();
-const Box = createBox({
-  themeId: identifier,
-  defaultTheme: Box_defaultTheme,
-  defaultClassName: Box_boxClasses.root,
-  generateClassName: ClassNameGenerator_ClassNameGenerator.generate
-});
- false ? 0 : void 0;
-/* harmony default export */ const Box_Box = (Box);
-;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/ResponsiveChartContainer/useChartContainerDimensions.js
-
-
-
-const useChartContainerDimensions = (inWidth, inHeight) => {
-  const rootRef = react.useRef(null);
-  const displayError = react.useRef(false);
-  const [width, setWidth] = react.useState(0);
-  const [height, setHeight] = react.useState(0);
-
-  // Adaptation of the `computeSizeAndPublishResizeEvent` from the grid.
-  const computeSize = react.useCallback(() => {
-    const mainEl = rootRef?.current;
-    if (!mainEl) {
-      return;
-    }
-    const win = ownerWindow(mainEl);
-    const computedStyle = win.getComputedStyle(mainEl);
-    const newHeight = Math.floor(parseFloat(computedStyle.height)) || 0;
-    const newWidth = Math.floor(parseFloat(computedStyle.width)) || 0;
-    setWidth(newWidth);
-    setHeight(newHeight);
-  }, []);
-  react.useEffect(() => {
-    // Ensure the error detection occurs after the first rendering.
-    displayError.current = true;
-  }, []);
-  useEnhancedEffect_useEnhancedEffect(() => {
-    if (inWidth !== undefined && inHeight !== undefined) {
-      return () => {};
-    }
-    computeSize();
-    const elementToObserve = rootRef.current;
-    if (typeof ResizeObserver === 'undefined') {
-      return () => {};
-    }
-    let animationFrame;
-    const observer = new ResizeObserver(() => {
-      // See https://github.com/mui/mui-x/issues/8733
-      animationFrame = requestAnimationFrame(() => {
-        computeSize();
-      });
-    });
-    if (elementToObserve) {
-      observer.observe(elementToObserve);
-    }
-    return () => {
-      if (animationFrame) {
-        window.cancelAnimationFrame(animationFrame);
-      }
-      if (elementToObserve) {
-        observer.unobserve(elementToObserve);
-      }
-    };
-  }, [computeSize, inHeight, inWidth]);
-  if (false) {}
-  return [rootRef, inWidth ?? width, inHeight ?? height];
-};
-;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/context/InteractionProvider.js
-
-
-
-const InteractionContext = /*#__PURE__*/react.createContext({
-  item: null,
-  axis: {
-    x: null,
-    y: null
-  },
-  useVoronoiInteraction: false,
-  dispatch: () => null
-});
-if (false) {}
-const dataReducer = (prevState, action) => {
-  switch (action.type) {
-    case 'enterItem':
-      return _extends({}, prevState, {
-        item: action.data
-      });
-    case 'exitChart':
-      if (prevState.item === null && prevState.axis.x === null && prevState.axis.y === null) {
-        return prevState;
-      }
-      return _extends({}, prevState, {
-        axis: {
-          x: null,
-          y: null
-        },
-        item: null
-      });
-    case 'updateVoronoiUsage':
-      return _extends({}, prevState, {
-        useVoronoiInteraction: action.useVoronoiInteraction
-      });
-    case 'leaveItem':
-      if (prevState.item === null || Object.keys(action.data).some(key => action.data[key] !== prevState.item[key])) {
-        // The item is already something else
-        return prevState;
-      }
-      return _extends({}, prevState, {
-        item: null
-      });
-    case 'updateAxis':
-      if (action.data.x === prevState.axis.x && action.data.y === prevState.axis.y) {
-        return prevState;
-      }
-      return _extends({}, prevState, {
-        axis: action.data
-      });
-    default:
-      return prevState;
-  }
-};
-function InteractionProvider(props) {
-  const {
-    children
-  } = props;
-  const [data, dispatch] = React.useReducer(dataReducer, {
-    item: null,
-    axis: {
-      x: null,
-      y: null
-    },
-    useVoronoiInteraction: false
-  });
-  const value = React.useMemo(() => _extends({}, data, {
-    dispatch
-  }), [data]);
-  return /*#__PURE__*/_jsx(InteractionContext.Provider, {
-    value: value,
-    children: children
-  });
-}
-
-;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/BarChart/extremums.js
-const getBaseExtremum = params => {
-  const {
-    axis
-  } = params;
-  const minX = Math.min(...(axis.data ?? []));
-  const maxX = Math.max(...(axis.data ?? []));
-  return [minX, maxX];
-};
-const getValueExtremum = params => {
-  const {
-    series,
-    axis,
-    isDefaultAxis
-  } = params;
-  return Object.keys(series).filter(seriesId => series[seriesId].yAxisKey === axis.id || isDefaultAxis && series[seriesId].yAxisKey === undefined).reduce((acc, seriesId) => {
-    const [seriesMin, seriesMax] = series[seriesId].stackedData?.reduce((seriesAcc, values) => [Math.min(...values, ...(seriesAcc[0] === null ? [] : [seriesAcc[0]])), Math.max(...values, ...(seriesAcc[1] === null ? [] : [seriesAcc[1]]))], series[seriesId].stackedData[0]) ?? [null, null];
-    return [acc[0] === null ? seriesMin : Math.min(seriesMin, acc[0]), acc[1] === null ? seriesMax : Math.max(seriesMax, acc[1])];
-  }, [null, null]);
-};
-const getExtremumX = params => {
-  // Notice that bar should be all horizontal or all vertical.
-  // Don't think it's a problem for now
-  const isHorizontal = Object.keys(params.series).some(seriesId => params.series[seriesId].layout === 'horizontal');
-  if (isHorizontal) {
-    return getValueExtremum(params);
-  }
-  return getBaseExtremum(params);
-};
-const getExtremumY = params => {
-  const isHorizontal = Object.keys(params.series).some(seriesId => params.series[seriesId].layout === 'horizontal');
-  if (isHorizontal) {
-    return getBaseExtremum(params);
-  }
-  return getValueExtremum(params);
-};
-;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/ScatterChart/extremums.js
-const mergeMinMax = (acc, val) => {
-  if (acc[0] === null || acc[1] === null) {
-    return val;
-  }
-  if (val[0] === null || val[1] === null) {
-    return acc;
-  }
-  return [Math.min(acc[0], val[0]), Math.max(acc[1], val[1])];
-};
-const extremums_getExtremumX = params => {
-  const {
-    series,
-    axis,
-    isDefaultAxis
-  } = params;
-  return Object.keys(series).filter(seriesId => series[seriesId].xAxisKey === axis.id || series[seriesId].xAxisKey === undefined && isDefaultAxis).reduce((acc, seriesId) => {
-    const seriesMinMax = series[seriesId].data.reduce((accSeries, {
-      x
-    }) => {
-      const val = [x, x];
-      return mergeMinMax(accSeries, val);
-    }, [null, null]);
-    return mergeMinMax(acc, seriesMinMax);
-  }, [null, null]);
-};
-const extremums_getExtremumY = params => {
-  const {
-    series,
-    axis,
-    isDefaultAxis
-  } = params;
-  return Object.keys(series).filter(seriesId => series[seriesId].yAxisKey === axis.id || series[seriesId].yAxisKey === undefined && isDefaultAxis).reduce((acc, seriesId) => {
-    const seriesMinMax = series[seriesId].data.reduce((accSeries, {
-      y
-    }) => {
-      const val = [y, y];
-      return mergeMinMax(accSeries, val);
-    }, [null, null]);
-    return mergeMinMax(acc, seriesMinMax);
-  }, [null, null]);
-};
-;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/LineChart/extremums.js
-const LineChart_extremums_getExtremumX = params => {
-  const {
-    axis
-  } = params;
-  const minX = Math.min(...(axis.data ?? []));
-  const maxX = Math.max(...(axis.data ?? []));
-  return [minX, maxX];
-};
-function getSeriesExtremums(getValues, stackedData) {
-  if (stackedData.length === 0) {
-    return [null, null];
-  }
-  return stackedData.reduce((seriesAcc, stackedValue) => {
-    const [base, value] = getValues(stackedValue);
-    if (seriesAcc[0] === null) {
-      return [Math.min(base, value), Math.max(base, value)];
-    }
-    return [Math.min(base, value, seriesAcc[0]), Math.max(base, value, seriesAcc[1])];
-  }, getValues(stackedData[0]));
-}
-const LineChart_extremums_getExtremumY = params => {
-  const {
-    series,
-    axis,
-    isDefaultAxis
-  } = params;
-  return Object.keys(series).filter(seriesId => series[seriesId].yAxisKey === axis.id || isDefaultAxis && series[seriesId].yAxisKey === undefined).reduce((acc, seriesId) => {
-    const {
-      area,
-      stackedData
-    } = series[seriesId];
-    const isArea = area !== undefined;
-    const getValues = isArea ? d => d : d => [d[1], d[1]]; // Since this series is not used to display an area, we do not consider the base (the d[0]).
-
-    const seriesExtremums = getSeriesExtremums(getValues, stackedData);
-    if (acc[0] === null) {
-      return seriesExtremums;
-    }
-    if (seriesExtremums[0] === null) {
-      return acc;
-    }
-    const [seriesMin, seriesMax] = seriesExtremums;
-    return [Math.min(seriesMin, acc[0]), Math.max(seriesMax, acc[1])];
-  }, [null, null]);
-};
-;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/context/CartesianContextProvider.js
-
-
-
-
-
-
-
-
-
-
-
-
-
-const DEFAULT_CATEGORY_GAP_RATIO = 0.2;
-const DEFAULT_BAR_GAP_RATIO = 0.1;
-
-// TODO: those might be better placed in a distinct file
-const xExtremumGetters = {
-  bar: getExtremumX,
-  scatter: extremums_getExtremumX,
-  line: LineChart_extremums_getExtremumX
-};
-const yExtremumGetters = {
-  bar: getExtremumY,
-  scatter: extremums_getExtremumY,
-  line: LineChart_extremums_getExtremumY
-};
-const CartesianContext = /*#__PURE__*/react.createContext({
-  xAxis: {},
-  yAxis: {},
-  xAxisIds: [],
-  yAxisIds: []
-});
-if (false) {}
-function CartesianContextProvider(props) {
-  const {
-    xAxis: inXAxis,
-    yAxis: inYAxis,
-    dataset,
-    children
-  } = props;
-  const formattedSeries = React.useContext(SeriesContext);
-  const drawingArea = React.useContext(DrawingContext);
-  const xAxis = React.useMemo(() => inXAxis?.map(axisConfig => {
-    const dataKey = axisConfig.dataKey;
-    if (dataKey === undefined || axisConfig.data !== undefined) {
-      return axisConfig;
-    }
-    if (dataset === undefined) {
-      throw Error('MUI X Charts: x-axis uses `dataKey` but no `dataset` is provided.');
-    }
-    return _extends({}, axisConfig, {
-      data: dataset.map(d => d[dataKey])
-    });
-  }), [inXAxis, dataset]);
-  const yAxis = React.useMemo(() => inYAxis?.map(axisConfig => {
-    const dataKey = axisConfig.dataKey;
-    if (dataKey === undefined || axisConfig.data !== undefined) {
-      return axisConfig;
-    }
-    if (dataset === undefined) {
-      throw Error('MUI X Charts: y-axis uses `dataKey` but no `dataset` is provided.');
-    }
-    return _extends({}, axisConfig, {
-      data: dataset.map(d => d[dataKey])
-    });
-  }), [inYAxis, dataset]);
-  const value = React.useMemo(() => {
-    const axisExtremumCallback = (acc, chartType, axis, getters, isDefaultAxis) => {
-      const getter = getters[chartType];
-      const series = formattedSeries[chartType]?.series ?? {};
-      const [minChartTypeData, maxChartTypeData] = getter({
-        series,
-        axis,
-        isDefaultAxis
-      });
-      const [minData, maxData] = acc;
-      if (minData === null || maxData === null) {
-        return [minChartTypeData, maxChartTypeData];
-      }
-      if (minChartTypeData === null || maxChartTypeData === null) {
-        return [minData, maxData];
-      }
-      return [Math.min(minChartTypeData, minData), Math.max(maxChartTypeData, maxData)];
-    };
-    const getAxisExtremum = (axis, getters, isDefaultAxis) => {
-      const charTypes = Object.keys(getters);
-      return charTypes.reduce((acc, charType) => axisExtremumCallback(acc, charType, axis, getters, isDefaultAxis), [null, null]);
-    };
-    const allXAxis = [...(xAxis?.map((axis, index) => _extends({
-      id: `defaultized-x-axis-${index}`
-    }, axis)) ?? []),
-    // Allows to specify an axis with id=DEFAULT_X_AXIS_KEY
-    ...(xAxis === undefined || xAxis.findIndex(({
-      id
-    }) => id === DEFAULT_X_AXIS_KEY) === -1 ? [{
-      id: DEFAULT_X_AXIS_KEY,
-      scaleType: 'linear'
-    }] : [])];
-    const completedXAxis = {};
-    allXAxis.forEach((axis, axisIndex) => {
-      const isDefaultAxis = axisIndex === 0;
-      const [minData, maxData] = getAxisExtremum(axis, xExtremumGetters, isDefaultAxis);
-      const range = axis.reverse ? [drawingArea.left + drawingArea.width, drawingArea.left] : [drawingArea.left, drawingArea.left + drawingArea.width];
-      if (isBandScaleConfig(axis)) {
-        const categoryGapRatio = axis.categoryGapRatio ?? DEFAULT_CATEGORY_GAP_RATIO;
-        const barGapRatio = axis.barGapRatio ?? DEFAULT_BAR_GAP_RATIO;
-        completedXAxis[axis.id] = _extends({
-          categoryGapRatio,
-          barGapRatio
-        }, axis, {
-          scale: scaleBand(axis.data, range).paddingInner(categoryGapRatio).paddingOuter(categoryGapRatio / 2),
-          tickNumber: axis.data.length
-        });
-      }
-      if (isPointScaleConfig(axis)) {
-        completedXAxis[axis.id] = _extends({}, axis, {
-          scale: scalePoint(axis.data, range),
-          tickNumber: axis.data.length
-        });
-      }
-      if (axis.scaleType === 'band' || axis.scaleType === 'point') {
-        // Could be merged with the two previous "if conditions" but then TS does not get that `axis.scaleType` can't be `band` or `point`.
-        return;
-      }
-      const scaleType = axis.scaleType ?? 'linear';
-      const extremums = [axis.min ?? minData, axis.max ?? maxData];
-      const tickNumber = getTickNumber(_extends({}, axis, {
-        range,
-        domain: extremums
-      }));
-      const niceScale = getScale(scaleType, extremums, range).nice(tickNumber);
-      const niceDomain = niceScale.domain();
-      const domain = [axis.min ?? niceDomain[0], axis.max ?? niceDomain[1]];
-      completedXAxis[axis.id] = _extends({}, axis, {
-        scaleType,
-        scale: niceScale.domain(domain),
-        tickNumber
-      });
-    });
-    const allYAxis = [...(yAxis?.map((axis, index) => _extends({
-      id: `defaultized-y-axis-${index}`
-    }, axis)) ?? []), ...(yAxis === undefined || yAxis.findIndex(({
-      id
-    }) => id === DEFAULT_Y_AXIS_KEY) === -1 ? [{
-      id: DEFAULT_Y_AXIS_KEY,
-      scaleType: 'linear'
-    }] : [])];
-    const completedYAxis = {};
-    allYAxis.forEach((axis, axisIndex) => {
-      const isDefaultAxis = axisIndex === 0;
-      const [minData, maxData] = getAxisExtremum(axis, yExtremumGetters, isDefaultAxis);
-      const range = axis.reverse ? [drawingArea.top, drawingArea.top + drawingArea.height] : [drawingArea.top + drawingArea.height, drawingArea.top];
-      if (isBandScaleConfig(axis)) {
-        const categoryGapRatio = axis.categoryGapRatio ?? DEFAULT_CATEGORY_GAP_RATIO;
-        completedYAxis[axis.id] = _extends({
-          categoryGapRatio,
-          barGapRatio: 0
-        }, axis, {
-          scale: scaleBand(axis.data, [range[1], range[0]]).paddingInner(categoryGapRatio).paddingOuter(categoryGapRatio / 2),
-          tickNumber: axis.data.length
-        });
-      }
-      if (isPointScaleConfig(axis)) {
-        completedYAxis[axis.id] = _extends({}, axis, {
-          scale: scalePoint(axis.data, [range[1], range[0]]),
-          tickNumber: axis.data.length
-        });
-      }
-      if (axis.scaleType === 'band' || axis.scaleType === 'point') {
-        // Could be merged with the two previous "if conditions" but then TS does not get that `axis.scaleType` can't be `band` or `point`.
-        return;
-      }
-      const scaleType = axis.scaleType ?? 'linear';
-      const extremums = [axis.min ?? minData, axis.max ?? maxData];
-      const tickNumber = getTickNumber(_extends({}, axis, {
-        range,
-        domain: extremums
-      }));
-      const niceScale = getScale(scaleType, extremums, range).nice(tickNumber);
-      const niceDomain = niceScale.domain();
-      const domain = [axis.min ?? niceDomain[0], axis.max ?? niceDomain[1]];
-      completedYAxis[axis.id] = _extends({}, axis, {
-        scaleType,
-        scale: niceScale.domain(domain),
-        tickNumber
-      });
-    });
-    return {
-      xAxis: completedXAxis,
-      yAxis: completedYAxis,
-      xAxisIds: allXAxis.map(({
-        id
-      }) => id),
-      yAxisIds: allYAxis.map(({
-        id
-      }) => id)
-    };
-  }, [drawingArea.height, drawingArea.left, drawingArea.top, drawingArea.width, formattedSeries, xAxis, yAxis]);
-
-  // @ts-ignore
-  return /*#__PURE__*/_jsx(CartesianContext.Provider, {
-    value: value,
-    children: children
-  });
-}
-
 ;// CONCATENATED MODULE: ./node_modules/@mui/utils/useId/useId.js
 'use client';
 
@@ -23252,1198 +22726,6 @@ function useId(idOverride) {
   // eslint-disable-next-line react-hooks/rules-of-hooks -- `React.useId` is invariant at runtime.
   return useGlobalId(idOverride);
 }
-;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/constants.js
-const constants_DEFAULT_X_AXIS_KEY = 'DEFAULT_X_AXIS_KEY';
-const constants_DEFAULT_Y_AXIS_KEY = 'DEFAULT_Y_AXIS_KEY';
-const DEFAULT_MARGINS = {
-  top: 50,
-  bottom: 50,
-  left: 50,
-  right: 50
-};
-;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/hooks/useChartDimensions.js
-
-
-
-const useChartDimensions = (width, height, margin) => {
-  const defaultizedMargin = (0,esm_extends/* default */.A)({}, DEFAULT_MARGINS, margin);
-  const drawingArea = react.useMemo(() => ({
-    left: defaultizedMargin.left,
-    top: defaultizedMargin.top,
-    right: defaultizedMargin.right,
-    bottom: defaultizedMargin.bottom,
-    width: Math.max(0, width - defaultizedMargin.left - defaultizedMargin.right),
-    height: Math.max(0, height - defaultizedMargin.top - defaultizedMargin.bottom)
-  }), [width, height, defaultizedMargin.top, defaultizedMargin.bottom, defaultizedMargin.left, defaultizedMargin.right]);
-  return drawingArea;
-};
-/* harmony default export */ const hooks_useChartDimensions = (useChartDimensions);
-;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/context/DrawingProvider.js
-
-
-
-
-
-/**
- * Defines the area in which it is possible to draw the charts.
- */
-
-const DrawingProvider_DrawingContext = /*#__PURE__*/react.createContext({
-  top: 0,
-  left: 0,
-  bottom: 0,
-  right: 0,
-  height: 300,
-  width: 400,
-  chartId: ''
-});
-if (false) {}
-const SvgContext = /*#__PURE__*/react.createContext({
-  current: null
-});
-if (false) {}
-function DrawingProvider(props) {
-  const {
-    width,
-    height,
-    margin,
-    svgRef,
-    children
-  } = props;
-  const drawingArea = hooks_useChartDimensions(width, height, margin);
-  const chartId = useId();
-  const value = react.useMemo(() => (0,esm_extends/* default */.A)({
-    chartId: chartId ?? ''
-  }, drawingArea), [chartId, drawingArea]);
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(SvgContext.Provider, {
-    value: svgRef,
-    children: /*#__PURE__*/(0,jsx_runtime.jsx)(DrawingProvider_DrawingContext.Provider, {
-      value: value,
-      children: children
-    })
-  });
-}
-;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/internals/isBandScale.js
-function isBandScale(scale) {
-  return scale.bandwidth !== undefined;
-}
-;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/internals/utils.js
-// Returns the index of a defined shape
-function getSymbol(shape) {
-  const symbolNames = 'circle cross diamond square star triangle wye'.split(/ /);
-  return symbolNames.indexOf(shape) || 0;
-}
-/**
- * Transform mouse event position to corrdinates inside the SVG.
- * @param svg The SVG element
- * @param event The mouseEvent to transform
- */
-function getSVGPoint(svg, event) {
-  const pt = svg.createSVGPoint();
-  pt.x = event.clientX;
-  pt.y = event.clientY;
-  return pt.matrixTransform(svg.getScreenCTM().inverse());
-}
-
-/**
- * Helper that converts values and percentages into values.
- * @param value The value provided by the developer. Can either be a number or a string with '%' or 'px'.
- * @param refValue The numerical value associated to 100%.
- * @returns The numerical value associated to the provided value.
- */
-function getPercentageValue(value, refValue) {
-  if (typeof value === 'number') {
-    return value;
-  }
-  if (value === '100%') {
-    // Avoid potential rounding issues
-    return refValue;
-  }
-  if (value.endsWith('%')) {
-    const percentage = Number.parseFloat(value.slice(0, value.length - 1));
-    if (!Number.isNaN(percentage)) {
-      return percentage * refValue / 100;
-    }
-  }
-  if (value.endsWith('px')) {
-    const val = Number.parseFloat(value.slice(0, value.length - 2));
-    if (!Number.isNaN(val)) {
-      return val;
-    }
-  }
-  throw Error(`MUI-Charts: Received an unknown value "${value}". It should be a number, or a string with a percentage value.`);
-}
-
-/**
- * Remove spaces to have viable ids
- */
-function cleanId(id) {
-  return id.replace(' ', '_');
-}
-;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/hooks/useAxisEvents.js
-
-
-
-
-
-
-function getAsANumber(value) {
-  return value instanceof Date ? value.getTime() : value;
-}
-const useAxisEvents = disableAxisListener => {
-  const svgRef = react.useContext(SvgContext);
-  const {
-    width,
-    height,
-    top,
-    left
-  } = react.useContext(DrawingProvider_DrawingContext);
-  const {
-    xAxis,
-    yAxis,
-    xAxisIds,
-    yAxisIds
-  } = react.useContext(CartesianContext);
-  const {
-    dispatch
-  } = react.useContext(InteractionContext);
-  const usedXAxis = xAxisIds[0];
-  const usedYAxis = yAxisIds[0];
-
-  // Use a ref to avoid rerendering on every mousemove event.
-  const mousePosition = react.useRef({
-    x: -1,
-    y: -1
-  });
-  react.useEffect(() => {
-    const element = svgRef.current;
-    if (element === null || disableAxisListener) {
-      return () => {};
-    }
-    const getUpdate = (axisConfig, mouseValue) => {
-      if (usedXAxis === null) {
-        return null;
-      }
-      const {
-        scale,
-        data: axisData,
-        reverse
-      } = axisConfig;
-      if (!isBandScale(scale)) {
-        const value = scale.invert(mouseValue);
-        if (axisData === undefined) {
-          return {
-            value
-          };
-        }
-        const valueAsNumber = getAsANumber(value);
-        const closestIndex = axisData?.findIndex((pointValue, index) => {
-          const v = getAsANumber(pointValue);
-          if (v > valueAsNumber) {
-            if (index === 0 || Math.abs(valueAsNumber - v) <= Math.abs(valueAsNumber - getAsANumber(axisData[index - 1]))) {
-              return true;
-            }
-          }
-          if (v <= valueAsNumber) {
-            if (index === axisData.length - 1 || Math.abs(getAsANumber(value) - v) < Math.abs(getAsANumber(value) - getAsANumber(axisData[index + 1]))) {
-              return true;
-            }
-          }
-          return false;
-        });
-        return {
-          value: closestIndex !== undefined && closestIndex >= 0 ? axisData[closestIndex] : value,
-          index: closestIndex
-        };
-      }
-      const dataIndex = scale.bandwidth() === 0 ? Math.floor((mouseValue - Math.min(...scale.range()) + scale.step() / 2) / scale.step()) : Math.floor((mouseValue - Math.min(...scale.range())) / scale.step());
-      if (dataIndex < 0 || dataIndex >= axisData.length) {
-        return null;
-      }
-      if (reverse) {
-        const reverseIndex = axisData.length - 1 - dataIndex;
-        return {
-          index: reverseIndex,
-          value: axisData[reverseIndex]
-        };
-      }
-      return {
-        index: dataIndex,
-        value: axisData[dataIndex]
-      };
-    };
-    const handleMouseOut = () => {
-      mousePosition.current = {
-        x: -1,
-        y: -1
-      };
-      dispatch({
-        type: 'exitChart'
-      });
-    };
-    const handleMouseMove = event => {
-      const svgPoint = getSVGPoint(svgRef.current, event);
-      mousePosition.current = {
-        x: svgPoint.x,
-        y: svgPoint.y
-      };
-      const outsideX = svgPoint.x < left || svgPoint.x > left + width;
-      const outsideY = svgPoint.y < top || svgPoint.y > top + height;
-      if (outsideX || outsideY) {
-        dispatch({
-          type: 'exitChart'
-        });
-        return;
-      }
-      const newStateX = getUpdate(xAxis[usedXAxis], svgPoint.x);
-      const newStateY = getUpdate(yAxis[usedYAxis], svgPoint.y);
-      dispatch({
-        type: 'updateAxis',
-        data: {
-          x: newStateX,
-          y: newStateY
-        }
-      });
-    };
-    element.addEventListener('mouseout', handleMouseOut);
-    element.addEventListener('mousemove', handleMouseMove);
-    return () => {
-      element.removeEventListener('mouseout', handleMouseOut);
-      element.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, [svgRef, dispatch, left, width, top, height, usedYAxis, yAxis, usedXAxis, xAxis, disableAxisListener]);
-};
-;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/ChartsSurface.js
-
-
-const ChartsSurface_excluded = ["children", "width", "height", "viewBox", "disableAxisListener", "className", "title", "desc"];
-
-
-
-
-
-
-const ChartChartsSurfaceStyles = styles_styled('svg', {
-  name: 'MuiChartsSurface',
-  slot: 'Root'
-})(() => ({}));
-const ChartsSurface = /*#__PURE__*/react.forwardRef(function ChartsSurface(props, ref) {
-  const {
-      children,
-      width,
-      height,
-      viewBox,
-      disableAxisListener = false,
-      title,
-      desc
-    } = props,
-    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, ChartsSurface_excluded);
-  const svgView = (0,esm_extends/* default */.A)({
-    width,
-    height,
-    x: 0,
-    y: 0
-  }, viewBox);
-  useAxisEvents(disableAxisListener);
-  return /*#__PURE__*/(0,jsx_runtime.jsxs)(ChartChartsSurfaceStyles, (0,esm_extends/* default */.A)({
-    width: width,
-    height: height,
-    viewBox: `${svgView.x} ${svgView.y} ${svgView.width} ${svgView.height}`,
-    ref: ref
-  }, other, {
-    children: [/*#__PURE__*/(0,jsx_runtime.jsx)("title", {
-      children: title
-    }), /*#__PURE__*/(0,jsx_runtime.jsx)("desc", {
-      children: desc
-    }), children]
-  }));
-});
- false ? 0 : void 0;
-
-;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/Gauge/utils.js
-function deg2rad(angle) {
-  return Math.PI * angle / 180;
-}
-function getPoint(angle) {
-  const radAngle = deg2rad(angle);
-  return [Math.sin(radAngle), -Math.cos(radAngle)];
-}
-
-/**
- * Retruns the ratio of the arc bounding box and its center.
- * @param startAngle The start angle (in deg)
- * @param endAngle The end angle (in deg)
- */
-function getArcRatios(startAngle, endAngle) {
-  // Set the start, end and center point.
-  const points = [[0, 0], getPoint(startAngle), getPoint(endAngle)];
-
-  // Add cardinal points included in the arc
-  const minAngle = Math.min(startAngle, endAngle);
-  const maxAngle = Math.max(startAngle, endAngle);
-  const initialAngle = Math.floor(minAngle / 90) * 90;
-  for (let step = 1; step <= 4; step += 1) {
-    const cartinalAngle = initialAngle + step * 90;
-    if (cartinalAngle < maxAngle) {
-      points.push(getPoint(cartinalAngle));
-    }
-  }
-  const minX = Math.min(...points.map(([x]) => x));
-  const maxX = Math.max(...points.map(([x]) => x));
-  const minY = Math.min(...points.map(([, y]) => y));
-  const maxY = Math.max(...points.map(([, y]) => y));
-  return {
-    cx: -minX / (maxX - minX),
-    cy: -minY / (maxY - minY),
-    minX,
-    maxX,
-    minY,
-    maxY
-  };
-}
-function getAvailableRadius(cx, cy, width, height, {
-  minX,
-  maxX,
-  minY,
-  maxY
-}) {
-  return Math.min(...[{
-    ratio: Math.abs(minX),
-    space: cx
-  }, {
-    ratio: Math.abs(maxX),
-    space: width - cx
-  }, {
-    ratio: Math.abs(minY),
-    space: cy
-  }, {
-    ratio: Math.abs(maxY),
-    space: height - cy
-  }].map(({
-    ratio,
-    space
-  }) => {
-    if (ratio < 0.00001) {
-      return Infinity;
-    }
-    return space / ratio;
-  }));
-}
-;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/Gauge/GaugeProvider.js
-// @ignore - do not document.
-
-
-
-
-
-const GaugeContext = /*#__PURE__*/react.createContext({
-  value: null,
-  valueMin: 0,
-  valueMax: 0,
-  startAngle: 0,
-  endAngle: 0,
-  innerRadius: 0,
-  outerRadius: 0,
-  cornerRadius: 0,
-  cx: 0,
-  cy: 0,
-  maxRadius: 0,
-  valueAngle: null
-});
-if (false) {}
-function GaugeProvider(props) {
-  const {
-    value = null,
-    valueMin = 0,
-    valueMax = 100,
-    startAngle = 0,
-    endAngle = 360,
-    outerRadius: outerRadiusParam,
-    innerRadius: innerRadiusParam,
-    cornerRadius: cornerRadiusParam,
-    cx: cxParam,
-    cy: cyParam,
-    children
-  } = props;
-  const {
-    width,
-    height,
-    top,
-    left
-  } = react.useContext(DrawingProvider_DrawingContext);
-  const ratios = getArcRatios(startAngle, endAngle);
-  const innerCx = cxParam ? getPercentageValue(cxParam, width) : ratios.cx * width;
-  const innerCy = cyParam ? getPercentageValue(cyParam, height) : ratios.cy * height;
-  let cx = left + innerCx;
-  let cy = top + innerCy;
-  const maxRadius = getAvailableRadius(innerCx, innerCy, width, height, ratios);
-
-  // If the center is not defined, after computation of the available radius, udpate the center to use the remaining space.
-  if (cxParam === undefined) {
-    const usedWidth = maxRadius * (ratios.maxX - ratios.minX);
-    cx = left + (width - usedWidth) / 2 + ratios.cx * usedWidth;
-  }
-  if (cyParam === undefined) {
-    const usedHeight = maxRadius * (ratios.maxY - ratios.minY);
-    cy = top + (height - usedHeight) / 2 + ratios.cy * usedHeight;
-  }
-  const outerRadius = getPercentageValue(outerRadiusParam ?? maxRadius, maxRadius);
-  const innerRadius = getPercentageValue(innerRadiusParam ?? '80%', maxRadius);
-  const cornerRadius = getPercentageValue(cornerRadiusParam ?? 0, outerRadius - innerRadius);
-  const contextValue = react.useMemo(() => {
-    const startAngleRad = Math.PI * startAngle / 180;
-    const endAngleRad = Math.PI * endAngle / 180;
-    return {
-      value,
-      valueMin,
-      valueMax,
-      startAngle: startAngleRad,
-      endAngle: endAngleRad,
-      outerRadius,
-      innerRadius,
-      cornerRadius,
-      cx,
-      cy,
-      maxRadius,
-      valueAngle: value === null ? null : startAngleRad + (endAngleRad - startAngleRad) * (value - valueMin) / (valueMax - valueMin)
-    };
-  }, [value, valueMin, valueMax, startAngle, endAngle, outerRadius, innerRadius, cornerRadius, cx, cy, maxRadius]);
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(GaugeContext.Provider, {
-    value: contextValue,
-    children: children
-  });
-}
-function useGaugeState() {
-  return react.useContext(GaugeContext);
-}
-;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/Gauge/GaugeContainer.js
-
-
-const GaugeContainer_excluded = ["width", "height", "margin", "title", "desc", "value", "valueMin", "valueMax", "startAngle", "endAngle", "outerRadius", "innerRadius", "cornerRadius", "cx", "cy", "children"];
-
-
-
-
-
-
-
-
-
-const ResizableContainer = styles_styled('div', {
-  name: 'MuiGauge',
-  slot: 'Container'
-})(({
-  ownerState,
-  theme
-}) => ({
-  width: ownerState.width ?? '100%',
-  height: ownerState.height ?? '100%',
-  display: 'flex',
-  position: 'relative',
-  flexGrow: 1,
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  overflow: 'hidden',
-  '&>svg': {
-    width: '100%',
-    height: '100%'
-  },
-  '& text': {
-    fill: (theme.vars || theme).palette.text.primary
-  }
-}));
-const GaugeContainer = /*#__PURE__*/react.forwardRef(function GaugeContainer(props, ref) {
-  const {
-      width: inWidth,
-      height: inHeight,
-      margin,
-      title,
-      desc,
-      value,
-      valueMin = 0,
-      valueMax = 100,
-      startAngle,
-      endAngle,
-      outerRadius,
-      innerRadius,
-      cornerRadius,
-      cx,
-      cy,
-      children
-    } = props,
-    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, GaugeContainer_excluded);
-  const [containerRef, width, height] = useChartContainerDimensions(inWidth, inHeight);
-  const svgRef = react.useRef(null);
-  const handleRef = useForkRef(ref, svgRef);
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(ResizableContainer, (0,esm_extends/* default */.A)({
-    ref: containerRef,
-    ownerState: {
-      width: inWidth,
-      height: inHeight
-    },
-    role: "meter",
-    "aria-valuenow": value === null ? undefined : value,
-    "aria-valuemin": valueMin,
-    "aria-valuemax": valueMax
-  }, other, {
-    children: width && height ? /*#__PURE__*/(0,jsx_runtime.jsx)(DrawingProvider, {
-      width: width,
-      height: height,
-      margin: (0,esm_extends/* default */.A)({
-        left: 10,
-        right: 10,
-        top: 10,
-        bottom: 10
-      }, margin),
-      svgRef: svgRef,
-      children: /*#__PURE__*/(0,jsx_runtime.jsx)(GaugeProvider, {
-        value: value,
-        valueMin: valueMin,
-        valueMax: valueMax,
-        startAngle: startAngle,
-        endAngle: endAngle,
-        outerRadius: outerRadius,
-        innerRadius: innerRadius,
-        cornerRadius: cornerRadius,
-        cx: cx,
-        cy: cy,
-        children: /*#__PURE__*/(0,jsx_runtime.jsx)(ChartsSurface, {
-          width: width,
-          height: height,
-          ref: handleRef,
-          title: title,
-          desc: desc,
-          disableAxisListener: true,
-          "aria-hidden": "true",
-          children: children
-        })
-      })
-    }) : null
-  }));
-});
- false ? 0 : void 0;
-
-;// CONCATENATED MODULE: ./node_modules/d3-shape/src/constant.js
-/* harmony default export */ function constant(x) {
-  return function constant() {
-    return x;
-  };
-}
-
-;// CONCATENATED MODULE: ./node_modules/d3-shape/src/math.js
-const abs = Math.abs;
-const atan2 = Math.atan2;
-const cos = Math.cos;
-const max = Math.max;
-const min = Math.min;
-const sin = Math.sin;
-const sqrt = Math.sqrt;
-
-const epsilon = 1e-12;
-const pi = Math.PI;
-const halfPi = pi / 2;
-const tau = 2 * pi;
-
-function acos(x) {
-  return x > 1 ? 0 : x < -1 ? pi : Math.acos(x);
-}
-
-function asin(x) {
-  return x >= 1 ? halfPi : x <= -1 ? -halfPi : Math.asin(x);
-}
-
-;// CONCATENATED MODULE: ./node_modules/d3-path/src/path.js
-const path_pi = Math.PI,
-    path_tau = 2 * path_pi,
-    path_epsilon = 1e-6,
-    tauEpsilon = path_tau - path_epsilon;
-
-function append(strings) {
-  this._ += strings[0];
-  for (let i = 1, n = strings.length; i < n; ++i) {
-    this._ += arguments[i] + strings[i];
-  }
-}
-
-function appendRound(digits) {
-  let d = Math.floor(digits);
-  if (!(d >= 0)) throw new Error(`invalid digits: ${digits}`);
-  if (d > 15) return append;
-  const k = 10 ** d;
-  return function(strings) {
-    this._ += strings[0];
-    for (let i = 1, n = strings.length; i < n; ++i) {
-      this._ += Math.round(arguments[i] * k) / k + strings[i];
-    }
-  };
-}
-
-class Path {
-  constructor(digits) {
-    this._x0 = this._y0 = // start of current subpath
-    this._x1 = this._y1 = null; // end of current subpath
-    this._ = "";
-    this._append = digits == null ? append : appendRound(digits);
-  }
-  moveTo(x, y) {
-    this._append`M${this._x0 = this._x1 = +x},${this._y0 = this._y1 = +y}`;
-  }
-  closePath() {
-    if (this._x1 !== null) {
-      this._x1 = this._x0, this._y1 = this._y0;
-      this._append`Z`;
-    }
-  }
-  lineTo(x, y) {
-    this._append`L${this._x1 = +x},${this._y1 = +y}`;
-  }
-  quadraticCurveTo(x1, y1, x, y) {
-    this._append`Q${+x1},${+y1},${this._x1 = +x},${this._y1 = +y}`;
-  }
-  bezierCurveTo(x1, y1, x2, y2, x, y) {
-    this._append`C${+x1},${+y1},${+x2},${+y2},${this._x1 = +x},${this._y1 = +y}`;
-  }
-  arcTo(x1, y1, x2, y2, r) {
-    x1 = +x1, y1 = +y1, x2 = +x2, y2 = +y2, r = +r;
-
-    // Is the radius negative? Error.
-    if (r < 0) throw new Error(`negative radius: ${r}`);
-
-    let x0 = this._x1,
-        y0 = this._y1,
-        x21 = x2 - x1,
-        y21 = y2 - y1,
-        x01 = x0 - x1,
-        y01 = y0 - y1,
-        l01_2 = x01 * x01 + y01 * y01;
-
-    // Is this path empty? Move to (x1,y1).
-    if (this._x1 === null) {
-      this._append`M${this._x1 = x1},${this._y1 = y1}`;
-    }
-
-    // Or, is (x1,y1) coincident with (x0,y0)? Do nothing.
-    else if (!(l01_2 > path_epsilon));
-
-    // Or, are (x0,y0), (x1,y1) and (x2,y2) collinear?
-    // Equivalently, is (x1,y1) coincident with (x2,y2)?
-    // Or, is the radius zero? Line to (x1,y1).
-    else if (!(Math.abs(y01 * x21 - y21 * x01) > path_epsilon) || !r) {
-      this._append`L${this._x1 = x1},${this._y1 = y1}`;
-    }
-
-    // Otherwise, draw an arc!
-    else {
-      let x20 = x2 - x0,
-          y20 = y2 - y0,
-          l21_2 = x21 * x21 + y21 * y21,
-          l20_2 = x20 * x20 + y20 * y20,
-          l21 = Math.sqrt(l21_2),
-          l01 = Math.sqrt(l01_2),
-          l = r * Math.tan((path_pi - Math.acos((l21_2 + l01_2 - l20_2) / (2 * l21 * l01))) / 2),
-          t01 = l / l01,
-          t21 = l / l21;
-
-      // If the start tangent is not coincident with (x0,y0), line to.
-      if (Math.abs(t01 - 1) > path_epsilon) {
-        this._append`L${x1 + t01 * x01},${y1 + t01 * y01}`;
-      }
-
-      this._append`A${r},${r},0,0,${+(y01 * x20 > x01 * y20)},${this._x1 = x1 + t21 * x21},${this._y1 = y1 + t21 * y21}`;
-    }
-  }
-  arc(x, y, r, a0, a1, ccw) {
-    x = +x, y = +y, r = +r, ccw = !!ccw;
-
-    // Is the radius negative? Error.
-    if (r < 0) throw new Error(`negative radius: ${r}`);
-
-    let dx = r * Math.cos(a0),
-        dy = r * Math.sin(a0),
-        x0 = x + dx,
-        y0 = y + dy,
-        cw = 1 ^ ccw,
-        da = ccw ? a0 - a1 : a1 - a0;
-
-    // Is this path empty? Move to (x0,y0).
-    if (this._x1 === null) {
-      this._append`M${x0},${y0}`;
-    }
-
-    // Or, is (x0,y0) not coincident with the previous point? Line to (x0,y0).
-    else if (Math.abs(this._x1 - x0) > path_epsilon || Math.abs(this._y1 - y0) > path_epsilon) {
-      this._append`L${x0},${y0}`;
-    }
-
-    // Is this arc empty? We’re done.
-    if (!r) return;
-
-    // Does the angle go the wrong way? Flip the direction.
-    if (da < 0) da = da % path_tau + path_tau;
-
-    // Is this a complete circle? Draw two arcs to complete the circle.
-    if (da > tauEpsilon) {
-      this._append`A${r},${r},0,1,${cw},${x - dx},${y - dy}A${r},${r},0,1,${cw},${this._x1 = x0},${this._y1 = y0}`;
-    }
-
-    // Is this arc non-empty? Draw an arc!
-    else if (da > path_epsilon) {
-      this._append`A${r},${r},0,${+(da >= path_pi)},${cw},${this._x1 = x + r * Math.cos(a1)},${this._y1 = y + r * Math.sin(a1)}`;
-    }
-  }
-  rect(x, y, w, h) {
-    this._append`M${this._x0 = this._x1 = +x},${this._y0 = this._y1 = +y}h${w = +w}v${+h}h${-w}Z`;
-  }
-  toString() {
-    return this._;
-  }
-}
-
-function path() {
-  return new Path;
-}
-
-// Allow instanceof d3.path
-path.prototype = Path.prototype;
-
-function pathRound(digits = 3) {
-  return new Path(+digits);
-}
-
-;// CONCATENATED MODULE: ./node_modules/d3-shape/src/path.js
-
-
-function withPath(shape) {
-  let digits = 3;
-
-  shape.digits = function(_) {
-    if (!arguments.length) return digits;
-    if (_ == null) {
-      digits = null;
-    } else {
-      const d = Math.floor(_);
-      if (!(d >= 0)) throw new RangeError(`invalid digits: ${_}`);
-      digits = d;
-    }
-    return shape;
-  };
-
-  return () => new Path(digits);
-}
-
-;// CONCATENATED MODULE: ./node_modules/d3-shape/src/arc.js
-
-
-
-
-function arcInnerRadius(d) {
-  return d.innerRadius;
-}
-
-function arcOuterRadius(d) {
-  return d.outerRadius;
-}
-
-function arcStartAngle(d) {
-  return d.startAngle;
-}
-
-function arcEndAngle(d) {
-  return d.endAngle;
-}
-
-function arcPadAngle(d) {
-  return d && d.padAngle; // Note: optional!
-}
-
-function intersect(x0, y0, x1, y1, x2, y2, x3, y3) {
-  var x10 = x1 - x0, y10 = y1 - y0,
-      x32 = x3 - x2, y32 = y3 - y2,
-      t = y32 * x10 - x32 * y10;
-  if (t * t < epsilon) return;
-  t = (x32 * (y0 - y2) - y32 * (x0 - x2)) / t;
-  return [x0 + t * x10, y0 + t * y10];
-}
-
-// Compute perpendicular offset line of length rc.
-// http://mathworld.wolfram.com/Circle-LineIntersection.html
-function cornerTangents(x0, y0, x1, y1, r1, rc, cw) {
-  var x01 = x0 - x1,
-      y01 = y0 - y1,
-      lo = (cw ? rc : -rc) / sqrt(x01 * x01 + y01 * y01),
-      ox = lo * y01,
-      oy = -lo * x01,
-      x11 = x0 + ox,
-      y11 = y0 + oy,
-      x10 = x1 + ox,
-      y10 = y1 + oy,
-      x00 = (x11 + x10) / 2,
-      y00 = (y11 + y10) / 2,
-      dx = x10 - x11,
-      dy = y10 - y11,
-      d2 = dx * dx + dy * dy,
-      r = r1 - rc,
-      D = x11 * y10 - x10 * y11,
-      d = (dy < 0 ? -1 : 1) * sqrt(max(0, r * r * d2 - D * D)),
-      cx0 = (D * dy - dx * d) / d2,
-      cy0 = (-D * dx - dy * d) / d2,
-      cx1 = (D * dy + dx * d) / d2,
-      cy1 = (-D * dx + dy * d) / d2,
-      dx0 = cx0 - x00,
-      dy0 = cy0 - y00,
-      dx1 = cx1 - x00,
-      dy1 = cy1 - y00;
-
-  // Pick the closer of the two intersection points.
-  // TODO Is there a faster way to determine which intersection to use?
-  if (dx0 * dx0 + dy0 * dy0 > dx1 * dx1 + dy1 * dy1) cx0 = cx1, cy0 = cy1;
-
-  return {
-    cx: cx0,
-    cy: cy0,
-    x01: -ox,
-    y01: -oy,
-    x11: cx0 * (r1 / r - 1),
-    y11: cy0 * (r1 / r - 1)
-  };
-}
-
-/* harmony default export */ function arc() {
-  var innerRadius = arcInnerRadius,
-      outerRadius = arcOuterRadius,
-      cornerRadius = constant(0),
-      padRadius = null,
-      startAngle = arcStartAngle,
-      endAngle = arcEndAngle,
-      padAngle = arcPadAngle,
-      context = null,
-      path = withPath(arc);
-
-  function arc() {
-    var buffer,
-        r,
-        r0 = +innerRadius.apply(this, arguments),
-        r1 = +outerRadius.apply(this, arguments),
-        a0 = startAngle.apply(this, arguments) - halfPi,
-        a1 = endAngle.apply(this, arguments) - halfPi,
-        da = abs(a1 - a0),
-        cw = a1 > a0;
-
-    if (!context) context = buffer = path();
-
-    // Ensure that the outer radius is always larger than the inner radius.
-    if (r1 < r0) r = r1, r1 = r0, r0 = r;
-
-    // Is it a point?
-    if (!(r1 > epsilon)) context.moveTo(0, 0);
-
-    // Or is it a circle or annulus?
-    else if (da > tau - epsilon) {
-      context.moveTo(r1 * cos(a0), r1 * sin(a0));
-      context.arc(0, 0, r1, a0, a1, !cw);
-      if (r0 > epsilon) {
-        context.moveTo(r0 * cos(a1), r0 * sin(a1));
-        context.arc(0, 0, r0, a1, a0, cw);
-      }
-    }
-
-    // Or is it a circular or annular sector?
-    else {
-      var a01 = a0,
-          a11 = a1,
-          a00 = a0,
-          a10 = a1,
-          da0 = da,
-          da1 = da,
-          ap = padAngle.apply(this, arguments) / 2,
-          rp = (ap > epsilon) && (padRadius ? +padRadius.apply(this, arguments) : sqrt(r0 * r0 + r1 * r1)),
-          rc = min(abs(r1 - r0) / 2, +cornerRadius.apply(this, arguments)),
-          rc0 = rc,
-          rc1 = rc,
-          t0,
-          t1;
-
-      // Apply padding? Note that since r1 ≥ r0, da1 ≥ da0.
-      if (rp > epsilon) {
-        var p0 = asin(rp / r0 * sin(ap)),
-            p1 = asin(rp / r1 * sin(ap));
-        if ((da0 -= p0 * 2) > epsilon) p0 *= (cw ? 1 : -1), a00 += p0, a10 -= p0;
-        else da0 = 0, a00 = a10 = (a0 + a1) / 2;
-        if ((da1 -= p1 * 2) > epsilon) p1 *= (cw ? 1 : -1), a01 += p1, a11 -= p1;
-        else da1 = 0, a01 = a11 = (a0 + a1) / 2;
-      }
-
-      var x01 = r1 * cos(a01),
-          y01 = r1 * sin(a01),
-          x10 = r0 * cos(a10),
-          y10 = r0 * sin(a10);
-
-      // Apply rounded corners?
-      if (rc > epsilon) {
-        var x11 = r1 * cos(a11),
-            y11 = r1 * sin(a11),
-            x00 = r0 * cos(a00),
-            y00 = r0 * sin(a00),
-            oc;
-
-        // Restrict the corner radius according to the sector angle. If this
-        // intersection fails, it’s probably because the arc is too small, so
-        // disable the corner radius entirely.
-        if (da < pi) {
-          if (oc = intersect(x01, y01, x00, y00, x11, y11, x10, y10)) {
-            var ax = x01 - oc[0],
-                ay = y01 - oc[1],
-                bx = x11 - oc[0],
-                by = y11 - oc[1],
-                kc = 1 / sin(acos((ax * bx + ay * by) / (sqrt(ax * ax + ay * ay) * sqrt(bx * bx + by * by))) / 2),
-                lc = sqrt(oc[0] * oc[0] + oc[1] * oc[1]);
-            rc0 = min(rc, (r0 - lc) / (kc - 1));
-            rc1 = min(rc, (r1 - lc) / (kc + 1));
-          } else {
-            rc0 = rc1 = 0;
-          }
-        }
-      }
-
-      // Is the sector collapsed to a line?
-      if (!(da1 > epsilon)) context.moveTo(x01, y01);
-
-      // Does the sector’s outer ring have rounded corners?
-      else if (rc1 > epsilon) {
-        t0 = cornerTangents(x00, y00, x01, y01, r1, rc1, cw);
-        t1 = cornerTangents(x11, y11, x10, y10, r1, rc1, cw);
-
-        context.moveTo(t0.cx + t0.x01, t0.cy + t0.y01);
-
-        // Have the corners merged?
-        if (rc1 < rc) context.arc(t0.cx, t0.cy, rc1, atan2(t0.y01, t0.x01), atan2(t1.y01, t1.x01), !cw);
-
-        // Otherwise, draw the two corners and the ring.
-        else {
-          context.arc(t0.cx, t0.cy, rc1, atan2(t0.y01, t0.x01), atan2(t0.y11, t0.x11), !cw);
-          context.arc(0, 0, r1, atan2(t0.cy + t0.y11, t0.cx + t0.x11), atan2(t1.cy + t1.y11, t1.cx + t1.x11), !cw);
-          context.arc(t1.cx, t1.cy, rc1, atan2(t1.y11, t1.x11), atan2(t1.y01, t1.x01), !cw);
-        }
-      }
-
-      // Or is the outer ring just a circular arc?
-      else context.moveTo(x01, y01), context.arc(0, 0, r1, a01, a11, !cw);
-
-      // Is there no inner ring, and it’s a circular sector?
-      // Or perhaps it’s an annular sector collapsed due to padding?
-      if (!(r0 > epsilon) || !(da0 > epsilon)) context.lineTo(x10, y10);
-
-      // Does the sector’s inner ring (or point) have rounded corners?
-      else if (rc0 > epsilon) {
-        t0 = cornerTangents(x10, y10, x11, y11, r0, -rc0, cw);
-        t1 = cornerTangents(x01, y01, x00, y00, r0, -rc0, cw);
-
-        context.lineTo(t0.cx + t0.x01, t0.cy + t0.y01);
-
-        // Have the corners merged?
-        if (rc0 < rc) context.arc(t0.cx, t0.cy, rc0, atan2(t0.y01, t0.x01), atan2(t1.y01, t1.x01), !cw);
-
-        // Otherwise, draw the two corners and the ring.
-        else {
-          context.arc(t0.cx, t0.cy, rc0, atan2(t0.y01, t0.x01), atan2(t0.y11, t0.x11), !cw);
-          context.arc(0, 0, r0, atan2(t0.cy + t0.y11, t0.cx + t0.x11), atan2(t1.cy + t1.y11, t1.cx + t1.x11), cw);
-          context.arc(t1.cx, t1.cy, rc0, atan2(t1.y11, t1.x11), atan2(t1.y01, t1.x01), !cw);
-        }
-      }
-
-      // Or is the inner ring just a circular arc?
-      else context.arc(0, 0, r0, a10, a00, cw);
-    }
-
-    context.closePath();
-
-    if (buffer) return context = null, buffer + "" || null;
-  }
-
-  arc.centroid = function() {
-    var r = (+innerRadius.apply(this, arguments) + +outerRadius.apply(this, arguments)) / 2,
-        a = (+startAngle.apply(this, arguments) + +endAngle.apply(this, arguments)) / 2 - pi / 2;
-    return [cos(a) * r, sin(a) * r];
-  };
-
-  arc.innerRadius = function(_) {
-    return arguments.length ? (innerRadius = typeof _ === "function" ? _ : constant(+_), arc) : innerRadius;
-  };
-
-  arc.outerRadius = function(_) {
-    return arguments.length ? (outerRadius = typeof _ === "function" ? _ : constant(+_), arc) : outerRadius;
-  };
-
-  arc.cornerRadius = function(_) {
-    return arguments.length ? (cornerRadius = typeof _ === "function" ? _ : constant(+_), arc) : cornerRadius;
-  };
-
-  arc.padRadius = function(_) {
-    return arguments.length ? (padRadius = _ == null ? null : typeof _ === "function" ? _ : constant(+_), arc) : padRadius;
-  };
-
-  arc.startAngle = function(_) {
-    return arguments.length ? (startAngle = typeof _ === "function" ? _ : constant(+_), arc) : startAngle;
-  };
-
-  arc.endAngle = function(_) {
-    return arguments.length ? (endAngle = typeof _ === "function" ? _ : constant(+_), arc) : endAngle;
-  };
-
-  arc.padAngle = function(_) {
-    return arguments.length ? (padAngle = typeof _ === "function" ? _ : constant(+_), arc) : padAngle;
-  };
-
-  arc.context = function(_) {
-    return arguments.length ? ((context = _ == null ? null : _), arc) : context;
-  };
-
-  return arc;
-}
-
-;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/Gauge/GaugeReferenceArc.js
-
-
-
-
-
-
-const StyledPath = styles_styled('path', {
-  name: 'MuiGauge',
-  slot: 'ReferenceArc',
-  overridesResolver: (props, styles) => styles.referenceArc
-})(({
-  theme
-}) => ({
-  fill: (theme.vars || theme).palette.divider
-}));
-function GaugeReferenceArc(props) {
-  const {
-    startAngle,
-    endAngle,
-    outerRadius,
-    innerRadius,
-    cornerRadius,
-    cx,
-    cy
-  } = useGaugeState();
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(StyledPath, (0,esm_extends/* default */.A)({
-    transform: `translate(${cx}, ${cy})`,
-    d: arc().cornerRadius(cornerRadius)({
-      startAngle,
-      endAngle,
-      innerRadius,
-      outerRadius
-    })
-  }, props));
-}
-;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/Gauge/GaugeValueArc.js
-
-
-
-
-
-
-const GaugeValueArc_StyledPath = styles_styled('path', {
-  name: 'MuiGauge',
-  slot: 'ReferenceArc',
-  overridesResolver: (props, styles) => styles.referenceArc
-})(({
-  theme
-}) => ({
-  fill: (theme.vars || theme).palette.primary.main
-}));
-function GaugeValueArc(props) {
-  const {
-    value,
-    valueMin,
-    valueMax,
-    startAngle,
-    endAngle,
-    outerRadius,
-    innerRadius,
-    cornerRadius,
-    cx,
-    cy
-  } = useGaugeState();
-  if (value === null) {
-    return null;
-  }
-  const valueAngle = startAngle + (value - valueMin) / (valueMax - valueMin) * (endAngle - startAngle);
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(GaugeValueArc_StyledPath, (0,esm_extends/* default */.A)({
-    transform: `translate(${cx}, ${cy})`,
-    d: arc().cornerRadius(cornerRadius)({
-      startAngle,
-      endAngle: valueAngle,
-      innerRadius,
-      outerRadius
-    })
-  }, props));
-}
-;// CONCATENATED MODULE: ./views/components/Blocks/Guage.js
-
-
-
-
-const Guage = props => {
-  const {
-    value
-  } = props;
-  const [color, setColor] = react.useState('#aa2e25');
-  react.useEffect(() => {
-    if (value > 70) {
-      setColor('#357a38');
-    } else {
-      setColor('#aa2e25');
-    }
-  });
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
-    children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Box_Box, {
-      sx: {
-        position: 'absolute',
-        width: '200px',
-        height: '200px',
-        top: 0,
-        right: 0,
-        zIndex: 2
-      },
-      children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(GaugeContainer, {
-        value: value,
-        valueMax: 100,
-        sx: {
-          '& svg path:last-of-type': {
-            fill: color
-          }
-        },
-        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(GaugeReferenceArc, {}), /*#__PURE__*/(0,jsx_runtime.jsx)(GaugeValueArc, {})]
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-        sx: {
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          fontWeight: 'bold',
-          color: color
-        },
-        variant: "body1",
-        children: value
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-        sx: {
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, 25%)',
-          fontWeight: 'bold',
-          color: color
-        },
-        variant: "body1",
-        children: "Job Match"
-      })]
-    })
-  });
-};
-/* harmony default export */ const Blocks_Guage = (Guage);
 ;// CONCATENATED MODULE: ./node_modules/@mui/utils/useControlled/useControlled.js
 'use client';
 
@@ -34652,6 +32934,1724 @@ const ListItem = /*#__PURE__*/react.forwardRef(function ListItem(inProps, ref) {
 });
  false ? 0 : void 0;
 /* harmony default export */ const ListItem_ListItem = (ListItem);
+;// CONCATENATED MODULE: ./node_modules/@mui/system/esm/createBox.js
+'use client';
+
+
+
+const createBox_excluded = ["className", "component"];
+
+
+
+
+
+
+function createBox(options = {}) {
+  const {
+    themeId,
+    defaultTheme,
+    defaultClassName = 'MuiBox-root',
+    generateClassName
+  } = options;
+  const BoxRoot = (0,styled_engine["default"])('div', {
+    shouldForwardProp: prop => prop !== 'theme' && prop !== 'sx' && prop !== 'as'
+  })(styleFunctionSx/* default */.A);
+  const Box = /*#__PURE__*/react.forwardRef(function Box(inProps, ref) {
+    const theme = esm_useTheme(defaultTheme);
+    const _extendSxProp = (0,extendSxProp/* default */.A)(inProps),
+      {
+        className,
+        component = 'div'
+      } = _extendSxProp,
+      other = (0,objectWithoutPropertiesLoose/* default */.A)(_extendSxProp, createBox_excluded);
+    return /*#__PURE__*/(0,jsx_runtime.jsx)(BoxRoot, (0,esm_extends/* default */.A)({
+      as: component,
+      ref: ref,
+      className: dist_clsx(className, generateClassName ? generateClassName(defaultClassName) : defaultClassName),
+      theme: themeId ? theme[themeId] || theme : theme
+    }, other));
+  });
+  return Box;
+}
+;// CONCATENATED MODULE: ./node_modules/@mui/material/Box/boxClasses.js
+
+const boxClasses = generateUtilityClasses('MuiBox', ['root']);
+/* harmony default export */ const Box_boxClasses = (boxClasses);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/Box/Box.js
+'use client';
+
+
+
+
+
+
+
+const Box_defaultTheme = styles_createTheme();
+const Box = createBox({
+  themeId: identifier,
+  defaultTheme: Box_defaultTheme,
+  defaultClassName: Box_boxClasses.root,
+  generateClassName: ClassNameGenerator_ClassNameGenerator.generate
+});
+ false ? 0 : void 0;
+/* harmony default export */ const Box_Box = (Box);
+;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/ResponsiveChartContainer/useChartContainerDimensions.js
+
+
+
+const useChartContainerDimensions = (inWidth, inHeight) => {
+  const rootRef = react.useRef(null);
+  const displayError = react.useRef(false);
+  const [width, setWidth] = react.useState(0);
+  const [height, setHeight] = react.useState(0);
+
+  // Adaptation of the `computeSizeAndPublishResizeEvent` from the grid.
+  const computeSize = react.useCallback(() => {
+    const mainEl = rootRef?.current;
+    if (!mainEl) {
+      return;
+    }
+    const win = ownerWindow(mainEl);
+    const computedStyle = win.getComputedStyle(mainEl);
+    const newHeight = Math.floor(parseFloat(computedStyle.height)) || 0;
+    const newWidth = Math.floor(parseFloat(computedStyle.width)) || 0;
+    setWidth(newWidth);
+    setHeight(newHeight);
+  }, []);
+  react.useEffect(() => {
+    // Ensure the error detection occurs after the first rendering.
+    displayError.current = true;
+  }, []);
+  useEnhancedEffect_useEnhancedEffect(() => {
+    if (inWidth !== undefined && inHeight !== undefined) {
+      return () => {};
+    }
+    computeSize();
+    const elementToObserve = rootRef.current;
+    if (typeof ResizeObserver === 'undefined') {
+      return () => {};
+    }
+    let animationFrame;
+    const observer = new ResizeObserver(() => {
+      // See https://github.com/mui/mui-x/issues/8733
+      animationFrame = requestAnimationFrame(() => {
+        computeSize();
+      });
+    });
+    if (elementToObserve) {
+      observer.observe(elementToObserve);
+    }
+    return () => {
+      if (animationFrame) {
+        window.cancelAnimationFrame(animationFrame);
+      }
+      if (elementToObserve) {
+        observer.unobserve(elementToObserve);
+      }
+    };
+  }, [computeSize, inHeight, inWidth]);
+  if (false) {}
+  return [rootRef, inWidth ?? width, inHeight ?? height];
+};
+;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/context/InteractionProvider.js
+
+
+
+const InteractionContext = /*#__PURE__*/react.createContext({
+  item: null,
+  axis: {
+    x: null,
+    y: null
+  },
+  useVoronoiInteraction: false,
+  dispatch: () => null
+});
+if (false) {}
+const dataReducer = (prevState, action) => {
+  switch (action.type) {
+    case 'enterItem':
+      return _extends({}, prevState, {
+        item: action.data
+      });
+    case 'exitChart':
+      if (prevState.item === null && prevState.axis.x === null && prevState.axis.y === null) {
+        return prevState;
+      }
+      return _extends({}, prevState, {
+        axis: {
+          x: null,
+          y: null
+        },
+        item: null
+      });
+    case 'updateVoronoiUsage':
+      return _extends({}, prevState, {
+        useVoronoiInteraction: action.useVoronoiInteraction
+      });
+    case 'leaveItem':
+      if (prevState.item === null || Object.keys(action.data).some(key => action.data[key] !== prevState.item[key])) {
+        // The item is already something else
+        return prevState;
+      }
+      return _extends({}, prevState, {
+        item: null
+      });
+    case 'updateAxis':
+      if (action.data.x === prevState.axis.x && action.data.y === prevState.axis.y) {
+        return prevState;
+      }
+      return _extends({}, prevState, {
+        axis: action.data
+      });
+    default:
+      return prevState;
+  }
+};
+function InteractionProvider(props) {
+  const {
+    children
+  } = props;
+  const [data, dispatch] = React.useReducer(dataReducer, {
+    item: null,
+    axis: {
+      x: null,
+      y: null
+    },
+    useVoronoiInteraction: false
+  });
+  const value = React.useMemo(() => _extends({}, data, {
+    dispatch
+  }), [data]);
+  return /*#__PURE__*/_jsx(InteractionContext.Provider, {
+    value: value,
+    children: children
+  });
+}
+
+;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/BarChart/extremums.js
+const getBaseExtremum = params => {
+  const {
+    axis
+  } = params;
+  const minX = Math.min(...(axis.data ?? []));
+  const maxX = Math.max(...(axis.data ?? []));
+  return [minX, maxX];
+};
+const getValueExtremum = params => {
+  const {
+    series,
+    axis,
+    isDefaultAxis
+  } = params;
+  return Object.keys(series).filter(seriesId => series[seriesId].yAxisKey === axis.id || isDefaultAxis && series[seriesId].yAxisKey === undefined).reduce((acc, seriesId) => {
+    const [seriesMin, seriesMax] = series[seriesId].stackedData?.reduce((seriesAcc, values) => [Math.min(...values, ...(seriesAcc[0] === null ? [] : [seriesAcc[0]])), Math.max(...values, ...(seriesAcc[1] === null ? [] : [seriesAcc[1]]))], series[seriesId].stackedData[0]) ?? [null, null];
+    return [acc[0] === null ? seriesMin : Math.min(seriesMin, acc[0]), acc[1] === null ? seriesMax : Math.max(seriesMax, acc[1])];
+  }, [null, null]);
+};
+const getExtremumX = params => {
+  // Notice that bar should be all horizontal or all vertical.
+  // Don't think it's a problem for now
+  const isHorizontal = Object.keys(params.series).some(seriesId => params.series[seriesId].layout === 'horizontal');
+  if (isHorizontal) {
+    return getValueExtremum(params);
+  }
+  return getBaseExtremum(params);
+};
+const getExtremumY = params => {
+  const isHorizontal = Object.keys(params.series).some(seriesId => params.series[seriesId].layout === 'horizontal');
+  if (isHorizontal) {
+    return getBaseExtremum(params);
+  }
+  return getValueExtremum(params);
+};
+;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/ScatterChart/extremums.js
+const mergeMinMax = (acc, val) => {
+  if (acc[0] === null || acc[1] === null) {
+    return val;
+  }
+  if (val[0] === null || val[1] === null) {
+    return acc;
+  }
+  return [Math.min(acc[0], val[0]), Math.max(acc[1], val[1])];
+};
+const extremums_getExtremumX = params => {
+  const {
+    series,
+    axis,
+    isDefaultAxis
+  } = params;
+  return Object.keys(series).filter(seriesId => series[seriesId].xAxisKey === axis.id || series[seriesId].xAxisKey === undefined && isDefaultAxis).reduce((acc, seriesId) => {
+    const seriesMinMax = series[seriesId].data.reduce((accSeries, {
+      x
+    }) => {
+      const val = [x, x];
+      return mergeMinMax(accSeries, val);
+    }, [null, null]);
+    return mergeMinMax(acc, seriesMinMax);
+  }, [null, null]);
+};
+const extremums_getExtremumY = params => {
+  const {
+    series,
+    axis,
+    isDefaultAxis
+  } = params;
+  return Object.keys(series).filter(seriesId => series[seriesId].yAxisKey === axis.id || series[seriesId].yAxisKey === undefined && isDefaultAxis).reduce((acc, seriesId) => {
+    const seriesMinMax = series[seriesId].data.reduce((accSeries, {
+      y
+    }) => {
+      const val = [y, y];
+      return mergeMinMax(accSeries, val);
+    }, [null, null]);
+    return mergeMinMax(acc, seriesMinMax);
+  }, [null, null]);
+};
+;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/LineChart/extremums.js
+const LineChart_extremums_getExtremumX = params => {
+  const {
+    axis
+  } = params;
+  const minX = Math.min(...(axis.data ?? []));
+  const maxX = Math.max(...(axis.data ?? []));
+  return [minX, maxX];
+};
+function getSeriesExtremums(getValues, stackedData) {
+  if (stackedData.length === 0) {
+    return [null, null];
+  }
+  return stackedData.reduce((seriesAcc, stackedValue) => {
+    const [base, value] = getValues(stackedValue);
+    if (seriesAcc[0] === null) {
+      return [Math.min(base, value), Math.max(base, value)];
+    }
+    return [Math.min(base, value, seriesAcc[0]), Math.max(base, value, seriesAcc[1])];
+  }, getValues(stackedData[0]));
+}
+const LineChart_extremums_getExtremumY = params => {
+  const {
+    series,
+    axis,
+    isDefaultAxis
+  } = params;
+  return Object.keys(series).filter(seriesId => series[seriesId].yAxisKey === axis.id || isDefaultAxis && series[seriesId].yAxisKey === undefined).reduce((acc, seriesId) => {
+    const {
+      area,
+      stackedData
+    } = series[seriesId];
+    const isArea = area !== undefined;
+    const getValues = isArea ? d => d : d => [d[1], d[1]]; // Since this series is not used to display an area, we do not consider the base (the d[0]).
+
+    const seriesExtremums = getSeriesExtremums(getValues, stackedData);
+    if (acc[0] === null) {
+      return seriesExtremums;
+    }
+    if (seriesExtremums[0] === null) {
+      return acc;
+    }
+    const [seriesMin, seriesMax] = seriesExtremums;
+    return [Math.min(seriesMin, acc[0]), Math.max(seriesMax, acc[1])];
+  }, [null, null]);
+};
+;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/context/CartesianContextProvider.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+const DEFAULT_CATEGORY_GAP_RATIO = 0.2;
+const DEFAULT_BAR_GAP_RATIO = 0.1;
+
+// TODO: those might be better placed in a distinct file
+const xExtremumGetters = {
+  bar: getExtremumX,
+  scatter: extremums_getExtremumX,
+  line: LineChart_extremums_getExtremumX
+};
+const yExtremumGetters = {
+  bar: getExtremumY,
+  scatter: extremums_getExtremumY,
+  line: LineChart_extremums_getExtremumY
+};
+const CartesianContext = /*#__PURE__*/react.createContext({
+  xAxis: {},
+  yAxis: {},
+  xAxisIds: [],
+  yAxisIds: []
+});
+if (false) {}
+function CartesianContextProvider(props) {
+  const {
+    xAxis: inXAxis,
+    yAxis: inYAxis,
+    dataset,
+    children
+  } = props;
+  const formattedSeries = React.useContext(SeriesContext);
+  const drawingArea = React.useContext(DrawingContext);
+  const xAxis = React.useMemo(() => inXAxis?.map(axisConfig => {
+    const dataKey = axisConfig.dataKey;
+    if (dataKey === undefined || axisConfig.data !== undefined) {
+      return axisConfig;
+    }
+    if (dataset === undefined) {
+      throw Error('MUI X Charts: x-axis uses `dataKey` but no `dataset` is provided.');
+    }
+    return _extends({}, axisConfig, {
+      data: dataset.map(d => d[dataKey])
+    });
+  }), [inXAxis, dataset]);
+  const yAxis = React.useMemo(() => inYAxis?.map(axisConfig => {
+    const dataKey = axisConfig.dataKey;
+    if (dataKey === undefined || axisConfig.data !== undefined) {
+      return axisConfig;
+    }
+    if (dataset === undefined) {
+      throw Error('MUI X Charts: y-axis uses `dataKey` but no `dataset` is provided.');
+    }
+    return _extends({}, axisConfig, {
+      data: dataset.map(d => d[dataKey])
+    });
+  }), [inYAxis, dataset]);
+  const value = React.useMemo(() => {
+    const axisExtremumCallback = (acc, chartType, axis, getters, isDefaultAxis) => {
+      const getter = getters[chartType];
+      const series = formattedSeries[chartType]?.series ?? {};
+      const [minChartTypeData, maxChartTypeData] = getter({
+        series,
+        axis,
+        isDefaultAxis
+      });
+      const [minData, maxData] = acc;
+      if (minData === null || maxData === null) {
+        return [minChartTypeData, maxChartTypeData];
+      }
+      if (minChartTypeData === null || maxChartTypeData === null) {
+        return [minData, maxData];
+      }
+      return [Math.min(minChartTypeData, minData), Math.max(maxChartTypeData, maxData)];
+    };
+    const getAxisExtremum = (axis, getters, isDefaultAxis) => {
+      const charTypes = Object.keys(getters);
+      return charTypes.reduce((acc, charType) => axisExtremumCallback(acc, charType, axis, getters, isDefaultAxis), [null, null]);
+    };
+    const allXAxis = [...(xAxis?.map((axis, index) => _extends({
+      id: `defaultized-x-axis-${index}`
+    }, axis)) ?? []),
+    // Allows to specify an axis with id=DEFAULT_X_AXIS_KEY
+    ...(xAxis === undefined || xAxis.findIndex(({
+      id
+    }) => id === DEFAULT_X_AXIS_KEY) === -1 ? [{
+      id: DEFAULT_X_AXIS_KEY,
+      scaleType: 'linear'
+    }] : [])];
+    const completedXAxis = {};
+    allXAxis.forEach((axis, axisIndex) => {
+      const isDefaultAxis = axisIndex === 0;
+      const [minData, maxData] = getAxisExtremum(axis, xExtremumGetters, isDefaultAxis);
+      const range = axis.reverse ? [drawingArea.left + drawingArea.width, drawingArea.left] : [drawingArea.left, drawingArea.left + drawingArea.width];
+      if (isBandScaleConfig(axis)) {
+        const categoryGapRatio = axis.categoryGapRatio ?? DEFAULT_CATEGORY_GAP_RATIO;
+        const barGapRatio = axis.barGapRatio ?? DEFAULT_BAR_GAP_RATIO;
+        completedXAxis[axis.id] = _extends({
+          categoryGapRatio,
+          barGapRatio
+        }, axis, {
+          scale: scaleBand(axis.data, range).paddingInner(categoryGapRatio).paddingOuter(categoryGapRatio / 2),
+          tickNumber: axis.data.length
+        });
+      }
+      if (isPointScaleConfig(axis)) {
+        completedXAxis[axis.id] = _extends({}, axis, {
+          scale: scalePoint(axis.data, range),
+          tickNumber: axis.data.length
+        });
+      }
+      if (axis.scaleType === 'band' || axis.scaleType === 'point') {
+        // Could be merged with the two previous "if conditions" but then TS does not get that `axis.scaleType` can't be `band` or `point`.
+        return;
+      }
+      const scaleType = axis.scaleType ?? 'linear';
+      const extremums = [axis.min ?? minData, axis.max ?? maxData];
+      const tickNumber = getTickNumber(_extends({}, axis, {
+        range,
+        domain: extremums
+      }));
+      const niceScale = getScale(scaleType, extremums, range).nice(tickNumber);
+      const niceDomain = niceScale.domain();
+      const domain = [axis.min ?? niceDomain[0], axis.max ?? niceDomain[1]];
+      completedXAxis[axis.id] = _extends({}, axis, {
+        scaleType,
+        scale: niceScale.domain(domain),
+        tickNumber
+      });
+    });
+    const allYAxis = [...(yAxis?.map((axis, index) => _extends({
+      id: `defaultized-y-axis-${index}`
+    }, axis)) ?? []), ...(yAxis === undefined || yAxis.findIndex(({
+      id
+    }) => id === DEFAULT_Y_AXIS_KEY) === -1 ? [{
+      id: DEFAULT_Y_AXIS_KEY,
+      scaleType: 'linear'
+    }] : [])];
+    const completedYAxis = {};
+    allYAxis.forEach((axis, axisIndex) => {
+      const isDefaultAxis = axisIndex === 0;
+      const [minData, maxData] = getAxisExtremum(axis, yExtremumGetters, isDefaultAxis);
+      const range = axis.reverse ? [drawingArea.top, drawingArea.top + drawingArea.height] : [drawingArea.top + drawingArea.height, drawingArea.top];
+      if (isBandScaleConfig(axis)) {
+        const categoryGapRatio = axis.categoryGapRatio ?? DEFAULT_CATEGORY_GAP_RATIO;
+        completedYAxis[axis.id] = _extends({
+          categoryGapRatio,
+          barGapRatio: 0
+        }, axis, {
+          scale: scaleBand(axis.data, [range[1], range[0]]).paddingInner(categoryGapRatio).paddingOuter(categoryGapRatio / 2),
+          tickNumber: axis.data.length
+        });
+      }
+      if (isPointScaleConfig(axis)) {
+        completedYAxis[axis.id] = _extends({}, axis, {
+          scale: scalePoint(axis.data, [range[1], range[0]]),
+          tickNumber: axis.data.length
+        });
+      }
+      if (axis.scaleType === 'band' || axis.scaleType === 'point') {
+        // Could be merged with the two previous "if conditions" but then TS does not get that `axis.scaleType` can't be `band` or `point`.
+        return;
+      }
+      const scaleType = axis.scaleType ?? 'linear';
+      const extremums = [axis.min ?? minData, axis.max ?? maxData];
+      const tickNumber = getTickNumber(_extends({}, axis, {
+        range,
+        domain: extremums
+      }));
+      const niceScale = getScale(scaleType, extremums, range).nice(tickNumber);
+      const niceDomain = niceScale.domain();
+      const domain = [axis.min ?? niceDomain[0], axis.max ?? niceDomain[1]];
+      completedYAxis[axis.id] = _extends({}, axis, {
+        scaleType,
+        scale: niceScale.domain(domain),
+        tickNumber
+      });
+    });
+    return {
+      xAxis: completedXAxis,
+      yAxis: completedYAxis,
+      xAxisIds: allXAxis.map(({
+        id
+      }) => id),
+      yAxisIds: allYAxis.map(({
+        id
+      }) => id)
+    };
+  }, [drawingArea.height, drawingArea.left, drawingArea.top, drawingArea.width, formattedSeries, xAxis, yAxis]);
+
+  // @ts-ignore
+  return /*#__PURE__*/_jsx(CartesianContext.Provider, {
+    value: value,
+    children: children
+  });
+}
+
+;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/constants.js
+const constants_DEFAULT_X_AXIS_KEY = 'DEFAULT_X_AXIS_KEY';
+const constants_DEFAULT_Y_AXIS_KEY = 'DEFAULT_Y_AXIS_KEY';
+const DEFAULT_MARGINS = {
+  top: 50,
+  bottom: 50,
+  left: 50,
+  right: 50
+};
+;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/hooks/useChartDimensions.js
+
+
+
+const useChartDimensions = (width, height, margin) => {
+  const defaultizedMargin = (0,esm_extends/* default */.A)({}, DEFAULT_MARGINS, margin);
+  const drawingArea = react.useMemo(() => ({
+    left: defaultizedMargin.left,
+    top: defaultizedMargin.top,
+    right: defaultizedMargin.right,
+    bottom: defaultizedMargin.bottom,
+    width: Math.max(0, width - defaultizedMargin.left - defaultizedMargin.right),
+    height: Math.max(0, height - defaultizedMargin.top - defaultizedMargin.bottom)
+  }), [width, height, defaultizedMargin.top, defaultizedMargin.bottom, defaultizedMargin.left, defaultizedMargin.right]);
+  return drawingArea;
+};
+/* harmony default export */ const hooks_useChartDimensions = (useChartDimensions);
+;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/context/DrawingProvider.js
+
+
+
+
+
+/**
+ * Defines the area in which it is possible to draw the charts.
+ */
+
+const DrawingProvider_DrawingContext = /*#__PURE__*/react.createContext({
+  top: 0,
+  left: 0,
+  bottom: 0,
+  right: 0,
+  height: 300,
+  width: 400,
+  chartId: ''
+});
+if (false) {}
+const SvgContext = /*#__PURE__*/react.createContext({
+  current: null
+});
+if (false) {}
+function DrawingProvider(props) {
+  const {
+    width,
+    height,
+    margin,
+    svgRef,
+    children
+  } = props;
+  const drawingArea = hooks_useChartDimensions(width, height, margin);
+  const chartId = useId();
+  const value = react.useMemo(() => (0,esm_extends/* default */.A)({
+    chartId: chartId ?? ''
+  }, drawingArea), [chartId, drawingArea]);
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(SvgContext.Provider, {
+    value: svgRef,
+    children: /*#__PURE__*/(0,jsx_runtime.jsx)(DrawingProvider_DrawingContext.Provider, {
+      value: value,
+      children: children
+    })
+  });
+}
+;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/internals/isBandScale.js
+function isBandScale(scale) {
+  return scale.bandwidth !== undefined;
+}
+;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/internals/utils.js
+// Returns the index of a defined shape
+function getSymbol(shape) {
+  const symbolNames = 'circle cross diamond square star triangle wye'.split(/ /);
+  return symbolNames.indexOf(shape) || 0;
+}
+/**
+ * Transform mouse event position to corrdinates inside the SVG.
+ * @param svg The SVG element
+ * @param event The mouseEvent to transform
+ */
+function getSVGPoint(svg, event) {
+  const pt = svg.createSVGPoint();
+  pt.x = event.clientX;
+  pt.y = event.clientY;
+  return pt.matrixTransform(svg.getScreenCTM().inverse());
+}
+
+/**
+ * Helper that converts values and percentages into values.
+ * @param value The value provided by the developer. Can either be a number or a string with '%' or 'px'.
+ * @param refValue The numerical value associated to 100%.
+ * @returns The numerical value associated to the provided value.
+ */
+function getPercentageValue(value, refValue) {
+  if (typeof value === 'number') {
+    return value;
+  }
+  if (value === '100%') {
+    // Avoid potential rounding issues
+    return refValue;
+  }
+  if (value.endsWith('%')) {
+    const percentage = Number.parseFloat(value.slice(0, value.length - 1));
+    if (!Number.isNaN(percentage)) {
+      return percentage * refValue / 100;
+    }
+  }
+  if (value.endsWith('px')) {
+    const val = Number.parseFloat(value.slice(0, value.length - 2));
+    if (!Number.isNaN(val)) {
+      return val;
+    }
+  }
+  throw Error(`MUI-Charts: Received an unknown value "${value}". It should be a number, or a string with a percentage value.`);
+}
+
+/**
+ * Remove spaces to have viable ids
+ */
+function cleanId(id) {
+  return id.replace(' ', '_');
+}
+;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/hooks/useAxisEvents.js
+
+
+
+
+
+
+function getAsANumber(value) {
+  return value instanceof Date ? value.getTime() : value;
+}
+const useAxisEvents = disableAxisListener => {
+  const svgRef = react.useContext(SvgContext);
+  const {
+    width,
+    height,
+    top,
+    left
+  } = react.useContext(DrawingProvider_DrawingContext);
+  const {
+    xAxis,
+    yAxis,
+    xAxisIds,
+    yAxisIds
+  } = react.useContext(CartesianContext);
+  const {
+    dispatch
+  } = react.useContext(InteractionContext);
+  const usedXAxis = xAxisIds[0];
+  const usedYAxis = yAxisIds[0];
+
+  // Use a ref to avoid rerendering on every mousemove event.
+  const mousePosition = react.useRef({
+    x: -1,
+    y: -1
+  });
+  react.useEffect(() => {
+    const element = svgRef.current;
+    if (element === null || disableAxisListener) {
+      return () => {};
+    }
+    const getUpdate = (axisConfig, mouseValue) => {
+      if (usedXAxis === null) {
+        return null;
+      }
+      const {
+        scale,
+        data: axisData,
+        reverse
+      } = axisConfig;
+      if (!isBandScale(scale)) {
+        const value = scale.invert(mouseValue);
+        if (axisData === undefined) {
+          return {
+            value
+          };
+        }
+        const valueAsNumber = getAsANumber(value);
+        const closestIndex = axisData?.findIndex((pointValue, index) => {
+          const v = getAsANumber(pointValue);
+          if (v > valueAsNumber) {
+            if (index === 0 || Math.abs(valueAsNumber - v) <= Math.abs(valueAsNumber - getAsANumber(axisData[index - 1]))) {
+              return true;
+            }
+          }
+          if (v <= valueAsNumber) {
+            if (index === axisData.length - 1 || Math.abs(getAsANumber(value) - v) < Math.abs(getAsANumber(value) - getAsANumber(axisData[index + 1]))) {
+              return true;
+            }
+          }
+          return false;
+        });
+        return {
+          value: closestIndex !== undefined && closestIndex >= 0 ? axisData[closestIndex] : value,
+          index: closestIndex
+        };
+      }
+      const dataIndex = scale.bandwidth() === 0 ? Math.floor((mouseValue - Math.min(...scale.range()) + scale.step() / 2) / scale.step()) : Math.floor((mouseValue - Math.min(...scale.range())) / scale.step());
+      if (dataIndex < 0 || dataIndex >= axisData.length) {
+        return null;
+      }
+      if (reverse) {
+        const reverseIndex = axisData.length - 1 - dataIndex;
+        return {
+          index: reverseIndex,
+          value: axisData[reverseIndex]
+        };
+      }
+      return {
+        index: dataIndex,
+        value: axisData[dataIndex]
+      };
+    };
+    const handleMouseOut = () => {
+      mousePosition.current = {
+        x: -1,
+        y: -1
+      };
+      dispatch({
+        type: 'exitChart'
+      });
+    };
+    const handleMouseMove = event => {
+      const svgPoint = getSVGPoint(svgRef.current, event);
+      mousePosition.current = {
+        x: svgPoint.x,
+        y: svgPoint.y
+      };
+      const outsideX = svgPoint.x < left || svgPoint.x > left + width;
+      const outsideY = svgPoint.y < top || svgPoint.y > top + height;
+      if (outsideX || outsideY) {
+        dispatch({
+          type: 'exitChart'
+        });
+        return;
+      }
+      const newStateX = getUpdate(xAxis[usedXAxis], svgPoint.x);
+      const newStateY = getUpdate(yAxis[usedYAxis], svgPoint.y);
+      dispatch({
+        type: 'updateAxis',
+        data: {
+          x: newStateX,
+          y: newStateY
+        }
+      });
+    };
+    element.addEventListener('mouseout', handleMouseOut);
+    element.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      element.removeEventListener('mouseout', handleMouseOut);
+      element.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [svgRef, dispatch, left, width, top, height, usedYAxis, yAxis, usedXAxis, xAxis, disableAxisListener]);
+};
+;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/ChartsSurface.js
+
+
+const ChartsSurface_excluded = ["children", "width", "height", "viewBox", "disableAxisListener", "className", "title", "desc"];
+
+
+
+
+
+
+const ChartChartsSurfaceStyles = styles_styled('svg', {
+  name: 'MuiChartsSurface',
+  slot: 'Root'
+})(() => ({}));
+const ChartsSurface = /*#__PURE__*/react.forwardRef(function ChartsSurface(props, ref) {
+  const {
+      children,
+      width,
+      height,
+      viewBox,
+      disableAxisListener = false,
+      title,
+      desc
+    } = props,
+    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, ChartsSurface_excluded);
+  const svgView = (0,esm_extends/* default */.A)({
+    width,
+    height,
+    x: 0,
+    y: 0
+  }, viewBox);
+  useAxisEvents(disableAxisListener);
+  return /*#__PURE__*/(0,jsx_runtime.jsxs)(ChartChartsSurfaceStyles, (0,esm_extends/* default */.A)({
+    width: width,
+    height: height,
+    viewBox: `${svgView.x} ${svgView.y} ${svgView.width} ${svgView.height}`,
+    ref: ref
+  }, other, {
+    children: [/*#__PURE__*/(0,jsx_runtime.jsx)("title", {
+      children: title
+    }), /*#__PURE__*/(0,jsx_runtime.jsx)("desc", {
+      children: desc
+    }), children]
+  }));
+});
+ false ? 0 : void 0;
+
+;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/Gauge/utils.js
+function deg2rad(angle) {
+  return Math.PI * angle / 180;
+}
+function getPoint(angle) {
+  const radAngle = deg2rad(angle);
+  return [Math.sin(radAngle), -Math.cos(radAngle)];
+}
+
+/**
+ * Retruns the ratio of the arc bounding box and its center.
+ * @param startAngle The start angle (in deg)
+ * @param endAngle The end angle (in deg)
+ */
+function getArcRatios(startAngle, endAngle) {
+  // Set the start, end and center point.
+  const points = [[0, 0], getPoint(startAngle), getPoint(endAngle)];
+
+  // Add cardinal points included in the arc
+  const minAngle = Math.min(startAngle, endAngle);
+  const maxAngle = Math.max(startAngle, endAngle);
+  const initialAngle = Math.floor(minAngle / 90) * 90;
+  for (let step = 1; step <= 4; step += 1) {
+    const cartinalAngle = initialAngle + step * 90;
+    if (cartinalAngle < maxAngle) {
+      points.push(getPoint(cartinalAngle));
+    }
+  }
+  const minX = Math.min(...points.map(([x]) => x));
+  const maxX = Math.max(...points.map(([x]) => x));
+  const minY = Math.min(...points.map(([, y]) => y));
+  const maxY = Math.max(...points.map(([, y]) => y));
+  return {
+    cx: -minX / (maxX - minX),
+    cy: -minY / (maxY - minY),
+    minX,
+    maxX,
+    minY,
+    maxY
+  };
+}
+function getAvailableRadius(cx, cy, width, height, {
+  minX,
+  maxX,
+  minY,
+  maxY
+}) {
+  return Math.min(...[{
+    ratio: Math.abs(minX),
+    space: cx
+  }, {
+    ratio: Math.abs(maxX),
+    space: width - cx
+  }, {
+    ratio: Math.abs(minY),
+    space: cy
+  }, {
+    ratio: Math.abs(maxY),
+    space: height - cy
+  }].map(({
+    ratio,
+    space
+  }) => {
+    if (ratio < 0.00001) {
+      return Infinity;
+    }
+    return space / ratio;
+  }));
+}
+;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/Gauge/GaugeProvider.js
+// @ignore - do not document.
+
+
+
+
+
+const GaugeContext = /*#__PURE__*/react.createContext({
+  value: null,
+  valueMin: 0,
+  valueMax: 0,
+  startAngle: 0,
+  endAngle: 0,
+  innerRadius: 0,
+  outerRadius: 0,
+  cornerRadius: 0,
+  cx: 0,
+  cy: 0,
+  maxRadius: 0,
+  valueAngle: null
+});
+if (false) {}
+function GaugeProvider(props) {
+  const {
+    value = null,
+    valueMin = 0,
+    valueMax = 100,
+    startAngle = 0,
+    endAngle = 360,
+    outerRadius: outerRadiusParam,
+    innerRadius: innerRadiusParam,
+    cornerRadius: cornerRadiusParam,
+    cx: cxParam,
+    cy: cyParam,
+    children
+  } = props;
+  const {
+    width,
+    height,
+    top,
+    left
+  } = react.useContext(DrawingProvider_DrawingContext);
+  const ratios = getArcRatios(startAngle, endAngle);
+  const innerCx = cxParam ? getPercentageValue(cxParam, width) : ratios.cx * width;
+  const innerCy = cyParam ? getPercentageValue(cyParam, height) : ratios.cy * height;
+  let cx = left + innerCx;
+  let cy = top + innerCy;
+  const maxRadius = getAvailableRadius(innerCx, innerCy, width, height, ratios);
+
+  // If the center is not defined, after computation of the available radius, udpate the center to use the remaining space.
+  if (cxParam === undefined) {
+    const usedWidth = maxRadius * (ratios.maxX - ratios.minX);
+    cx = left + (width - usedWidth) / 2 + ratios.cx * usedWidth;
+  }
+  if (cyParam === undefined) {
+    const usedHeight = maxRadius * (ratios.maxY - ratios.minY);
+    cy = top + (height - usedHeight) / 2 + ratios.cy * usedHeight;
+  }
+  const outerRadius = getPercentageValue(outerRadiusParam ?? maxRadius, maxRadius);
+  const innerRadius = getPercentageValue(innerRadiusParam ?? '80%', maxRadius);
+  const cornerRadius = getPercentageValue(cornerRadiusParam ?? 0, outerRadius - innerRadius);
+  const contextValue = react.useMemo(() => {
+    const startAngleRad = Math.PI * startAngle / 180;
+    const endAngleRad = Math.PI * endAngle / 180;
+    return {
+      value,
+      valueMin,
+      valueMax,
+      startAngle: startAngleRad,
+      endAngle: endAngleRad,
+      outerRadius,
+      innerRadius,
+      cornerRadius,
+      cx,
+      cy,
+      maxRadius,
+      valueAngle: value === null ? null : startAngleRad + (endAngleRad - startAngleRad) * (value - valueMin) / (valueMax - valueMin)
+    };
+  }, [value, valueMin, valueMax, startAngle, endAngle, outerRadius, innerRadius, cornerRadius, cx, cy, maxRadius]);
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(GaugeContext.Provider, {
+    value: contextValue,
+    children: children
+  });
+}
+function useGaugeState() {
+  return react.useContext(GaugeContext);
+}
+;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/Gauge/GaugeContainer.js
+
+
+const GaugeContainer_excluded = ["width", "height", "margin", "title", "desc", "value", "valueMin", "valueMax", "startAngle", "endAngle", "outerRadius", "innerRadius", "cornerRadius", "cx", "cy", "children"];
+
+
+
+
+
+
+
+
+
+const ResizableContainer = styles_styled('div', {
+  name: 'MuiGauge',
+  slot: 'Container'
+})(({
+  ownerState,
+  theme
+}) => ({
+  width: ownerState.width ?? '100%',
+  height: ownerState.height ?? '100%',
+  display: 'flex',
+  position: 'relative',
+  flexGrow: 1,
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  overflow: 'hidden',
+  '&>svg': {
+    width: '100%',
+    height: '100%'
+  },
+  '& text': {
+    fill: (theme.vars || theme).palette.text.primary
+  }
+}));
+const GaugeContainer = /*#__PURE__*/react.forwardRef(function GaugeContainer(props, ref) {
+  const {
+      width: inWidth,
+      height: inHeight,
+      margin,
+      title,
+      desc,
+      value,
+      valueMin = 0,
+      valueMax = 100,
+      startAngle,
+      endAngle,
+      outerRadius,
+      innerRadius,
+      cornerRadius,
+      cx,
+      cy,
+      children
+    } = props,
+    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, GaugeContainer_excluded);
+  const [containerRef, width, height] = useChartContainerDimensions(inWidth, inHeight);
+  const svgRef = react.useRef(null);
+  const handleRef = useForkRef(ref, svgRef);
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(ResizableContainer, (0,esm_extends/* default */.A)({
+    ref: containerRef,
+    ownerState: {
+      width: inWidth,
+      height: inHeight
+    },
+    role: "meter",
+    "aria-valuenow": value === null ? undefined : value,
+    "aria-valuemin": valueMin,
+    "aria-valuemax": valueMax
+  }, other, {
+    children: width && height ? /*#__PURE__*/(0,jsx_runtime.jsx)(DrawingProvider, {
+      width: width,
+      height: height,
+      margin: (0,esm_extends/* default */.A)({
+        left: 10,
+        right: 10,
+        top: 10,
+        bottom: 10
+      }, margin),
+      svgRef: svgRef,
+      children: /*#__PURE__*/(0,jsx_runtime.jsx)(GaugeProvider, {
+        value: value,
+        valueMin: valueMin,
+        valueMax: valueMax,
+        startAngle: startAngle,
+        endAngle: endAngle,
+        outerRadius: outerRadius,
+        innerRadius: innerRadius,
+        cornerRadius: cornerRadius,
+        cx: cx,
+        cy: cy,
+        children: /*#__PURE__*/(0,jsx_runtime.jsx)(ChartsSurface, {
+          width: width,
+          height: height,
+          ref: handleRef,
+          title: title,
+          desc: desc,
+          disableAxisListener: true,
+          "aria-hidden": "true",
+          children: children
+        })
+      })
+    }) : null
+  }));
+});
+ false ? 0 : void 0;
+
+;// CONCATENATED MODULE: ./node_modules/d3-shape/src/constant.js
+/* harmony default export */ function constant(x) {
+  return function constant() {
+    return x;
+  };
+}
+
+;// CONCATENATED MODULE: ./node_modules/d3-shape/src/math.js
+const abs = Math.abs;
+const atan2 = Math.atan2;
+const cos = Math.cos;
+const max = Math.max;
+const min = Math.min;
+const sin = Math.sin;
+const sqrt = Math.sqrt;
+
+const epsilon = 1e-12;
+const pi = Math.PI;
+const halfPi = pi / 2;
+const tau = 2 * pi;
+
+function acos(x) {
+  return x > 1 ? 0 : x < -1 ? pi : Math.acos(x);
+}
+
+function asin(x) {
+  return x >= 1 ? halfPi : x <= -1 ? -halfPi : Math.asin(x);
+}
+
+;// CONCATENATED MODULE: ./node_modules/d3-path/src/path.js
+const path_pi = Math.PI,
+    path_tau = 2 * path_pi,
+    path_epsilon = 1e-6,
+    tauEpsilon = path_tau - path_epsilon;
+
+function append(strings) {
+  this._ += strings[0];
+  for (let i = 1, n = strings.length; i < n; ++i) {
+    this._ += arguments[i] + strings[i];
+  }
+}
+
+function appendRound(digits) {
+  let d = Math.floor(digits);
+  if (!(d >= 0)) throw new Error(`invalid digits: ${digits}`);
+  if (d > 15) return append;
+  const k = 10 ** d;
+  return function(strings) {
+    this._ += strings[0];
+    for (let i = 1, n = strings.length; i < n; ++i) {
+      this._ += Math.round(arguments[i] * k) / k + strings[i];
+    }
+  };
+}
+
+class Path {
+  constructor(digits) {
+    this._x0 = this._y0 = // start of current subpath
+    this._x1 = this._y1 = null; // end of current subpath
+    this._ = "";
+    this._append = digits == null ? append : appendRound(digits);
+  }
+  moveTo(x, y) {
+    this._append`M${this._x0 = this._x1 = +x},${this._y0 = this._y1 = +y}`;
+  }
+  closePath() {
+    if (this._x1 !== null) {
+      this._x1 = this._x0, this._y1 = this._y0;
+      this._append`Z`;
+    }
+  }
+  lineTo(x, y) {
+    this._append`L${this._x1 = +x},${this._y1 = +y}`;
+  }
+  quadraticCurveTo(x1, y1, x, y) {
+    this._append`Q${+x1},${+y1},${this._x1 = +x},${this._y1 = +y}`;
+  }
+  bezierCurveTo(x1, y1, x2, y2, x, y) {
+    this._append`C${+x1},${+y1},${+x2},${+y2},${this._x1 = +x},${this._y1 = +y}`;
+  }
+  arcTo(x1, y1, x2, y2, r) {
+    x1 = +x1, y1 = +y1, x2 = +x2, y2 = +y2, r = +r;
+
+    // Is the radius negative? Error.
+    if (r < 0) throw new Error(`negative radius: ${r}`);
+
+    let x0 = this._x1,
+        y0 = this._y1,
+        x21 = x2 - x1,
+        y21 = y2 - y1,
+        x01 = x0 - x1,
+        y01 = y0 - y1,
+        l01_2 = x01 * x01 + y01 * y01;
+
+    // Is this path empty? Move to (x1,y1).
+    if (this._x1 === null) {
+      this._append`M${this._x1 = x1},${this._y1 = y1}`;
+    }
+
+    // Or, is (x1,y1) coincident with (x0,y0)? Do nothing.
+    else if (!(l01_2 > path_epsilon));
+
+    // Or, are (x0,y0), (x1,y1) and (x2,y2) collinear?
+    // Equivalently, is (x1,y1) coincident with (x2,y2)?
+    // Or, is the radius zero? Line to (x1,y1).
+    else if (!(Math.abs(y01 * x21 - y21 * x01) > path_epsilon) || !r) {
+      this._append`L${this._x1 = x1},${this._y1 = y1}`;
+    }
+
+    // Otherwise, draw an arc!
+    else {
+      let x20 = x2 - x0,
+          y20 = y2 - y0,
+          l21_2 = x21 * x21 + y21 * y21,
+          l20_2 = x20 * x20 + y20 * y20,
+          l21 = Math.sqrt(l21_2),
+          l01 = Math.sqrt(l01_2),
+          l = r * Math.tan((path_pi - Math.acos((l21_2 + l01_2 - l20_2) / (2 * l21 * l01))) / 2),
+          t01 = l / l01,
+          t21 = l / l21;
+
+      // If the start tangent is not coincident with (x0,y0), line to.
+      if (Math.abs(t01 - 1) > path_epsilon) {
+        this._append`L${x1 + t01 * x01},${y1 + t01 * y01}`;
+      }
+
+      this._append`A${r},${r},0,0,${+(y01 * x20 > x01 * y20)},${this._x1 = x1 + t21 * x21},${this._y1 = y1 + t21 * y21}`;
+    }
+  }
+  arc(x, y, r, a0, a1, ccw) {
+    x = +x, y = +y, r = +r, ccw = !!ccw;
+
+    // Is the radius negative? Error.
+    if (r < 0) throw new Error(`negative radius: ${r}`);
+
+    let dx = r * Math.cos(a0),
+        dy = r * Math.sin(a0),
+        x0 = x + dx,
+        y0 = y + dy,
+        cw = 1 ^ ccw,
+        da = ccw ? a0 - a1 : a1 - a0;
+
+    // Is this path empty? Move to (x0,y0).
+    if (this._x1 === null) {
+      this._append`M${x0},${y0}`;
+    }
+
+    // Or, is (x0,y0) not coincident with the previous point? Line to (x0,y0).
+    else if (Math.abs(this._x1 - x0) > path_epsilon || Math.abs(this._y1 - y0) > path_epsilon) {
+      this._append`L${x0},${y0}`;
+    }
+
+    // Is this arc empty? We’re done.
+    if (!r) return;
+
+    // Does the angle go the wrong way? Flip the direction.
+    if (da < 0) da = da % path_tau + path_tau;
+
+    // Is this a complete circle? Draw two arcs to complete the circle.
+    if (da > tauEpsilon) {
+      this._append`A${r},${r},0,1,${cw},${x - dx},${y - dy}A${r},${r},0,1,${cw},${this._x1 = x0},${this._y1 = y0}`;
+    }
+
+    // Is this arc non-empty? Draw an arc!
+    else if (da > path_epsilon) {
+      this._append`A${r},${r},0,${+(da >= path_pi)},${cw},${this._x1 = x + r * Math.cos(a1)},${this._y1 = y + r * Math.sin(a1)}`;
+    }
+  }
+  rect(x, y, w, h) {
+    this._append`M${this._x0 = this._x1 = +x},${this._y0 = this._y1 = +y}h${w = +w}v${+h}h${-w}Z`;
+  }
+  toString() {
+    return this._;
+  }
+}
+
+function path() {
+  return new Path;
+}
+
+// Allow instanceof d3.path
+path.prototype = Path.prototype;
+
+function pathRound(digits = 3) {
+  return new Path(+digits);
+}
+
+;// CONCATENATED MODULE: ./node_modules/d3-shape/src/path.js
+
+
+function withPath(shape) {
+  let digits = 3;
+
+  shape.digits = function(_) {
+    if (!arguments.length) return digits;
+    if (_ == null) {
+      digits = null;
+    } else {
+      const d = Math.floor(_);
+      if (!(d >= 0)) throw new RangeError(`invalid digits: ${_}`);
+      digits = d;
+    }
+    return shape;
+  };
+
+  return () => new Path(digits);
+}
+
+;// CONCATENATED MODULE: ./node_modules/d3-shape/src/arc.js
+
+
+
+
+function arcInnerRadius(d) {
+  return d.innerRadius;
+}
+
+function arcOuterRadius(d) {
+  return d.outerRadius;
+}
+
+function arcStartAngle(d) {
+  return d.startAngle;
+}
+
+function arcEndAngle(d) {
+  return d.endAngle;
+}
+
+function arcPadAngle(d) {
+  return d && d.padAngle; // Note: optional!
+}
+
+function intersect(x0, y0, x1, y1, x2, y2, x3, y3) {
+  var x10 = x1 - x0, y10 = y1 - y0,
+      x32 = x3 - x2, y32 = y3 - y2,
+      t = y32 * x10 - x32 * y10;
+  if (t * t < epsilon) return;
+  t = (x32 * (y0 - y2) - y32 * (x0 - x2)) / t;
+  return [x0 + t * x10, y0 + t * y10];
+}
+
+// Compute perpendicular offset line of length rc.
+// http://mathworld.wolfram.com/Circle-LineIntersection.html
+function cornerTangents(x0, y0, x1, y1, r1, rc, cw) {
+  var x01 = x0 - x1,
+      y01 = y0 - y1,
+      lo = (cw ? rc : -rc) / sqrt(x01 * x01 + y01 * y01),
+      ox = lo * y01,
+      oy = -lo * x01,
+      x11 = x0 + ox,
+      y11 = y0 + oy,
+      x10 = x1 + ox,
+      y10 = y1 + oy,
+      x00 = (x11 + x10) / 2,
+      y00 = (y11 + y10) / 2,
+      dx = x10 - x11,
+      dy = y10 - y11,
+      d2 = dx * dx + dy * dy,
+      r = r1 - rc,
+      D = x11 * y10 - x10 * y11,
+      d = (dy < 0 ? -1 : 1) * sqrt(max(0, r * r * d2 - D * D)),
+      cx0 = (D * dy - dx * d) / d2,
+      cy0 = (-D * dx - dy * d) / d2,
+      cx1 = (D * dy + dx * d) / d2,
+      cy1 = (-D * dx + dy * d) / d2,
+      dx0 = cx0 - x00,
+      dy0 = cy0 - y00,
+      dx1 = cx1 - x00,
+      dy1 = cy1 - y00;
+
+  // Pick the closer of the two intersection points.
+  // TODO Is there a faster way to determine which intersection to use?
+  if (dx0 * dx0 + dy0 * dy0 > dx1 * dx1 + dy1 * dy1) cx0 = cx1, cy0 = cy1;
+
+  return {
+    cx: cx0,
+    cy: cy0,
+    x01: -ox,
+    y01: -oy,
+    x11: cx0 * (r1 / r - 1),
+    y11: cy0 * (r1 / r - 1)
+  };
+}
+
+/* harmony default export */ function arc() {
+  var innerRadius = arcInnerRadius,
+      outerRadius = arcOuterRadius,
+      cornerRadius = constant(0),
+      padRadius = null,
+      startAngle = arcStartAngle,
+      endAngle = arcEndAngle,
+      padAngle = arcPadAngle,
+      context = null,
+      path = withPath(arc);
+
+  function arc() {
+    var buffer,
+        r,
+        r0 = +innerRadius.apply(this, arguments),
+        r1 = +outerRadius.apply(this, arguments),
+        a0 = startAngle.apply(this, arguments) - halfPi,
+        a1 = endAngle.apply(this, arguments) - halfPi,
+        da = abs(a1 - a0),
+        cw = a1 > a0;
+
+    if (!context) context = buffer = path();
+
+    // Ensure that the outer radius is always larger than the inner radius.
+    if (r1 < r0) r = r1, r1 = r0, r0 = r;
+
+    // Is it a point?
+    if (!(r1 > epsilon)) context.moveTo(0, 0);
+
+    // Or is it a circle or annulus?
+    else if (da > tau - epsilon) {
+      context.moveTo(r1 * cos(a0), r1 * sin(a0));
+      context.arc(0, 0, r1, a0, a1, !cw);
+      if (r0 > epsilon) {
+        context.moveTo(r0 * cos(a1), r0 * sin(a1));
+        context.arc(0, 0, r0, a1, a0, cw);
+      }
+    }
+
+    // Or is it a circular or annular sector?
+    else {
+      var a01 = a0,
+          a11 = a1,
+          a00 = a0,
+          a10 = a1,
+          da0 = da,
+          da1 = da,
+          ap = padAngle.apply(this, arguments) / 2,
+          rp = (ap > epsilon) && (padRadius ? +padRadius.apply(this, arguments) : sqrt(r0 * r0 + r1 * r1)),
+          rc = min(abs(r1 - r0) / 2, +cornerRadius.apply(this, arguments)),
+          rc0 = rc,
+          rc1 = rc,
+          t0,
+          t1;
+
+      // Apply padding? Note that since r1 ≥ r0, da1 ≥ da0.
+      if (rp > epsilon) {
+        var p0 = asin(rp / r0 * sin(ap)),
+            p1 = asin(rp / r1 * sin(ap));
+        if ((da0 -= p0 * 2) > epsilon) p0 *= (cw ? 1 : -1), a00 += p0, a10 -= p0;
+        else da0 = 0, a00 = a10 = (a0 + a1) / 2;
+        if ((da1 -= p1 * 2) > epsilon) p1 *= (cw ? 1 : -1), a01 += p1, a11 -= p1;
+        else da1 = 0, a01 = a11 = (a0 + a1) / 2;
+      }
+
+      var x01 = r1 * cos(a01),
+          y01 = r1 * sin(a01),
+          x10 = r0 * cos(a10),
+          y10 = r0 * sin(a10);
+
+      // Apply rounded corners?
+      if (rc > epsilon) {
+        var x11 = r1 * cos(a11),
+            y11 = r1 * sin(a11),
+            x00 = r0 * cos(a00),
+            y00 = r0 * sin(a00),
+            oc;
+
+        // Restrict the corner radius according to the sector angle. If this
+        // intersection fails, it’s probably because the arc is too small, so
+        // disable the corner radius entirely.
+        if (da < pi) {
+          if (oc = intersect(x01, y01, x00, y00, x11, y11, x10, y10)) {
+            var ax = x01 - oc[0],
+                ay = y01 - oc[1],
+                bx = x11 - oc[0],
+                by = y11 - oc[1],
+                kc = 1 / sin(acos((ax * bx + ay * by) / (sqrt(ax * ax + ay * ay) * sqrt(bx * bx + by * by))) / 2),
+                lc = sqrt(oc[0] * oc[0] + oc[1] * oc[1]);
+            rc0 = min(rc, (r0 - lc) / (kc - 1));
+            rc1 = min(rc, (r1 - lc) / (kc + 1));
+          } else {
+            rc0 = rc1 = 0;
+          }
+        }
+      }
+
+      // Is the sector collapsed to a line?
+      if (!(da1 > epsilon)) context.moveTo(x01, y01);
+
+      // Does the sector’s outer ring have rounded corners?
+      else if (rc1 > epsilon) {
+        t0 = cornerTangents(x00, y00, x01, y01, r1, rc1, cw);
+        t1 = cornerTangents(x11, y11, x10, y10, r1, rc1, cw);
+
+        context.moveTo(t0.cx + t0.x01, t0.cy + t0.y01);
+
+        // Have the corners merged?
+        if (rc1 < rc) context.arc(t0.cx, t0.cy, rc1, atan2(t0.y01, t0.x01), atan2(t1.y01, t1.x01), !cw);
+
+        // Otherwise, draw the two corners and the ring.
+        else {
+          context.arc(t0.cx, t0.cy, rc1, atan2(t0.y01, t0.x01), atan2(t0.y11, t0.x11), !cw);
+          context.arc(0, 0, r1, atan2(t0.cy + t0.y11, t0.cx + t0.x11), atan2(t1.cy + t1.y11, t1.cx + t1.x11), !cw);
+          context.arc(t1.cx, t1.cy, rc1, atan2(t1.y11, t1.x11), atan2(t1.y01, t1.x01), !cw);
+        }
+      }
+
+      // Or is the outer ring just a circular arc?
+      else context.moveTo(x01, y01), context.arc(0, 0, r1, a01, a11, !cw);
+
+      // Is there no inner ring, and it’s a circular sector?
+      // Or perhaps it’s an annular sector collapsed due to padding?
+      if (!(r0 > epsilon) || !(da0 > epsilon)) context.lineTo(x10, y10);
+
+      // Does the sector’s inner ring (or point) have rounded corners?
+      else if (rc0 > epsilon) {
+        t0 = cornerTangents(x10, y10, x11, y11, r0, -rc0, cw);
+        t1 = cornerTangents(x01, y01, x00, y00, r0, -rc0, cw);
+
+        context.lineTo(t0.cx + t0.x01, t0.cy + t0.y01);
+
+        // Have the corners merged?
+        if (rc0 < rc) context.arc(t0.cx, t0.cy, rc0, atan2(t0.y01, t0.x01), atan2(t1.y01, t1.x01), !cw);
+
+        // Otherwise, draw the two corners and the ring.
+        else {
+          context.arc(t0.cx, t0.cy, rc0, atan2(t0.y01, t0.x01), atan2(t0.y11, t0.x11), !cw);
+          context.arc(0, 0, r0, atan2(t0.cy + t0.y11, t0.cx + t0.x11), atan2(t1.cy + t1.y11, t1.cx + t1.x11), cw);
+          context.arc(t1.cx, t1.cy, rc0, atan2(t1.y11, t1.x11), atan2(t1.y01, t1.x01), !cw);
+        }
+      }
+
+      // Or is the inner ring just a circular arc?
+      else context.arc(0, 0, r0, a10, a00, cw);
+    }
+
+    context.closePath();
+
+    if (buffer) return context = null, buffer + "" || null;
+  }
+
+  arc.centroid = function() {
+    var r = (+innerRadius.apply(this, arguments) + +outerRadius.apply(this, arguments)) / 2,
+        a = (+startAngle.apply(this, arguments) + +endAngle.apply(this, arguments)) / 2 - pi / 2;
+    return [cos(a) * r, sin(a) * r];
+  };
+
+  arc.innerRadius = function(_) {
+    return arguments.length ? (innerRadius = typeof _ === "function" ? _ : constant(+_), arc) : innerRadius;
+  };
+
+  arc.outerRadius = function(_) {
+    return arguments.length ? (outerRadius = typeof _ === "function" ? _ : constant(+_), arc) : outerRadius;
+  };
+
+  arc.cornerRadius = function(_) {
+    return arguments.length ? (cornerRadius = typeof _ === "function" ? _ : constant(+_), arc) : cornerRadius;
+  };
+
+  arc.padRadius = function(_) {
+    return arguments.length ? (padRadius = _ == null ? null : typeof _ === "function" ? _ : constant(+_), arc) : padRadius;
+  };
+
+  arc.startAngle = function(_) {
+    return arguments.length ? (startAngle = typeof _ === "function" ? _ : constant(+_), arc) : startAngle;
+  };
+
+  arc.endAngle = function(_) {
+    return arguments.length ? (endAngle = typeof _ === "function" ? _ : constant(+_), arc) : endAngle;
+  };
+
+  arc.padAngle = function(_) {
+    return arguments.length ? (padAngle = typeof _ === "function" ? _ : constant(+_), arc) : padAngle;
+  };
+
+  arc.context = function(_) {
+    return arguments.length ? ((context = _ == null ? null : _), arc) : context;
+  };
+
+  return arc;
+}
+
+;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/Gauge/GaugeReferenceArc.js
+
+
+
+
+
+
+const StyledPath = styles_styled('path', {
+  name: 'MuiGauge',
+  slot: 'ReferenceArc',
+  overridesResolver: (props, styles) => styles.referenceArc
+})(({
+  theme
+}) => ({
+  fill: (theme.vars || theme).palette.divider
+}));
+function GaugeReferenceArc(props) {
+  const {
+    startAngle,
+    endAngle,
+    outerRadius,
+    innerRadius,
+    cornerRadius,
+    cx,
+    cy
+  } = useGaugeState();
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(StyledPath, (0,esm_extends/* default */.A)({
+    transform: `translate(${cx}, ${cy})`,
+    d: arc().cornerRadius(cornerRadius)({
+      startAngle,
+      endAngle,
+      innerRadius,
+      outerRadius
+    })
+  }, props));
+}
+;// CONCATENATED MODULE: ./node_modules/@mui/x-charts/esm/Gauge/GaugeValueArc.js
+
+
+
+
+
+
+const GaugeValueArc_StyledPath = styles_styled('path', {
+  name: 'MuiGauge',
+  slot: 'ReferenceArc',
+  overridesResolver: (props, styles) => styles.referenceArc
+})(({
+  theme
+}) => ({
+  fill: (theme.vars || theme).palette.primary.main
+}));
+function GaugeValueArc(props) {
+  const {
+    value,
+    valueMin,
+    valueMax,
+    startAngle,
+    endAngle,
+    outerRadius,
+    innerRadius,
+    cornerRadius,
+    cx,
+    cy
+  } = useGaugeState();
+  if (value === null) {
+    return null;
+  }
+  const valueAngle = startAngle + (value - valueMin) / (valueMax - valueMin) * (endAngle - startAngle);
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(GaugeValueArc_StyledPath, (0,esm_extends/* default */.A)({
+    transform: `translate(${cx}, ${cy})`,
+    d: arc().cornerRadius(cornerRadius)({
+      startAngle,
+      endAngle: valueAngle,
+      innerRadius,
+      outerRadius
+    })
+  }, props));
+}
+;// CONCATENATED MODULE: ./views/components/Blocks/Guage.js
+
+
+
+
+const Guage = props => {
+  const {
+    value
+  } = props;
+  const [color, setColor] = react.useState('#aa2e25');
+  react.useEffect(() => {
+    if (value > 70) {
+      setColor('#357a38');
+    } else {
+      setColor('#aa2e25');
+    }
+  });
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
+    children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Box_Box, {
+      sx: {
+        position: 'absolute',
+        width: '200px',
+        height: '200px',
+        top: 0,
+        right: 0,
+        zIndex: 2
+      },
+      children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(GaugeContainer, {
+        value: value,
+        valueMax: 100,
+        sx: {
+          '& svg path:last-of-type': {
+            fill: color
+          }
+        },
+        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(GaugeReferenceArc, {}), /*#__PURE__*/(0,jsx_runtime.jsx)(GaugeValueArc, {})]
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+        sx: {
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          fontWeight: 'bold',
+          color: color
+        },
+        variant: "body1",
+        children: value
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+        sx: {
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, 25%)',
+          fontWeight: 'bold',
+          color: color
+        },
+        variant: "body1",
+        children: "Job Match"
+      })]
+    })
+  });
+};
+/* harmony default export */ const Blocks_Guage = (Guage);
 ;// CONCATENATED MODULE: ./views/components/Views/PositionView.js
 
 
@@ -34729,10 +34729,10 @@ const PositionView = props => {
 
 const Resume = props => {
   const {
-    fetchUrl,
-    guageValue
+    fetchUrl
   } = props;
   const [job, setJob] = react.useState({});
+  const [value, setValue] = react.useState(0);
   const getJob = async () => {
     try {
       const reqPromise = await fetch(fetchUrl, {
@@ -34753,7 +34753,19 @@ const Resume = props => {
     }
   };
   react.useEffect(() => {
-    getJob().then(res => setJob(res[0]));
+    getJob().then(res => {
+      setJob(res[0]);
+      const allRequirements = [];
+      const allQualifications = [];
+      res[0].requirements.forEach(req => allRequirements.push(req.req_title));
+      res[0].requirements.forEach(req => {
+        if (req.res_content && (req.res_content !== "" || req.res_content !== " ")) {
+          allQualifications.push(req.res_content);
+        }
+      });
+      const guage = Math.round(allQualifications.length / allRequirements.length * 100);
+      setValue(guage);
+    });
   }, []);
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
     children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
@@ -34765,14 +34777,13 @@ const Resume = props => {
         jobTitle: job.job_title,
         jobFunction: job.job_function,
         requirements: job.requirements,
-        guageValue: guageValue
+        guageValue: value
       })]
     })
   });
 };
 /* harmony default export */ const Views_Resume = (Resume);
 ;// CONCATENATED MODULE: ./views/components/Blocks/CreateJob.js
-
 
 
 
@@ -34807,7 +34818,6 @@ const CreateJob = () => {
   const [reqIds, setReqIds] = react.useState(null);
   const [reqTitles, setReqTitles] = react.useState([]);
   const [requirementsArray, setRequirementsArray] = react.useState([]);
-  const [value, setValue] = react.useState(0);
   const [responseState, setResponseState] = react.useState(false);
   const [resumeLocation, setResumeLocation] = react.useState('');
   const theRequirements = getRequirements.read();
@@ -34855,19 +34865,14 @@ const CreateJob = () => {
       getRequirementsUpdated().then(res => {
         const newIds = [];
         const newReqs = [];
-        const reqsValue = [];
         res.forEach(d => {
           if (reqTitles.includes(d.req_title)) {
             newIds.push(d._id);
             newReqs.push(d);
           }
-          if (requirementsArray.includes(d.res_content)) {
-            reqsValue.push(d.res_content);
-          }
         });
         setReqIds(newIds);
         setRequirementsArray(newReqs);
-        setValue((newReqs.length - reqsValue.length) / newReqs.length * 100);
       });
     }
   }, [isSubmitSuccessful, setRequirementsArray]);
@@ -34903,9 +34908,7 @@ const CreateJob = () => {
     return updateRequirement.json();
   };
   return /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
-    children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Guage, {
-      value: value
-    }), /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
+    children: [/*#__PURE__*/(0,jsx_runtime.jsx)("form", {
       onSubmit: handleSubmitRequirements(data => handleSaveRequirements(data)),
       children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
         children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
@@ -35144,7 +35147,6 @@ const CreateJob = () => {
         children: "Add Response"
       })]
     }, 3), requirementsArray && requirementsArray.length === 0 && responseState && /*#__PURE__*/(0,jsx_runtime.jsx)(Views_Resume, {
-      guageValue: value,
       fetchUrl: `http://localhost:3000/api/job-post/${resumeLocation}`
     })]
   });

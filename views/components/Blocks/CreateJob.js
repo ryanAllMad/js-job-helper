@@ -1,6 +1,5 @@
 import * as React from 'react';
 import BasicInput from './BasicInput.js';
-import Guage from './Guage.js';
 import {
 	Autocomplete,
 	FormControl,
@@ -35,7 +34,6 @@ const CreateJob = () => {
 	const [reqIds, setReqIds] = React.useState(null);
 	const [reqTitles, setReqTitles] = React.useState([]);
 	const [requirementsArray, setRequirementsArray] = React.useState([])
-	const [value, setValue] = React.useState(0)
 	const [responseState, setResponseState] = React.useState(false)
 	const [resumeLocation, setResumeLocation] = React.useState('')
 
@@ -91,19 +89,14 @@ const CreateJob = () => {
 			getRequirementsUpdated().then((res) => {
 				const newIds = [];
 				const newReqs = []
-				const reqsValue = []
 				res.forEach((d) => {
 					if (reqTitles.includes(d.req_title)) {
 						newIds.push(d._id);
 						newReqs.push(d)
 					}
-					if(requirementsArray.includes(d.res_content)) {
-						reqsValue.push(d.res_content)
-					}
 				});
 				setReqIds(newIds);
 				setRequirementsArray(newReqs)
-				setValue((newReqs.length - reqsValue.length)/newReqs.length * 100 )
 			});
 		}
 
@@ -149,7 +142,6 @@ const CreateJob = () => {
 
 	return (
 		<>
-			<Guage value={value} />
 			<form
 				key={1}
 				onSubmit={handleSubmitRequirements((data) =>
@@ -381,7 +373,7 @@ const CreateJob = () => {
 				</form>
 			)}
 			{requirementsArray && requirementsArray.length === 0 && responseState && (
-				<Resume guageValue={value} fetchUrl={`http://localhost:3000/api/job-post/${resumeLocation}`} />
+				<Resume fetchUrl={`http://localhost:3000/api/job-post/${resumeLocation}`} />
 			)}
 		</>
 	);
