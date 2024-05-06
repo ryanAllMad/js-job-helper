@@ -95,15 +95,16 @@ const CreateJob = () => {
 				res.forEach((d) => {
 					if (reqTitles.includes(d.req_title)) {
 						newIds.push(d._id);
-						newReqs.push(d)
+						if(!d.res_content) {
+							newReqs.push(d)
+						}
 					}
 				});
-				setReqIds(newIds);
 				setRequirementsArray(newReqs)
+				setReqIds(newIds);
 			});
 		}
-
-	}, [isSubmitSuccessful, setRequirementsArray]);
+	}, [isSubmitSuccessful, setRequirementsArray, setReqIds]);
 
 	const handleSaveRequirements = async (data) => {
 		setReqDisableState(true)
@@ -143,6 +144,10 @@ const CreateJob = () => {
 		reset()
 		return updateRequirement.json();
 	};
+	const handleNoResponse = (id) => {
+		const newRequirementsArr = requirementsArray.filter((d) => d._id !== id)
+		setRequirementsArray(newRequirementsArr)
+	}
 
 	return (
 		<>
@@ -364,7 +369,7 @@ const CreateJob = () => {
 								<Input
 									onChange={onChange}
 									onBlur={onBlur}
-									placeholder={requirementsArray[0].res_content ? requirementsArray[0].res_content : ''}
+									placeholder="Enter qualifications"
 									value={value}
 									inputRef={ref}
 									type='text'
@@ -373,11 +378,14 @@ const CreateJob = () => {
 									aria-labelledby='add-response'
 								/>
 							)}
-							defaultValue=''
+							defaultValue=""
 						/>
 					</BasicInput>
 					<ContainedButton sx={{marginTop: '1em'}} type='submit'>
-						Add Response
+						Add Qualification
+					</ContainedButton>
+					<ContainedButton sx={{marginTop: '1em', backgroundColor: "#ba000d"}} type='button' onClick={() => handleNoResponse(requirementsArray[0]._id)}>
+						Missing Qualification
 					</ContainedButton>
 				</form>
 			)}

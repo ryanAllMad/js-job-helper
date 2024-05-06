@@ -34871,14 +34871,16 @@ const CreateJob = () => {
         res.forEach(d => {
           if (reqTitles.includes(d.req_title)) {
             newIds.push(d._id);
-            newReqs.push(d);
+            if (!d.res_content) {
+              newReqs.push(d);
+            }
           }
         });
-        setReqIds(newIds);
         setRequirementsArray(newReqs);
+        setReqIds(newIds);
       });
     }
-  }, [isSubmitSuccessful, setRequirementsArray]);
+  }, [isSubmitSuccessful, setRequirementsArray, setReqIds]);
   const handleSaveRequirements = async data => {
     setReqDisableState(true);
     const newReqTitles = [];
@@ -34910,6 +34912,10 @@ const CreateJob = () => {
     setRequirementsArray(newRequirementsArr);
     reset();
     return updateRequirement.json();
+  };
+  const handleNoResponse = id => {
+    const newRequirementsArr = requirementsArray.filter(d => d._id !== id);
+    setRequirementsArray(newRequirementsArr);
   };
   return /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
     children: [/*#__PURE__*/(0,jsx_runtime.jsx)("form", {
@@ -35138,7 +35144,7 @@ const CreateJob = () => {
             return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
               onChange: onChange,
               onBlur: onBlur,
-              placeholder: requirementsArray[0].res_content ? requirementsArray[0].res_content : '',
+              placeholder: "Enter qualifications",
               value: value,
               inputRef: ref,
               type: "text",
@@ -35154,7 +35160,15 @@ const CreateJob = () => {
           marginTop: '1em'
         },
         type: "submit",
-        children: "Add Response"
+        children: "Add Qualification"
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+        sx: {
+          marginTop: '1em',
+          backgroundColor: "#ba000d"
+        },
+        type: "button",
+        onClick: () => handleNoResponse(requirementsArray[0]._id),
+        children: "Missing Qualification"
       })]
     }, 3), requirementsArray && requirementsArray.length === 0 && responseState && /*#__PURE__*/(0,jsx_runtime.jsx)(Views_Resume, {
       fetchUrl: `http://localhost:3000/api/job-post/${resumeLocation}`
