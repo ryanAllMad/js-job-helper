@@ -5,7 +5,7 @@ import PositionView from './PositionView.js';
 const Resume = (props) => {
 	const { fetchUrl, guageValue } = props;
 	const [job, setJob] = React.useState({})
-	const getRequirementsUpdated = async () => {
+	const getJob = async () => {
 		try {
 			const reqPromise = await fetch(
 				fetchUrl,
@@ -30,17 +30,15 @@ const Resume = (props) => {
 		}
 	};
 	React.useEffect(() => {
-		getRequirementsUpdated().then((res => setJob(res[0])))
+		getJob().then((res => setJob(res[0])))
 	}, [])
 	return (
 		<>
 				<Stack spacing={2}>
 					<Typography variant='h2'>Resume</Typography>
 					<PositionView
-						company={job.comany_name}
 						jobTitle={job.job_title}
 						jobFunction={job.job_function}
-						dateApplied={job.date_applied}
 						requirements={job.requirements}
 						guageValue={guageValue}
 					/>

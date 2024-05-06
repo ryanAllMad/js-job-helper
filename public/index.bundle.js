@@ -34102,20 +34102,571 @@ const TextField = /*#__PURE__*/react.forwardRef(function TextField(inProps, ref)
 });
  false ? 0 : void 0;
 /* harmony default export */ const TextField_TextField = (TextField);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/Link/linkClasses.js
+
+
+function getLinkUtilityClass(slot) {
+  return generateUtilityClass_generateUtilityClass('MuiLink', slot);
+}
+const linkClasses = generateUtilityClasses('MuiLink', ['root', 'underlineNone', 'underlineHover', 'underlineAlways', 'button', 'focusVisible']);
+/* harmony default export */ const Link_linkClasses = (linkClasses);
+// EXTERNAL MODULE: ./node_modules/@mui/system/esm/style.js
+var esm_style = __webpack_require__(6481);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/Link/getTextDecoration.js
+
+
+const getTextDecoration_colorTransformations = {
+  primary: 'primary.main',
+  textPrimary: 'text.primary',
+  secondary: 'secondary.main',
+  textSecondary: 'text.secondary',
+  error: 'error.main'
+};
+const getTextDecoration_transformDeprecatedColors = color => {
+  return getTextDecoration_colorTransformations[color] || color;
+};
+const getTextDecoration = ({
+  theme,
+  ownerState
+}) => {
+  const transformedColor = getTextDecoration_transformDeprecatedColors(ownerState.color);
+  const color = (0,esm_style/* getPath */.Yn)(theme, `palette.${transformedColor}`, false) || ownerState.color;
+  const channelColor = (0,esm_style/* getPath */.Yn)(theme, `palette.${transformedColor}Channel`);
+  if ('vars' in theme && channelColor) {
+    return `rgba(${channelColor} / 0.4)`;
+  }
+  return (0,colorManipulator/* alpha */.X4)(color, 0.4);
+};
+/* harmony default export */ const Link_getTextDecoration = (getTextDecoration);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/Link/Link.js
+'use client';
+
+
+
+const Link_excluded = ["className", "color", "component", "onBlur", "onFocus", "TypographyClasses", "underline", "variant", "sx"];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const Link_useUtilityClasses = ownerState => {
+  const {
+    classes,
+    component,
+    focusVisible,
+    underline
+  } = ownerState;
+  const slots = {
+    root: ['root', `underline${utils_capitalize(underline)}`, component === 'button' && 'button', focusVisible && 'focusVisible']
+  };
+  return composeClasses(slots, getLinkUtilityClass, classes);
+};
+const LinkRoot = styles_styled(Typography_Typography, {
+  name: 'MuiLink',
+  slot: 'Root',
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [styles.root, styles[`underline${utils_capitalize(ownerState.underline)}`], ownerState.component === 'button' && styles.button];
+  }
+})(({
+  theme,
+  ownerState
+}) => {
+  return (0,esm_extends/* default */.A)({}, ownerState.underline === 'none' && {
+    textDecoration: 'none'
+  }, ownerState.underline === 'hover' && {
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline'
+    }
+  }, ownerState.underline === 'always' && (0,esm_extends/* default */.A)({
+    textDecoration: 'underline'
+  }, ownerState.color !== 'inherit' && {
+    textDecorationColor: Link_getTextDecoration({
+      theme,
+      ownerState
+    })
+  }, {
+    '&:hover': {
+      textDecorationColor: 'inherit'
+    }
+  }), ownerState.component === 'button' && {
+    position: 'relative',
+    WebkitTapHighlightColor: 'transparent',
+    backgroundColor: 'transparent',
+    // Reset default value
+    // We disable the focus ring for mouse, touch and keyboard users.
+    outline: 0,
+    border: 0,
+    margin: 0,
+    // Remove the margin in Safari
+    borderRadius: 0,
+    padding: 0,
+    // Remove the padding in Firefox
+    cursor: 'pointer',
+    userSelect: 'none',
+    verticalAlign: 'middle',
+    MozAppearance: 'none',
+    // Reset
+    WebkitAppearance: 'none',
+    // Reset
+    '&::-moz-focus-inner': {
+      borderStyle: 'none' // Remove Firefox dotted outline.
+    },
+    [`&.${Link_linkClasses.focusVisible}`]: {
+      outline: 'auto'
+    }
+  });
+});
+const Link_Link = /*#__PURE__*/react.forwardRef(function Link(inProps, ref) {
+  const props = useThemeProps_useThemeProps({
+    props: inProps,
+    name: 'MuiLink'
+  });
+  const {
+      className,
+      color = 'primary',
+      component = 'a',
+      onBlur,
+      onFocus,
+      TypographyClasses,
+      underline = 'always',
+      variant = 'inherit',
+      sx
+    } = props,
+    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, Link_excluded);
+  const {
+    isFocusVisibleRef,
+    onBlur: handleBlurVisible,
+    onFocus: handleFocusVisible,
+    ref: focusVisibleRef
+  } = utils_useIsFocusVisible();
+  const [focusVisible, setFocusVisible] = react.useState(false);
+  const handlerRef = utils_useForkRef(ref, focusVisibleRef);
+  const handleBlur = event => {
+    handleBlurVisible(event);
+    if (isFocusVisibleRef.current === false) {
+      setFocusVisible(false);
+    }
+    if (onBlur) {
+      onBlur(event);
+    }
+  };
+  const handleFocus = event => {
+    handleFocusVisible(event);
+    if (isFocusVisibleRef.current === true) {
+      setFocusVisible(true);
+    }
+    if (onFocus) {
+      onFocus(event);
+    }
+  };
+  const ownerState = (0,esm_extends/* default */.A)({}, props, {
+    color,
+    component,
+    focusVisible,
+    underline,
+    variant
+  });
+  const classes = Link_useUtilityClasses(ownerState);
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(LinkRoot, (0,esm_extends/* default */.A)({
+    color: color,
+    className: dist_clsx(classes.root, className),
+    classes: TypographyClasses,
+    component: component,
+    onBlur: handleBlur,
+    onFocus: handleFocus,
+    ref: handlerRef,
+    ownerState: ownerState,
+    variant: variant,
+    sx: [...(!Object.keys(getTextDecoration_colorTransformations).includes(color) ? [{
+      color
+    }] : []), ...(Array.isArray(sx) ? sx : [sx])]
+  }, other));
+});
+ false ? 0 : void 0;
+/* harmony default export */ const material_Link_Link = (Link_Link);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/ListItem/listItemClasses.js
+
+
+function getListItemUtilityClass(slot) {
+  return generateUtilityClass_generateUtilityClass('MuiListItem', slot);
+}
+const listItemClasses = generateUtilityClasses('MuiListItem', ['root', 'container', 'focusVisible', 'dense', 'alignItemsFlexStart', 'disabled', 'divider', 'gutters', 'padding', 'button', 'secondaryAction', 'selected']);
+/* harmony default export */ const ListItem_listItemClasses = (listItemClasses);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/ListItemButton/listItemButtonClasses.js
+
+
+function getListItemButtonUtilityClass(slot) {
+  return generateUtilityClass('MuiListItemButton', slot);
+}
+const listItemButtonClasses = generateUtilityClasses('MuiListItemButton', ['root', 'focusVisible', 'dense', 'alignItemsFlexStart', 'disabled', 'divider', 'gutters', 'selected']);
+/* harmony default export */ const ListItemButton_listItemButtonClasses = (listItemButtonClasses);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/ListItemSecondaryAction/listItemSecondaryActionClasses.js
+
+
+function getListItemSecondaryActionClassesUtilityClass(slot) {
+  return generateUtilityClass_generateUtilityClass('MuiListItemSecondaryAction', slot);
+}
+const listItemSecondaryActionClasses = generateUtilityClasses('MuiListItemSecondaryAction', ['root', 'disableGutters']);
+/* harmony default export */ const ListItemSecondaryAction_listItemSecondaryActionClasses = ((/* unused pure expression or super */ null && (listItemSecondaryActionClasses)));
+;// CONCATENATED MODULE: ./node_modules/@mui/material/ListItemSecondaryAction/ListItemSecondaryAction.js
+'use client';
+
+
+
+const ListItemSecondaryAction_excluded = ["className"];
+
+
+
+
+
+
+
+
+
+const ListItemSecondaryAction_useUtilityClasses = ownerState => {
+  const {
+    disableGutters,
+    classes
+  } = ownerState;
+  const slots = {
+    root: ['root', disableGutters && 'disableGutters']
+  };
+  return composeClasses(slots, getListItemSecondaryActionClassesUtilityClass, classes);
+};
+const ListItemSecondaryActionRoot = styles_styled('div', {
+  name: 'MuiListItemSecondaryAction',
+  slot: 'Root',
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [styles.root, ownerState.disableGutters && styles.disableGutters];
+  }
+})(({
+  ownerState
+}) => (0,esm_extends/* default */.A)({
+  position: 'absolute',
+  right: 16,
+  top: '50%',
+  transform: 'translateY(-50%)'
+}, ownerState.disableGutters && {
+  right: 0
+}));
+
+/**
+ * Must be used as the last child of ListItem to function properly.
+ */
+const ListItemSecondaryAction = /*#__PURE__*/react.forwardRef(function ListItemSecondaryAction(inProps, ref) {
+  const props = useThemeProps_useThemeProps({
+    props: inProps,
+    name: 'MuiListItemSecondaryAction'
+  });
+  const {
+      className
+    } = props,
+    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, ListItemSecondaryAction_excluded);
+  const context = react.useContext(List_ListContext);
+  const ownerState = (0,esm_extends/* default */.A)({}, props, {
+    disableGutters: context.disableGutters
+  });
+  const classes = ListItemSecondaryAction_useUtilityClasses(ownerState);
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(ListItemSecondaryActionRoot, (0,esm_extends/* default */.A)({
+    className: dist_clsx(classes.root, className),
+    ownerState: ownerState,
+    ref: ref
+  }, other));
+});
+ false ? 0 : void 0;
+ListItemSecondaryAction.muiName = 'ListItemSecondaryAction';
+/* harmony default export */ const ListItemSecondaryAction_ListItemSecondaryAction = (ListItemSecondaryAction);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/ListItem/ListItem.js
+'use client';
+
+
+
+const ListItem_excluded = ["className"],
+  ListItem_excluded2 = ["alignItems", "autoFocus", "button", "children", "className", "component", "components", "componentsProps", "ContainerComponent", "ContainerProps", "dense", "disabled", "disableGutters", "disablePadding", "divider", "focusVisibleClassName", "secondaryAction", "selected", "slotProps", "slots"];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const overridesResolver = (props, styles) => {
+  const {
+    ownerState
+  } = props;
+  return [styles.root, ownerState.dense && styles.dense, ownerState.alignItems === 'flex-start' && styles.alignItemsFlexStart, ownerState.divider && styles.divider, !ownerState.disableGutters && styles.gutters, !ownerState.disablePadding && styles.padding, ownerState.button && styles.button, ownerState.hasSecondaryAction && styles.secondaryAction];
+};
+const ListItem_useUtilityClasses = ownerState => {
+  const {
+    alignItems,
+    button,
+    classes,
+    dense,
+    disabled,
+    disableGutters,
+    disablePadding,
+    divider,
+    hasSecondaryAction,
+    selected
+  } = ownerState;
+  const slots = {
+    root: ['root', dense && 'dense', !disableGutters && 'gutters', !disablePadding && 'padding', divider && 'divider', disabled && 'disabled', button && 'button', alignItems === 'flex-start' && 'alignItemsFlexStart', hasSecondaryAction && 'secondaryAction', selected && 'selected'],
+    container: ['container']
+  };
+  return composeClasses(slots, getListItemUtilityClass, classes);
+};
+const ListItemRoot = styles_styled('div', {
+  name: 'MuiListItem',
+  slot: 'Root',
+  overridesResolver
+})(({
+  theme,
+  ownerState
+}) => (0,esm_extends/* default */.A)({
+  display: 'flex',
+  justifyContent: 'flex-start',
+  alignItems: 'center',
+  position: 'relative',
+  textDecoration: 'none',
+  width: '100%',
+  boxSizing: 'border-box',
+  textAlign: 'left'
+}, !ownerState.disablePadding && (0,esm_extends/* default */.A)({
+  paddingTop: 8,
+  paddingBottom: 8
+}, ownerState.dense && {
+  paddingTop: 4,
+  paddingBottom: 4
+}, !ownerState.disableGutters && {
+  paddingLeft: 16,
+  paddingRight: 16
+}, !!ownerState.secondaryAction && {
+  // Add some space to avoid collision as `ListItemSecondaryAction`
+  // is absolutely positioned.
+  paddingRight: 48
+}), !!ownerState.secondaryAction && {
+  [`& > .${ListItemButton_listItemButtonClasses.root}`]: {
+    paddingRight: 48
+  }
+}, {
+  [`&.${ListItem_listItemClasses.focusVisible}`]: {
+    backgroundColor: (theme.vars || theme).palette.action.focus
+  },
+  [`&.${ListItem_listItemClasses.selected}`]: {
+    backgroundColor: theme.vars ? `rgba(${theme.vars.palette.primary.mainChannel} / ${theme.vars.palette.action.selectedOpacity})` : (0,colorManipulator/* alpha */.X4)(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+    [`&.${ListItem_listItemClasses.focusVisible}`]: {
+      backgroundColor: theme.vars ? `rgba(${theme.vars.palette.primary.mainChannel} / calc(${theme.vars.palette.action.selectedOpacity} + ${theme.vars.palette.action.focusOpacity}))` : (0,colorManipulator/* alpha */.X4)(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.focusOpacity)
+    }
+  },
+  [`&.${ListItem_listItemClasses.disabled}`]: {
+    opacity: (theme.vars || theme).palette.action.disabledOpacity
+  }
+}, ownerState.alignItems === 'flex-start' && {
+  alignItems: 'flex-start'
+}, ownerState.divider && {
+  borderBottom: `1px solid ${(theme.vars || theme).palette.divider}`,
+  backgroundClip: 'padding-box'
+}, ownerState.button && {
+  transition: theme.transitions.create('background-color', {
+    duration: theme.transitions.duration.shortest
+  }),
+  '&:hover': {
+    textDecoration: 'none',
+    backgroundColor: (theme.vars || theme).palette.action.hover,
+    // Reset on touch devices, it doesn't add specificity
+    '@media (hover: none)': {
+      backgroundColor: 'transparent'
+    }
+  },
+  [`&.${ListItem_listItemClasses.selected}:hover`]: {
+    backgroundColor: theme.vars ? `rgba(${theme.vars.palette.primary.mainChannel} / calc(${theme.vars.palette.action.selectedOpacity} + ${theme.vars.palette.action.hoverOpacity}))` : (0,colorManipulator/* alpha */.X4)(theme.palette.primary.main, theme.palette.action.selectedOpacity + theme.palette.action.hoverOpacity),
+    // Reset on touch devices, it doesn't add specificity
+    '@media (hover: none)': {
+      backgroundColor: theme.vars ? `rgba(${theme.vars.palette.primary.mainChannel} / ${theme.vars.palette.action.selectedOpacity})` : (0,colorManipulator/* alpha */.X4)(theme.palette.primary.main, theme.palette.action.selectedOpacity)
+    }
+  }
+}, ownerState.hasSecondaryAction && {
+  // Add some space to avoid collision as `ListItemSecondaryAction`
+  // is absolutely positioned.
+  paddingRight: 48
+}));
+const ListItemContainer = styles_styled('li', {
+  name: 'MuiListItem',
+  slot: 'Container',
+  overridesResolver: (props, styles) => styles.container
+})({
+  position: 'relative'
+});
+
+/**
+ * Uses an additional container component if `ListItemSecondaryAction` is the last child.
+ */
+const ListItem = /*#__PURE__*/react.forwardRef(function ListItem(inProps, ref) {
+  const props = useThemeProps_useThemeProps({
+    props: inProps,
+    name: 'MuiListItem'
+  });
+  const {
+      alignItems = 'center',
+      autoFocus = false,
+      button = false,
+      children: childrenProp,
+      className,
+      component: componentProp,
+      components = {},
+      componentsProps = {},
+      ContainerComponent = 'li',
+      ContainerProps: {
+        className: ContainerClassName
+      } = {},
+      dense = false,
+      disabled = false,
+      disableGutters = false,
+      disablePadding = false,
+      divider = false,
+      focusVisibleClassName,
+      secondaryAction,
+      selected = false,
+      slotProps = {},
+      slots = {}
+    } = props,
+    ContainerProps = (0,objectWithoutPropertiesLoose/* default */.A)(props.ContainerProps, ListItem_excluded),
+    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, ListItem_excluded2);
+  const context = react.useContext(List_ListContext);
+  const childContext = react.useMemo(() => ({
+    dense: dense || context.dense || false,
+    alignItems,
+    disableGutters
+  }), [alignItems, context.dense, dense, disableGutters]);
+  const listItemRef = react.useRef(null);
+  utils_useEnhancedEffect(() => {
+    if (autoFocus) {
+      if (listItemRef.current) {
+        listItemRef.current.focus();
+      } else if (false) {}
+    }
+  }, [autoFocus]);
+  const children = react.Children.toArray(childrenProp);
+
+  // v4 implementation, deprecated in v5, will be removed in v6
+  const hasSecondaryAction = children.length && utils_isMuiElement(children[children.length - 1], ['ListItemSecondaryAction']);
+  const ownerState = (0,esm_extends/* default */.A)({}, props, {
+    alignItems,
+    autoFocus,
+    button,
+    dense: childContext.dense,
+    disabled,
+    disableGutters,
+    disablePadding,
+    divider,
+    hasSecondaryAction,
+    selected
+  });
+  const classes = ListItem_useUtilityClasses(ownerState);
+  const handleRef = utils_useForkRef(listItemRef, ref);
+  const Root = slots.root || components.Root || ListItemRoot;
+  const rootProps = slotProps.root || componentsProps.root || {};
+  const componentProps = (0,esm_extends/* default */.A)({
+    className: dist_clsx(classes.root, rootProps.className, className),
+    disabled
+  }, other);
+  let Component = componentProp || 'li';
+  if (button) {
+    componentProps.component = componentProp || 'div';
+    componentProps.focusVisibleClassName = dist_clsx(ListItem_listItemClasses.focusVisible, focusVisibleClassName);
+    Component = ButtonBase_ButtonBase;
+  }
+
+  // v4 implementation, deprecated in v5, will be removed in v6
+  if (hasSecondaryAction) {
+    // Use div by default.
+    Component = !componentProps.component && !componentProp ? 'div' : Component;
+
+    // Avoid nesting of li > li.
+    if (ContainerComponent === 'li') {
+      if (Component === 'li') {
+        Component = 'div';
+      } else if (componentProps.component === 'li') {
+        componentProps.component = 'div';
+      }
+    }
+    return /*#__PURE__*/(0,jsx_runtime.jsx)(List_ListContext.Provider, {
+      value: childContext,
+      children: /*#__PURE__*/(0,jsx_runtime.jsxs)(ListItemContainer, (0,esm_extends/* default */.A)({
+        as: ContainerComponent,
+        className: dist_clsx(classes.container, ContainerClassName),
+        ref: handleRef,
+        ownerState: ownerState
+      }, ContainerProps, {
+        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Root, (0,esm_extends/* default */.A)({}, rootProps, !isHostComponent(Root) && {
+          as: Component,
+          ownerState: (0,esm_extends/* default */.A)({}, ownerState, rootProps.ownerState)
+        }, componentProps, {
+          children: children
+        })), children.pop()]
+      }))
+    });
+  }
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(List_ListContext.Provider, {
+    value: childContext,
+    children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Root, (0,esm_extends/* default */.A)({}, rootProps, {
+      as: Component,
+      ref: handleRef
+    }, !isHostComponent(Root) && {
+      ownerState: (0,esm_extends/* default */.A)({}, ownerState, rootProps.ownerState)
+    }, componentProps, {
+      children: [children, secondaryAction && /*#__PURE__*/(0,jsx_runtime.jsx)(ListItemSecondaryAction_ListItemSecondaryAction, {
+        children: secondaryAction
+      })]
+    }))
+  });
+});
+ false ? 0 : void 0;
+/* harmony default export */ const ListItem_ListItem = (ListItem);
 ;// CONCATENATED MODULE: ./views/components/Views/PositionView.js
 
 
 
 
+
+const PositionView_getUser = getters_fetchData('http://localhost:3000/api/user');
 const PositionView = props => {
   const {
-    company,
     jobTitle,
     jobFunction,
-    dateApplied,
     requirements,
     guageValue
   } = props;
+  const userDetails = PositionView_getUser.read();
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
     children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Paper_Paper, {
       sx: {
@@ -34130,16 +34681,42 @@ const PositionView = props => {
         value: guageValue
       }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
         children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-          children: jobTitle
+          variant: "h1",
+          children: userDetails[0].name
         }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-          children: company
+          variant: "h2",
+          children: jobTitle
         }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
           children: jobFunction
         }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-          children: dateApplied
-        }), requirements && requirements.length > 0 && requirements.map(req => /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-          children: req.res_content
-        }))]
+          variant: "body1",
+          children: /*#__PURE__*/(0,jsx_runtime.jsx)(material_Link_Link, {
+            href: `mailto:${userDetails[0].email}`,
+            children: userDetails[0].email
+          })
+        }), userDetails[0].links.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          variant: "body1",
+          children: /*#__PURE__*/(0,jsx_runtime.jsx)(material_Link_Link, {
+            target: "_blank",
+            href: link.href,
+            children: link.title
+          })
+        }, userDetails[0].links.indexOf(link))), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          variant: "h2",
+          children: "Experience"
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          variant: "h3",
+          children: userDetails[0].experience[0].title
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          variant: "h4",
+          children: userDetails[0].experience[0].company
+        }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
+          children: ["From: ", userDetails[0].experience[0].year_started, " - To:", ' ', userDetails[0].experience[0].year_ended]
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(List_List, {
+          children: requirements && requirements.length > 0 && requirements.map(req => /*#__PURE__*/(0,jsx_runtime.jsx)(ListItem_ListItem, {
+            children: req.res_content
+          }, req._id))
+        })]
       })]
     })
   });
@@ -34156,7 +34733,7 @@ const Resume = props => {
     guageValue
   } = props;
   const [job, setJob] = react.useState({});
-  const getRequirementsUpdated = async () => {
+  const getJob = async () => {
     try {
       const reqPromise = await fetch(fetchUrl, {
         method: 'GET'
@@ -34176,7 +34753,7 @@ const Resume = props => {
     }
   };
   react.useEffect(() => {
-    getRequirementsUpdated().then(res => setJob(res[0]));
+    getJob().then(res => setJob(res[0]));
   }, []);
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
     children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
@@ -34185,10 +34762,8 @@ const Resume = props => {
         variant: "h2",
         children: "Resume"
       }), /*#__PURE__*/(0,jsx_runtime.jsx)(Views_PositionView, {
-        company: job.comany_name,
         jobTitle: job.job_title,
         jobFunction: job.job_function,
-        dateApplied: job.date_applied,
         requirements: job.requirements,
         guageValue: guageValue
       })]
@@ -34601,27 +35176,6 @@ const JobsLanding = () => {
   });
 };
 /* harmony default export */ const Views_JobsLanding = (JobsLanding);
-;// CONCATENATED MODULE: ./views/components/Blocks/AutoComplete.js
-
-
-
-const AutoComplete = props => {
-  const {
-    label,
-    options
-  } = props;
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
-    children: /*#__PURE__*/(0,jsx_runtime.jsx)(Autocomplete_Autocomplete, {
-      renderInput: params => /*#__PURE__*/(0,jsx_runtime.jsx)(TextField_TextField, {
-        ...params,
-        label: label
-      }),
-      id: "combo-box-requirements",
-      options: options
-    })
-  });
-};
-/* harmony default export */ const Blocks_AutoComplete = (AutoComplete);
 ;// CONCATENATED MODULE: ./views/components/Views/SearchJob.js
 
 
@@ -34629,28 +35183,84 @@ const AutoComplete = props => {
 
 
 
+
+
+const SearchJob_getJobs = getters_fetchData('http://localhost:3000/api/job-post/');
 const SearchJob = () => {
+  const [resumeLocation, setResumeLocation] = react.useState(null);
+  const {
+    control,
+    handleSubmit
+  } = useForm();
+  const allJobs = SearchJob_getJobs.read();
+  const handleSetCompanyName = data => {
+    setResumeLocation(data.searchJob);
+  };
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
     children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Layout_MainBody, {
       children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Stack_Stack, {
-        children: /*#__PURE__*/(0,jsx_runtime.jsx)(FormControl_FormControl, {
-          children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_AutoComplete, {
-            label: "Search Company",
-            options: [{
-              label: 'Some dummy co.'
-            }]
+        children: allJobs && allJobs.jobPost && allJobs.jobPost.length > 0 ? /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
+          onSubmit: handleSubmit(data => handleSetCompanyName(data)),
+          children: /*#__PURE__*/(0,jsx_runtime.jsx)(FormControl_FormControl, {
+            sx: {
+              width: '100%'
+            },
+            children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Grid_Grid, {
+              container: true,
+              spacing: 4,
+              sx: {
+                width: '100%'
+              },
+              children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
+                item: true,
+                xs: 12,
+                md: 6,
+                children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+                  control: control,
+                  onChange: data => data,
+                  name: "searchJob",
+                  render: _ref => {
+                    let {
+                      field: {
+                        onChange
+                      }
+                    } = _ref;
+                    return /*#__PURE__*/(0,jsx_runtime.jsx)(Autocomplete_Autocomplete, {
+                      disableClearable: true,
+                      id: "job-search-input",
+                      noOptionsText: "Job doesn't exist. Go to add a job page.",
+                      options: allJobs.jobPost.map(job => job.company_name),
+                      renderInput: params => /*#__PURE__*/(0,jsx_runtime.jsx)(TextField_TextField, {
+                        ...params,
+                        variant: "outlined",
+                        label: "Search Company Name",
+                        type: "search"
+                      }),
+                      onChange: (e, data) => {
+                        setResumeLocation(null);
+                        onChange(data);
+                      }
+                    });
+                  },
+                  defaultValue: ""
+                })
+              }), /*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
+                item: true,
+                xs: 12,
+                md: 6,
+                children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+                  type: "submit",
+                  children: "Ok"
+                })
+              })]
+            })
           })
+        }) : 'No jobs, go to job post to input new jobs'
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Paper_Paper, {
+        children: resumeLocation && /*#__PURE__*/(0,jsx_runtime.jsx)(Views_Resume, {
+          guageValue: 75,
+          fetchUrl: `http://localhost:3000/api/job-post/${resumeLocation}`
         })
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Views_PositionView, {
-        company: "Dummy co",
-        jobTitle: "Software Eng",
-        jobFunction: "to maintain clean code",
-        dateApplied: "02/25/2016",
-        requirements: [{
-          label: 'document codebase',
-          cat: 'soft'
-        }],
-        guageValue: 75
       })]
     })
   });
