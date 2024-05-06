@@ -36,12 +36,15 @@ const CreateJob = () => {
 	const [requirementsArray, setRequirementsArray] = React.useState([])
 	const [responseState, setResponseState] = React.useState(false)
 	const [resumeLocation, setResumeLocation] = React.useState('')
+	const [reqDisableState, setReqDisableState] = React.useState(false)
+	const [jobDisableState, setJobDisableState] = React.useState(false)
 
 	const theRequirements = getRequirements.read();
 	const hasRequirements = theRequirements.length > 0 ? theRequirements : null;
 
 
 	const handleSaveJob = async (data) => {
+		setJobDisableState(true)
 		const parsedCompanyName = data.company.toLowerCase().replace(' ', '-')
 		setResumeLocation(`${parsedCompanyName}`)
 		const postJob = await fetch('http://localhost:3000/api/job-post', {
@@ -103,6 +106,7 @@ const CreateJob = () => {
 	}, [isSubmitSuccessful, setRequirementsArray]);
 
 	const handleSaveRequirements = async (data) => {
+		setReqDisableState(true)
 		const newReqTitles = [];
 		const newDataToSave = data.requirements.filter((d) => !d._id);
 		data.requirements.forEach((d) => newReqTitles.push(d.req_title));
@@ -149,7 +153,7 @@ const CreateJob = () => {
 				)}
 			>
 				<Stack>
-					<ContainedButton type='submit'>Save All</ContainedButton>
+					<ContainedButton disabled={reqDisableState} type='submit'>Save All</ContainedButton>
 					<FormControl>
 						<Typography
 							variant='h2'
@@ -161,6 +165,7 @@ const CreateJob = () => {
 							render={({ field: { onChange } }) => (
 								<Autocomplete
 									multiple
+									disabled={reqDisableState}
 									id='enter-requirements'
 									filterOptions={(options, params) => {
 										const filtered = filter(
@@ -223,7 +228,7 @@ const CreateJob = () => {
 							Job You're Applying to
 						</Typography>
 						<ContainedButton
-							disabled={!isValid}
+							disabled={!isValid || jobDisableState}
 							type='submit'
 						>
 							Save
@@ -246,6 +251,7 @@ const CreateJob = () => {
 										inputRef={ref}
 										type='text'
 										aria-labelledby='job-title'
+										disabled={jobDisableState}
 									/>
 								)}
 								defaultValue=''
@@ -269,6 +275,7 @@ const CreateJob = () => {
 										inputRef={ref}
 										type='text'
 										aria-labelledby='company'
+										disabled={jobDisableState}
 									/>
 								)}
 								defaultValue=''
@@ -292,6 +299,7 @@ const CreateJob = () => {
 										inputRef={ref}
 										type='text'
 										aria-labelledby='job-function'
+										disabled={jobDisableState}
 									/>
 								)}
 								defaultValue=''
@@ -318,6 +326,7 @@ const CreateJob = () => {
 										onBlur={onBlur}
 										value={value}
 										aria-labelledby='date-applied'
+										disabled={jobDisableState}
 									/>
 								)}
 								defaultValue=''

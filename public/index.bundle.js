@@ -34820,9 +34820,12 @@ const CreateJob = () => {
   const [requirementsArray, setRequirementsArray] = react.useState([]);
   const [responseState, setResponseState] = react.useState(false);
   const [resumeLocation, setResumeLocation] = react.useState('');
+  const [reqDisableState, setReqDisableState] = react.useState(false);
+  const [jobDisableState, setJobDisableState] = react.useState(false);
   const theRequirements = getRequirements.read();
   const hasRequirements = theRequirements.length > 0 ? theRequirements : null;
   const handleSaveJob = async data => {
+    setJobDisableState(true);
     const parsedCompanyName = data.company.toLowerCase().replace(' ', '-');
     setResumeLocation(`${parsedCompanyName}`);
     const postJob = await fetch('http://localhost:3000/api/job-post', {
@@ -34877,6 +34880,7 @@ const CreateJob = () => {
     }
   }, [isSubmitSuccessful, setRequirementsArray]);
   const handleSaveRequirements = async data => {
+    setReqDisableState(true);
     const newReqTitles = [];
     const newDataToSave = data.requirements.filter(d => !d._id);
     data.requirements.forEach(d => newReqTitles.push(d.req_title));
@@ -34912,6 +34916,7 @@ const CreateJob = () => {
       onSubmit: handleSubmitRequirements(data => handleSaveRequirements(data)),
       children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
         children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+          disabled: reqDisableState,
           type: "submit",
           children: "Save All"
         }), /*#__PURE__*/(0,jsx_runtime.jsxs)(FormControl_FormControl, {
@@ -34928,6 +34933,7 @@ const CreateJob = () => {
               } = _ref;
               return /*#__PURE__*/(0,jsx_runtime.jsx)(Autocomplete_Autocomplete, {
                 multiple: true,
+                disabled: reqDisableState,
                 id: "enter-requirements",
                 filterOptions: (options, params) => {
                   const filtered = filter(options, params);
@@ -34972,7 +34978,7 @@ const CreateJob = () => {
           id: "job-post-form-heading",
           children: "Job You're Applying to"
         }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-          disabled: !isValid,
+          disabled: !isValid || jobDisableState,
           type: "submit",
           children: "Save"
         }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
@@ -34999,7 +35005,8 @@ const CreateJob = () => {
                 value: value,
                 inputRef: ref,
                 type: "text",
-                "aria-labelledby": "job-title"
+                "aria-labelledby": "job-title",
+                disabled: jobDisableState
               });
             },
             defaultValue: ""
@@ -35028,7 +35035,8 @@ const CreateJob = () => {
                 value: value,
                 inputRef: ref,
                 type: "text",
-                "aria-labelledby": "company"
+                "aria-labelledby": "company",
+                disabled: jobDisableState
               });
             },
             defaultValue: ""
@@ -35057,7 +35065,8 @@ const CreateJob = () => {
                 value: value,
                 inputRef: ref,
                 type: "text",
-                "aria-labelledby": "job-function"
+                "aria-labelledby": "job-function",
+                disabled: jobDisableState
               });
             },
             defaultValue: ""
@@ -35086,7 +35095,8 @@ const CreateJob = () => {
                 onChange: onChange,
                 onBlur: onBlur,
                 value: value,
-                "aria-labelledby": "date-applied"
+                "aria-labelledby": "date-applied",
+                disabled: jobDisableState
               });
             },
             defaultValue: ""
