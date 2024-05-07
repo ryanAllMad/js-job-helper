@@ -9,10 +9,10 @@ This project requires at least node 20. If you don't have nvm installed, we reco
 ## Get started:
 1. Install/Update to node version 20>=
 2. Pull down this repo
-3. connect your mongodb cluster using the instructions below
-4. run `npm install`
-5. run `npm run start`
-6. Visit localhose:3000 in your browser
+3. Connect your mongodb cluster using the instructions below
+4. Run `npm install`
+5. Run `npm run start`
+6. Visit [localhost:3000](http://localhost:3000/) in your browser
 7. Enjoy :tada:
 
 
