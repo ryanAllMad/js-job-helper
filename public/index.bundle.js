@@ -21552,7 +21552,9 @@ const ContainedButton = props => {
     variant: "contained",
     sx: {
       ...sx,
-      maxWidth: 250
+      maxWidth: 250,
+      marginTop: '2em',
+      marginRight: '1em'
     },
     size: "medium",
     children: children
@@ -21909,12 +21911,10 @@ const EditUserComponent = () => {
     return postUserName.json();
   };
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
-    children: /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
+    children: /*#__PURE__*/(0,jsx_runtime.jsxs)("form", {
       onSubmit: handleSubmit(data => handleSave(data)),
-      children: /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
-        sx: {
-          marginTop: '1em'
-        },
+      children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
+        className: "user-form-group",
         children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
           id: "fullName",
           label: "Full Name",
@@ -21976,119 +21976,120 @@ const EditUserComponent = () => {
         }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
           variant: "body2",
           children: "Add Links"
-        }), /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
-          children: [linksArr.length > 0 && linksArr.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_UserLinkInputs, {
-            defaultHref: link.href,
-            deleteOne: () => deleteThisLink(link._id),
-            titleInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-              control: control,
-              name: `link_title_${link._id}`,
-              rules: {
-                required: true
-              },
-              render: _ref3 => {
-                let {
-                  field: {
-                    onChange,
-                    onBlur,
-                    value,
-                    ref
-                  }
-                } = _ref3;
-                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-                  onChange: onChange,
-                  onBlur: onBlur,
-                  value: value,
-                  inputRef: ref,
-                  type: "text"
-                });
-              },
-              defaultValue: link.title
-            }),
-            hrefInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-              control: control,
-              name: `link_href_${link._id}`,
-              rules: {
-                required: true
-              },
-              render: _ref4 => {
-                let {
-                  field: {
-                    onChange,
-                    onBlur,
-                    value,
-                    ref
-                  }
-                } = _ref4;
-                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-                  onChange: onChange,
-                  onBlur: onBlur,
-                  value: value,
-                  inputRef: ref,
-                  type: "text"
-                });
-              },
-              defaultValue: link.href
-            })
-          }, link._id)), newLinksArr.length > 0 && newLinksArr.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_UserLinkInputs, {
-            deleteOne: () => deleteNewLinks(newLinksArr.indexOf(link)),
-            titleInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-              control: control,
-              name: `link_title_${newLinksArr.indexOf(link)}`,
-              rules: {
-                required: true
-              },
-              render: _ref5 => {
-                let {
-                  field: {
-                    onChange,
-                    onBlur,
-                    value,
-                    ref
-                  }
-                } = _ref5;
-                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-                  onChange: onChange,
-                  onBlur: onBlur,
-                  value: value,
-                  inputRef: ref,
-                  type: "text"
-                });
-              },
-              defaultValue: ""
-            }),
-            hrefInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-              control: control,
-              name: `link_href_${newLinksArr.indexOf(link)}`,
-              rules: {
-                required: true
-              },
-              render: _ref6 => {
-                let {
-                  field: {
-                    onChange,
-                    onBlur,
-                    value,
-                    ref
-                  }
-                } = _ref6;
-                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-                  onChange: onChange,
-                  onBlur: onBlur,
-                  value: value,
-                  inputRef: ref,
-                  type: "text"
-                });
-              },
-              defaultValue: ""
-            })
-          }, newLinksArr.indexOf(link))), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-            type: "button",
-            onClick: addMoreLinks,
-            children: "Add Links?"
-          })]
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-          variant: "body2",
+        }), linksArr.length > 0 && linksArr.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_UserLinkInputs, {
+          defaultHref: link.href,
+          deleteOne: () => deleteThisLink(link._id),
+          titleInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `link_title_${link._id}`,
+            rules: {
+              required: true
+            },
+            render: _ref3 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  value,
+                  ref
+                }
+              } = _ref3;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                inputRef: ref,
+                type: "text"
+              });
+            },
+            defaultValue: link.title
+          }),
+          hrefInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `link_href_${link._id}`,
+            rules: {
+              required: true
+            },
+            render: _ref4 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  value,
+                  ref
+                }
+              } = _ref4;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                inputRef: ref,
+                type: "text"
+              });
+            },
+            defaultValue: link.href
+          })
+        }, link._id)), newLinksArr.length > 0 && newLinksArr.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_UserLinkInputs, {
+          deleteOne: () => deleteNewLinks(newLinksArr.indexOf(link)),
+          titleInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `link_title_${newLinksArr.indexOf(link)}`,
+            rules: {
+              required: true
+            },
+            render: _ref5 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  value,
+                  ref
+                }
+              } = _ref5;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                inputRef: ref,
+                type: "text"
+              });
+            },
+            defaultValue: ""
+          }),
+          hrefInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `link_href_${newLinksArr.indexOf(link)}`,
+            rules: {
+              required: true
+            },
+            render: _ref6 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  value,
+                  ref
+                }
+              } = _ref6;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                inputRef: ref,
+                type: "text"
+              });
+            },
+            defaultValue: ""
+          })
+        }, newLinksArr.indexOf(link))), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+          type: "button",
+          onClick: addMoreLinks,
+          children: "Add Links?"
+        })]
+      }), /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
+        className: "user-form-group",
+        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          variant: "h2",
           children: "Work Experience"
         }), expArr.length > 0 && expArr.map(exp => /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ExperienceForm, {
           deleteOne: () => deleteThisExp(exp._id),
@@ -22302,16 +22303,28 @@ const EditUserComponent = () => {
             },
             defaultValue: ""
           })
-        }, newExpsArr.indexOf(exp))), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+        }, newExpsArr.indexOf(exp)))]
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(FormGroup_FormGroup, {
+        className: "user-form-group",
+        children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
           onClick: addMoreExp,
           type: "button",
+          sx: {
+            marginBottom: '2em !important'
+          },
           children: "Add Experience?"
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+        })
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(FormGroup_FormGroup, {
+        className: "user-form-group",
+        children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
           disabled: !isValid,
           type: "submit",
+          sx: {
+            marginBottom: '2em !important'
+          },
           children: "Save"
-        })]
-      })
+        })
+      })]
     })
   });
 };
@@ -22417,12 +22430,10 @@ const CreateUserComponent = () => {
     return postUserName.json();
   };
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
-    children: /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
+    children: /*#__PURE__*/(0,jsx_runtime.jsxs)("form", {
       onSubmit: handleSubmit(data => handleSave(data)),
-      children: /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
-        sx: {
-          marginTop: '1em'
-        },
+      children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
+        className: "user-form-group",
         children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
           id: "fullName",
           label: "Full Name",
@@ -22482,68 +22493,69 @@ const CreateUserComponent = () => {
             defaultValue: ""
           })
         }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-          variant: "body2",
+          variant: "h2",
           children: "Add Links"
-        }), /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
-          children: [newLinksArr.length > 0 && newLinksArr.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_UserLinkInputs, {
-            deleteOne: () => deleteNewLinks(newLinksArr.indexOf(link)),
-            titleInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-              control: control,
-              name: `link_title_${newLinksArr.indexOf(link)}`,
-              rules: {
-                required: true
-              },
-              render: _ref3 => {
-                let {
-                  field: {
-                    onChange,
-                    onBlur,
-                    value,
-                    ref
-                  }
-                } = _ref3;
-                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-                  onChange: onChange,
-                  onBlur: onBlur,
-                  value: value,
-                  inputRef: ref,
-                  type: "text"
-                });
-              },
-              defaultValue: ""
-            }),
-            hrefInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-              control: control,
-              name: `link_href_${newLinksArr.indexOf(link)}`,
-              rules: {
-                required: true
-              },
-              render: _ref4 => {
-                let {
-                  field: {
-                    onChange,
-                    onBlur,
-                    value,
-                    ref
-                  }
-                } = _ref4;
-                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-                  onChange: onChange,
-                  onBlur: onBlur,
-                  value: value,
-                  inputRef: ref,
-                  type: "text"
-                });
-              },
-              defaultValue: ""
-            })
-          }, newLinksArr.indexOf(link))), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-            type: "button",
-            onClick: addMoreLinks,
-            children: "Add Links?"
-          })]
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-          variant: "body2",
+        }), newLinksArr.length > 0 && newLinksArr.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_UserLinkInputs, {
+          deleteOne: () => deleteNewLinks(newLinksArr.indexOf(link)),
+          titleInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `link_title_${newLinksArr.indexOf(link)}`,
+            rules: {
+              required: true
+            },
+            render: _ref3 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  value,
+                  ref
+                }
+              } = _ref3;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                inputRef: ref,
+                type: "text"
+              });
+            },
+            defaultValue: ""
+          }),
+          hrefInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `link_href_${newLinksArr.indexOf(link)}`,
+            rules: {
+              required: true
+            },
+            render: _ref4 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  value,
+                  ref
+                }
+              } = _ref4;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                inputRef: ref,
+                type: "text"
+              });
+            },
+            defaultValue: ""
+          })
+        }, newLinksArr.indexOf(link))), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+          type: "button",
+          onClick: addMoreLinks,
+          children: "Add Links?"
+        })]
+      }), /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
+        className: "user-form-group",
+        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          variant: "h2",
           children: "Work Experience"
         }), newExpsArr.length > 0 && newExpsArr.map(exp => /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ExperienceForm, {
           deleteOne: () => deleteNewExp(newExpsArr.indexOf(exp)),
@@ -22651,16 +22663,28 @@ const CreateUserComponent = () => {
             },
             defaultValue: ""
           })
-        }, newExpsArr.indexOf(exp))), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+        }, newExpsArr.indexOf(exp)))]
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(FormGroup_FormGroup, {
+        className: "user-form-group",
+        children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
           onClick: addMoreExp,
           type: "button",
+          sx: {
+            marginBottom: '2em !important'
+          },
           children: "Add Experience?"
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+        })
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(FormGroup_FormGroup, {
+        className: "user-form-group",
+        children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
           disabled: !isValid,
           type: "submit",
+          sx: {
+            marginBottom: '2em !important'
+          },
           children: "Save"
-        })]
-      })
+        })
+      })]
     })
   });
 };
@@ -22681,7 +22705,7 @@ const UserLanding = () => {
       children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
         spacing: 2,
         children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-          variant: "h2",
+          variant: "h1",
           children: "Your Info"
         }), userExists && userExists.length > 0 ? /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_EditUserComponent, {}) : /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_CreateUserComponent, {})]
       })
@@ -34921,15 +34945,14 @@ const CreateJob = () => {
     children: [/*#__PURE__*/(0,jsx_runtime.jsx)("form", {
       onSubmit: handleSubmitRequirements(data => handleSaveRequirements(data)),
       children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
-        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-          disabled: reqDisableState,
-          type: "submit",
-          children: "Save All"
-        }), /*#__PURE__*/(0,jsx_runtime.jsxs)(FormControl_FormControl, {
+        children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(FormControl_FormControl, {
           children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
             variant: "h2",
             id: "requirements",
             children: "Requirements"
+          }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+            id: "requirements-desc",
+            children: "Enter the keywords for each job requirement. (Example: 'Documenting codebase'...) If a requirement exists in the dropdown that is similar to one in the job post, select the one that already exists. It's important to input ALL requirements even if you don't have those requirements. This will help your Job Match meter give you an accurate reading."
           }), /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
             render: _ref => {
               let {
@@ -34962,7 +34985,8 @@ const CreateJob = () => {
                 renderInput: params => /*#__PURE__*/(0,jsx_runtime.jsx)(TextField_TextField, {
                   ...params,
                   variant: "outlined",
-                  "aria-labelledby": "requirements"
+                  "aria-labelledby": "requirements",
+                  "aria-describedby": "requirements-desc"
                 }),
                 onChange: (e, data) => onChange(data)
               });
@@ -34974,6 +34998,10 @@ const CreateJob = () => {
             name: "requirements",
             control: controlReq
           })]
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+          disabled: reqDisableState,
+          type: "submit",
+          children: "Save All"
         })]
       })
     }, 1), reqIds && reqIds.length > 0 && /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
@@ -34983,10 +35011,6 @@ const CreateJob = () => {
           variant: "h2",
           id: "job-post-form-heading",
           children: "Job You're Applying to"
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-          disabled: !isValid || jobDisableState,
-          type: "submit",
-          children: "Save"
         }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
           label: "Job Title",
           id: "job-title",
@@ -35107,6 +35131,10 @@ const CreateJob = () => {
             },
             defaultValue: ""
           })
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+          disabled: !isValid || jobDisableState,
+          type: "submit",
+          children: "Save"
         })]
       })
     }, 2), requirementsArray && requirementsArray.length > 0 && responseState && /*#__PURE__*/(0,jsx_runtime.jsxs)("form", {
@@ -35119,6 +35147,9 @@ const CreateJob = () => {
         variant: "h2",
         id: "qualifications",
         children: "Qualifications"
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+        id: "qualifications-desc",
+        children: "Enter the qualifications for each job requirement you've input into the form. If you don't meet this requirement, click the \"Missing Qualification\" button. This will help your Job Match meter be more accurate."
       }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
         sx: {
           width: '-webkit-fill-available',
@@ -35150,7 +35181,8 @@ const CreateJob = () => {
               type: "text",
               multiline: true,
               rows: 4,
-              "aria-labelledby": "add-response"
+              "aria-labelledby": "add-response",
+              "aria-describedby": "qualifications-desc"
             });
           },
           defaultValue: ""
@@ -35164,7 +35196,10 @@ const CreateJob = () => {
       }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
         sx: {
           marginTop: '1em',
-          backgroundColor: "#ba000d"
+          backgroundColor: "#ba000d",
+          '&:hover': {
+            backgroundColor: "#e72d28"
+          }
         },
         type: "button",
         onClick: () => handleNoResponse(requirementsArray[0]._id),
@@ -35194,7 +35229,7 @@ const JobsLanding = () => {
       children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
         spacing: 2,
         children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-          variant: "h2",
+          variant: "h1",
           children: "Enter Job Post Info"
         }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_CreateJob, {})]
       })
@@ -35276,6 +35311,9 @@ const SearchJob = () => {
                 md: 6,
                 children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
                   type: "submit",
+                  sx: {
+                    margin: '0.33em auto 0.25em !important;'
+                  },
                   children: "Ok"
                 })
               })]

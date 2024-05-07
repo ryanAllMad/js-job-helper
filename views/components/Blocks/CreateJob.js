@@ -158,13 +158,18 @@ const CreateJob = () => {
 				)}
 			>
 				<Stack>
-					<ContainedButton disabled={reqDisableState} type='submit'>Save All</ContainedButton>
 					<FormControl>
 						<Typography
 							variant='h2'
 							id='requirements'
 						>
 							Requirements
+						</Typography>
+						<Typography id="requirements-desc">
+							Enter the keywords for each job requirement. (Example: 'Documenting codebase'...)
+							If a requirement exists in the dropdown that is similar to one in the job post, 
+							select the one that already exists. It's important to input ALL requirements even
+							if you don't have those requirements. This will help your Job Match meter give you an accurate reading.
 						</Typography>
 						<Controller
 							render={({ field: { onChange } }) => (
@@ -208,6 +213,7 @@ const CreateJob = () => {
 											{...params}
 											variant='outlined'
 											aria-labelledby='requirements'
+											aria-describedby='requirements-desc'
 										/>
 									)}
 									onChange={(e, data) => onChange(data)}
@@ -218,6 +224,7 @@ const CreateJob = () => {
 							control={controlReq}
 						/>
 					</FormControl>
+					<ContainedButton disabled={reqDisableState} type='submit'>Save All</ContainedButton>
 				</Stack>
 			</form>
 			{reqIds && reqIds.length > 0 && (
@@ -232,12 +239,6 @@ const CreateJob = () => {
 						>
 							Job You're Applying to
 						</Typography>
-						<ContainedButton
-							disabled={!isValid || jobDisableState}
-							type='submit'
-						>
-							Save
-						</ContainedButton>
 						<BasicInput
 							label='Job Title'
 							id='job-title'
@@ -337,6 +338,12 @@ const CreateJob = () => {
 								defaultValue=''
 							/>
 						</BasicInput>
+						<ContainedButton
+							disabled={!isValid || jobDisableState}
+							type='submit'
+						>
+							Save
+						</ContainedButton>
 					</Stack>
 				</form>
 			)}
@@ -353,6 +360,11 @@ const CreateJob = () => {
 							id='qualifications'
 						>
 							Qualifications
+						</Typography>
+						<Typography id="qualifications-desc">
+							Enter the qualifications for each job requirement you've input into the form. 
+							If you don't meet this requirement, click the "Missing Qualification" button. 
+							This will help your Job Match meter be more accurate.
 						</Typography>
 					<BasicInput
 						sx={{width: '-webkit-fill-available', paddingRight: '15px'}}
@@ -376,6 +388,7 @@ const CreateJob = () => {
 									multiline
 									rows={4}
 									aria-labelledby='add-response'
+									aria-describedby='qualifications-desc'
 								/>
 							)}
 							defaultValue=""
@@ -384,7 +397,7 @@ const CreateJob = () => {
 					<ContainedButton sx={{marginTop: '1em'}} type='submit'>
 						Add Qualification
 					</ContainedButton>
-					<ContainedButton sx={{marginTop: '1em', backgroundColor: "#ba000d"}} type='button' onClick={() => handleNoResponse(requirementsArray[0]._id)}>
+					<ContainedButton sx={{marginTop: '1em', backgroundColor: "#ba000d", '&:hover': { backgroundColor: "#e72d28"}}} type='button' onClick={() => handleNoResponse(requirementsArray[0]._id)}>
 						Missing Qualification
 					</ContainedButton>
 				</form>

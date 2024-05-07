@@ -77,7 +77,7 @@ const SearchJob = () => {
 										xs={12}
 										md={6}
 									>
-										<ContainedButton type='submit'>
+										<ContainedButton type='submit' sx={{margin: '0.33em auto 0.25em !important;'}}>
 											Ok
 										</ContainedButton>
 									</Grid>

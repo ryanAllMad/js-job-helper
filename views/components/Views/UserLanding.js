@@ -14,7 +14,7 @@ const UserLanding = () => {
 		<>
 			<MainBody>
 				<Stack spacing={2}>
-					<Typography variant='h2'>Your Info</Typography>
+					<Typography variant='h1'>Your Info</Typography>
 					{userExists && userExists.length > 0 ? (<EditUserComponent />) : (<CreateUserComponent />)}
 				</Stack>
 			</MainBody>

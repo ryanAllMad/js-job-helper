@@ -44,3 +44,9 @@ nav a:active {
 nav a:hover {
 	color: #ffef62;
 }
+.user-form-group {
+	border: 1px solid #8080805c;
+    border-radius: 4px;
+    margin: 2em;
+    padding: .5em;
+}

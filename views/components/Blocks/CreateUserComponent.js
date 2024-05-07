@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FormGroup, Input, Typography } from '@mui/material';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, Form, useForm } from 'react-hook-form';
 import BasicInput from './BasicInput.js';
 import ContainedButton from './ContainedButton.js';
 import UserLinkInputs from './UserLinkInputs.js';
@@ -37,54 +37,54 @@ const CreateUserComponent = () => {
 	};
 
 	const getNewLinkData = (data) => {
-		let linksArr = []
-		const dataKeys = Object.keys(data)
-		const linkData = dataKeys.filter((d) => d.includes('link_title'))
+		let linksArr = [];
+		const dataKeys = Object.keys(data);
+		const linkData = dataKeys.filter((d) => d.includes('link_title'));
 		linkData.forEach((key, idx) => {
-			let obj = {}
-			const linkTitle = `link_title_${idx}`
-			const linkHref = `link_href_${idx}`
+			let obj = {};
+			const linkTitle = `link_title_${idx}`;
+			const linkHref = `link_href_${idx}`;
 			if (linkTitle) {
 				obj['title'] = data[linkTitle];
 			}
 			if (linkHref) {
-				obj['href'] = data[linkHref]
+				obj['href'] = data[linkHref];
 			}
-			linksArr.push(obj)
-		})
-		return linksArr
-	}
+			linksArr.push(obj);
+		});
+		return linksArr;
+	};
 
 	const getNewExperienceData = (data) => {
-		let expArr = []
-		const dataKeys = Object.keys(data)
-		const expData = dataKeys.filter(d => d.includes('job_title_'))
+		let expArr = [];
+		const dataKeys = Object.keys(data);
+		const expData = dataKeys.filter((d) => d.includes('job_title_'));
 		expData.forEach((key, idx) => {
-			let obj = {}
-			const expCompany = `company_name_${idx}`
-			const expTitle = `job_title_${idx}`
-			const expStart = `start_date_${idx}`
-			const expEnd = `end_date_${idx}`
+			let obj = {};
+			const expCompany = `company_name_${idx}`;
+			const expTitle = `job_title_${idx}`;
+			const expStart = `start_date_${idx}`;
+			const expEnd = `end_date_${idx}`;
 			if (expCompany) {
-				obj['company'] = data[expCompany]
+				obj['company'] = data[expCompany];
 			}
 			if (expTitle) {
 				obj['title'] = data[expTitle];
 			}
 			if (expStart) {
-				obj['year_started'] = data[expStart]
+				obj['year_started'] = data[expStart];
 			}
 			if (expEnd) {
-				obj['year_ended'] = data[expEnd]
+				obj['year_ended'] = data[expEnd];
 			}
-			expArr.push(obj)
-		})
-		return expArr
-	}
+			expArr.push(obj);
+		});
+		return expArr;
+	};
 
 	const handleSave = async (data) => {
-		const newLinks = getNewLinkData(data)
-		const newExp = getNewExperienceData(data)
+		const newLinks = getNewLinkData(data);
+		const newExp = getNewExperienceData(data);
 		const postUserName = await fetch('http://localhost:3000/api/user', {
 			method: 'POST',
 			headers: {
@@ -103,7 +103,7 @@ const CreateUserComponent = () => {
 	return (
 		<>
 			<form onSubmit={handleSubmit((data) => handleSave(data))}>
-				<FormGroup sx={{ marginTop: '1em' }}>
+				<FormGroup className='user-form-group'>
 					<BasicInput
 						id='fullName'
 						label='Full Name'
@@ -124,7 +124,7 @@ const CreateUserComponent = () => {
 									aria-labelledby='email'
 								/>
 							)}
-							defaultValue=""
+							defaultValue=''
 						/>
 					</BasicInput>
 					<BasicInput
@@ -147,82 +147,84 @@ const CreateUserComponent = () => {
 									aria-labelledby='email'
 								/>
 							)}
-							defaultValue=""
+							defaultValue=''
 						/>
 					</BasicInput>
-					<Typography variant='body2'>Add Links</Typography>
-					<FormGroup>
-						{newLinksArr.length > 0 &&
-							newLinksArr.map((link) => (
-								<UserLinkInputs
-									key={newLinksArr.indexOf(link)}
-									deleteOne={() =>
-										deleteNewLinks(
-											newLinksArr.indexOf(link)
-										)
-									}
-									titleInput={
-										<Controller
-											control={control}
-											name={`link_title_${newLinksArr.indexOf(link)}`}
-											rules={{
-												required: true,
-											}}
-											render={({
-												field: {
-													onChange,
-													onBlur,
-													value,
-													ref,
-												},
-											}) => (
-												<Input
-													onChange={onChange}
-													onBlur={onBlur}
-													value={value}
-													inputRef={ref}
-													type='text'
-												/>
-											)}
-											defaultValue=''
-										/>
-									}
-									hrefInput={
-										<Controller
-											control={control}
-											name={`link_href_${newLinksArr.indexOf(link)}`}
-											rules={{
-												required: true,
-											}}
-											render={({
-												field: {
-													onChange,
-													onBlur,
-													value,
-													ref,
-												},
-											}) => (
-												<Input
-													onChange={onChange}
-													onBlur={onBlur}
-													value={value}
-													inputRef={ref}
-													type='text'
-												/>
-											)}
-											defaultValue=''
-										/>
-									}
-								/>
-							))}
-						<ContainedButton
-							type='button'
-							onClick={addMoreLinks}
-						>
-							Add Links?
-						</ContainedButton>
-					</FormGroup>
-					<Typography variant='body2'>Work Experience</Typography>
+					<Typography variant='h2'>Add Links</Typography>
+					{newLinksArr.length > 0 &&
+						newLinksArr.map((link) => (
+							<UserLinkInputs
+								key={newLinksArr.indexOf(link)}
+								deleteOne={() =>
+									deleteNewLinks(newLinksArr.indexOf(link))
+								}
+								titleInput={
+									<Controller
+										control={control}
+										name={`link_title_${newLinksArr.indexOf(
+											link
+										)}`}
+										rules={{
+											required: true,
+										}}
+										render={({
+											field: {
+												onChange,
+												onBlur,
+												value,
+												ref,
+											},
+										}) => (
+											<Input
+												onChange={onChange}
+												onBlur={onBlur}
+												value={value}
+												inputRef={ref}
+												type='text'
+											/>
+										)}
+										defaultValue=''
+									/>
+								}
+								hrefInput={
+									<Controller
+										control={control}
+										name={`link_href_${newLinksArr.indexOf(
+											link
+										)}`}
+										rules={{
+											required: true,
+										}}
+										render={({
+											field: {
+												onChange,
+												onBlur,
+												value,
+												ref,
+											},
+										}) => (
+											<Input
+												onChange={onChange}
+												onBlur={onBlur}
+												value={value}
+												inputRef={ref}
+												type='text'
+											/>
+										)}
+										defaultValue=''
+									/>
+								}
+							/>
+						))}
+					<ContainedButton
+						type='button'
+						onClick={addMoreLinks}
+					>
+						Add Links?
+					</ContainedButton>
+				</FormGroup>
+				<FormGroup className='user-form-group'>
+					<Typography variant='h2'>Work Experience</Typography>
 					{newExpsArr.length > 0 &&
 						newExpsArr.map((exp) => (
 							<ExperienceForm
@@ -233,7 +235,9 @@ const CreateUserComponent = () => {
 								companyNameComp={
 									<Controller
 										control={control}
-										name={`company_name_${newExpsArr.indexOf(exp)}`}
+										name={`company_name_${newExpsArr.indexOf(
+											exp
+										)}`}
 										rules={{
 											required:
 												'Please enter the company name',
@@ -261,7 +265,9 @@ const CreateUserComponent = () => {
 								jobTitleComp={
 									<Controller
 										control={control}
-										name={`job_title_${newExpsArr.indexOf(exp)}`}
+										name={`job_title_${newExpsArr.indexOf(
+											exp
+										)}`}
 										rules={{
 											required:
 												'Please enter the position title you held in this role',
@@ -289,7 +295,9 @@ const CreateUserComponent = () => {
 								startDateComp={
 									<Controller
 										control={control}
-										name={`start_date_${newExpsArr.indexOf(exp)}`}
+										name={`start_date_${newExpsArr.indexOf(
+											exp
+										)}`}
 										rules={{
 											required:
 												'Please enter the first date you started in this position',
@@ -317,7 +325,9 @@ const CreateUserComponent = () => {
 								endDateComp={
 									<Controller
 										control={control}
-										name={`end_date_${newExpsArr.indexOf(exp)}`}
+										name={`end_date_${newExpsArr.indexOf(
+											exp
+										)}`}
 										rules={{
 											required:
 												'Please Enter the date of your last day in this position',
@@ -344,15 +354,21 @@ const CreateUserComponent = () => {
 								}
 							/>
 						))}
+				</FormGroup>
+				<FormGroup className='user-form-group'>
 					<ContainedButton
 						onClick={addMoreExp}
 						type='button'
+						sx={{marginBottom: '2em !important'}}
 					>
 						Add Experience?
 					</ContainedButton>
+				</FormGroup>
+				<FormGroup className='user-form-group'>
 					<ContainedButton
 						disabled={!isValid}
 						type='submit'
+						sx={{marginBottom: '2em !important'}}
 					>
 						Save
 					</ContainedButton>
