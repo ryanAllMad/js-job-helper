@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link, List, ListItem, Typography, Paper, Stack } from '@mui/material';
-import Guage from '../Blocks/Guage.js';
+import Guage from './Guage.js';
 import fetchData from '../getters/fetchData.js';
 
 

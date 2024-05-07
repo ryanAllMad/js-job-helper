@@ -12,7 +12,8 @@ import { createFilterOptions } from '@mui/material/Autocomplete/index.js';
 import ContainedButton from './ContainedButton.js';
 import { useForm, Controller } from 'react-hook-form';
 import fetchData from '../getters/fetchData.js';
-import Resume from '../Views/Resume.js';
+import Resume from './Resume.js';
+import AddQualification from './AddQualification.js';
 
 const getRequirements = fetchData('http://localhost:3000/api/requirements');
 
@@ -29,24 +30,26 @@ const CreateJob = () => {
 		handleSubmit: handleSubmitRequirements,
 		formState: { isSubmitSuccessful },
 	} = useForm();
-	const { control: controlRes, handleSubmit: handleSubmitResponses, reset } =
-		useForm();
+	const {
+		control: controlRes,
+		handleSubmit: handleSubmitResponses,
+		reset,
+	} = useForm();
 	const [reqIds, setReqIds] = React.useState(null);
 	const [reqTitles, setReqTitles] = React.useState([]);
-	const [requirementsArray, setRequirementsArray] = React.useState([])
-	const [responseState, setResponseState] = React.useState(false)
-	const [resumeLocation, setResumeLocation] = React.useState('')
-	const [reqDisableState, setReqDisableState] = React.useState(false)
-	const [jobDisableState, setJobDisableState] = React.useState(false)
+	const [requirementsArray, setRequirementsArray] = React.useState([]);
+	const [responseState, setResponseState] = React.useState(false);
+	const [resumeLocation, setResumeLocation] = React.useState('');
+	const [reqDisableState, setReqDisableState] = React.useState(false);
+	const [jobDisableState, setJobDisableState] = React.useState(false);
 
 	const theRequirements = getRequirements.read();
 	const hasRequirements = theRequirements.length > 0 ? theRequirements : null;
 
-
 	const handleSaveJob = async (data) => {
-		setJobDisableState(true)
-		const parsedCompanyName = data.company.toLowerCase().replace(' ', '-')
-		setResumeLocation(`${parsedCompanyName}`)
+		setJobDisableState(true);
+		const parsedCompanyName = data.company.toLowerCase().replace(' ', '-');
+		setResumeLocation(`${parsedCompanyName}`);
 		const postJob = await fetch('http://localhost:3000/api/job-post', {
 			method: 'POST',
 			headers: {
@@ -60,7 +63,7 @@ const CreateJob = () => {
 				requirements: reqIds,
 			}),
 		});
-		setResponseState(true)
+		setResponseState(true);
 		return postJob.json();
 	};
 	const getRequirementsUpdated = async () => {
@@ -91,23 +94,23 @@ const CreateJob = () => {
 		if (isSubmitSuccessful) {
 			getRequirementsUpdated().then((res) => {
 				const newIds = [];
-				const newReqs = []
+				const newReqs = [];
 				res.forEach((d) => {
 					if (reqTitles.includes(d.req_title)) {
 						newIds.push(d._id);
-						if(!d.res_content) {
-							newReqs.push(d)
+						if (!d.res_content) {
+							newReqs.push(d);
 						}
 					}
 				});
-				setRequirementsArray(newReqs)
+				setRequirementsArray(newReqs);
 				setReqIds(newIds);
 			});
 		}
 	}, [isSubmitSuccessful, setRequirementsArray, setReqIds]);
 
 	const handleSaveRequirements = async (data) => {
-		setReqDisableState(true)
+		setReqDisableState(true);
 		const newReqTitles = [];
 		const newDataToSave = data.requirements.filter((d) => !d._id);
 		data.requirements.forEach((d) => newReqTitles.push(d.req_title));
@@ -127,7 +130,9 @@ const CreateJob = () => {
 		}
 	};
 	const handleAddResponse = async (data, id) => {
-		const newRequirementsArr = requirementsArray.filter((d) => d._id !== id)
+		const newRequirementsArr = requirementsArray.filter(
+			(d) => d._id !== id
+		);
 		const updateRequirement = await fetch(
 			`http://localhost:3000/api/requirements/${id}`,
 			{
@@ -140,14 +145,16 @@ const CreateJob = () => {
 				}),
 			}
 		);
-		setRequirementsArray(newRequirementsArr)
-		reset()
+		setRequirementsArray(newRequirementsArr);
+		reset();
 		return updateRequirement.json();
 	};
 	const handleNoResponse = (id) => {
-		const newRequirementsArr = requirementsArray.filter((d) => d._id !== id)
-		setRequirementsArray(newRequirementsArr)
-	}
+		const newRequirementsArr = requirementsArray.filter(
+			(d) => d._id !== id
+		);
+		setRequirementsArray(newRequirementsArr);
+	};
 
 	return (
 		<>
@@ -165,11 +172,15 @@ const CreateJob = () => {
 						>
 							Requirements
 						</Typography>
-						<Typography id="requirements-desc">
-							Enter the keywords for each job requirement. (Example: 'Documenting codebase'...)
-							If a requirement exists in the dropdown that is similar to one in the job post, 
-							select the one that already exists. It's important to input ALL requirements even
-							if you don't have those requirements. This will help your Job Match meter give you an accurate reading.
+						<Typography id='requirements-desc'>
+							Enter the keywords for each job requirement.
+							(Example: 'Documenting codebase'...) If a
+							requirement exists in the dropdown that is similar
+							to one in the job post, select the one that already
+							exists. It's important to input ALL requirements
+							even if you don't have those requirements. This will
+							help your Job Match meter give you an accurate
+							reading.
 						</Typography>
 						<Controller
 							render={({ field: { onChange } }) => (
@@ -224,7 +235,12 @@ const CreateJob = () => {
 							control={controlReq}
 						/>
 					</FormControl>
-					<ContainedButton disabled={reqDisableState} type='submit'>Save All</ContainedButton>
+					<ContainedButton
+						disabled={reqDisableState}
+						type='submit'
+					>
+						Save All
+					</ContainedButton>
 				</Stack>
 			</form>
 			{reqIds && reqIds.length > 0 && (
@@ -233,7 +249,7 @@ const CreateJob = () => {
 					onSubmit={handleSubmit((data) => handleSaveJob(data))}
 				>
 					<Stack>
-					<Typography
+						<Typography
 							variant='h2'
 							id='job-post-form-heading'
 						>
@@ -347,29 +363,21 @@ const CreateJob = () => {
 					</Stack>
 				</form>
 			)}
-			{requirementsArray && requirementsArray.length > 0 && responseState && (
-				<form
-					key={3}
-					style={{ display: 'flex', flexFlow: 'row wrap'}}
-					onSubmit={handleSubmitResponses((data) =>
-						handleAddResponse(data, requirementsArray[0]._id)
-					)}
-				>
-					<Typography
-							variant='h2'
-							id='qualifications'
-						>
-							Qualifications
-						</Typography>
-						<Typography id="qualifications-desc">
-							Enter the qualifications for each job requirement you've input into the form. 
-							If you don't meet this requirement, click the "Missing Qualification" button. 
-							This will help your Job Match meter be more accurate.
-						</Typography>
-					<BasicInput
-						sx={{width: '-webkit-fill-available', paddingRight: '15px'}}
-						label={`Add qualifications for: ${requirementsArray[0].req_title}`}
-						id='add-response'
+			{requirementsArray &&
+				requirementsArray.length > 0 &&
+				responseState && (
+					<AddQualification
+						key={3}
+						onSubmit={handleSubmitResponses((data) =>
+							handleAddResponse(data, requirementsArray[0]._id)
+						)}
+						onMissing={() => handleNoResponse(requirementsArray[0]._id)}
+						thisReq={requirementsArray[0].req_title}
+						addButtonText="Add Qualification"
+						removeButtonText="Missing Qualification"
+						qualificationDesc={`Enter the qualifications for each job requirement you've input into the form. 
+				If you don't meet this requirement, click the "Missing Qualification" button. 
+				This will help your Job Match meter be more accurate."`}
 					>
 						<Controller
 							control={controlRes}
@@ -381,7 +389,7 @@ const CreateJob = () => {
 								<Input
 									onChange={onChange}
 									onBlur={onBlur}
-									placeholder="Enter qualifications"
+									placeholder='Enter qualifications'
 									value={value}
 									inputRef={ref}
 									type='text'
@@ -391,20 +399,17 @@ const CreateJob = () => {
 									aria-describedby='qualifications-desc'
 								/>
 							)}
-							defaultValue=""
+							defaultValue=''
 						/>
-					</BasicInput>
-					<ContainedButton sx={{marginTop: '1em'}} type='submit'>
-						Add Qualification
-					</ContainedButton>
-					<ContainedButton sx={{marginTop: '1em', backgroundColor: "#ba000d", '&:hover': { backgroundColor: "#e72d28"}}} type='button' onClick={() => handleNoResponse(requirementsArray[0]._id)}>
-						Missing Qualification
-					</ContainedButton>
-				</form>
-			)}
-			{requirementsArray && requirementsArray.length === 0 && responseState && (
-				<Resume fetchUrl={`http://localhost:3000/api/job-post/${resumeLocation}`} />
-			)}
+					</AddQualification>
+				)}
+			{requirementsArray &&
+				requirementsArray.length === 0 &&
+				responseState && (
+					<Resume
+						fetchUrl={`http://localhost:3000/api/job-post/${resumeLocation}`}
+					/>
+				)}
 		</>
 	);
 };

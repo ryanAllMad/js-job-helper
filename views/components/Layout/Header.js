@@ -32,8 +32,8 @@ const Header = () => {
 							component='li'
 							sx={{ paddingTop: '16px'}}
 						>
-							<NavLink to='/update-requirements'>
-								Update Requirements
+							<NavLink to='/update-qualifications'>
+								Update Qualifications
 							</NavLink>
 						</Grid>
 						<Grid

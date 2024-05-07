@@ -15657,8 +15657,8 @@ const Header = () => {
               paddingTop: '16px'
             },
             children: /*#__PURE__*/(0,jsx_runtime.jsx)(NavLink, {
-              to: "/update-requirements",
-              children: "Update Requirements"
+              to: "/update-qualifications",
+              children: "Update Qualifications"
             })
           }), /*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
             item: true,
@@ -34676,7 +34676,7 @@ const Guage = props => {
   });
 };
 /* harmony default export */ const Blocks_Guage = (Guage);
-;// CONCATENATED MODULE: ./views/components/Views/PositionView.js
+;// CONCATENATED MODULE: ./views/components/Blocks/PositionView.js
 
 
 
@@ -34745,8 +34745,8 @@ const PositionView = props => {
     })
   });
 };
-/* harmony default export */ const Views_PositionView = (PositionView);
-;// CONCATENATED MODULE: ./views/components/Views/Resume.js
+/* harmony default export */ const Blocks_PositionView = (PositionView);
+;// CONCATENATED MODULE: ./views/components/Blocks/Resume.js
 
 
 
@@ -34797,7 +34797,7 @@ const Resume = props => {
       children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
         variant: "h2",
         children: "Resume"
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Views_PositionView, {
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_PositionView, {
         jobTitle: job.job_title,
         jobFunction: job.job_function,
         requirements: job.requirements,
@@ -34806,8 +34806,70 @@ const Resume = props => {
     })
   });
 };
-/* harmony default export */ const Views_Resume = (Resume);
+/* harmony default export */ const Blocks_Resume = (Resume);
+;// CONCATENATED MODULE: ./views/components/Blocks/AddQualification.js
+
+
+
+
+
+const AddQualification = props => {
+  const {
+    key,
+    onSubmit,
+    onMissing,
+    thisReq,
+    qualificationDesc,
+    addButtonText,
+    removeButtonText,
+    children
+  } = props;
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
+    children: /*#__PURE__*/(0,jsx_runtime.jsxs)("form", {
+      style: {
+        display: 'flex',
+        flexFlow: 'row wrap'
+      },
+      onSubmit: onSubmit,
+      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+        variant: "h2",
+        id: "qualifications",
+        children: "Qualifications"
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+        id: "qualifications-desc",
+        children: qualificationDesc
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
+        sx: {
+          width: '-webkit-fill-available',
+          paddingRight: '15px'
+        },
+        label: `Add qualifications for: ${thisReq}`,
+        id: "add-response",
+        children: children
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+        sx: {
+          marginTop: '1em'
+        },
+        type: "submit",
+        children: addButtonText
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+        sx: {
+          marginTop: '1em',
+          backgroundColor: '#ba000d',
+          '&:hover': {
+            backgroundColor: '#e72d28'
+          }
+        },
+        type: "button",
+        onClick: onMissing,
+        children: removeButtonText
+      })]
+    }, key)
+  });
+};
+/* harmony default export */ const Blocks_AddQualification = (AddQualification);
 ;// CONCATENATED MODULE: ./views/components/Blocks/CreateJob.js
+
 
 
 
@@ -35137,75 +35199,46 @@ const CreateJob = () => {
           children: "Save"
         })]
       })
-    }, 2), requirementsArray && requirementsArray.length > 0 && responseState && /*#__PURE__*/(0,jsx_runtime.jsxs)("form", {
-      style: {
-        display: 'flex',
-        flexFlow: 'row wrap'
-      },
+    }, 2), requirementsArray && requirementsArray.length > 0 && responseState && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_AddQualification, {
       onSubmit: handleSubmitResponses(data => handleAddResponse(data, requirementsArray[0]._id)),
-      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-        variant: "h2",
-        id: "qualifications",
-        children: "Qualifications"
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-        id: "qualifications-desc",
-        children: "Enter the qualifications for each job requirement you've input into the form. If you don't meet this requirement, click the \"Missing Qualification\" button. This will help your Job Match meter be more accurate."
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
-        sx: {
-          width: '-webkit-fill-available',
-          paddingRight: '15px'
+      onMissing: () => handleNoResponse(requirementsArray[0]._id),
+      thisReq: requirementsArray[0].req_title,
+      addButtonText: "Add Qualification",
+      removeButtonText: "Missing Qualification",
+      qualificationDesc: `Enter the qualifications for each job requirement you've input into the form. 
+				If you don't meet this requirement, click the "Missing Qualification" button. 
+				This will help your Job Match meter be more accurate."`,
+      children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+        control: controlRes,
+        name: "response",
+        rules: {
+          required: true
         },
-        label: `Add qualifications for: ${requirementsArray[0].req_title}`,
-        id: "add-response",
-        children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-          control: controlRes,
-          name: "response",
-          rules: {
-            required: true
-          },
-          render: _ref7 => {
-            let {
-              field: {
-                onChange,
-                onBlur,
-                value,
-                ref
-              }
-            } = _ref7;
-            return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-              onChange: onChange,
-              onBlur: onBlur,
-              placeholder: "Enter qualifications",
-              value: value,
-              inputRef: ref,
-              type: "text",
-              multiline: true,
-              rows: 4,
-              "aria-labelledby": "add-response",
-              "aria-describedby": "qualifications-desc"
-            });
-          },
-          defaultValue: ""
-        })
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-        sx: {
-          marginTop: '1em'
+        render: _ref7 => {
+          let {
+            field: {
+              onChange,
+              onBlur,
+              value,
+              ref
+            }
+          } = _ref7;
+          return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+            onChange: onChange,
+            onBlur: onBlur,
+            placeholder: "Enter qualifications",
+            value: value,
+            inputRef: ref,
+            type: "text",
+            multiline: true,
+            rows: 4,
+            "aria-labelledby": "add-response",
+            "aria-describedby": "qualifications-desc"
+          });
         },
-        type: "submit",
-        children: "Add Qualification"
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-        sx: {
-          marginTop: '1em',
-          backgroundColor: "#ba000d",
-          '&:hover': {
-            backgroundColor: "#e72d28"
-          }
-        },
-        type: "button",
-        onClick: () => handleNoResponse(requirementsArray[0]._id),
-        children: "Missing Qualification"
-      })]
-    }, 3), requirementsArray && requirementsArray.length === 0 && responseState && /*#__PURE__*/(0,jsx_runtime.jsx)(Views_Resume, {
+        defaultValue: ""
+      })
+    }, 3), requirementsArray && requirementsArray.length === 0 && responseState && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Resume, {
       fetchUrl: `http://localhost:3000/api/job-post/${resumeLocation}`
     })]
   });
@@ -35321,8 +35354,7 @@ const SearchJob = () => {
           })
         }) : 'No jobs, go to job post to input new jobs'
       }), /*#__PURE__*/(0,jsx_runtime.jsx)(Paper_Paper, {
-        children: resumeLocation && /*#__PURE__*/(0,jsx_runtime.jsx)(Views_Resume, {
-          guageValue: 75,
+        children: resumeLocation && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Resume, {
           fetchUrl: `http://localhost:3000/api/job-post/${resumeLocation}`
         })
       })]
@@ -35330,6 +35362,189 @@ const SearchJob = () => {
   });
 };
 /* harmony default export */ const Views_SearchJob = (SearchJob);
+;// CONCATENATED MODULE: ./views/components/Views/UpdateRequirements.js
+
+
+
+
+
+
+
+
+const UpdateRequirements_getRequirements = getters_fetchData('http://localhost:3000/api/requirements/');
+const UpdateRequirements = () => {
+  const {
+    control,
+    handleSubmit
+  } = useForm();
+  const {
+    control: controlRes,
+    handleSubmit: handleSubmitResponses,
+    formState: {
+      isSubmitSuccessful
+    },
+    reset
+  } = useForm();
+  const allReqs = UpdateRequirements_getRequirements.read();
+  const [reqTitleLocation, setReqTitleLocation] = react.useState(null);
+  const [qualification, setQualification] = react.useState();
+  const getRequriement = async reqLocation => {
+    try {
+      const reqPromise = await fetch(`http://localhost:3000/api/requirements/${reqLocation}`, {
+        method: 'GET'
+      }).then(res => res.json()).then(res => {
+        if (res.status === 'success') {
+          if (!res.data) {
+            console.log('no data');
+          }
+          return res.data;
+        } else {
+          console.log(res.status);
+        }
+      });
+      return reqPromise;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleSetReqLocation = data => {
+    setReqTitleLocation(data.searchRequirements);
+    getRequriement(data.searchRequirements).then(res => {
+      setQualification(res);
+      reset({
+        updateQualification: res[0].res_content
+      });
+    });
+  };
+  const handleAddResponse = async (data, id) => {
+    const updateRequirement = await fetch(`http://localhost:3000/api/requirements/${id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        res_content: data.updateQualification
+      })
+    });
+    return updateRequirement.json();
+  };
+  const handleMissing = async id => {
+    const updateRequirement = await fetch(`http://localhost:3000/api/requirements/${id}`, {
+      method: 'DELETE'
+    });
+    setReqTitleLocation(null);
+    return updateRequirement;
+  };
+  react.useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful]);
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
+    children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Layout_MainBody, {
+      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Stack_Stack, {
+        children: allReqs && allReqs.length > 0 ? /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
+          onSubmit: handleSubmit(data => handleSetReqLocation(data)),
+          children: /*#__PURE__*/(0,jsx_runtime.jsx)(FormControl_FormControl, {
+            sx: {
+              width: '100%'
+            },
+            children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Grid_Grid, {
+              container: true,
+              spacing: 4,
+              sx: {
+                width: '100%'
+              },
+              children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
+                item: true,
+                xs: 12,
+                md: 6,
+                children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+                  control: control,
+                  onChange: data => data,
+                  name: "searchRequirements",
+                  render: _ref => {
+                    let {
+                      field: {
+                        onChange
+                      }
+                    } = _ref;
+                    return /*#__PURE__*/(0,jsx_runtime.jsx)(Autocomplete_Autocomplete, {
+                      disableClearable: true,
+                      id: "requirements-search-input",
+                      noOptionsText: "Job doesn't exist. Go to add a job page.",
+                      options: allReqs.map(req => req.req_title),
+                      renderInput: params => /*#__PURE__*/(0,jsx_runtime.jsx)(TextField_TextField, {
+                        ...params,
+                        variant: "outlined",
+                        label: "Search Requirement Keywords",
+                        type: "search"
+                      }),
+                      onChange: (e, data) => {
+                        setReqTitleLocation(null);
+                        onChange(data);
+                      }
+                    });
+                  },
+                  defaultValue: ""
+                })
+              }), /*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
+                item: true,
+                xs: 12,
+                md: 6,
+                children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+                  type: "submit",
+                  sx: {
+                    margin: '0.33em auto 0.25em !important;'
+                  },
+                  children: "Ok"
+                })
+              })]
+            })
+          })
+        }, 1) : 'No job requirements have been input. Go to "add a job" to add requirements.'
+      }), reqTitleLocation && qualification && qualification.length > 0 && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_AddQualification, {
+        onSubmit: handleSubmitResponses(data => handleAddResponse(data, qualification[0]._id)),
+        qualificationDesc: `Update this qualification`,
+        thisReq: qualification[0].req_title,
+        addButtonText: "Update Qualification",
+        removeButtonText: "Set to Missing Qualification",
+        onMissing: () => handleMissing(qualification[0]._id),
+        children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+          control: controlRes,
+          name: "updateQualification",
+          rules: {
+            required: true
+          },
+          render: _ref2 => {
+            let {
+              field: {
+                onChange,
+                onBlur,
+                value,
+                ref
+              }
+            } = _ref2;
+            return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+              onChange: onChange,
+              onBlur: onBlur,
+              placeholder: "Update qualification",
+              value: value,
+              inputRef: ref,
+              type: "text",
+              multiline: true,
+              rows: 4,
+              "aria-labelledby": "add-response",
+              "aria-describedby": "qualifications-desc"
+            });
+          },
+          defaultValue: qualification[0].res_content
+        })
+      }, 2)]
+    })
+  });
+};
+/* harmony default export */ const Views_UpdateRequirements = (UpdateRequirements);
 ;// CONCATENATED MODULE: ./node_modules/@mui/x-date-pickers/LocalizationProvider/LocalizationProvider.js
 
 
@@ -36031,8 +36246,8 @@ const router = createBrowserRouter([{
   path: '/add-job',
   element: /*#__PURE__*/(0,jsx_runtime.jsx)(Views_JobsLanding, {})
 }, {
-  path: '/resume',
-  element: /*#__PURE__*/(0,jsx_runtime.jsx)(Views_Resume, {})
+  path: '/update-qualifications',
+  element: /*#__PURE__*/(0,jsx_runtime.jsx)(Views_UpdateRequirements, {})
 }, {
   path: '/search-job',
   element: /*#__PURE__*/(0,jsx_runtime.jsx)(Views_SearchJob, {})

@@ -2,7 +2,7 @@ import { hydrateRoot } from 'react-dom/client';
 import UserLanding from './components/Views/UserLanding.js';
 import JobsLanding from './components/Views/JobsLanding.js';
 import SearchJob from './components/Views/SearchJob.js';
-import Resume from './components/Views/Resume.js'
+import UpdateRequirements from './components/Views/UpdateRequirements.js';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs/index.js';
@@ -17,8 +17,8 @@ const router = createBrowserRouter([
 		element: <JobsLanding />,
 	},
 	{
-		path: '/resume',
-		element: <Resume />,
+		path: '/update-qualifications',
+		element: <UpdateRequirements />,
 	},
 	{
 		path: '/search-job',

@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import MainBody from '../Layout/MainBody.js';
 import ContainedButton from '../Blocks/ContainedButton.js';
-import Resume from './Resume.js';
+import Resume from '../Blocks/Resume.js';
 import { useForm, Controller } from 'react-hook-form';
 import fetchData from '../getters/fetchData.js';
 
@@ -91,7 +91,6 @@ const SearchJob = () => {
 				<Paper>
 					{resumeLocation && (
 						<Resume
-							guageValue={75}
 							fetchUrl={`http://localhost:3000/api/job-post/${resumeLocation}`}
 						/>
 					)}
