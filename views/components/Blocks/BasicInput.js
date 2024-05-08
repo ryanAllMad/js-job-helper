@@ -5,12 +5,12 @@ import {
 } from '@mui/material';
 
 const BasicInput = (props) => {
-	const { children, label, id, sx } = props;
+	const { children, label, id, sx, labelSx } = props;
 
 	return (
 		<>
 			<FormControl sx={{...sx, marginTop: '2em'}}>
-				<InputLabel id={id}>{label}</InputLabel>
+				<InputLabel sx={{...labelSx}} htmlFor={id}>{label}</InputLabel>
 				{children}
 			</FormControl>
 		</>

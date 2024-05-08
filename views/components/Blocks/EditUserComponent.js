@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormGroup, Input, Typography } from '@mui/material';
+import { FormGroup, Input, InputLabel, Typography } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import BasicInput from './BasicInput.js';
 import ContainedButton from './ContainedButton.js';
@@ -235,7 +235,7 @@ const EditUserComponent = () => {
 			<form onSubmit={handleSubmit((data) => handleSave(data))}>
 				<FormGroup className='user-form-group'>
 					<BasicInput
-						id='fullName'
+						id='full-name'
 						label='Full Name'
 					>
 						<Controller
@@ -251,7 +251,7 @@ const EditUserComponent = () => {
 									value={value}
 									inputRef={ref}
 									type='text'
-									aria-labelledby='email'
+									id='full-name'
 								/>
 							)}
 							defaultValue={userDetails[0].name}
@@ -274,7 +274,7 @@ const EditUserComponent = () => {
 									value={value}
 									inputRef={ref}
 									type='text'
-									aria-labelledby='email'
+									id='email'
 								/>
 							)}
 							defaultValue={userDetails[0].email}
@@ -288,6 +288,8 @@ const EditUserComponent = () => {
 								defaultHref={link.href}
 								deleteOne={() => deleteThisLink(link._id)}
 								titleInput={
+									<>
+									<InputLabel htmlFor={`title-${link._id}`}>Title</InputLabel>
 									<Controller
 										control={control}
 										name={`link_title_${link._id}`}
@@ -308,12 +310,16 @@ const EditUserComponent = () => {
 												value={value}
 												inputRef={ref}
 												type='text'
+												id={`title-${link._id}`}
 											/>
 										)}
 										defaultValue={link.title}
 									/>
+									</>
 								}
 								hrefInput={
+									<>
+									<InputLabel htmlFor={`href-${link._id}`}>Href</InputLabel>
 									<Controller
 										control={control}
 										name={`link_href_${link._id}`}
@@ -334,11 +340,13 @@ const EditUserComponent = () => {
 												value={value}
 												inputRef={ref}
 												type='text'
+												id={`href-${link._id}`}
 											/>
 										)}
 										defaultValue={link.href}
 									/>
-								}
+									</>
+									}
 							/>
 						))}
 					{newLinksArr.length > 0 &&
@@ -349,6 +357,8 @@ const EditUserComponent = () => {
 									deleteNewLinks(newLinksArr.indexOf(link))
 								}
 								titleInput={
+									<>
+									<InputLabel htmlFor={`title-${newLinksArr.indexOf(link)}`}>Title</InputLabel>
 									<Controller
 										control={control}
 										name={`link_title_${newLinksArr.indexOf(
@@ -371,12 +381,16 @@ const EditUserComponent = () => {
 												value={value}
 												inputRef={ref}
 												type='text'
+												id={`title-${newLinksArr.indexOf(link)}`}
 											/>
 										)}
 										defaultValue=''
 									/>
+									</>
 								}
 								hrefInput={
+									<>
+									<InputLabel htmlFor={`href-${newLinksArr.indexOf(link)}`}>Href</InputLabel>
 									<Controller
 										control={control}
 										name={`link_href_${newLinksArr.indexOf(
@@ -399,10 +413,12 @@ const EditUserComponent = () => {
 												value={value}
 												inputRef={ref}
 												type='text'
+												id={`href-${newLinksArr.indexOf(link)}`}
 											/>
 										)}
 										defaultValue=''
 									/>
+									</>
 								}
 							/>
 						))}
@@ -419,6 +435,10 @@ const EditUserComponent = () => {
 						expArr.map((exp) => (
 							<ExperienceForm
 								key={exp._id}
+								idComp={`company-name-${exp._id}`}
+								idTitle={`job-title-${exp._id}`}
+								idStart={`start-${exp._id}`}
+								idEnd={`end-${exp._id}`}
 								deleteOne={() => deleteThisExp(exp._id)}
 								companyNameComp={
 									<Controller
@@ -442,7 +462,7 @@ const EditUserComponent = () => {
 												value={value}
 												inputRef={ref}
 												type='text'
-												aria-labelledby='companyName'
+												id={`company-name-${exp._id}`}
 											/>
 										)}
 										defaultValue={exp.company}
@@ -470,7 +490,7 @@ const EditUserComponent = () => {
 												value={value}
 												inputRef={ref}
 												type='text'
-												aria-labelledby='jobTitle'
+												id={`job-title-${exp._id}`}
 											/>
 										)}
 										defaultValue={exp.title}
@@ -494,11 +514,12 @@ const EditUserComponent = () => {
 										}) => (
 											<Input
 												type='date'
+												sx={{ maxWidth: '200px'}}
 												inputRef={ref}
 												onChange={onChange}
 												onBlur={onBlur}
 												value={value}
-												label='Start Date'
+												id={`start-${exp._id}`}
 											/>
 										)}
 										defaultValue={parseDate(
@@ -524,11 +545,12 @@ const EditUserComponent = () => {
 										}) => (
 											<Input
 												type='date'
+												sx={{ maxWidth: '200px'}}
 												onChange={onChange}
 												onBlur={onBlur}
 												inputRef={ref}
 												value={value}
-												label='End Date'
+												id={`end-${exp._id}`}
 											/>
 										)}
 										defaultValue={parseDate(exp.year_ended)}
@@ -540,6 +562,10 @@ const EditUserComponent = () => {
 						newExpsArr.map((exp) => (
 							<ExperienceForm
 								key={newExpsArr.indexOf(exp)}
+								idComp={`company-name-${newExpsArr.indexOf(exp)}`}
+								idTitle={`job-title-${newExpsArr.indexOf(exp)}`}
+								idStart={`start-${newExpsArr.indexOf(exp)}`}
+								idEnd={`end-${newExpsArr.indexOf(exp)}`}
 								deleteOne={() =>
 									deleteNewExp(newExpsArr.indexOf(exp))
 								}
@@ -567,7 +593,7 @@ const EditUserComponent = () => {
 												value={value}
 												inputRef={ref}
 												type='text'
-												aria-labelledby='companyName'
+												id={`company-name-${newExpsArr.indexOf(exp)}`}
 											/>
 										)}
 										defaultValue=''
@@ -597,7 +623,7 @@ const EditUserComponent = () => {
 												value={value}
 												inputRef={ref}
 												type='text'
-												aria-labelledby='jobTitle'
+												id={`job-title-${newExpsArr.indexOf(exp)}`}
 											/>
 										)}
 										defaultValue=''
@@ -623,11 +649,12 @@ const EditUserComponent = () => {
 										}) => (
 											<Input
 												type='date'
+												sx={{ maxWidth: '200px'}}
 												inputRef={ref}
 												onChange={onChange}
 												onBlur={onBlur}
 												value={value}
-												label='Start Date'
+												id={`start-${newExpsArr.indexOf(exp)}`}
 											/>
 										)}
 										defaultValue=''
@@ -653,11 +680,12 @@ const EditUserComponent = () => {
 										}) => (
 											<Input
 												type='date'
+												sx={{ maxWidth: '200px'}}
 												onChange={onChange}
 												onBlur={onBlur}
 												inputRef={ref}
 												value={value}
-												label='End Date'
+												id={`end-${newExpsArr.indexOf(exp)}`}
 											/>
 										)}
 										defaultValue=''

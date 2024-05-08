@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ContainedButton from './ContainedButton.js';
-import { FormControl, Grid, InputLabel } from '@mui/material';
+import { FormControl, Grid } from '@mui/material';
 
 const UserLinkInputs = (props) => {
 	const { titleInput, hrefInput, deleteOne, key } = props;
@@ -21,7 +21,6 @@ const UserLinkInputs = (props) => {
 					item
 				>
 					<FormControl>
-						<InputLabel>Title</InputLabel>
 						{titleInput}
 					</FormControl>
 				</Grid>
@@ -31,7 +30,6 @@ const UserLinkInputs = (props) => {
 					item
 				>
 					<FormControl>
-						<InputLabel>Href</InputLabel>
 						{hrefInput}
 					</FormControl>
 				</Grid>

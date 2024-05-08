@@ -1,7 +1,7 @@
 import * as React from 'react';
 import BasicInput from './BasicInput.js';
 import ContainedButton from './ContainedButton.js';
-import { Typography } from '@mui/material';
+import { Typography, FormHelperText, Stack } from '@mui/material';
 
 const AddQualification = (props) => {
 	const { key, onSubmit, onMissing, thisReq, qualificationDesc, addButtonText, removeButtonText, children } = props;
@@ -12,15 +12,17 @@ const AddQualification = (props) => {
 				style={{ display: 'flex', flexFlow: 'row wrap' }}
 				onSubmit={onSubmit}
 			>
+				<Stack>
 				<Typography
 					variant='h2'
 					id='qualifications'
 				>
 					Qualifications
 				</Typography>
-				<Typography id='qualifications-desc'>
+				<FormHelperText id='add-response'>
 					{qualificationDesc}
-				</Typography>
+				</FormHelperText>
+				</Stack>
 				<BasicInput
 					sx={{
 						width: '-webkit-fill-available',

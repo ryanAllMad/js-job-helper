@@ -1,9 +1,13 @@
 import * as React from 'react';
 import BasicInput from './BasicInput.js';
 import {
+	AppBar,
 	Autocomplete,
 	FormControl,
 	Input,
+	InputLabel,
+	LinearProgress,
+	Link,
 	Stack,
 	TextField,
 	Typography,
@@ -42,12 +46,15 @@ const CreateJob = () => {
 	const [resumeLocation, setResumeLocation] = React.useState('');
 	const [reqDisableState, setReqDisableState] = React.useState(false);
 	const [jobDisableState, setJobDisableState] = React.useState(false);
+	const [progress, setProgress] = React.useState(0)
 
 	const theRequirements = getRequirements.read();
 	const hasRequirements = theRequirements.length > 0 ? theRequirements : null;
+	const noMoreRequirements = React.useMemo(() => requirementsArray.length === 0, [requirementsArray])
 
 	const handleSaveJob = async (data) => {
 		setJobDisableState(true);
+		setProgress(60)
 		const parsedCompanyName = data.company.toLowerCase().replace(' ', '-');
 		setResumeLocation(`${parsedCompanyName}`);
 		const postJob = await fetch('http://localhost:3000/api/job-post', {
@@ -108,9 +115,15 @@ const CreateJob = () => {
 			});
 		}
 	}, [isSubmitSuccessful, setRequirementsArray, setReqIds]);
+	React.useEffect(() => {
+		if(progress === 60 && noMoreRequirements) {
+			setProgress(100)
+		}
+	}, [setProgress, progress, noMoreRequirements])
 
 	const handleSaveRequirements = async (data) => {
 		setReqDisableState(true);
+		setProgress(30)
 		const newReqTitles = [];
 		const newDataToSave = data.requirements.filter((d) => !d._id);
 		data.requirements.forEach((d) => newReqTitles.push(d.req_title));
@@ -130,6 +143,7 @@ const CreateJob = () => {
 		}
 	};
 	const handleAddResponse = async (data, id) => {
+		setProgress(100)
 		const newRequirementsArr = requirementsArray.filter(
 			(d) => d._id !== id
 		);
@@ -158,6 +172,19 @@ const CreateJob = () => {
 
 	return (
 		<>
+		<Typography>
+			After following these 3 steps your resume will be ready at the bottom of the page.
+			If you need to make edits after you complete this page, head over to the{' '}
+			<Link href="/search-job">search job</Link> page and search by company name.<br />
+			<strong>How to add a job post:</strong><br />
+			1. Fill out all of the Job Requirements. <br />
+			2. Enter the Job Post Information <br />
+			3. Fill out your qualifications
+		</Typography>
+		<AppBar sx={{backgroundColor: '#fff', color: 'rgb(16 73 129)', boxShadow: 'none'}} position='sticky'>
+		<Typography><strong>Current Resume Status:</strong></Typography>
+		<LinearProgress variant="determinate" value={progress} />
+		</AppBar>
 			<form
 				key={1}
 				onSubmit={handleSubmitRequirements((data) =>
@@ -165,8 +192,7 @@ const CreateJob = () => {
 				)}
 			>
 				<Stack>
-					<FormControl>
-						<Typography
+				<Typography
 							variant='h2'
 							id='requirements'
 						>
@@ -182,9 +208,12 @@ const CreateJob = () => {
 							help your Job Match meter give you an accurate
 							reading.
 						</Typography>
+					<FormControl>
+						<InputLabel sx={{ marginTop: '50px'}} htmlFor="enter-requirements">Input Each Job Requirement & Nice to Have's</InputLabel>
 						<Controller
 							render={({ field: { onChange } }) => (
 								<Autocomplete
+									sx={{ marginTop: '100px'}}
 									multiple
 									disabled={reqDisableState}
 									id='enter-requirements'
@@ -223,8 +252,6 @@ const CreateJob = () => {
 										<TextField
 											{...params}
 											variant='outlined'
-											aria-labelledby='requirements'
-											aria-describedby='requirements-desc'
 										/>
 									)}
 									onChange={(e, data) => onChange(data)}
@@ -272,7 +299,7 @@ const CreateJob = () => {
 										value={value}
 										inputRef={ref}
 										type='text'
-										aria-labelledby='job-title'
+										id='job-title'
 										disabled={jobDisableState}
 									/>
 								)}
@@ -296,7 +323,7 @@ const CreateJob = () => {
 										value={value}
 										inputRef={ref}
 										type='text'
-										aria-labelledby='company'
+										id='company'
 										disabled={jobDisableState}
 									/>
 								)}
@@ -320,7 +347,7 @@ const CreateJob = () => {
 										value={value}
 										inputRef={ref}
 										type='text'
-										aria-labelledby='job-function'
+										id='job-function'
 										disabled={jobDisableState}
 									/>
 								)}
@@ -330,6 +357,7 @@ const CreateJob = () => {
 						<BasicInput
 							label='Date Applied'
 							id='date-applied'
+							labelSx={{ marginTop: '50px'}}
 						>
 							<Controller
 								control={control}
@@ -342,12 +370,13 @@ const CreateJob = () => {
 									field: { onChange, onBlur, ref, value },
 								}) => (
 									<Input
+										sx={{ marginTop: '100px !important', maxWidth: '200px'}}
 										type='date'
 										inputRef={ref}
 										onChange={onChange}
 										onBlur={onBlur}
 										value={value}
-										aria-labelledby='date-applied'
+										id='date-applied'
 										disabled={jobDisableState}
 									/>
 								)}
@@ -364,7 +393,7 @@ const CreateJob = () => {
 				</form>
 			)}
 			{requirementsArray &&
-				requirementsArray.length > 0 &&
+				!noMoreRequirements &&
 				responseState && (
 					<AddQualification
 						key={3}
@@ -395,8 +424,7 @@ const CreateJob = () => {
 									type='text'
 									multiline
 									rows={4}
-									aria-labelledby='add-response'
-									aria-describedby='qualifications-desc'
+									id='add-response'
 								/>
 							)}
 							defaultValue=''
@@ -404,12 +432,13 @@ const CreateJob = () => {
 					</AddQualification>
 				)}
 			{requirementsArray &&
-				requirementsArray.length === 0 &&
+				noMoreRequirements &&
 				responseState && (
 					<Resume
 						fetchUrl={`http://localhost:3000/api/job-post/${resumeLocation}`}
 					/>
 				)}
+				{progress > 60 && <ContainedButton onClick={() => window.location.reload()} type="button">Add a new job post</ContainedButton>}
 		</>
 	);
 };

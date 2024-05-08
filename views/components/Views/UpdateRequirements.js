@@ -5,7 +5,8 @@ import {
 	Grid,
 	Stack,
 	TextField,
-	Input
+	Input,
+	Typography
 } from '@mui/material';
 import MainBody from '../Layout/MainBody.js';
 import ContainedButton from '../Blocks/ContainedButton.js';
@@ -94,6 +95,7 @@ const UpdateRequirements = () => {
 		<>
 			<MainBody>
 				<Stack>
+				<Typography variant='h1'>Update Your Qualifications</Typography>
 					{allReqs &&
 					allReqs.length > 0 ? (
 						<form
@@ -191,8 +193,7 @@ const UpdateRequirements = () => {
 									type='text'
 									multiline
 									rows={4}
-									aria-labelledby='add-response'
-									aria-describedby='qualifications-desc'
+									id='add-response'
 								/>
 							)}
 							defaultValue={qualification[0].res_content}

@@ -6,6 +6,7 @@ import {
 	Stack,
 	Grid,
 	TextField,
+	Typography
 } from '@mui/material';
 import MainBody from '../Layout/MainBody.js';
 import ContainedButton from '../Blocks/ContainedButton.js';
@@ -26,6 +27,7 @@ const SearchJob = () => {
 		<>
 			<MainBody>
 				<Stack>
+				<Typography variant='h1'>Search Your Resume's by Company Name</Typography>
 					{allJobs &&
 					allJobs.jobPost &&
 					allJobs.jobPost.length > 0 ? (

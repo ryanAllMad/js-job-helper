@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { FormGroup, Input, Typography } from '@mui/material';
-import { Controller, Form, useForm } from 'react-hook-form';
+import { FormGroup, Input, InputLabel, Typography } from '@mui/material';
+import { Controller, useForm } from 'react-hook-form';
 import BasicInput from './BasicInput.js';
 import ContainedButton from './ContainedButton.js';
 import UserLinkInputs from './UserLinkInputs.js';
@@ -105,7 +105,7 @@ const CreateUserComponent = () => {
 			<form onSubmit={handleSubmit((data) => handleSave(data))}>
 				<FormGroup className='user-form-group'>
 					<BasicInput
-						id='fullName'
+						id='full-name'
 						label='Full Name'
 					>
 						<Controller
@@ -121,7 +121,7 @@ const CreateUserComponent = () => {
 									value={value}
 									inputRef={ref}
 									type='text'
-									aria-labelledby='email'
+									id='full-name'
 								/>
 							)}
 							defaultValue=''
@@ -144,7 +144,7 @@ const CreateUserComponent = () => {
 									value={value}
 									inputRef={ref}
 									type='text'
-									aria-labelledby='email'
+									id='email'
 								/>
 							)}
 							defaultValue=''
@@ -159,6 +159,8 @@ const CreateUserComponent = () => {
 									deleteNewLinks(newLinksArr.indexOf(link))
 								}
 								titleInput={
+									<>
+									<InputLabel htmlFor={`title-${newLinksArr.indexOf(link)}`}>Title</InputLabel>
 									<Controller
 										control={control}
 										name={`link_title_${newLinksArr.indexOf(
@@ -181,12 +183,16 @@ const CreateUserComponent = () => {
 												value={value}
 												inputRef={ref}
 												type='text'
+												id={`title-${newLinksArr.indexOf(link)}`}
 											/>
 										)}
 										defaultValue=''
 									/>
+									</>
 								}
 								hrefInput={
+									<>
+									<InputLabel htmlFor={`href-${newLinksArr.indexOf(link)}`}>Href</InputLabel>
 									<Controller
 										control={control}
 										name={`link_href_${newLinksArr.indexOf(
@@ -209,10 +215,12 @@ const CreateUserComponent = () => {
 												value={value}
 												inputRef={ref}
 												type='text'
+												id={`href-${newLinksArr.indexOf(link)}`}
 											/>
 										)}
 										defaultValue=''
 									/>
+									</>
 								}
 							/>
 						))}
@@ -229,6 +237,10 @@ const CreateUserComponent = () => {
 						newExpsArr.map((exp) => (
 							<ExperienceForm
 								key={newExpsArr.indexOf(exp)}
+								idComp={`company-name-${newExpsArr.indexOf(exp)}`}
+								idTitle={`job-title-${newExpsArr.indexOf(exp)}`}
+								idStart={`start-${newExpsArr.indexOf(exp)}`}
+								idEnd={`end-${newExpsArr.indexOf(exp)}`}
 								deleteOne={() =>
 									deleteNewExp(newExpsArr.indexOf(exp))
 								}
@@ -256,7 +268,7 @@ const CreateUserComponent = () => {
 												value={value}
 												inputRef={ref}
 												type='text'
-												aria-labelledby='companyName'
+												id={`company-name-${newExpsArr.indexOf(exp)}`}
 											/>
 										)}
 										defaultValue=''
@@ -286,7 +298,7 @@ const CreateUserComponent = () => {
 												value={value}
 												inputRef={ref}
 												type='text'
-												aria-labelledby='jobTitle'
+												id={`job-title-${newExpsArr.indexOf(exp)}`}
 											/>
 										)}
 										defaultValue=''
@@ -311,12 +323,13 @@ const CreateUserComponent = () => {
 											},
 										}) => (
 											<Input
+												sx={{ maxWidth: '200px'}}
 												type='date'
 												inputRef={ref}
 												onChange={onChange}
 												onBlur={onBlur}
 												value={value}
-												label='Start Date'
+												id={`start-${newExpsArr.indexOf(exp)}`}
 											/>
 										)}
 										defaultValue=''
@@ -342,11 +355,12 @@ const CreateUserComponent = () => {
 										}) => (
 											<Input
 												type='date'
+												sx={{ maxWidth: '200px'}}
 												onChange={onChange}
 												onBlur={onBlur}
 												inputRef={ref}
 												value={value}
-												label='End Date'
+												id={`end-${newExpsArr.indexOf(exp)}`}
 											/>
 										)}
 										defaultValue=''

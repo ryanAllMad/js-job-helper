@@ -16833,6 +16833,287 @@ const Input = /*#__PURE__*/react.forwardRef(function Input(inProps, ref) {
  false ? 0 : void 0;
 Input.muiName = 'Input';
 /* harmony default export */ const Input_Input = (Input);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/FormLabel/formLabelClasses.js
+
+
+function getFormLabelUtilityClasses(slot) {
+  return generateUtilityClass_generateUtilityClass('MuiFormLabel', slot);
+}
+const formLabelClasses = generateUtilityClasses('MuiFormLabel', ['root', 'colorSecondary', 'focused', 'disabled', 'error', 'filled', 'required', 'asterisk']);
+/* harmony default export */ const FormLabel_formLabelClasses = (formLabelClasses);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/FormLabel/FormLabel.js
+'use client';
+
+
+
+const FormLabel_excluded = ["children", "className", "color", "component", "disabled", "error", "filled", "focused", "required"];
+
+
+
+
+
+
+
+
+
+
+
+const FormLabel_useUtilityClasses = ownerState => {
+  const {
+    classes,
+    color,
+    focused,
+    disabled,
+    error,
+    filled,
+    required
+  } = ownerState;
+  const slots = {
+    root: ['root', `color${utils_capitalize(color)}`, disabled && 'disabled', error && 'error', filled && 'filled', focused && 'focused', required && 'required'],
+    asterisk: ['asterisk', error && 'error']
+  };
+  return composeClasses(slots, getFormLabelUtilityClasses, classes);
+};
+const FormLabelRoot = styles_styled('label', {
+  name: 'MuiFormLabel',
+  slot: 'Root',
+  overridesResolver: ({
+    ownerState
+  }, styles) => {
+    return (0,esm_extends/* default */.A)({}, styles.root, ownerState.color === 'secondary' && styles.colorSecondary, ownerState.filled && styles.filled);
+  }
+})(({
+  theme,
+  ownerState
+}) => (0,esm_extends/* default */.A)({
+  color: (theme.vars || theme).palette.text.secondary
+}, theme.typography.body1, {
+  lineHeight: '1.4375em',
+  padding: 0,
+  position: 'relative',
+  [`&.${FormLabel_formLabelClasses.focused}`]: {
+    color: (theme.vars || theme).palette[ownerState.color].main
+  },
+  [`&.${FormLabel_formLabelClasses.disabled}`]: {
+    color: (theme.vars || theme).palette.text.disabled
+  },
+  [`&.${FormLabel_formLabelClasses.error}`]: {
+    color: (theme.vars || theme).palette.error.main
+  }
+}));
+const AsteriskComponent = styles_styled('span', {
+  name: 'MuiFormLabel',
+  slot: 'Asterisk',
+  overridesResolver: (props, styles) => styles.asterisk
+})(({
+  theme
+}) => ({
+  [`&.${FormLabel_formLabelClasses.error}`]: {
+    color: (theme.vars || theme).palette.error.main
+  }
+}));
+const FormLabel = /*#__PURE__*/react.forwardRef(function FormLabel(inProps, ref) {
+  const props = useThemeProps_useThemeProps({
+    props: inProps,
+    name: 'MuiFormLabel'
+  });
+  const {
+      children,
+      className,
+      component = 'label'
+    } = props,
+    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, FormLabel_excluded);
+  const muiFormControl = useFormControl();
+  const fcs = formControlState({
+    props,
+    muiFormControl,
+    states: ['color', 'required', 'focused', 'disabled', 'error', 'filled']
+  });
+  const ownerState = (0,esm_extends/* default */.A)({}, props, {
+    color: fcs.color || 'primary',
+    component,
+    disabled: fcs.disabled,
+    error: fcs.error,
+    filled: fcs.filled,
+    focused: fcs.focused,
+    required: fcs.required
+  });
+  const classes = FormLabel_useUtilityClasses(ownerState);
+  return /*#__PURE__*/(0,jsx_runtime.jsxs)(FormLabelRoot, (0,esm_extends/* default */.A)({
+    as: component,
+    ownerState: ownerState,
+    className: dist_clsx(classes.root, className),
+    ref: ref
+  }, other, {
+    children: [children, fcs.required && /*#__PURE__*/(0,jsx_runtime.jsxs)(AsteriskComponent, {
+      ownerState: ownerState,
+      "aria-hidden": true,
+      className: classes.asterisk,
+      children: ["\u2009", '*']
+    })]
+  }));
+});
+ false ? 0 : void 0;
+/* harmony default export */ const FormLabel_FormLabel = (FormLabel);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/InputLabel/inputLabelClasses.js
+
+
+function getInputLabelUtilityClasses(slot) {
+  return generateUtilityClass_generateUtilityClass('MuiInputLabel', slot);
+}
+const inputLabelClasses = generateUtilityClasses('MuiInputLabel', ['root', 'focused', 'disabled', 'error', 'required', 'asterisk', 'formControl', 'sizeSmall', 'shrink', 'animated', 'standard', 'filled', 'outlined']);
+/* harmony default export */ const InputLabel_inputLabelClasses = ((/* unused pure expression or super */ null && (inputLabelClasses)));
+;// CONCATENATED MODULE: ./node_modules/@mui/material/InputLabel/InputLabel.js
+'use client';
+
+
+
+const InputLabel_excluded = ["disableAnimation", "margin", "shrink", "variant", "className"];
+
+
+
+
+
+
+
+
+
+
+
+
+const InputLabel_useUtilityClasses = ownerState => {
+  const {
+    classes,
+    formControl,
+    size,
+    shrink,
+    disableAnimation,
+    variant,
+    required
+  } = ownerState;
+  const slots = {
+    root: ['root', formControl && 'formControl', !disableAnimation && 'animated', shrink && 'shrink', size && size !== 'normal' && `size${utils_capitalize(size)}`, variant],
+    asterisk: [required && 'asterisk']
+  };
+  const composedClasses = composeClasses(slots, getInputLabelUtilityClasses, classes);
+  return (0,esm_extends/* default */.A)({}, classes, composedClasses);
+};
+const InputLabelRoot = styles_styled(FormLabel_FormLabel, {
+  shouldForwardProp: prop => styles_rootShouldForwardProp(prop) || prop === 'classes',
+  name: 'MuiInputLabel',
+  slot: 'Root',
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [{
+      [`& .${FormLabel_formLabelClasses.asterisk}`]: styles.asterisk
+    }, styles.root, ownerState.formControl && styles.formControl, ownerState.size === 'small' && styles.sizeSmall, ownerState.shrink && styles.shrink, !ownerState.disableAnimation && styles.animated, ownerState.focused && styles.focused, styles[ownerState.variant]];
+  }
+})(({
+  theme,
+  ownerState
+}) => (0,esm_extends/* default */.A)({
+  display: 'block',
+  transformOrigin: 'top left',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  maxWidth: '100%'
+}, ownerState.formControl && {
+  position: 'absolute',
+  left: 0,
+  top: 0,
+  // slight alteration to spec spacing to match visual spec result
+  transform: 'translate(0, 20px) scale(1)'
+}, ownerState.size === 'small' && {
+  // Compensation for the `Input.inputSizeSmall` style.
+  transform: 'translate(0, 17px) scale(1)'
+}, ownerState.shrink && {
+  transform: 'translate(0, -1.5px) scale(0.75)',
+  transformOrigin: 'top left',
+  maxWidth: '133%'
+}, !ownerState.disableAnimation && {
+  transition: theme.transitions.create(['color', 'transform', 'max-width'], {
+    duration: theme.transitions.duration.shorter,
+    easing: theme.transitions.easing.easeOut
+  })
+}, ownerState.variant === 'filled' && (0,esm_extends/* default */.A)({
+  // Chrome's autofill feature gives the input field a yellow background.
+  // Since the input field is behind the label in the HTML tree,
+  // the input field is drawn last and hides the label with an opaque background color.
+  // zIndex: 1 will raise the label above opaque background-colors of input.
+  zIndex: 1,
+  pointerEvents: 'none',
+  transform: 'translate(12px, 16px) scale(1)',
+  maxWidth: 'calc(100% - 24px)'
+}, ownerState.size === 'small' && {
+  transform: 'translate(12px, 13px) scale(1)'
+}, ownerState.shrink && (0,esm_extends/* default */.A)({
+  userSelect: 'none',
+  pointerEvents: 'auto',
+  transform: 'translate(12px, 7px) scale(0.75)',
+  maxWidth: 'calc(133% - 24px)'
+}, ownerState.size === 'small' && {
+  transform: 'translate(12px, 4px) scale(0.75)'
+})), ownerState.variant === 'outlined' && (0,esm_extends/* default */.A)({
+  // see comment above on filled.zIndex
+  zIndex: 1,
+  pointerEvents: 'none',
+  transform: 'translate(14px, 16px) scale(1)',
+  maxWidth: 'calc(100% - 24px)'
+}, ownerState.size === 'small' && {
+  transform: 'translate(14px, 9px) scale(1)'
+}, ownerState.shrink && {
+  userSelect: 'none',
+  pointerEvents: 'auto',
+  // Theoretically, we should have (8+5)*2/0.75 = 34px
+  // but it feels a better when it bleeds a bit on the left, so 32px.
+  maxWidth: 'calc(133% - 32px)',
+  transform: 'translate(14px, -9px) scale(0.75)'
+})));
+const InputLabel = /*#__PURE__*/react.forwardRef(function InputLabel(inProps, ref) {
+  const props = useThemeProps_useThemeProps({
+    name: 'MuiInputLabel',
+    props: inProps
+  });
+  const {
+      disableAnimation = false,
+      shrink: shrinkProp,
+      className
+    } = props,
+    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, InputLabel_excluded);
+  const muiFormControl = useFormControl();
+  let shrink = shrinkProp;
+  if (typeof shrink === 'undefined' && muiFormControl) {
+    shrink = muiFormControl.filled || muiFormControl.focused || muiFormControl.adornedStart;
+  }
+  const fcs = formControlState({
+    props,
+    muiFormControl,
+    states: ['size', 'variant', 'required', 'focused']
+  });
+  const ownerState = (0,esm_extends/* default */.A)({}, props, {
+    disableAnimation,
+    formControl: muiFormControl,
+    shrink,
+    size: fcs.size,
+    variant: fcs.variant,
+    required: fcs.required,
+    focused: fcs.focused
+  });
+  const classes = InputLabel_useUtilityClasses(ownerState);
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(InputLabelRoot, (0,esm_extends/* default */.A)({
+    "data-shrink": shrink,
+    ownerState: ownerState,
+    ref: ref,
+    className: dist_clsx(classes.root, className)
+  }, other, {
+    classes: classes
+  }));
+});
+ false ? 0 : void 0;
+/* harmony default export */ const InputLabel_InputLabel = (InputLabel);
 ;// CONCATENATED MODULE: ./node_modules/react-hook-form/dist/index.esm.mjs
 
 
@@ -19644,287 +19925,6 @@ const FormControl = /*#__PURE__*/react.forwardRef(function FormControl(inProps, 
 });
  false ? 0 : void 0;
 /* harmony default export */ const FormControl_FormControl = (FormControl);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/FormLabel/formLabelClasses.js
-
-
-function getFormLabelUtilityClasses(slot) {
-  return generateUtilityClass_generateUtilityClass('MuiFormLabel', slot);
-}
-const formLabelClasses = generateUtilityClasses('MuiFormLabel', ['root', 'colorSecondary', 'focused', 'disabled', 'error', 'filled', 'required', 'asterisk']);
-/* harmony default export */ const FormLabel_formLabelClasses = (formLabelClasses);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/FormLabel/FormLabel.js
-'use client';
-
-
-
-const FormLabel_excluded = ["children", "className", "color", "component", "disabled", "error", "filled", "focused", "required"];
-
-
-
-
-
-
-
-
-
-
-
-const FormLabel_useUtilityClasses = ownerState => {
-  const {
-    classes,
-    color,
-    focused,
-    disabled,
-    error,
-    filled,
-    required
-  } = ownerState;
-  const slots = {
-    root: ['root', `color${utils_capitalize(color)}`, disabled && 'disabled', error && 'error', filled && 'filled', focused && 'focused', required && 'required'],
-    asterisk: ['asterisk', error && 'error']
-  };
-  return composeClasses(slots, getFormLabelUtilityClasses, classes);
-};
-const FormLabelRoot = styles_styled('label', {
-  name: 'MuiFormLabel',
-  slot: 'Root',
-  overridesResolver: ({
-    ownerState
-  }, styles) => {
-    return (0,esm_extends/* default */.A)({}, styles.root, ownerState.color === 'secondary' && styles.colorSecondary, ownerState.filled && styles.filled);
-  }
-})(({
-  theme,
-  ownerState
-}) => (0,esm_extends/* default */.A)({
-  color: (theme.vars || theme).palette.text.secondary
-}, theme.typography.body1, {
-  lineHeight: '1.4375em',
-  padding: 0,
-  position: 'relative',
-  [`&.${FormLabel_formLabelClasses.focused}`]: {
-    color: (theme.vars || theme).palette[ownerState.color].main
-  },
-  [`&.${FormLabel_formLabelClasses.disabled}`]: {
-    color: (theme.vars || theme).palette.text.disabled
-  },
-  [`&.${FormLabel_formLabelClasses.error}`]: {
-    color: (theme.vars || theme).palette.error.main
-  }
-}));
-const AsteriskComponent = styles_styled('span', {
-  name: 'MuiFormLabel',
-  slot: 'Asterisk',
-  overridesResolver: (props, styles) => styles.asterisk
-})(({
-  theme
-}) => ({
-  [`&.${FormLabel_formLabelClasses.error}`]: {
-    color: (theme.vars || theme).palette.error.main
-  }
-}));
-const FormLabel = /*#__PURE__*/react.forwardRef(function FormLabel(inProps, ref) {
-  const props = useThemeProps_useThemeProps({
-    props: inProps,
-    name: 'MuiFormLabel'
-  });
-  const {
-      children,
-      className,
-      component = 'label'
-    } = props,
-    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, FormLabel_excluded);
-  const muiFormControl = useFormControl();
-  const fcs = formControlState({
-    props,
-    muiFormControl,
-    states: ['color', 'required', 'focused', 'disabled', 'error', 'filled']
-  });
-  const ownerState = (0,esm_extends/* default */.A)({}, props, {
-    color: fcs.color || 'primary',
-    component,
-    disabled: fcs.disabled,
-    error: fcs.error,
-    filled: fcs.filled,
-    focused: fcs.focused,
-    required: fcs.required
-  });
-  const classes = FormLabel_useUtilityClasses(ownerState);
-  return /*#__PURE__*/(0,jsx_runtime.jsxs)(FormLabelRoot, (0,esm_extends/* default */.A)({
-    as: component,
-    ownerState: ownerState,
-    className: dist_clsx(classes.root, className),
-    ref: ref
-  }, other, {
-    children: [children, fcs.required && /*#__PURE__*/(0,jsx_runtime.jsxs)(AsteriskComponent, {
-      ownerState: ownerState,
-      "aria-hidden": true,
-      className: classes.asterisk,
-      children: ["\u2009", '*']
-    })]
-  }));
-});
- false ? 0 : void 0;
-/* harmony default export */ const FormLabel_FormLabel = (FormLabel);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/InputLabel/inputLabelClasses.js
-
-
-function getInputLabelUtilityClasses(slot) {
-  return generateUtilityClass_generateUtilityClass('MuiInputLabel', slot);
-}
-const inputLabelClasses = generateUtilityClasses('MuiInputLabel', ['root', 'focused', 'disabled', 'error', 'required', 'asterisk', 'formControl', 'sizeSmall', 'shrink', 'animated', 'standard', 'filled', 'outlined']);
-/* harmony default export */ const InputLabel_inputLabelClasses = ((/* unused pure expression or super */ null && (inputLabelClasses)));
-;// CONCATENATED MODULE: ./node_modules/@mui/material/InputLabel/InputLabel.js
-'use client';
-
-
-
-const InputLabel_excluded = ["disableAnimation", "margin", "shrink", "variant", "className"];
-
-
-
-
-
-
-
-
-
-
-
-
-const InputLabel_useUtilityClasses = ownerState => {
-  const {
-    classes,
-    formControl,
-    size,
-    shrink,
-    disableAnimation,
-    variant,
-    required
-  } = ownerState;
-  const slots = {
-    root: ['root', formControl && 'formControl', !disableAnimation && 'animated', shrink && 'shrink', size && size !== 'normal' && `size${utils_capitalize(size)}`, variant],
-    asterisk: [required && 'asterisk']
-  };
-  const composedClasses = composeClasses(slots, getInputLabelUtilityClasses, classes);
-  return (0,esm_extends/* default */.A)({}, classes, composedClasses);
-};
-const InputLabelRoot = styles_styled(FormLabel_FormLabel, {
-  shouldForwardProp: prop => styles_rootShouldForwardProp(prop) || prop === 'classes',
-  name: 'MuiInputLabel',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const {
-      ownerState
-    } = props;
-    return [{
-      [`& .${FormLabel_formLabelClasses.asterisk}`]: styles.asterisk
-    }, styles.root, ownerState.formControl && styles.formControl, ownerState.size === 'small' && styles.sizeSmall, ownerState.shrink && styles.shrink, !ownerState.disableAnimation && styles.animated, ownerState.focused && styles.focused, styles[ownerState.variant]];
-  }
-})(({
-  theme,
-  ownerState
-}) => (0,esm_extends/* default */.A)({
-  display: 'block',
-  transformOrigin: 'top left',
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  maxWidth: '100%'
-}, ownerState.formControl && {
-  position: 'absolute',
-  left: 0,
-  top: 0,
-  // slight alteration to spec spacing to match visual spec result
-  transform: 'translate(0, 20px) scale(1)'
-}, ownerState.size === 'small' && {
-  // Compensation for the `Input.inputSizeSmall` style.
-  transform: 'translate(0, 17px) scale(1)'
-}, ownerState.shrink && {
-  transform: 'translate(0, -1.5px) scale(0.75)',
-  transformOrigin: 'top left',
-  maxWidth: '133%'
-}, !ownerState.disableAnimation && {
-  transition: theme.transitions.create(['color', 'transform', 'max-width'], {
-    duration: theme.transitions.duration.shorter,
-    easing: theme.transitions.easing.easeOut
-  })
-}, ownerState.variant === 'filled' && (0,esm_extends/* default */.A)({
-  // Chrome's autofill feature gives the input field a yellow background.
-  // Since the input field is behind the label in the HTML tree,
-  // the input field is drawn last and hides the label with an opaque background color.
-  // zIndex: 1 will raise the label above opaque background-colors of input.
-  zIndex: 1,
-  pointerEvents: 'none',
-  transform: 'translate(12px, 16px) scale(1)',
-  maxWidth: 'calc(100% - 24px)'
-}, ownerState.size === 'small' && {
-  transform: 'translate(12px, 13px) scale(1)'
-}, ownerState.shrink && (0,esm_extends/* default */.A)({
-  userSelect: 'none',
-  pointerEvents: 'auto',
-  transform: 'translate(12px, 7px) scale(0.75)',
-  maxWidth: 'calc(133% - 24px)'
-}, ownerState.size === 'small' && {
-  transform: 'translate(12px, 4px) scale(0.75)'
-})), ownerState.variant === 'outlined' && (0,esm_extends/* default */.A)({
-  // see comment above on filled.zIndex
-  zIndex: 1,
-  pointerEvents: 'none',
-  transform: 'translate(14px, 16px) scale(1)',
-  maxWidth: 'calc(100% - 24px)'
-}, ownerState.size === 'small' && {
-  transform: 'translate(14px, 9px) scale(1)'
-}, ownerState.shrink && {
-  userSelect: 'none',
-  pointerEvents: 'auto',
-  // Theoretically, we should have (8+5)*2/0.75 = 34px
-  // but it feels a better when it bleeds a bit on the left, so 32px.
-  maxWidth: 'calc(133% - 32px)',
-  transform: 'translate(14px, -9px) scale(0.75)'
-})));
-const InputLabel = /*#__PURE__*/react.forwardRef(function InputLabel(inProps, ref) {
-  const props = useThemeProps_useThemeProps({
-    name: 'MuiInputLabel',
-    props: inProps
-  });
-  const {
-      disableAnimation = false,
-      shrink: shrinkProp,
-      className
-    } = props,
-    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, InputLabel_excluded);
-  const muiFormControl = useFormControl();
-  let shrink = shrinkProp;
-  if (typeof shrink === 'undefined' && muiFormControl) {
-    shrink = muiFormControl.filled || muiFormControl.focused || muiFormControl.adornedStart;
-  }
-  const fcs = formControlState({
-    props,
-    muiFormControl,
-    states: ['size', 'variant', 'required', 'focused']
-  });
-  const ownerState = (0,esm_extends/* default */.A)({}, props, {
-    disableAnimation,
-    formControl: muiFormControl,
-    shrink,
-    size: fcs.size,
-    variant: fcs.variant,
-    required: fcs.required,
-    focused: fcs.focused
-  });
-  const classes = InputLabel_useUtilityClasses(ownerState);
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(InputLabelRoot, (0,esm_extends/* default */.A)({
-    "data-shrink": shrink,
-    ownerState: ownerState,
-    ref: ref,
-    className: dist_clsx(classes.root, className)
-  }, other, {
-    classes: classes
-  }));
-});
- false ? 0 : void 0;
-/* harmony default export */ const InputLabel_InputLabel = (InputLabel);
 ;// CONCATENATED MODULE: ./views/components/Blocks/BasicInput.js
 
 
@@ -19934,7 +19934,8 @@ const BasicInput = props => {
     children,
     label,
     id,
-    sx
+    sx,
+    labelSx
   } = props;
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
     children: /*#__PURE__*/(0,jsx_runtime.jsxs)(FormControl_FormControl, {
@@ -19943,7 +19944,10 @@ const BasicInput = props => {
         marginTop: '2em'
       },
       children: [/*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
-        id: id,
+        sx: {
+          ...labelSx
+        },
+        htmlFor: id,
         children: label
       }), children]
     })
@@ -21584,19 +21588,15 @@ const UserLinkInputs = props => {
         xs: 12,
         md: 4,
         item: true,
-        children: /*#__PURE__*/(0,jsx_runtime.jsxs)(FormControl_FormControl, {
-          children: [/*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
-            children: "Title"
-          }), titleInput]
+        children: /*#__PURE__*/(0,jsx_runtime.jsx)(FormControl_FormControl, {
+          children: titleInput
         })
       }), /*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
         xs: 12,
         md: 4,
         item: true,
-        children: /*#__PURE__*/(0,jsx_runtime.jsxs)(FormControl_FormControl, {
-          children: [/*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
-            children: "Href"
-          }), hrefInput]
+        children: /*#__PURE__*/(0,jsx_runtime.jsx)(FormControl_FormControl, {
+          children: hrefInput
         })
       }), /*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
         xs: 12,
@@ -21625,18 +21625,34 @@ const ExperienceForm = props => {
     startDateComp,
     endDateComp,
     deleteOne,
-    key
+    key,
+    idComp,
+    idTitle,
+    idStart,
+    idEnd
   } = props;
   return /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
     children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
-      id: "companyName",
+      id: idComp,
       label: "Company Name",
       children: companyNameComp
     }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
-      id: "jobTitle",
+      id: idTitle,
       label: "Job Title",
       children: jobTitleComp
-    }), startDateComp, endDateComp, /*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
+    }), /*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
+      sx: {
+        marginTop: '50px'
+      },
+      htmlFor: idStart,
+      children: "Start Date:"
+    }), startDateComp, /*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
+      sx: {
+        marginTop: '50px'
+      },
+      htmlFor: idEnd,
+      children: "End Date:"
+    }), endDateComp, /*#__PURE__*/(0,jsx_runtime.jsx)(Grid_Grid, {
       fullWidth: true,
       container: true,
       spacing: 2,
@@ -21916,7 +21932,7 @@ const EditUserComponent = () => {
       children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
         className: "user-form-group",
         children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
-          id: "fullName",
+          id: "full-name",
           label: "Full Name",
           children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
             control: control,
@@ -21939,7 +21955,7 @@ const EditUserComponent = () => {
                 value: value,
                 inputRef: ref,
                 type: "text",
-                "aria-labelledby": "email"
+                id: "full-name"
               });
             },
             defaultValue: userDetails[0].name
@@ -21968,7 +21984,7 @@ const EditUserComponent = () => {
                 value: value,
                 inputRef: ref,
                 type: "text",
-                "aria-labelledby": "email"
+                id: "email"
               });
             },
             defaultValue: userDetails[0].email
@@ -21979,107 +21995,131 @@ const EditUserComponent = () => {
         }), linksArr.length > 0 && linksArr.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_UserLinkInputs, {
           defaultHref: link.href,
           deleteOne: () => deleteThisLink(link._id),
-          titleInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-            control: control,
-            name: `link_title_${link._id}`,
-            rules: {
-              required: true
-            },
-            render: _ref3 => {
-              let {
-                field: {
-                  onChange,
-                  onBlur,
-                  value,
-                  ref
-                }
-              } = _ref3;
-              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-                onChange: onChange,
-                onBlur: onBlur,
-                value: value,
-                inputRef: ref,
-                type: "text"
-              });
-            },
-            defaultValue: link.title
+          titleInput: /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+            children: [/*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
+              htmlFor: `title-${link._id}`,
+              children: "Title"
+            }), /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+              control: control,
+              name: `link_title_${link._id}`,
+              rules: {
+                required: true
+              },
+              render: _ref3 => {
+                let {
+                  field: {
+                    onChange,
+                    onBlur,
+                    value,
+                    ref
+                  }
+                } = _ref3;
+                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                  onChange: onChange,
+                  onBlur: onBlur,
+                  value: value,
+                  inputRef: ref,
+                  type: "text",
+                  id: `title-${link._id}`
+                });
+              },
+              defaultValue: link.title
+            })]
           }),
-          hrefInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-            control: control,
-            name: `link_href_${link._id}`,
-            rules: {
-              required: true
-            },
-            render: _ref4 => {
-              let {
-                field: {
-                  onChange,
-                  onBlur,
-                  value,
-                  ref
-                }
-              } = _ref4;
-              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-                onChange: onChange,
-                onBlur: onBlur,
-                value: value,
-                inputRef: ref,
-                type: "text"
-              });
-            },
-            defaultValue: link.href
+          hrefInput: /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+            children: [/*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
+              htmlFor: `href-${link._id}`,
+              children: "Href"
+            }), /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+              control: control,
+              name: `link_href_${link._id}`,
+              rules: {
+                required: true
+              },
+              render: _ref4 => {
+                let {
+                  field: {
+                    onChange,
+                    onBlur,
+                    value,
+                    ref
+                  }
+                } = _ref4;
+                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                  onChange: onChange,
+                  onBlur: onBlur,
+                  value: value,
+                  inputRef: ref,
+                  type: "text",
+                  id: `href-${link._id}`
+                });
+              },
+              defaultValue: link.href
+            })]
           })
         }, link._id)), newLinksArr.length > 0 && newLinksArr.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_UserLinkInputs, {
           deleteOne: () => deleteNewLinks(newLinksArr.indexOf(link)),
-          titleInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-            control: control,
-            name: `link_title_${newLinksArr.indexOf(link)}`,
-            rules: {
-              required: true
-            },
-            render: _ref5 => {
-              let {
-                field: {
-                  onChange,
-                  onBlur,
-                  value,
-                  ref
-                }
-              } = _ref5;
-              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-                onChange: onChange,
-                onBlur: onBlur,
-                value: value,
-                inputRef: ref,
-                type: "text"
-              });
-            },
-            defaultValue: ""
+          titleInput: /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+            children: [/*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
+              htmlFor: `title-${newLinksArr.indexOf(link)}`,
+              children: "Title"
+            }), /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+              control: control,
+              name: `link_title_${newLinksArr.indexOf(link)}`,
+              rules: {
+                required: true
+              },
+              render: _ref5 => {
+                let {
+                  field: {
+                    onChange,
+                    onBlur,
+                    value,
+                    ref
+                  }
+                } = _ref5;
+                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                  onChange: onChange,
+                  onBlur: onBlur,
+                  value: value,
+                  inputRef: ref,
+                  type: "text",
+                  id: `title-${newLinksArr.indexOf(link)}`
+                });
+              },
+              defaultValue: ""
+            })]
           }),
-          hrefInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-            control: control,
-            name: `link_href_${newLinksArr.indexOf(link)}`,
-            rules: {
-              required: true
-            },
-            render: _ref6 => {
-              let {
-                field: {
-                  onChange,
-                  onBlur,
-                  value,
-                  ref
-                }
-              } = _ref6;
-              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-                onChange: onChange,
-                onBlur: onBlur,
-                value: value,
-                inputRef: ref,
-                type: "text"
-              });
-            },
-            defaultValue: ""
+          hrefInput: /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+            children: [/*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
+              htmlFor: `href-${newLinksArr.indexOf(link)}`,
+              children: "Href"
+            }), /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+              control: control,
+              name: `link_href_${newLinksArr.indexOf(link)}`,
+              rules: {
+                required: true
+              },
+              render: _ref6 => {
+                let {
+                  field: {
+                    onChange,
+                    onBlur,
+                    value,
+                    ref
+                  }
+                } = _ref6;
+                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                  onChange: onChange,
+                  onBlur: onBlur,
+                  value: value,
+                  inputRef: ref,
+                  type: "text",
+                  id: `href-${newLinksArr.indexOf(link)}`
+                });
+              },
+              defaultValue: ""
+            })]
           })
         }, newLinksArr.indexOf(link))), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
           type: "button",
@@ -22092,6 +22132,10 @@ const EditUserComponent = () => {
           variant: "h2",
           children: "Work Experience"
         }), expArr.length > 0 && expArr.map(exp => /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ExperienceForm, {
+          idComp: `company-name-${exp._id}`,
+          idTitle: `job-title-${exp._id}`,
+          idStart: `start-${exp._id}`,
+          idEnd: `end-${exp._id}`,
           deleteOne: () => deleteThisExp(exp._id),
           companyNameComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
             control: control,
@@ -22114,7 +22158,7 @@ const EditUserComponent = () => {
                 value: value,
                 inputRef: ref,
                 type: "text",
-                "aria-labelledby": "companyName"
+                id: `company-name-${exp._id}`
               });
             },
             defaultValue: exp.company
@@ -22140,7 +22184,7 @@ const EditUserComponent = () => {
                 value: value,
                 inputRef: ref,
                 type: "text",
-                "aria-labelledby": "jobTitle"
+                id: `job-title-${exp._id}`
               });
             },
             defaultValue: exp.title
@@ -22162,11 +22206,14 @@ const EditUserComponent = () => {
               } = _ref9;
               return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
                 type: "date",
+                sx: {
+                  maxWidth: '200px'
+                },
                 inputRef: ref,
                 onChange: onChange,
                 onBlur: onBlur,
                 value: value,
-                label: "Start Date"
+                id: `start-${exp._id}`
               });
             },
             defaultValue: parseDate(exp.year_started)
@@ -22188,16 +22235,23 @@ const EditUserComponent = () => {
               } = _ref10;
               return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
                 type: "date",
+                sx: {
+                  maxWidth: '200px'
+                },
                 onChange: onChange,
                 onBlur: onBlur,
                 inputRef: ref,
                 value: value,
-                label: "End Date"
+                id: `end-${exp._id}`
               });
             },
             defaultValue: parseDate(exp.year_ended)
           })
         }, exp._id)), newExpsArr.length > 0 && newExpsArr.map(exp => /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ExperienceForm, {
+          idComp: `company-name-${newExpsArr.indexOf(exp)}`,
+          idTitle: `job-title-${newExpsArr.indexOf(exp)}`,
+          idStart: `start-${newExpsArr.indexOf(exp)}`,
+          idEnd: `end-${newExpsArr.indexOf(exp)}`,
           deleteOne: () => deleteNewExp(newExpsArr.indexOf(exp)),
           companyNameComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
             control: control,
@@ -22220,7 +22274,7 @@ const EditUserComponent = () => {
                 value: value,
                 inputRef: ref,
                 type: "text",
-                "aria-labelledby": "companyName"
+                id: `company-name-${newExpsArr.indexOf(exp)}`
               });
             },
             defaultValue: ""
@@ -22246,7 +22300,7 @@ const EditUserComponent = () => {
                 value: value,
                 inputRef: ref,
                 type: "text",
-                "aria-labelledby": "jobTitle"
+                id: `job-title-${newExpsArr.indexOf(exp)}`
               });
             },
             defaultValue: ""
@@ -22268,11 +22322,14 @@ const EditUserComponent = () => {
               } = _ref13;
               return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
                 type: "date",
+                sx: {
+                  maxWidth: '200px'
+                },
                 inputRef: ref,
                 onChange: onChange,
                 onBlur: onBlur,
                 value: value,
-                label: "Start Date"
+                id: `start-${newExpsArr.indexOf(exp)}`
               });
             },
             defaultValue: ""
@@ -22294,11 +22351,14 @@ const EditUserComponent = () => {
               } = _ref14;
               return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
                 type: "date",
+                sx: {
+                  maxWidth: '200px'
+                },
                 onChange: onChange,
                 onBlur: onBlur,
                 inputRef: ref,
                 value: value,
-                label: "End Date"
+                id: `end-${newExpsArr.indexOf(exp)}`
               });
             },
             defaultValue: ""
@@ -22435,7 +22495,7 @@ const CreateUserComponent = () => {
       children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
         className: "user-form-group",
         children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
-          id: "fullName",
+          id: "full-name",
           label: "Full Name",
           children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
             control: control,
@@ -22458,7 +22518,7 @@ const CreateUserComponent = () => {
                 value: value,
                 inputRef: ref,
                 type: "text",
-                "aria-labelledby": "email"
+                id: "full-name"
               });
             },
             defaultValue: ""
@@ -22487,7 +22547,7 @@ const CreateUserComponent = () => {
                 value: value,
                 inputRef: ref,
                 type: "text",
-                "aria-labelledby": "email"
+                id: "email"
               });
             },
             defaultValue: ""
@@ -22497,55 +22557,67 @@ const CreateUserComponent = () => {
           children: "Add Links"
         }), newLinksArr.length > 0 && newLinksArr.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_UserLinkInputs, {
           deleteOne: () => deleteNewLinks(newLinksArr.indexOf(link)),
-          titleInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-            control: control,
-            name: `link_title_${newLinksArr.indexOf(link)}`,
-            rules: {
-              required: true
-            },
-            render: _ref3 => {
-              let {
-                field: {
-                  onChange,
-                  onBlur,
-                  value,
-                  ref
-                }
-              } = _ref3;
-              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-                onChange: onChange,
-                onBlur: onBlur,
-                value: value,
-                inputRef: ref,
-                type: "text"
-              });
-            },
-            defaultValue: ""
+          titleInput: /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+            children: [/*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
+              htmlFor: `title-${newLinksArr.indexOf(link)}`,
+              children: "Title"
+            }), /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+              control: control,
+              name: `link_title_${newLinksArr.indexOf(link)}`,
+              rules: {
+                required: true
+              },
+              render: _ref3 => {
+                let {
+                  field: {
+                    onChange,
+                    onBlur,
+                    value,
+                    ref
+                  }
+                } = _ref3;
+                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                  onChange: onChange,
+                  onBlur: onBlur,
+                  value: value,
+                  inputRef: ref,
+                  type: "text",
+                  id: `title-${newLinksArr.indexOf(link)}`
+                });
+              },
+              defaultValue: ""
+            })]
           }),
-          hrefInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-            control: control,
-            name: `link_href_${newLinksArr.indexOf(link)}`,
-            rules: {
-              required: true
-            },
-            render: _ref4 => {
-              let {
-                field: {
-                  onChange,
-                  onBlur,
-                  value,
-                  ref
-                }
-              } = _ref4;
-              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-                onChange: onChange,
-                onBlur: onBlur,
-                value: value,
-                inputRef: ref,
-                type: "text"
-              });
-            },
-            defaultValue: ""
+          hrefInput: /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+            children: [/*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
+              htmlFor: `href-${newLinksArr.indexOf(link)}`,
+              children: "Href"
+            }), /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+              control: control,
+              name: `link_href_${newLinksArr.indexOf(link)}`,
+              rules: {
+                required: true
+              },
+              render: _ref4 => {
+                let {
+                  field: {
+                    onChange,
+                    onBlur,
+                    value,
+                    ref
+                  }
+                } = _ref4;
+                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                  onChange: onChange,
+                  onBlur: onBlur,
+                  value: value,
+                  inputRef: ref,
+                  type: "text",
+                  id: `href-${newLinksArr.indexOf(link)}`
+                });
+              },
+              defaultValue: ""
+            })]
           })
         }, newLinksArr.indexOf(link))), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
           type: "button",
@@ -22558,6 +22630,10 @@ const CreateUserComponent = () => {
           variant: "h2",
           children: "Work Experience"
         }), newExpsArr.length > 0 && newExpsArr.map(exp => /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ExperienceForm, {
+          idComp: `company-name-${newExpsArr.indexOf(exp)}`,
+          idTitle: `job-title-${newExpsArr.indexOf(exp)}`,
+          idStart: `start-${newExpsArr.indexOf(exp)}`,
+          idEnd: `end-${newExpsArr.indexOf(exp)}`,
           deleteOne: () => deleteNewExp(newExpsArr.indexOf(exp)),
           companyNameComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
             control: control,
@@ -22580,7 +22656,7 @@ const CreateUserComponent = () => {
                 value: value,
                 inputRef: ref,
                 type: "text",
-                "aria-labelledby": "companyName"
+                id: `company-name-${newExpsArr.indexOf(exp)}`
               });
             },
             defaultValue: ""
@@ -22606,7 +22682,7 @@ const CreateUserComponent = () => {
                 value: value,
                 inputRef: ref,
                 type: "text",
-                "aria-labelledby": "jobTitle"
+                id: `job-title-${newExpsArr.indexOf(exp)}`
               });
             },
             defaultValue: ""
@@ -22627,12 +22703,15 @@ const CreateUserComponent = () => {
                 }
               } = _ref7;
               return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                sx: {
+                  maxWidth: '200px'
+                },
                 type: "date",
                 inputRef: ref,
                 onChange: onChange,
                 onBlur: onBlur,
                 value: value,
-                label: "Start Date"
+                id: `start-${newExpsArr.indexOf(exp)}`
               });
             },
             defaultValue: ""
@@ -22654,11 +22733,14 @@ const CreateUserComponent = () => {
               } = _ref8;
               return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
                 type: "date",
+                sx: {
+                  maxWidth: '200px'
+                },
                 onChange: onChange,
                 onBlur: onBlur,
                 inputRef: ref,
                 value: value,
-                label: "End Date"
+                id: `end-${newExpsArr.indexOf(exp)}`
               });
             },
             defaultValue: ""
@@ -22713,6 +22795,540 @@ const UserLanding = () => {
   });
 };
 /* harmony default export */ const Views_UserLanding = (UserLanding);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/Link/linkClasses.js
+
+
+function getLinkUtilityClass(slot) {
+  return generateUtilityClass_generateUtilityClass('MuiLink', slot);
+}
+const linkClasses = generateUtilityClasses('MuiLink', ['root', 'underlineNone', 'underlineHover', 'underlineAlways', 'button', 'focusVisible']);
+/* harmony default export */ const Link_linkClasses = (linkClasses);
+// EXTERNAL MODULE: ./node_modules/@mui/system/esm/style.js
+var esm_style = __webpack_require__(6481);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/Link/getTextDecoration.js
+
+
+const getTextDecoration_colorTransformations = {
+  primary: 'primary.main',
+  textPrimary: 'text.primary',
+  secondary: 'secondary.main',
+  textSecondary: 'text.secondary',
+  error: 'error.main'
+};
+const getTextDecoration_transformDeprecatedColors = color => {
+  return getTextDecoration_colorTransformations[color] || color;
+};
+const getTextDecoration = ({
+  theme,
+  ownerState
+}) => {
+  const transformedColor = getTextDecoration_transformDeprecatedColors(ownerState.color);
+  const color = (0,esm_style/* getPath */.Yn)(theme, `palette.${transformedColor}`, false) || ownerState.color;
+  const channelColor = (0,esm_style/* getPath */.Yn)(theme, `palette.${transformedColor}Channel`);
+  if ('vars' in theme && channelColor) {
+    return `rgba(${channelColor} / 0.4)`;
+  }
+  return (0,colorManipulator/* alpha */.X4)(color, 0.4);
+};
+/* harmony default export */ const Link_getTextDecoration = (getTextDecoration);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/Link/Link.js
+'use client';
+
+
+
+const Link_excluded = ["className", "color", "component", "onBlur", "onFocus", "TypographyClasses", "underline", "variant", "sx"];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const Link_useUtilityClasses = ownerState => {
+  const {
+    classes,
+    component,
+    focusVisible,
+    underline
+  } = ownerState;
+  const slots = {
+    root: ['root', `underline${utils_capitalize(underline)}`, component === 'button' && 'button', focusVisible && 'focusVisible']
+  };
+  return composeClasses(slots, getLinkUtilityClass, classes);
+};
+const LinkRoot = styles_styled(Typography_Typography, {
+  name: 'MuiLink',
+  slot: 'Root',
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [styles.root, styles[`underline${utils_capitalize(ownerState.underline)}`], ownerState.component === 'button' && styles.button];
+  }
+})(({
+  theme,
+  ownerState
+}) => {
+  return (0,esm_extends/* default */.A)({}, ownerState.underline === 'none' && {
+    textDecoration: 'none'
+  }, ownerState.underline === 'hover' && {
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline'
+    }
+  }, ownerState.underline === 'always' && (0,esm_extends/* default */.A)({
+    textDecoration: 'underline'
+  }, ownerState.color !== 'inherit' && {
+    textDecorationColor: Link_getTextDecoration({
+      theme,
+      ownerState
+    })
+  }, {
+    '&:hover': {
+      textDecorationColor: 'inherit'
+    }
+  }), ownerState.component === 'button' && {
+    position: 'relative',
+    WebkitTapHighlightColor: 'transparent',
+    backgroundColor: 'transparent',
+    // Reset default value
+    // We disable the focus ring for mouse, touch and keyboard users.
+    outline: 0,
+    border: 0,
+    margin: 0,
+    // Remove the margin in Safari
+    borderRadius: 0,
+    padding: 0,
+    // Remove the padding in Firefox
+    cursor: 'pointer',
+    userSelect: 'none',
+    verticalAlign: 'middle',
+    MozAppearance: 'none',
+    // Reset
+    WebkitAppearance: 'none',
+    // Reset
+    '&::-moz-focus-inner': {
+      borderStyle: 'none' // Remove Firefox dotted outline.
+    },
+    [`&.${Link_linkClasses.focusVisible}`]: {
+      outline: 'auto'
+    }
+  });
+});
+const Link_Link = /*#__PURE__*/react.forwardRef(function Link(inProps, ref) {
+  const props = useThemeProps_useThemeProps({
+    props: inProps,
+    name: 'MuiLink'
+  });
+  const {
+      className,
+      color = 'primary',
+      component = 'a',
+      onBlur,
+      onFocus,
+      TypographyClasses,
+      underline = 'always',
+      variant = 'inherit',
+      sx
+    } = props,
+    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, Link_excluded);
+  const {
+    isFocusVisibleRef,
+    onBlur: handleBlurVisible,
+    onFocus: handleFocusVisible,
+    ref: focusVisibleRef
+  } = utils_useIsFocusVisible();
+  const [focusVisible, setFocusVisible] = react.useState(false);
+  const handlerRef = utils_useForkRef(ref, focusVisibleRef);
+  const handleBlur = event => {
+    handleBlurVisible(event);
+    if (isFocusVisibleRef.current === false) {
+      setFocusVisible(false);
+    }
+    if (onBlur) {
+      onBlur(event);
+    }
+  };
+  const handleFocus = event => {
+    handleFocusVisible(event);
+    if (isFocusVisibleRef.current === true) {
+      setFocusVisible(true);
+    }
+    if (onFocus) {
+      onFocus(event);
+    }
+  };
+  const ownerState = (0,esm_extends/* default */.A)({}, props, {
+    color,
+    component,
+    focusVisible,
+    underline,
+    variant
+  });
+  const classes = Link_useUtilityClasses(ownerState);
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(LinkRoot, (0,esm_extends/* default */.A)({
+    color: color,
+    className: dist_clsx(classes.root, className),
+    classes: TypographyClasses,
+    component: component,
+    onBlur: handleBlur,
+    onFocus: handleFocus,
+    ref: handlerRef,
+    ownerState: ownerState,
+    variant: variant,
+    sx: [...(!Object.keys(getTextDecoration_colorTransformations).includes(color) ? [{
+      color
+    }] : []), ...(Array.isArray(sx) ? sx : [sx])]
+  }, other));
+});
+ false ? 0 : void 0;
+/* harmony default export */ const material_Link_Link = (Link_Link);
+;// CONCATENATED MODULE: ./node_modules/@mui/system/esm/RtlProvider/index.js
+
+
+const RtlProvider_excluded = (/* unused pure expression or super */ null && (["value"]));
+
+
+
+const RtlContext = /*#__PURE__*/react.createContext();
+function RtlProvider(_ref) {
+  let {
+      value
+    } = _ref,
+    props = _objectWithoutPropertiesLoose(_ref, RtlProvider_excluded);
+  return /*#__PURE__*/_jsx(RtlContext.Provider, _extends({
+    value: value != null ? value : true
+  }, props));
+}
+ false ? 0 : void 0;
+const useRtl = () => {
+  const value = react.useContext(RtlContext);
+  return value != null ? value : false;
+};
+/* harmony default export */ const esm_RtlProvider = ((/* unused pure expression or super */ null && (RtlProvider)));
+;// CONCATENATED MODULE: ./node_modules/@mui/material/LinearProgress/linearProgressClasses.js
+
+
+function getLinearProgressUtilityClass(slot) {
+  return generateUtilityClass_generateUtilityClass('MuiLinearProgress', slot);
+}
+const linearProgressClasses = generateUtilityClasses('MuiLinearProgress', ['root', 'colorPrimary', 'colorSecondary', 'determinate', 'indeterminate', 'buffer', 'query', 'dashed', 'dashedColorPrimary', 'dashedColorSecondary', 'bar', 'barColorPrimary', 'barColorSecondary', 'bar1Indeterminate', 'bar1Determinate', 'bar1Buffer', 'bar2Indeterminate', 'bar2Buffer']);
+/* harmony default export */ const LinearProgress_linearProgressClasses = ((/* unused pure expression or super */ null && (linearProgressClasses)));
+;// CONCATENATED MODULE: ./node_modules/@mui/material/LinearProgress/LinearProgress.js
+'use client';
+
+
+
+const LinearProgress_excluded = ["className", "color", "value", "valueBuffer", "variant"];
+let LinearProgress_ = t => t,
+  LinearProgress_t,
+  LinearProgress_t2,
+  LinearProgress_t3,
+  LinearProgress_t4,
+  _t5,
+  _t6;
+
+
+
+
+
+
+
+
+
+
+
+
+
+const TRANSITION_DURATION = 4; // seconds
+const indeterminate1Keyframe = (0,emotion_react_browser_esm/* keyframes */.i7)(LinearProgress_t || (LinearProgress_t = LinearProgress_`
+  0% {
+    left: -35%;
+    right: 100%;
+  }
+
+  60% {
+    left: 100%;
+    right: -90%;
+  }
+
+  100% {
+    left: 100%;
+    right: -90%;
+  }
+`));
+const indeterminate2Keyframe = (0,emotion_react_browser_esm/* keyframes */.i7)(LinearProgress_t2 || (LinearProgress_t2 = LinearProgress_`
+  0% {
+    left: -200%;
+    right: 100%;
+  }
+
+  60% {
+    left: 107%;
+    right: -8%;
+  }
+
+  100% {
+    left: 107%;
+    right: -8%;
+  }
+`));
+const bufferKeyframe = (0,emotion_react_browser_esm/* keyframes */.i7)(LinearProgress_t3 || (LinearProgress_t3 = LinearProgress_`
+  0% {
+    opacity: 1;
+    background-position: 0 -23px;
+  }
+
+  60% {
+    opacity: 0;
+    background-position: 0 -23px;
+  }
+
+  100% {
+    opacity: 1;
+    background-position: -200px -23px;
+  }
+`));
+const LinearProgress_useUtilityClasses = ownerState => {
+  const {
+    classes,
+    variant,
+    color
+  } = ownerState;
+  const slots = {
+    root: ['root', `color${utils_capitalize(color)}`, variant],
+    dashed: ['dashed', `dashedColor${utils_capitalize(color)}`],
+    bar1: ['bar', `barColor${utils_capitalize(color)}`, (variant === 'indeterminate' || variant === 'query') && 'bar1Indeterminate', variant === 'determinate' && 'bar1Determinate', variant === 'buffer' && 'bar1Buffer'],
+    bar2: ['bar', variant !== 'buffer' && `barColor${utils_capitalize(color)}`, variant === 'buffer' && `color${utils_capitalize(color)}`, (variant === 'indeterminate' || variant === 'query') && 'bar2Indeterminate', variant === 'buffer' && 'bar2Buffer']
+  };
+  return composeClasses(slots, getLinearProgressUtilityClass, classes);
+};
+const getColorShade = (theme, color) => {
+  if (color === 'inherit') {
+    return 'currentColor';
+  }
+  if (theme.vars) {
+    return theme.vars.palette.LinearProgress[`${color}Bg`];
+  }
+  return theme.palette.mode === 'light' ? (0,colorManipulator/* lighten */.a)(theme.palette[color].main, 0.62) : (0,colorManipulator/* darken */.e$)(theme.palette[color].main, 0.5);
+};
+const LinearProgressRoot = styles_styled('span', {
+  name: 'MuiLinearProgress',
+  slot: 'Root',
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [styles.root, styles[`color${utils_capitalize(ownerState.color)}`], styles[ownerState.variant]];
+  }
+})(({
+  ownerState,
+  theme
+}) => (0,esm_extends/* default */.A)({
+  position: 'relative',
+  overflow: 'hidden',
+  display: 'block',
+  height: 4,
+  zIndex: 0,
+  // Fix Safari's bug during composition of different paint.
+  '@media print': {
+    colorAdjust: 'exact'
+  },
+  backgroundColor: getColorShade(theme, ownerState.color)
+}, ownerState.color === 'inherit' && ownerState.variant !== 'buffer' && {
+  backgroundColor: 'none',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'currentColor',
+    opacity: 0.3
+  }
+}, ownerState.variant === 'buffer' && {
+  backgroundColor: 'transparent'
+}, ownerState.variant === 'query' && {
+  transform: 'rotate(180deg)'
+}));
+const LinearProgressDashed = styles_styled('span', {
+  name: 'MuiLinearProgress',
+  slot: 'Dashed',
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [styles.dashed, styles[`dashedColor${utils_capitalize(ownerState.color)}`]];
+  }
+})(({
+  ownerState,
+  theme
+}) => {
+  const backgroundColor = getColorShade(theme, ownerState.color);
+  return (0,esm_extends/* default */.A)({
+    position: 'absolute',
+    marginTop: 0,
+    height: '100%',
+    width: '100%'
+  }, ownerState.color === 'inherit' && {
+    opacity: 0.3
+  }, {
+    backgroundImage: `radial-gradient(${backgroundColor} 0%, ${backgroundColor} 16%, transparent 42%)`,
+    backgroundSize: '10px 10px',
+    backgroundPosition: '0 -23px'
+  });
+}, (0,emotion_react_browser_esm/* css */.AH)(LinearProgress_t4 || (LinearProgress_t4 = LinearProgress_`
+    animation: ${0} 3s infinite linear;
+  `), bufferKeyframe));
+const LinearProgressBar1 = styles_styled('span', {
+  name: 'MuiLinearProgress',
+  slot: 'Bar1',
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [styles.bar, styles[`barColor${utils_capitalize(ownerState.color)}`], (ownerState.variant === 'indeterminate' || ownerState.variant === 'query') && styles.bar1Indeterminate, ownerState.variant === 'determinate' && styles.bar1Determinate, ownerState.variant === 'buffer' && styles.bar1Buffer];
+  }
+})(({
+  ownerState,
+  theme
+}) => (0,esm_extends/* default */.A)({
+  width: '100%',
+  position: 'absolute',
+  left: 0,
+  bottom: 0,
+  top: 0,
+  transition: 'transform 0.2s linear',
+  transformOrigin: 'left',
+  backgroundColor: ownerState.color === 'inherit' ? 'currentColor' : (theme.vars || theme).palette[ownerState.color].main
+}, ownerState.variant === 'determinate' && {
+  transition: `transform .${TRANSITION_DURATION}s linear`
+}, ownerState.variant === 'buffer' && {
+  zIndex: 1,
+  transition: `transform .${TRANSITION_DURATION}s linear`
+}), ({
+  ownerState
+}) => (ownerState.variant === 'indeterminate' || ownerState.variant === 'query') && (0,emotion_react_browser_esm/* css */.AH)(_t5 || (_t5 = LinearProgress_`
+      width: auto;
+      animation: ${0} 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+    `), indeterminate1Keyframe));
+const LinearProgressBar2 = styles_styled('span', {
+  name: 'MuiLinearProgress',
+  slot: 'Bar2',
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [styles.bar, styles[`barColor${utils_capitalize(ownerState.color)}`], (ownerState.variant === 'indeterminate' || ownerState.variant === 'query') && styles.bar2Indeterminate, ownerState.variant === 'buffer' && styles.bar2Buffer];
+  }
+})(({
+  ownerState,
+  theme
+}) => (0,esm_extends/* default */.A)({
+  width: '100%',
+  position: 'absolute',
+  left: 0,
+  bottom: 0,
+  top: 0,
+  transition: 'transform 0.2s linear',
+  transformOrigin: 'left'
+}, ownerState.variant !== 'buffer' && {
+  backgroundColor: ownerState.color === 'inherit' ? 'currentColor' : (theme.vars || theme).palette[ownerState.color].main
+}, ownerState.color === 'inherit' && {
+  opacity: 0.3
+}, ownerState.variant === 'buffer' && {
+  backgroundColor: getColorShade(theme, ownerState.color),
+  transition: `transform .${TRANSITION_DURATION}s linear`
+}), ({
+  ownerState
+}) => (ownerState.variant === 'indeterminate' || ownerState.variant === 'query') && (0,emotion_react_browser_esm/* css */.AH)(_t6 || (_t6 = LinearProgress_`
+      width: auto;
+      animation: ${0} 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) 1.15s infinite;
+    `), indeterminate2Keyframe));
+
+/**
+ * ## ARIA
+ *
+ * If the progress bar is describing the loading progress of a particular region of a page,
+ * you should use `aria-describedby` to point to the progress bar, and set the `aria-busy`
+ * attribute to `true` on that region until it has finished loading.
+ */
+const LinearProgress = /*#__PURE__*/react.forwardRef(function LinearProgress(inProps, ref) {
+  const props = useThemeProps_useThemeProps({
+    props: inProps,
+    name: 'MuiLinearProgress'
+  });
+  const {
+      className,
+      color = 'primary',
+      value,
+      valueBuffer,
+      variant = 'indeterminate'
+    } = props,
+    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, LinearProgress_excluded);
+  const ownerState = (0,esm_extends/* default */.A)({}, props, {
+    color,
+    variant
+  });
+  const classes = LinearProgress_useUtilityClasses(ownerState);
+  const isRtl = useRtl();
+  const rootProps = {};
+  const inlineStyles = {
+    bar1: {},
+    bar2: {}
+  };
+  if (variant === 'determinate' || variant === 'buffer') {
+    if (value !== undefined) {
+      rootProps['aria-valuenow'] = Math.round(value);
+      rootProps['aria-valuemin'] = 0;
+      rootProps['aria-valuemax'] = 100;
+      let transform = value - 100;
+      if (isRtl) {
+        transform = -transform;
+      }
+      inlineStyles.bar1.transform = `translateX(${transform}%)`;
+    } else if (false) {}
+  }
+  if (variant === 'buffer') {
+    if (valueBuffer !== undefined) {
+      let transform = (valueBuffer || 0) - 100;
+      if (isRtl) {
+        transform = -transform;
+      }
+      inlineStyles.bar2.transform = `translateX(${transform}%)`;
+    } else if (false) {}
+  }
+  return /*#__PURE__*/(0,jsx_runtime.jsxs)(LinearProgressRoot, (0,esm_extends/* default */.A)({
+    className: dist_clsx(classes.root, className),
+    ownerState: ownerState,
+    role: "progressbar"
+  }, rootProps, {
+    ref: ref
+  }, other, {
+    children: [variant === 'buffer' ? /*#__PURE__*/(0,jsx_runtime.jsx)(LinearProgressDashed, {
+      className: classes.dashed,
+      ownerState: ownerState
+    }) : null, /*#__PURE__*/(0,jsx_runtime.jsx)(LinearProgressBar1, {
+      className: classes.bar1,
+      ownerState: ownerState,
+      style: inlineStyles.bar1
+    }), variant === 'determinate' ? null : /*#__PURE__*/(0,jsx_runtime.jsx)(LinearProgressBar2, {
+      className: classes.bar2,
+      ownerState: ownerState,
+      style: inlineStyles.bar2
+    })]
+  }));
+});
+ false ? 0 : void 0;
+/* harmony default export */ const LinearProgress_LinearProgress = (LinearProgress);
 ;// CONCATENATED MODULE: ./node_modules/@mui/utils/useId/useId.js
 'use client';
 
@@ -28623,29 +29239,6 @@ var react_is = __webpack_require__(4363);
 ;// CONCATENATED MODULE: ./node_modules/@mui/material/utils/ownerDocument.js
 
 /* harmony default export */ const utils_ownerDocument = (ownerDocument);
-;// CONCATENATED MODULE: ./node_modules/@mui/system/esm/RtlProvider/index.js
-
-
-const RtlProvider_excluded = (/* unused pure expression or super */ null && (["value"]));
-
-
-
-const RtlContext = /*#__PURE__*/react.createContext();
-function RtlProvider(_ref) {
-  let {
-      value
-    } = _ref,
-    props = _objectWithoutPropertiesLoose(_ref, RtlProvider_excluded);
-  return /*#__PURE__*/_jsx(RtlContext.Provider, _extends({
-    value: value != null ? value : true
-  }, props));
-}
- false ? 0 : void 0;
-const useRtl = () => {
-  const value = react.useContext(RtlContext);
-  return value != null ? value : false;
-};
-/* harmony default export */ const esm_RtlProvider = ((/* unused pure expression or super */ null && (RtlProvider)));
 ;// CONCATENATED MODULE: ./node_modules/@mui/material/List/ListContext.js
 'use client';
 
@@ -32408,201 +33001,6 @@ const TextField = /*#__PURE__*/react.forwardRef(function TextField(inProps, ref)
 });
  false ? 0 : void 0;
 /* harmony default export */ const TextField_TextField = (TextField);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/Link/linkClasses.js
-
-
-function getLinkUtilityClass(slot) {
-  return generateUtilityClass_generateUtilityClass('MuiLink', slot);
-}
-const linkClasses = generateUtilityClasses('MuiLink', ['root', 'underlineNone', 'underlineHover', 'underlineAlways', 'button', 'focusVisible']);
-/* harmony default export */ const Link_linkClasses = (linkClasses);
-// EXTERNAL MODULE: ./node_modules/@mui/system/esm/style.js
-var esm_style = __webpack_require__(6481);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/Link/getTextDecoration.js
-
-
-const getTextDecoration_colorTransformations = {
-  primary: 'primary.main',
-  textPrimary: 'text.primary',
-  secondary: 'secondary.main',
-  textSecondary: 'text.secondary',
-  error: 'error.main'
-};
-const getTextDecoration_transformDeprecatedColors = color => {
-  return getTextDecoration_colorTransformations[color] || color;
-};
-const getTextDecoration = ({
-  theme,
-  ownerState
-}) => {
-  const transformedColor = getTextDecoration_transformDeprecatedColors(ownerState.color);
-  const color = (0,esm_style/* getPath */.Yn)(theme, `palette.${transformedColor}`, false) || ownerState.color;
-  const channelColor = (0,esm_style/* getPath */.Yn)(theme, `palette.${transformedColor}Channel`);
-  if ('vars' in theme && channelColor) {
-    return `rgba(${channelColor} / 0.4)`;
-  }
-  return (0,colorManipulator/* alpha */.X4)(color, 0.4);
-};
-/* harmony default export */ const Link_getTextDecoration = (getTextDecoration);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/Link/Link.js
-'use client';
-
-
-
-const Link_excluded = ["className", "color", "component", "onBlur", "onFocus", "TypographyClasses", "underline", "variant", "sx"];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const Link_useUtilityClasses = ownerState => {
-  const {
-    classes,
-    component,
-    focusVisible,
-    underline
-  } = ownerState;
-  const slots = {
-    root: ['root', `underline${utils_capitalize(underline)}`, component === 'button' && 'button', focusVisible && 'focusVisible']
-  };
-  return composeClasses(slots, getLinkUtilityClass, classes);
-};
-const LinkRoot = styles_styled(Typography_Typography, {
-  name: 'MuiLink',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const {
-      ownerState
-    } = props;
-    return [styles.root, styles[`underline${utils_capitalize(ownerState.underline)}`], ownerState.component === 'button' && styles.button];
-  }
-})(({
-  theme,
-  ownerState
-}) => {
-  return (0,esm_extends/* default */.A)({}, ownerState.underline === 'none' && {
-    textDecoration: 'none'
-  }, ownerState.underline === 'hover' && {
-    textDecoration: 'none',
-    '&:hover': {
-      textDecoration: 'underline'
-    }
-  }, ownerState.underline === 'always' && (0,esm_extends/* default */.A)({
-    textDecoration: 'underline'
-  }, ownerState.color !== 'inherit' && {
-    textDecorationColor: Link_getTextDecoration({
-      theme,
-      ownerState
-    })
-  }, {
-    '&:hover': {
-      textDecorationColor: 'inherit'
-    }
-  }), ownerState.component === 'button' && {
-    position: 'relative',
-    WebkitTapHighlightColor: 'transparent',
-    backgroundColor: 'transparent',
-    // Reset default value
-    // We disable the focus ring for mouse, touch and keyboard users.
-    outline: 0,
-    border: 0,
-    margin: 0,
-    // Remove the margin in Safari
-    borderRadius: 0,
-    padding: 0,
-    // Remove the padding in Firefox
-    cursor: 'pointer',
-    userSelect: 'none',
-    verticalAlign: 'middle',
-    MozAppearance: 'none',
-    // Reset
-    WebkitAppearance: 'none',
-    // Reset
-    '&::-moz-focus-inner': {
-      borderStyle: 'none' // Remove Firefox dotted outline.
-    },
-    [`&.${Link_linkClasses.focusVisible}`]: {
-      outline: 'auto'
-    }
-  });
-});
-const Link_Link = /*#__PURE__*/react.forwardRef(function Link(inProps, ref) {
-  const props = useThemeProps_useThemeProps({
-    props: inProps,
-    name: 'MuiLink'
-  });
-  const {
-      className,
-      color = 'primary',
-      component = 'a',
-      onBlur,
-      onFocus,
-      TypographyClasses,
-      underline = 'always',
-      variant = 'inherit',
-      sx
-    } = props,
-    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, Link_excluded);
-  const {
-    isFocusVisibleRef,
-    onBlur: handleBlurVisible,
-    onFocus: handleFocusVisible,
-    ref: focusVisibleRef
-  } = utils_useIsFocusVisible();
-  const [focusVisible, setFocusVisible] = react.useState(false);
-  const handlerRef = utils_useForkRef(ref, focusVisibleRef);
-  const handleBlur = event => {
-    handleBlurVisible(event);
-    if (isFocusVisibleRef.current === false) {
-      setFocusVisible(false);
-    }
-    if (onBlur) {
-      onBlur(event);
-    }
-  };
-  const handleFocus = event => {
-    handleFocusVisible(event);
-    if (isFocusVisibleRef.current === true) {
-      setFocusVisible(true);
-    }
-    if (onFocus) {
-      onFocus(event);
-    }
-  };
-  const ownerState = (0,esm_extends/* default */.A)({}, props, {
-    color,
-    component,
-    focusVisible,
-    underline,
-    variant
-  });
-  const classes = Link_useUtilityClasses(ownerState);
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(LinkRoot, (0,esm_extends/* default */.A)({
-    color: color,
-    className: dist_clsx(classes.root, className),
-    classes: TypographyClasses,
-    component: component,
-    onBlur: handleBlur,
-    onFocus: handleFocus,
-    ref: handlerRef,
-    ownerState: ownerState,
-    variant: variant,
-    sx: [...(!Object.keys(getTextDecoration_colorTransformations).includes(color) ? [{
-      color
-    }] : []), ...(Array.isArray(sx) ? sx : [sx])]
-  }, other));
-});
- false ? 0 : void 0;
-/* harmony default export */ const material_Link_Link = (Link_Link);
 ;// CONCATENATED MODULE: ./node_modules/@mui/material/ListItem/listItemClasses.js
 
 
@@ -34831,13 +35229,15 @@ const AddQualification = props => {
         flexFlow: 'row wrap'
       },
       onSubmit: onSubmit,
-      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-        variant: "h2",
-        id: "qualifications",
-        children: "Qualifications"
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-        id: "qualifications-desc",
-        children: qualificationDesc
+      children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
+        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          variant: "h2",
+          id: "qualifications",
+          children: "Qualifications"
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(FormHelperText_FormHelperText, {
+          id: "add-response",
+          children: qualificationDesc
+        })]
       }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
         sx: {
           width: '-webkit-fill-available',
@@ -34908,10 +35308,13 @@ const CreateJob = () => {
   const [resumeLocation, setResumeLocation] = react.useState('');
   const [reqDisableState, setReqDisableState] = react.useState(false);
   const [jobDisableState, setJobDisableState] = react.useState(false);
+  const [progress, setProgress] = react.useState(0);
   const theRequirements = getRequirements.read();
   const hasRequirements = theRequirements.length > 0 ? theRequirements : null;
+  const noMoreRequirements = react.useMemo(() => requirementsArray.length === 0, [requirementsArray]);
   const handleSaveJob = async data => {
     setJobDisableState(true);
+    setProgress(60);
     const parsedCompanyName = data.company.toLowerCase().replace(' ', '-');
     setResumeLocation(`${parsedCompanyName}`);
     const postJob = await fetch('http://localhost:3000/api/job-post', {
@@ -34967,8 +35370,14 @@ const CreateJob = () => {
       });
     }
   }, [isSubmitSuccessful, setRequirementsArray, setReqIds]);
+  react.useEffect(() => {
+    if (progress === 60 && noMoreRequirements) {
+      setProgress(100);
+    }
+  }, [setProgress, progress, noMoreRequirements]);
   const handleSaveRequirements = async data => {
     setReqDisableState(true);
+    setProgress(30);
     const newReqTitles = [];
     const newDataToSave = data.requirements.filter(d => !d._id);
     data.requirements.forEach(d => newReqTitles.push(d.req_title));
@@ -34985,6 +35394,7 @@ const CreateJob = () => {
     }
   };
   const handleAddResponse = async (data, id) => {
+    setProgress(100);
     const newRequirementsArr = requirementsArray.filter(d => d._id !== id);
     const updateRequirement = await fetch(`http://localhost:3000/api/requirements/${id}`, {
       method: 'POST',
@@ -35004,17 +35414,45 @@ const CreateJob = () => {
     setRequirementsArray(newRequirementsArr);
   };
   return /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
-    children: [/*#__PURE__*/(0,jsx_runtime.jsx)("form", {
+    children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
+      children: ["After following these 3 steps your resume will be ready at the bottom of the page. If you need to make edits after you complete this page, head over to the", ' ', /*#__PURE__*/(0,jsx_runtime.jsx)(material_Link_Link, {
+        href: "/search-job",
+        children: "search job"
+      }), " page and search by company name.", /*#__PURE__*/(0,jsx_runtime.jsx)("br", {}), /*#__PURE__*/(0,jsx_runtime.jsx)("strong", {
+        children: "How to add a job post:"
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)("br", {}), "1. Fill out all of the Job Requirements. ", /*#__PURE__*/(0,jsx_runtime.jsx)("br", {}), "2. Enter the Job Post Information ", /*#__PURE__*/(0,jsx_runtime.jsx)("br", {}), "3. Fill out your qualifications"]
+    }), /*#__PURE__*/(0,jsx_runtime.jsxs)(AppBar_AppBar, {
+      sx: {
+        backgroundColor: '#fff',
+        color: 'rgb(16 73 129)',
+        boxShadow: 'none'
+      },
+      position: "sticky",
+      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+        children: /*#__PURE__*/(0,jsx_runtime.jsx)("strong", {
+          children: "Current Resume Status:"
+        })
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(LinearProgress_LinearProgress, {
+        variant: "determinate",
+        value: progress
+      })]
+    }), /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
       onSubmit: handleSubmitRequirements(data => handleSaveRequirements(data)),
       children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
-        children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(FormControl_FormControl, {
-          children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-            variant: "h2",
-            id: "requirements",
-            children: "Requirements"
-          }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-            id: "requirements-desc",
-            children: "Enter the keywords for each job requirement. (Example: 'Documenting codebase'...) If a requirement exists in the dropdown that is similar to one in the job post, select the one that already exists. It's important to input ALL requirements even if you don't have those requirements. This will help your Job Match meter give you an accurate reading."
+        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          variant: "h2",
+          id: "requirements",
+          children: "Requirements"
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          id: "requirements-desc",
+          children: "Enter the keywords for each job requirement. (Example: 'Documenting codebase'...) If a requirement exists in the dropdown that is similar to one in the job post, select the one that already exists. It's important to input ALL requirements even if you don't have those requirements. This will help your Job Match meter give you an accurate reading."
+        }), /*#__PURE__*/(0,jsx_runtime.jsxs)(FormControl_FormControl, {
+          children: [/*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
+            sx: {
+              marginTop: '50px'
+            },
+            htmlFor: "enter-requirements",
+            children: "Input Each Job Requirement & Nice to Have's"
           }), /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
             render: _ref => {
               let {
@@ -35023,6 +35461,9 @@ const CreateJob = () => {
                 }
               } = _ref;
               return /*#__PURE__*/(0,jsx_runtime.jsx)(Autocomplete_Autocomplete, {
+                sx: {
+                  marginTop: '100px'
+                },
                 multiple: true,
                 disabled: reqDisableState,
                 id: "enter-requirements",
@@ -35046,9 +35487,7 @@ const CreateJob = () => {
                 getOptionLabel: option => option.req_title,
                 renderInput: params => /*#__PURE__*/(0,jsx_runtime.jsx)(TextField_TextField, {
                   ...params,
-                  variant: "outlined",
-                  "aria-labelledby": "requirements",
-                  "aria-describedby": "requirements-desc"
+                  variant: "outlined"
                 }),
                 onChange: (e, data) => onChange(data)
               });
@@ -35097,7 +35536,7 @@ const CreateJob = () => {
                 value: value,
                 inputRef: ref,
                 type: "text",
-                "aria-labelledby": "job-title",
+                id: "job-title",
                 disabled: jobDisableState
               });
             },
@@ -35127,7 +35566,7 @@ const CreateJob = () => {
                 value: value,
                 inputRef: ref,
                 type: "text",
-                "aria-labelledby": "company",
+                id: "company",
                 disabled: jobDisableState
               });
             },
@@ -35157,7 +35596,7 @@ const CreateJob = () => {
                 value: value,
                 inputRef: ref,
                 type: "text",
-                "aria-labelledby": "job-function",
+                id: "job-function",
                 disabled: jobDisableState
               });
             },
@@ -35166,6 +35605,9 @@ const CreateJob = () => {
         }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
           label: "Date Applied",
           id: "date-applied",
+          labelSx: {
+            marginTop: '50px'
+          },
           children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
             control: control,
             name: "dateApplied",
@@ -35182,12 +35624,16 @@ const CreateJob = () => {
                 }
               } = _ref6;
               return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                sx: {
+                  marginTop: '100px !important',
+                  maxWidth: '200px'
+                },
                 type: "date",
                 inputRef: ref,
                 onChange: onChange,
                 onBlur: onBlur,
                 value: value,
-                "aria-labelledby": "date-applied",
+                id: "date-applied",
                 disabled: jobDisableState
               });
             },
@@ -35199,7 +35645,7 @@ const CreateJob = () => {
           children: "Save"
         })]
       })
-    }, 2), requirementsArray && requirementsArray.length > 0 && responseState && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_AddQualification, {
+    }, 2), requirementsArray && !noMoreRequirements && responseState && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_AddQualification, {
       onSubmit: handleSubmitResponses(data => handleAddResponse(data, requirementsArray[0]._id)),
       onMissing: () => handleNoResponse(requirementsArray[0]._id),
       thisReq: requirementsArray[0].req_title,
@@ -35232,14 +35678,17 @@ const CreateJob = () => {
             type: "text",
             multiline: true,
             rows: 4,
-            "aria-labelledby": "add-response",
-            "aria-describedby": "qualifications-desc"
+            id: "add-response"
           });
         },
         defaultValue: ""
       })
-    }, 3), requirementsArray && requirementsArray.length === 0 && responseState && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Resume, {
+    }, 3), requirementsArray && noMoreRequirements && responseState && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Resume, {
       fetchUrl: `http://localhost:3000/api/job-post/${resumeLocation}`
+    }), progress > 60 && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+      onClick: () => window.location.reload(),
+      type: "button",
+      children: "Add a new job post"
     })]
   });
 };
@@ -35292,8 +35741,11 @@ const SearchJob = () => {
   };
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
     children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Layout_MainBody, {
-      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Stack_Stack, {
-        children: allJobs && allJobs.jobPost && allJobs.jobPost.length > 0 ? /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
+      children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
+        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          variant: "h1",
+          children: "Search Your Resume's by Company Name"
+        }), allJobs && allJobs.jobPost && allJobs.jobPost.length > 0 ? /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
           onSubmit: handleSubmit(data => handleSetCompanyName(data)),
           children: /*#__PURE__*/(0,jsx_runtime.jsx)(FormControl_FormControl, {
             sx: {
@@ -35352,7 +35804,7 @@ const SearchJob = () => {
               })]
             })
           })
-        }) : 'No jobs, go to job post to input new jobs'
+        }) : 'No jobs, go to job post to input new jobs']
       }), /*#__PURE__*/(0,jsx_runtime.jsx)(Paper_Paper, {
         children: resumeLocation && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Resume, {
           fetchUrl: `http://localhost:3000/api/job-post/${resumeLocation}`
@@ -35442,8 +35894,11 @@ const UpdateRequirements = () => {
   }, [isSubmitSuccessful]);
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
     children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Layout_MainBody, {
-      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Stack_Stack, {
-        children: allReqs && allReqs.length > 0 ? /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
+      children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
+        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          variant: "h1",
+          children: "Update Your Qualifications"
+        }), allReqs && allReqs.length > 0 ? /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
           onSubmit: handleSubmit(data => handleSetReqLocation(data)),
           children: /*#__PURE__*/(0,jsx_runtime.jsx)(FormControl_FormControl, {
             sx: {
@@ -35502,7 +35957,7 @@ const UpdateRequirements = () => {
               })]
             })
           })
-        }, 1) : 'No job requirements have been input. Go to "add a job" to add requirements.'
+        }, 1) : 'No job requirements have been input. Go to "add a job" to add requirements.']
       }), reqTitleLocation && qualification && qualification.length > 0 && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_AddQualification, {
         onSubmit: handleSubmitResponses(data => handleAddResponse(data, qualification[0]._id)),
         qualificationDesc: `Update this qualification`,
@@ -35534,8 +35989,7 @@ const UpdateRequirements = () => {
               type: "text",
               multiline: true,
               rows: 4,
-              "aria-labelledby": "add-response",
-              "aria-describedby": "qualifications-desc"
+              id: "add-response"
             });
           },
           defaultValue: qualification[0].res_content
