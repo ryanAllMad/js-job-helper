@@ -1,22 +1,22 @@
 import * as React from 'react';
-import { Button, Stack, Typography, Input } from '@mui/material';
+import {
+	Chip,
+	Button,
+	Paper,
+	Stack,
+	Typography,
+} from '@mui/material';
 import MainBody from '../Layout/MainBody.js';
 import Guage from '../Blocks/Guage.js';
-import AddJobPost from '../Blocks/AddJobPost.js';
+import JobForm from '../Blocks/JobForm.js';
 import { useLocation } from 'react-router-dom';
-import { Controller, useForm } from 'react-hook-form';
 
 const EditResume = () => {
 	const location = useLocation();
-	const {
-		control,
-		handleSubmit,
-		formState: { isValid },
-	} = useForm();
 	const [path, setPath] = React.useState(null);
-	const [job, setJob] = React.useState({});
 	const [value, setValue] = React.useState(0);
-	const [jobDisableState, setJobDisableState] = React.useState(false);
+	const [job, setJob] = React.useState({});
+
 	React.useEffect(() => {
 		if (location) {
 			setPath(location.pathname);
@@ -68,154 +68,38 @@ const EditResume = () => {
 		}
 	};
 
-	const handleSaveJob = async (data) => {
-		setJobDisableState(true);
-		const parsedCompanyName = data.company.toLowerCase().replace(' ', '-');
-		setResumeLocation(`${parsedCompanyName}`);
-		const postJob = await fetch(`http://localhost:3000/api${path}`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				job_title: data.jobTitle,
-				company_name: parsedCompanyName,
-				job_function: data.jobFunction,
-				date_applied: data.dateApplied,
-				requirements: reqIds,
-			}),
-		});
-		return postJob.json();
-	};
 	return (
 		<>
 			<MainBody sx={{ paddingTop: '200px' }}>
 				<Stack spacing={2}>
 					<Typography variant='h1'>Update Resume</Typography>
-					{path && job && job.company_name && (
-						<>
+					{path && job && job.company_name && job.requirements && (
+						<Paper>
 							<Guage value={value} />
-							<AddJobPost
-								key={2}
-								onSubmit={handleSubmit((data) =>
-									handleSaveJob(data)
-								)}
-								jobTitleInput={
-									<Controller
-										control={control}
-										name='jobTitle'
-										rules={{ required: true }}
-										render={({
-											field: {
-												onChange,
-												onBlur,
-												value,
-												ref,
-											},
-										}) => (
-											<Input
-												onChange={onChange}
-												onBlur={onBlur}
-												value={value}
-												inputRef={ref}
-												type='text'
-												id='job-title'
-												disabled={jobDisableState}
-											/>
-										)}
-										defaultValue={job.job_title}
+						<JobForm
+							createJob={false}
+							saveJobUrl={`http://localhost:3000/api${path}`}
+							renderTags={(v, getTagProps) =>
+								v.map((option, index) => (
+									<Chip
+										{...getTagProps({
+											index,
+										})}
+										label={option.req_title}
 									/>
-								}
-								companyNameInput={
-									<Controller
-										control={control}
-										name='company'
-										rules={{ required: true }}
-										render={({
-											field: {
-												onChange,
-												onBlur,
-												value,
-												ref,
-											},
-										}) => (
-											<Input
-												onChange={onChange}
-												onBlur={onBlur}
-												value={value}
-												inputRef={ref}
-												type='text'
-												id='company'
-												disabled={jobDisableState}
-											/>
-										)}
-										defaultValue={job.company_name}
-									/>
-								}
-								jobFunctionInput={
-									<Controller
-										control={control}
-										name='jobFunction'
-										rules={{ required: true }}
-										render={({
-											field: {
-												onChange,
-												onBlur,
-												value,
-												ref,
-											},
-										}) => (
-											<Input
-												onChange={onChange}
-												onBlur={onBlur}
-												value={value}
-												inputRef={ref}
-												type='text'
-												id='job-function'
-												disabled={jobDisableState}
-											/>
-										)}
-										defaultValue={job.job_function}
-									/>
-								}
-								dateAppliedInput={
-									<Controller
-										control={control}
-										name='dateApplied'
-										rules={{
-											required:
-												'Please enter the first date you started in this position',
-										}}
-										render={({
-											field: {
-												onChange,
-												onBlur,
-												ref,
-												value,
-											},
-										}) => (
-											<Input
-												sx={{
-													marginTop:
-														'100px !important',
-													maxWidth: '200px',
-												}}
-												type='date'
-												inputRef={ref}
-												onChange={onChange}
-												onBlur={onBlur}
-												value={value}
-												id='date-applied'
-												disabled={jobDisableState}
-											/>
-										)}
-										defaultValue={job.date_applied}
-									/>
-								}
-								submitButtonState={!isValid || jobDisableState}
-								submitButtonText='Update'
-							/>
-						</>
+								))
+							}
+							defaultValueReqs={job.requirements.map(
+								(req) => req
+							)}
+							defaultValueJobTitle={job.job_title}
+							defaultValueCompName={job.company_name}
+							defaultValueJobFunc={job.job_function}
+							defaultValueDateApplied={job.date_applied}
+							submitButtonText='Update'
+							defaultValueQualification='fill this in later'
+						/>
+						</Paper>
 					)}
 					{path && (!job || !job.company_name) && (
 						<Typography>

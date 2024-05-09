@@ -22795,345 +22795,6 @@ const UserLanding = () => {
   });
 };
 /* harmony default export */ const Views_UserLanding = (UserLanding);
-;// CONCATENATED MODULE: ./node_modules/@mui/system/esm/RtlProvider/index.js
-
-
-const RtlProvider_excluded = (/* unused pure expression or super */ null && (["value"]));
-
-
-
-const RtlContext = /*#__PURE__*/react.createContext();
-function RtlProvider(_ref) {
-  let {
-      value
-    } = _ref,
-    props = _objectWithoutPropertiesLoose(_ref, RtlProvider_excluded);
-  return /*#__PURE__*/_jsx(RtlContext.Provider, _extends({
-    value: value != null ? value : true
-  }, props));
-}
- false ? 0 : void 0;
-const useRtl = () => {
-  const value = react.useContext(RtlContext);
-  return value != null ? value : false;
-};
-/* harmony default export */ const esm_RtlProvider = ((/* unused pure expression or super */ null && (RtlProvider)));
-;// CONCATENATED MODULE: ./node_modules/@mui/material/LinearProgress/linearProgressClasses.js
-
-
-function getLinearProgressUtilityClass(slot) {
-  return generateUtilityClass_generateUtilityClass('MuiLinearProgress', slot);
-}
-const linearProgressClasses = generateUtilityClasses('MuiLinearProgress', ['root', 'colorPrimary', 'colorSecondary', 'determinate', 'indeterminate', 'buffer', 'query', 'dashed', 'dashedColorPrimary', 'dashedColorSecondary', 'bar', 'barColorPrimary', 'barColorSecondary', 'bar1Indeterminate', 'bar1Determinate', 'bar1Buffer', 'bar2Indeterminate', 'bar2Buffer']);
-/* harmony default export */ const LinearProgress_linearProgressClasses = ((/* unused pure expression or super */ null && (linearProgressClasses)));
-;// CONCATENATED MODULE: ./node_modules/@mui/material/LinearProgress/LinearProgress.js
-'use client';
-
-
-
-const LinearProgress_excluded = ["className", "color", "value", "valueBuffer", "variant"];
-let LinearProgress_ = t => t,
-  LinearProgress_t,
-  LinearProgress_t2,
-  LinearProgress_t3,
-  LinearProgress_t4,
-  _t5,
-  _t6;
-
-
-
-
-
-
-
-
-
-
-
-
-
-const TRANSITION_DURATION = 4; // seconds
-const indeterminate1Keyframe = (0,emotion_react_browser_esm/* keyframes */.i7)(LinearProgress_t || (LinearProgress_t = LinearProgress_`
-  0% {
-    left: -35%;
-    right: 100%;
-  }
-
-  60% {
-    left: 100%;
-    right: -90%;
-  }
-
-  100% {
-    left: 100%;
-    right: -90%;
-  }
-`));
-const indeterminate2Keyframe = (0,emotion_react_browser_esm/* keyframes */.i7)(LinearProgress_t2 || (LinearProgress_t2 = LinearProgress_`
-  0% {
-    left: -200%;
-    right: 100%;
-  }
-
-  60% {
-    left: 107%;
-    right: -8%;
-  }
-
-  100% {
-    left: 107%;
-    right: -8%;
-  }
-`));
-const bufferKeyframe = (0,emotion_react_browser_esm/* keyframes */.i7)(LinearProgress_t3 || (LinearProgress_t3 = LinearProgress_`
-  0% {
-    opacity: 1;
-    background-position: 0 -23px;
-  }
-
-  60% {
-    opacity: 0;
-    background-position: 0 -23px;
-  }
-
-  100% {
-    opacity: 1;
-    background-position: -200px -23px;
-  }
-`));
-const LinearProgress_useUtilityClasses = ownerState => {
-  const {
-    classes,
-    variant,
-    color
-  } = ownerState;
-  const slots = {
-    root: ['root', `color${utils_capitalize(color)}`, variant],
-    dashed: ['dashed', `dashedColor${utils_capitalize(color)}`],
-    bar1: ['bar', `barColor${utils_capitalize(color)}`, (variant === 'indeterminate' || variant === 'query') && 'bar1Indeterminate', variant === 'determinate' && 'bar1Determinate', variant === 'buffer' && 'bar1Buffer'],
-    bar2: ['bar', variant !== 'buffer' && `barColor${utils_capitalize(color)}`, variant === 'buffer' && `color${utils_capitalize(color)}`, (variant === 'indeterminate' || variant === 'query') && 'bar2Indeterminate', variant === 'buffer' && 'bar2Buffer']
-  };
-  return composeClasses(slots, getLinearProgressUtilityClass, classes);
-};
-const getColorShade = (theme, color) => {
-  if (color === 'inherit') {
-    return 'currentColor';
-  }
-  if (theme.vars) {
-    return theme.vars.palette.LinearProgress[`${color}Bg`];
-  }
-  return theme.palette.mode === 'light' ? (0,colorManipulator/* lighten */.a)(theme.palette[color].main, 0.62) : (0,colorManipulator/* darken */.e$)(theme.palette[color].main, 0.5);
-};
-const LinearProgressRoot = styles_styled('span', {
-  name: 'MuiLinearProgress',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const {
-      ownerState
-    } = props;
-    return [styles.root, styles[`color${utils_capitalize(ownerState.color)}`], styles[ownerState.variant]];
-  }
-})(({
-  ownerState,
-  theme
-}) => (0,esm_extends/* default */.A)({
-  position: 'relative',
-  overflow: 'hidden',
-  display: 'block',
-  height: 4,
-  zIndex: 0,
-  // Fix Safari's bug during composition of different paint.
-  '@media print': {
-    colorAdjust: 'exact'
-  },
-  backgroundColor: getColorShade(theme, ownerState.color)
-}, ownerState.color === 'inherit' && ownerState.variant !== 'buffer' && {
-  backgroundColor: 'none',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'currentColor',
-    opacity: 0.3
-  }
-}, ownerState.variant === 'buffer' && {
-  backgroundColor: 'transparent'
-}, ownerState.variant === 'query' && {
-  transform: 'rotate(180deg)'
-}));
-const LinearProgressDashed = styles_styled('span', {
-  name: 'MuiLinearProgress',
-  slot: 'Dashed',
-  overridesResolver: (props, styles) => {
-    const {
-      ownerState
-    } = props;
-    return [styles.dashed, styles[`dashedColor${utils_capitalize(ownerState.color)}`]];
-  }
-})(({
-  ownerState,
-  theme
-}) => {
-  const backgroundColor = getColorShade(theme, ownerState.color);
-  return (0,esm_extends/* default */.A)({
-    position: 'absolute',
-    marginTop: 0,
-    height: '100%',
-    width: '100%'
-  }, ownerState.color === 'inherit' && {
-    opacity: 0.3
-  }, {
-    backgroundImage: `radial-gradient(${backgroundColor} 0%, ${backgroundColor} 16%, transparent 42%)`,
-    backgroundSize: '10px 10px',
-    backgroundPosition: '0 -23px'
-  });
-}, (0,emotion_react_browser_esm/* css */.AH)(LinearProgress_t4 || (LinearProgress_t4 = LinearProgress_`
-    animation: ${0} 3s infinite linear;
-  `), bufferKeyframe));
-const LinearProgressBar1 = styles_styled('span', {
-  name: 'MuiLinearProgress',
-  slot: 'Bar1',
-  overridesResolver: (props, styles) => {
-    const {
-      ownerState
-    } = props;
-    return [styles.bar, styles[`barColor${utils_capitalize(ownerState.color)}`], (ownerState.variant === 'indeterminate' || ownerState.variant === 'query') && styles.bar1Indeterminate, ownerState.variant === 'determinate' && styles.bar1Determinate, ownerState.variant === 'buffer' && styles.bar1Buffer];
-  }
-})(({
-  ownerState,
-  theme
-}) => (0,esm_extends/* default */.A)({
-  width: '100%',
-  position: 'absolute',
-  left: 0,
-  bottom: 0,
-  top: 0,
-  transition: 'transform 0.2s linear',
-  transformOrigin: 'left',
-  backgroundColor: ownerState.color === 'inherit' ? 'currentColor' : (theme.vars || theme).palette[ownerState.color].main
-}, ownerState.variant === 'determinate' && {
-  transition: `transform .${TRANSITION_DURATION}s linear`
-}, ownerState.variant === 'buffer' && {
-  zIndex: 1,
-  transition: `transform .${TRANSITION_DURATION}s linear`
-}), ({
-  ownerState
-}) => (ownerState.variant === 'indeterminate' || ownerState.variant === 'query') && (0,emotion_react_browser_esm/* css */.AH)(_t5 || (_t5 = LinearProgress_`
-      width: auto;
-      animation: ${0} 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
-    `), indeterminate1Keyframe));
-const LinearProgressBar2 = styles_styled('span', {
-  name: 'MuiLinearProgress',
-  slot: 'Bar2',
-  overridesResolver: (props, styles) => {
-    const {
-      ownerState
-    } = props;
-    return [styles.bar, styles[`barColor${utils_capitalize(ownerState.color)}`], (ownerState.variant === 'indeterminate' || ownerState.variant === 'query') && styles.bar2Indeterminate, ownerState.variant === 'buffer' && styles.bar2Buffer];
-  }
-})(({
-  ownerState,
-  theme
-}) => (0,esm_extends/* default */.A)({
-  width: '100%',
-  position: 'absolute',
-  left: 0,
-  bottom: 0,
-  top: 0,
-  transition: 'transform 0.2s linear',
-  transformOrigin: 'left'
-}, ownerState.variant !== 'buffer' && {
-  backgroundColor: ownerState.color === 'inherit' ? 'currentColor' : (theme.vars || theme).palette[ownerState.color].main
-}, ownerState.color === 'inherit' && {
-  opacity: 0.3
-}, ownerState.variant === 'buffer' && {
-  backgroundColor: getColorShade(theme, ownerState.color),
-  transition: `transform .${TRANSITION_DURATION}s linear`
-}), ({
-  ownerState
-}) => (ownerState.variant === 'indeterminate' || ownerState.variant === 'query') && (0,emotion_react_browser_esm/* css */.AH)(_t6 || (_t6 = LinearProgress_`
-      width: auto;
-      animation: ${0} 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) 1.15s infinite;
-    `), indeterminate2Keyframe));
-
-/**
- * ## ARIA
- *
- * If the progress bar is describing the loading progress of a particular region of a page,
- * you should use `aria-describedby` to point to the progress bar, and set the `aria-busy`
- * attribute to `true` on that region until it has finished loading.
- */
-const LinearProgress = /*#__PURE__*/react.forwardRef(function LinearProgress(inProps, ref) {
-  const props = useThemeProps_useThemeProps({
-    props: inProps,
-    name: 'MuiLinearProgress'
-  });
-  const {
-      className,
-      color = 'primary',
-      value,
-      valueBuffer,
-      variant = 'indeterminate'
-    } = props,
-    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, LinearProgress_excluded);
-  const ownerState = (0,esm_extends/* default */.A)({}, props, {
-    color,
-    variant
-  });
-  const classes = LinearProgress_useUtilityClasses(ownerState);
-  const isRtl = useRtl();
-  const rootProps = {};
-  const inlineStyles = {
-    bar1: {},
-    bar2: {}
-  };
-  if (variant === 'determinate' || variant === 'buffer') {
-    if (value !== undefined) {
-      rootProps['aria-valuenow'] = Math.round(value);
-      rootProps['aria-valuemin'] = 0;
-      rootProps['aria-valuemax'] = 100;
-      let transform = value - 100;
-      if (isRtl) {
-        transform = -transform;
-      }
-      inlineStyles.bar1.transform = `translateX(${transform}%)`;
-    } else if (false) {}
-  }
-  if (variant === 'buffer') {
-    if (valueBuffer !== undefined) {
-      let transform = (valueBuffer || 0) - 100;
-      if (isRtl) {
-        transform = -transform;
-      }
-      inlineStyles.bar2.transform = `translateX(${transform}%)`;
-    } else if (false) {}
-  }
-  return /*#__PURE__*/(0,jsx_runtime.jsxs)(LinearProgressRoot, (0,esm_extends/* default */.A)({
-    className: dist_clsx(classes.root, className),
-    ownerState: ownerState,
-    role: "progressbar"
-  }, rootProps, {
-    ref: ref
-  }, other, {
-    children: [variant === 'buffer' ? /*#__PURE__*/(0,jsx_runtime.jsx)(LinearProgressDashed, {
-      className: classes.dashed,
-      ownerState: ownerState
-    }) : null, /*#__PURE__*/(0,jsx_runtime.jsx)(LinearProgressBar1, {
-      className: classes.bar1,
-      ownerState: ownerState,
-      style: inlineStyles.bar1
-    }), variant === 'determinate' ? null : /*#__PURE__*/(0,jsx_runtime.jsx)(LinearProgressBar2, {
-      className: classes.bar2,
-      ownerState: ownerState,
-      style: inlineStyles.bar2
-    })]
-  }));
-});
- false ? 0 : void 0;
-/* harmony default export */ const LinearProgress_LinearProgress = (LinearProgress);
 ;// CONCATENATED MODULE: ./node_modules/@mui/utils/useId/useId.js
 'use client';
 
@@ -29044,6 +28705,29 @@ var react_is = __webpack_require__(4363);
 ;// CONCATENATED MODULE: ./node_modules/@mui/material/utils/ownerDocument.js
 
 /* harmony default export */ const utils_ownerDocument = (ownerDocument);
+;// CONCATENATED MODULE: ./node_modules/@mui/system/esm/RtlProvider/index.js
+
+
+const RtlProvider_excluded = (/* unused pure expression or super */ null && (["value"]));
+
+
+
+const RtlContext = /*#__PURE__*/react.createContext();
+function RtlProvider(_ref) {
+  let {
+      value
+    } = _ref,
+    props = _objectWithoutPropertiesLoose(_ref, RtlProvider_excluded);
+  return /*#__PURE__*/_jsx(RtlContext.Provider, _extends({
+    value: value != null ? value : true
+  }, props));
+}
+ false ? 0 : void 0;
+const useRtl = () => {
+  const value = react.useContext(RtlContext);
+  return value != null ? value : false;
+};
+/* harmony default export */ const esm_RtlProvider = ((/* unused pure expression or super */ null && (RtlProvider)));
 ;// CONCATENATED MODULE: ./node_modules/@mui/material/List/ListContext.js
 'use client';
 
@@ -32806,6 +32490,60 @@ const TextField = /*#__PURE__*/react.forwardRef(function TextField(inProps, ref)
 });
  false ? 0 : void 0;
 /* harmony default export */ const TextField_TextField = (TextField);
+;// CONCATENATED MODULE: ./views/components/Blocks/AddJobPost.js
+
+
+
+
+
+const AddJobPost = props => {
+  const {
+    key,
+    onSubmit,
+    jobTitleInput,
+    companyNameInput,
+    jobFunctionInput,
+    dateAppliedInput,
+    submitButtonState,
+    submitButtonText
+  } = props;
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
+    children: /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
+      onSubmit: onSubmit,
+      children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
+        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          variant: "h2",
+          id: "job-post-form-heading",
+          children: "Job You're Applying to"
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
+          label: "Job Title",
+          id: "job-title",
+          children: jobTitleInput
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
+          label: "Company name",
+          id: "company",
+          children: companyNameInput
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
+          label: "Job Function",
+          id: "job-function",
+          children: jobFunctionInput
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
+          label: "Date Applied",
+          id: "date-applied",
+          labelSx: {
+            marginTop: '50px'
+          },
+          children: dateAppliedInput
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+          disabled: submitButtonState,
+          type: "submit",
+          children: submitButtonText
+        })]
+      })
+    }, key)
+  });
+};
+/* harmony default export */ const Blocks_AddJobPost = (AddJobPost);
 ;// CONCATENATED MODULE: ./node_modules/@mui/material/Link/linkClasses.js
 
 
@@ -35205,6 +34943,722 @@ const Resume = props => {
   });
 };
 /* harmony default export */ const Blocks_Resume = (Resume);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/LinearProgress/linearProgressClasses.js
+
+
+function getLinearProgressUtilityClass(slot) {
+  return generateUtilityClass_generateUtilityClass('MuiLinearProgress', slot);
+}
+const linearProgressClasses = generateUtilityClasses('MuiLinearProgress', ['root', 'colorPrimary', 'colorSecondary', 'determinate', 'indeterminate', 'buffer', 'query', 'dashed', 'dashedColorPrimary', 'dashedColorSecondary', 'bar', 'barColorPrimary', 'barColorSecondary', 'bar1Indeterminate', 'bar1Determinate', 'bar1Buffer', 'bar2Indeterminate', 'bar2Buffer']);
+/* harmony default export */ const LinearProgress_linearProgressClasses = ((/* unused pure expression or super */ null && (linearProgressClasses)));
+;// CONCATENATED MODULE: ./node_modules/@mui/material/LinearProgress/LinearProgress.js
+'use client';
+
+
+
+const LinearProgress_excluded = ["className", "color", "value", "valueBuffer", "variant"];
+let LinearProgress_ = t => t,
+  LinearProgress_t,
+  LinearProgress_t2,
+  LinearProgress_t3,
+  LinearProgress_t4,
+  _t5,
+  _t6;
+
+
+
+
+
+
+
+
+
+
+
+
+
+const TRANSITION_DURATION = 4; // seconds
+const indeterminate1Keyframe = (0,emotion_react_browser_esm/* keyframes */.i7)(LinearProgress_t || (LinearProgress_t = LinearProgress_`
+  0% {
+    left: -35%;
+    right: 100%;
+  }
+
+  60% {
+    left: 100%;
+    right: -90%;
+  }
+
+  100% {
+    left: 100%;
+    right: -90%;
+  }
+`));
+const indeterminate2Keyframe = (0,emotion_react_browser_esm/* keyframes */.i7)(LinearProgress_t2 || (LinearProgress_t2 = LinearProgress_`
+  0% {
+    left: -200%;
+    right: 100%;
+  }
+
+  60% {
+    left: 107%;
+    right: -8%;
+  }
+
+  100% {
+    left: 107%;
+    right: -8%;
+  }
+`));
+const bufferKeyframe = (0,emotion_react_browser_esm/* keyframes */.i7)(LinearProgress_t3 || (LinearProgress_t3 = LinearProgress_`
+  0% {
+    opacity: 1;
+    background-position: 0 -23px;
+  }
+
+  60% {
+    opacity: 0;
+    background-position: 0 -23px;
+  }
+
+  100% {
+    opacity: 1;
+    background-position: -200px -23px;
+  }
+`));
+const LinearProgress_useUtilityClasses = ownerState => {
+  const {
+    classes,
+    variant,
+    color
+  } = ownerState;
+  const slots = {
+    root: ['root', `color${utils_capitalize(color)}`, variant],
+    dashed: ['dashed', `dashedColor${utils_capitalize(color)}`],
+    bar1: ['bar', `barColor${utils_capitalize(color)}`, (variant === 'indeterminate' || variant === 'query') && 'bar1Indeterminate', variant === 'determinate' && 'bar1Determinate', variant === 'buffer' && 'bar1Buffer'],
+    bar2: ['bar', variant !== 'buffer' && `barColor${utils_capitalize(color)}`, variant === 'buffer' && `color${utils_capitalize(color)}`, (variant === 'indeterminate' || variant === 'query') && 'bar2Indeterminate', variant === 'buffer' && 'bar2Buffer']
+  };
+  return composeClasses(slots, getLinearProgressUtilityClass, classes);
+};
+const getColorShade = (theme, color) => {
+  if (color === 'inherit') {
+    return 'currentColor';
+  }
+  if (theme.vars) {
+    return theme.vars.palette.LinearProgress[`${color}Bg`];
+  }
+  return theme.palette.mode === 'light' ? (0,colorManipulator/* lighten */.a)(theme.palette[color].main, 0.62) : (0,colorManipulator/* darken */.e$)(theme.palette[color].main, 0.5);
+};
+const LinearProgressRoot = styles_styled('span', {
+  name: 'MuiLinearProgress',
+  slot: 'Root',
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [styles.root, styles[`color${utils_capitalize(ownerState.color)}`], styles[ownerState.variant]];
+  }
+})(({
+  ownerState,
+  theme
+}) => (0,esm_extends/* default */.A)({
+  position: 'relative',
+  overflow: 'hidden',
+  display: 'block',
+  height: 4,
+  zIndex: 0,
+  // Fix Safari's bug during composition of different paint.
+  '@media print': {
+    colorAdjust: 'exact'
+  },
+  backgroundColor: getColorShade(theme, ownerState.color)
+}, ownerState.color === 'inherit' && ownerState.variant !== 'buffer' && {
+  backgroundColor: 'none',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'currentColor',
+    opacity: 0.3
+  }
+}, ownerState.variant === 'buffer' && {
+  backgroundColor: 'transparent'
+}, ownerState.variant === 'query' && {
+  transform: 'rotate(180deg)'
+}));
+const LinearProgressDashed = styles_styled('span', {
+  name: 'MuiLinearProgress',
+  slot: 'Dashed',
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [styles.dashed, styles[`dashedColor${utils_capitalize(ownerState.color)}`]];
+  }
+})(({
+  ownerState,
+  theme
+}) => {
+  const backgroundColor = getColorShade(theme, ownerState.color);
+  return (0,esm_extends/* default */.A)({
+    position: 'absolute',
+    marginTop: 0,
+    height: '100%',
+    width: '100%'
+  }, ownerState.color === 'inherit' && {
+    opacity: 0.3
+  }, {
+    backgroundImage: `radial-gradient(${backgroundColor} 0%, ${backgroundColor} 16%, transparent 42%)`,
+    backgroundSize: '10px 10px',
+    backgroundPosition: '0 -23px'
+  });
+}, (0,emotion_react_browser_esm/* css */.AH)(LinearProgress_t4 || (LinearProgress_t4 = LinearProgress_`
+    animation: ${0} 3s infinite linear;
+  `), bufferKeyframe));
+const LinearProgressBar1 = styles_styled('span', {
+  name: 'MuiLinearProgress',
+  slot: 'Bar1',
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [styles.bar, styles[`barColor${utils_capitalize(ownerState.color)}`], (ownerState.variant === 'indeterminate' || ownerState.variant === 'query') && styles.bar1Indeterminate, ownerState.variant === 'determinate' && styles.bar1Determinate, ownerState.variant === 'buffer' && styles.bar1Buffer];
+  }
+})(({
+  ownerState,
+  theme
+}) => (0,esm_extends/* default */.A)({
+  width: '100%',
+  position: 'absolute',
+  left: 0,
+  bottom: 0,
+  top: 0,
+  transition: 'transform 0.2s linear',
+  transformOrigin: 'left',
+  backgroundColor: ownerState.color === 'inherit' ? 'currentColor' : (theme.vars || theme).palette[ownerState.color].main
+}, ownerState.variant === 'determinate' && {
+  transition: `transform .${TRANSITION_DURATION}s linear`
+}, ownerState.variant === 'buffer' && {
+  zIndex: 1,
+  transition: `transform .${TRANSITION_DURATION}s linear`
+}), ({
+  ownerState
+}) => (ownerState.variant === 'indeterminate' || ownerState.variant === 'query') && (0,emotion_react_browser_esm/* css */.AH)(_t5 || (_t5 = LinearProgress_`
+      width: auto;
+      animation: ${0} 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+    `), indeterminate1Keyframe));
+const LinearProgressBar2 = styles_styled('span', {
+  name: 'MuiLinearProgress',
+  slot: 'Bar2',
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [styles.bar, styles[`barColor${utils_capitalize(ownerState.color)}`], (ownerState.variant === 'indeterminate' || ownerState.variant === 'query') && styles.bar2Indeterminate, ownerState.variant === 'buffer' && styles.bar2Buffer];
+  }
+})(({
+  ownerState,
+  theme
+}) => (0,esm_extends/* default */.A)({
+  width: '100%',
+  position: 'absolute',
+  left: 0,
+  bottom: 0,
+  top: 0,
+  transition: 'transform 0.2s linear',
+  transformOrigin: 'left'
+}, ownerState.variant !== 'buffer' && {
+  backgroundColor: ownerState.color === 'inherit' ? 'currentColor' : (theme.vars || theme).palette[ownerState.color].main
+}, ownerState.color === 'inherit' && {
+  opacity: 0.3
+}, ownerState.variant === 'buffer' && {
+  backgroundColor: getColorShade(theme, ownerState.color),
+  transition: `transform .${TRANSITION_DURATION}s linear`
+}), ({
+  ownerState
+}) => (ownerState.variant === 'indeterminate' || ownerState.variant === 'query') && (0,emotion_react_browser_esm/* css */.AH)(_t6 || (_t6 = LinearProgress_`
+      width: auto;
+      animation: ${0} 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) 1.15s infinite;
+    `), indeterminate2Keyframe));
+
+/**
+ * ## ARIA
+ *
+ * If the progress bar is describing the loading progress of a particular region of a page,
+ * you should use `aria-describedby` to point to the progress bar, and set the `aria-busy`
+ * attribute to `true` on that region until it has finished loading.
+ */
+const LinearProgress = /*#__PURE__*/react.forwardRef(function LinearProgress(inProps, ref) {
+  const props = useThemeProps_useThemeProps({
+    props: inProps,
+    name: 'MuiLinearProgress'
+  });
+  const {
+      className,
+      color = 'primary',
+      value,
+      valueBuffer,
+      variant = 'indeterminate'
+    } = props,
+    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, LinearProgress_excluded);
+  const ownerState = (0,esm_extends/* default */.A)({}, props, {
+    color,
+    variant
+  });
+  const classes = LinearProgress_useUtilityClasses(ownerState);
+  const isRtl = useRtl();
+  const rootProps = {};
+  const inlineStyles = {
+    bar1: {},
+    bar2: {}
+  };
+  if (variant === 'determinate' || variant === 'buffer') {
+    if (value !== undefined) {
+      rootProps['aria-valuenow'] = Math.round(value);
+      rootProps['aria-valuemin'] = 0;
+      rootProps['aria-valuemax'] = 100;
+      let transform = value - 100;
+      if (isRtl) {
+        transform = -transform;
+      }
+      inlineStyles.bar1.transform = `translateX(${transform}%)`;
+    } else if (false) {}
+  }
+  if (variant === 'buffer') {
+    if (valueBuffer !== undefined) {
+      let transform = (valueBuffer || 0) - 100;
+      if (isRtl) {
+        transform = -transform;
+      }
+      inlineStyles.bar2.transform = `translateX(${transform}%)`;
+    } else if (false) {}
+  }
+  return /*#__PURE__*/(0,jsx_runtime.jsxs)(LinearProgressRoot, (0,esm_extends/* default */.A)({
+    className: dist_clsx(classes.root, className),
+    ownerState: ownerState,
+    role: "progressbar"
+  }, rootProps, {
+    ref: ref
+  }, other, {
+    children: [variant === 'buffer' ? /*#__PURE__*/(0,jsx_runtime.jsx)(LinearProgressDashed, {
+      className: classes.dashed,
+      ownerState: ownerState
+    }) : null, /*#__PURE__*/(0,jsx_runtime.jsx)(LinearProgressBar1, {
+      className: classes.bar1,
+      ownerState: ownerState,
+      style: inlineStyles.bar1
+    }), variant === 'determinate' ? null : /*#__PURE__*/(0,jsx_runtime.jsx)(LinearProgressBar2, {
+      className: classes.bar2,
+      ownerState: ownerState,
+      style: inlineStyles.bar2
+    })]
+  }));
+});
+ false ? 0 : void 0;
+/* harmony default export */ const LinearProgress_LinearProgress = (LinearProgress);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/Dialog/dialogClasses.js
+
+
+function getDialogUtilityClass(slot) {
+  return generateUtilityClass_generateUtilityClass('MuiDialog', slot);
+}
+const dialogClasses = generateUtilityClasses('MuiDialog', ['root', 'scrollPaper', 'scrollBody', 'container', 'paper', 'paperScrollPaper', 'paperScrollBody', 'paperWidthFalse', 'paperWidthXs', 'paperWidthSm', 'paperWidthMd', 'paperWidthLg', 'paperWidthXl', 'paperFullWidth', 'paperFullScreen']);
+/* harmony default export */ const Dialog_dialogClasses = (dialogClasses);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/Dialog/DialogContext.js
+
+const DialogContext = /*#__PURE__*/react.createContext({});
+if (false) {}
+/* harmony default export */ const Dialog_DialogContext = (DialogContext);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/Dialog/Dialog.js
+'use client';
+
+
+
+const Dialog_excluded = ["aria-describedby", "aria-labelledby", "BackdropComponent", "BackdropProps", "children", "className", "disableEscapeKeyDown", "fullScreen", "fullWidth", "maxWidth", "onBackdropClick", "onClose", "open", "PaperComponent", "PaperProps", "scroll", "TransitionComponent", "transitionDuration", "TransitionProps"];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const DialogBackdrop = styles_styled(Backdrop_Backdrop, {
+  name: 'MuiDialog',
+  slot: 'Backdrop',
+  overrides: (props, styles) => styles.backdrop
+})({
+  // Improve scrollable dialog support.
+  zIndex: -1
+});
+const Dialog_useUtilityClasses = ownerState => {
+  const {
+    classes,
+    scroll,
+    maxWidth,
+    fullWidth,
+    fullScreen
+  } = ownerState;
+  const slots = {
+    root: ['root'],
+    container: ['container', `scroll${utils_capitalize(scroll)}`],
+    paper: ['paper', `paperScroll${utils_capitalize(scroll)}`, `paperWidth${utils_capitalize(String(maxWidth))}`, fullWidth && 'paperFullWidth', fullScreen && 'paperFullScreen']
+  };
+  return composeClasses(slots, getDialogUtilityClass, classes);
+};
+const DialogRoot = styles_styled(Modal_Modal, {
+  name: 'MuiDialog',
+  slot: 'Root',
+  overridesResolver: (props, styles) => styles.root
+})({
+  '@media print': {
+    // Use !important to override the Modal inline-style.
+    position: 'absolute !important'
+  }
+});
+const DialogContainer = styles_styled('div', {
+  name: 'MuiDialog',
+  slot: 'Container',
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [styles.container, styles[`scroll${utils_capitalize(ownerState.scroll)}`]];
+  }
+})(({
+  ownerState
+}) => (0,esm_extends/* default */.A)({
+  height: '100%',
+  '@media print': {
+    height: 'auto'
+  },
+  // We disable the focus ring for mouse, touch and keyboard users.
+  outline: 0
+}, ownerState.scroll === 'paper' && {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center'
+}, ownerState.scroll === 'body' && {
+  overflowY: 'auto',
+  overflowX: 'hidden',
+  textAlign: 'center',
+  '&::after': {
+    content: '""',
+    display: 'inline-block',
+    verticalAlign: 'middle',
+    height: '100%',
+    width: '0'
+  }
+}));
+const DialogPaper = styles_styled(Paper_Paper, {
+  name: 'MuiDialog',
+  slot: 'Paper',
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [styles.paper, styles[`scrollPaper${utils_capitalize(ownerState.scroll)}`], styles[`paperWidth${utils_capitalize(String(ownerState.maxWidth))}`], ownerState.fullWidth && styles.paperFullWidth, ownerState.fullScreen && styles.paperFullScreen];
+  }
+})(({
+  theme,
+  ownerState
+}) => (0,esm_extends/* default */.A)({
+  margin: 32,
+  position: 'relative',
+  overflowY: 'auto',
+  // Fix IE11 issue, to remove at some point.
+  '@media print': {
+    overflowY: 'visible',
+    boxShadow: 'none'
+  }
+}, ownerState.scroll === 'paper' && {
+  display: 'flex',
+  flexDirection: 'column',
+  maxHeight: 'calc(100% - 64px)'
+}, ownerState.scroll === 'body' && {
+  display: 'inline-block',
+  verticalAlign: 'middle',
+  textAlign: 'left' // 'initial' doesn't work on IE11
+}, !ownerState.maxWidth && {
+  maxWidth: 'calc(100% - 64px)'
+}, ownerState.maxWidth === 'xs' && {
+  maxWidth: theme.breakpoints.unit === 'px' ? Math.max(theme.breakpoints.values.xs, 444) : `max(${theme.breakpoints.values.xs}${theme.breakpoints.unit}, 444px)`,
+  [`&.${Dialog_dialogClasses.paperScrollBody}`]: {
+    [theme.breakpoints.down(Math.max(theme.breakpoints.values.xs, 444) + 32 * 2)]: {
+      maxWidth: 'calc(100% - 64px)'
+    }
+  }
+}, ownerState.maxWidth && ownerState.maxWidth !== 'xs' && {
+  maxWidth: `${theme.breakpoints.values[ownerState.maxWidth]}${theme.breakpoints.unit}`,
+  [`&.${Dialog_dialogClasses.paperScrollBody}`]: {
+    [theme.breakpoints.down(theme.breakpoints.values[ownerState.maxWidth] + 32 * 2)]: {
+      maxWidth: 'calc(100% - 64px)'
+    }
+  }
+}, ownerState.fullWidth && {
+  width: 'calc(100% - 64px)'
+}, ownerState.fullScreen && {
+  margin: 0,
+  width: '100%',
+  maxWidth: '100%',
+  height: '100%',
+  maxHeight: 'none',
+  borderRadius: 0,
+  [`&.${Dialog_dialogClasses.paperScrollBody}`]: {
+    margin: 0,
+    maxWidth: '100%'
+  }
+}));
+
+/**
+ * Dialogs are overlaid modal paper based components with a backdrop.
+ */
+const Dialog = /*#__PURE__*/react.forwardRef(function Dialog(inProps, ref) {
+  const props = useThemeProps_useThemeProps({
+    props: inProps,
+    name: 'MuiDialog'
+  });
+  const theme = styles_useTheme_useTheme();
+  const defaultTransitionDuration = {
+    enter: theme.transitions.duration.enteringScreen,
+    exit: theme.transitions.duration.leavingScreen
+  };
+  const {
+      'aria-describedby': ariaDescribedby,
+      'aria-labelledby': ariaLabelledbyProp,
+      BackdropComponent,
+      BackdropProps,
+      children,
+      className,
+      disableEscapeKeyDown = false,
+      fullScreen = false,
+      fullWidth = false,
+      maxWidth = 'sm',
+      onBackdropClick,
+      onClose,
+      open,
+      PaperComponent = Paper_Paper,
+      PaperProps = {},
+      scroll = 'paper',
+      TransitionComponent = Fade_Fade,
+      transitionDuration = defaultTransitionDuration,
+      TransitionProps
+    } = props,
+    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, Dialog_excluded);
+  const ownerState = (0,esm_extends/* default */.A)({}, props, {
+    disableEscapeKeyDown,
+    fullScreen,
+    fullWidth,
+    maxWidth,
+    scroll
+  });
+  const classes = Dialog_useUtilityClasses(ownerState);
+  const backdropClick = react.useRef();
+  const handleMouseDown = event => {
+    // We don't want to close the dialog when clicking the dialog content.
+    // Make sure the event starts and ends on the same DOM element.
+    backdropClick.current = event.target === event.currentTarget;
+  };
+  const handleBackdropClick = event => {
+    // Ignore the events not coming from the "backdrop".
+    if (!backdropClick.current) {
+      return;
+    }
+    backdropClick.current = null;
+    if (onBackdropClick) {
+      onBackdropClick(event);
+    }
+    if (onClose) {
+      onClose(event, 'backdropClick');
+    }
+  };
+  const ariaLabelledby = useId(ariaLabelledbyProp);
+  const dialogContextValue = react.useMemo(() => {
+    return {
+      titleId: ariaLabelledby
+    };
+  }, [ariaLabelledby]);
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(DialogRoot, (0,esm_extends/* default */.A)({
+    className: dist_clsx(classes.root, className),
+    closeAfterTransition: true,
+    components: {
+      Backdrop: DialogBackdrop
+    },
+    componentsProps: {
+      backdrop: (0,esm_extends/* default */.A)({
+        transitionDuration,
+        as: BackdropComponent
+      }, BackdropProps)
+    },
+    disableEscapeKeyDown: disableEscapeKeyDown,
+    onClose: onClose,
+    open: open,
+    ref: ref,
+    onClick: handleBackdropClick,
+    ownerState: ownerState
+  }, other, {
+    children: /*#__PURE__*/(0,jsx_runtime.jsx)(TransitionComponent, (0,esm_extends/* default */.A)({
+      appear: true,
+      in: open,
+      timeout: transitionDuration,
+      role: "presentation"
+    }, TransitionProps, {
+      children: /*#__PURE__*/(0,jsx_runtime.jsx)(DialogContainer, {
+        className: dist_clsx(classes.container),
+        onMouseDown: handleMouseDown,
+        ownerState: ownerState,
+        children: /*#__PURE__*/(0,jsx_runtime.jsx)(DialogPaper, (0,esm_extends/* default */.A)({
+          as: PaperComponent,
+          elevation: 24,
+          role: "dialog",
+          "aria-describedby": ariaDescribedby,
+          "aria-labelledby": ariaLabelledby
+        }, PaperProps, {
+          className: dist_clsx(classes.paper, PaperProps.className),
+          ownerState: ownerState,
+          children: /*#__PURE__*/(0,jsx_runtime.jsx)(Dialog_DialogContext.Provider, {
+            value: dialogContextValue,
+            children: children
+          })
+        }))
+      })
+    }))
+  }));
+});
+ false ? 0 : void 0;
+/* harmony default export */ const Dialog_Dialog = (Dialog);
+;// CONCATENATED MODULE: ./views/components/Blocks/ConfirmationBox.js
+
+
+
+
+const ConfirmationBox = props => {
+  const {
+    open,
+    handleClose,
+    handleSubmit
+  } = props;
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(Dialog_Dialog, {
+    open: open,
+    onClose: handleClose,
+    children: /*#__PURE__*/(0,jsx_runtime.jsx)(Paper_Paper, {
+      sx: {
+        padding: '2em'
+      },
+      children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
+        children: [/*#__PURE__*/(0,jsx_runtime.jsx)("h1", {
+          children: "Did you save all of the requirements?"
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          children: "Be sure you saved all of the requirements for the job post before moving forward."
+        }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
+          direction: "row",
+          justifyContent: "center",
+          children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+            onClick: handleSubmit,
+            type: "submit",
+            children: "Yes! Save and move on"
+          }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+            sx: {
+              backgroundColor: '#ba000d',
+              '&:hover': {
+                backgroundColor: '#e72d28'
+              }
+            },
+            onClick: handleClose,
+            type: "button",
+            children: "No! Go back"
+          })]
+        })]
+      })
+    })
+  });
+};
+/* harmony default export */ const Blocks_ConfirmationBox = (ConfirmationBox);
+;// CONCATENATED MODULE: ./views/components/Blocks/AddRequirements.js
+
+
+
+
+
+const AddRequirements = props => {
+  const {
+    progress,
+    key,
+    onSubmit,
+    reqDisableState,
+    children
+  } = props;
+  const [open, setOpen] = react.useState(false);
+  const handleSubmit = () => {
+    onSubmit();
+    setOpen(false);
+  };
+  const openDialog = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  return /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+    children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(AppBar_AppBar, {
+      sx: {
+        backgroundColor: '#fff',
+        color: 'rgb(16 73 129)',
+        boxShadow: 'none'
+      },
+      position: "sticky",
+      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+        children: /*#__PURE__*/(0,jsx_runtime.jsx)("strong", {
+          children: "Current Resume Status:"
+        })
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(LinearProgress_LinearProgress, {
+        variant: "determinate",
+        value: progress
+      })]
+    }), /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
+      onSubmit: handleSubmit,
+      children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
+        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          variant: "h2",
+          id: "requirements",
+          children: "Requirements"
+        }), /*#__PURE__*/(0,jsx_runtime.jsxs)(FormControl_FormControl, {
+          children: [/*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
+            sx: {
+              marginTop: '50px'
+            },
+            htmlFor: "enter-requirements",
+            children: "Input Each Job Requirement & Nice to Have's"
+          }), /*#__PURE__*/(0,jsx_runtime.jsx)(FormHelperText_FormHelperText, {
+            id: "enter-requirements",
+            children: "Enter the keywords for each job requirement. (Example: 'Documenting codebase'...) If a requirement exists in the dropdown that is similar to one in the job post, select the one that already exists. It's important to input ALL requirements even if you don't have those requirements. This will help your Job Match meter give you an accurate reading."
+          }), children]
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+          disabled: reqDisableState,
+          onClick: openDialog,
+          type: "button",
+          children: "Save All"
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ConfirmationBox, {
+          open: open,
+          handleClose: handleClose,
+          handleSubmit: handleSubmit
+        })]
+      })
+    }, key)]
+  });
+};
+/* harmony default export */ const Blocks_AddRequirements = (AddRequirements);
 ;// CONCATENATED MODULE: ./views/components/Blocks/AddQualification.js
 
 
@@ -35268,61 +35722,7 @@ const AddQualification = props => {
   });
 };
 /* harmony default export */ const Blocks_AddQualification = (AddQualification);
-;// CONCATENATED MODULE: ./views/components/Blocks/AddJobPost.js
-
-
-
-
-
-const AddJobPost = props => {
-  const {
-    key,
-    onSubmit,
-    jobTitleInput,
-    companyNameInput,
-    jobFunctionInput,
-    dateAppliedInput,
-    submitButtonState,
-    submitButtonText
-  } = props;
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
-    children: /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
-      onSubmit: onSubmit,
-      children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
-        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-          variant: "h2",
-          id: "job-post-form-heading",
-          children: "Job You're Applying to"
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
-          label: "Job Title",
-          id: "job-title",
-          children: jobTitleInput
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
-          label: "Company name",
-          id: "company",
-          children: companyNameInput
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
-          label: "Job Function",
-          id: "job-function",
-          children: jobFunctionInput
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
-          label: "Date Applied",
-          id: "date-applied",
-          labelSx: {
-            marginTop: '50px'
-          },
-          children: dateAppliedInput
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-          disabled: submitButtonState,
-          type: "submit",
-          children: submitButtonText
-        })]
-      })
-    }, key)
-  });
-};
-/* harmony default export */ const Blocks_AddJobPost = (AddJobPost);
-;// CONCATENATED MODULE: ./views/components/Blocks/CreateJob.js
+;// CONCATENATED MODULE: ./views/components/Blocks/JobForm.js
 
 
 
@@ -35336,7 +35736,19 @@ const AddJobPost = props => {
 
 const getRequirements = getters_fetchData('http://localhost:3000/api/requirements');
 const filter = createFilterOptions();
-const CreateJob = () => {
+const JobForm = props => {
+  const {
+    createJob,
+    saveJobUrl,
+    renderTags,
+    defaultValueReqs,
+    defaultValueJobTitle,
+    defaultValueCompName,
+    defaultValueJobFunc,
+    defaultValueDateApplied,
+    submitButtonText,
+    defaultValueQualification
+  } = props;
   const {
     control,
     handleSubmit,
@@ -35358,36 +35770,15 @@ const CreateJob = () => {
   } = useForm();
   const [reqIds, setReqIds] = react.useState(null);
   const [reqTitles, setReqTitles] = react.useState([]);
-  const [requirementsArray, setRequirementsArray] = react.useState([]);
   const [responseState, setResponseState] = react.useState(false);
-  const [resumeLocation, setResumeLocation] = react.useState('');
+  const [progress, setProgress] = react.useState(0);
+  const [requirementsArray, setRequirementsArray] = react.useState([]);
   const [reqDisableState, setReqDisableState] = react.useState(false);
   const [jobDisableState, setJobDisableState] = react.useState(false);
-  const [progress, setProgress] = react.useState(0);
+  const [resumeLocation, setResumeLocation] = react.useState('');
   const theRequirements = getRequirements.read();
   const hasRequirements = theRequirements.length > 0 ? theRequirements : null;
   const noMoreRequirements = react.useMemo(() => requirementsArray.length === 0, [requirementsArray]);
-  const handleSaveJob = async data => {
-    setJobDisableState(true);
-    setProgress(60);
-    const parsedCompanyName = data.company.toLowerCase().replace(' ', '-');
-    setResumeLocation(`${parsedCompanyName}`);
-    const postJob = await fetch('http://localhost:3000/api/job-post', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        job_title: data.jobTitle,
-        company_name: parsedCompanyName,
-        job_function: data.jobFunction,
-        date_applied: data.dateApplied,
-        requirements: reqIds
-      })
-    });
-    setResponseState(true);
-    return postJob.json();
-  };
   const getRequirementsUpdated = async () => {
     try {
       const reqPromise = await fetch('http://localhost:3000/api/requirements/', {
@@ -35448,6 +35839,27 @@ const CreateJob = () => {
       return postRequirements.json();
     }
   };
+  const handleSaveJob = async data => {
+    setJobDisableState(true);
+    setProgress(60);
+    const parsedCompanyName = data.company.toLowerCase().replace(' ', '-');
+    setResumeLocation(`${parsedCompanyName}`);
+    const postJob = await fetch(saveJobUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        job_title: data.jobTitle,
+        company_name: parsedCompanyName,
+        job_function: data.jobFunction,
+        date_applied: data.dateApplied,
+        requirements: reqIds
+      })
+    });
+    setResponseState(true);
+    return postJob.json();
+  };
   const handleAddResponse = async (data, id) => {
     setProgress(100);
     const newRequirementsArr = requirementsArray.filter(d => d._id !== id);
@@ -35469,93 +35881,61 @@ const CreateJob = () => {
     setRequirementsArray(newRequirementsArr);
   };
   return /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
-    children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
-      children: ["After following these 3 steps your resume will be ready at the bottom of the page. If you need to make edits after you complete this page, you can click the \"Edit Resume\" button at the bottom.", /*#__PURE__*/(0,jsx_runtime.jsx)("br", {}), /*#__PURE__*/(0,jsx_runtime.jsx)("strong", {
-        children: "How to add a job post:"
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)("br", {}), "1. Fill out *ALL* of the Job Requirements. ", /*#__PURE__*/(0,jsx_runtime.jsx)("br", {}), "2. Enter the Job Post Information ", /*#__PURE__*/(0,jsx_runtime.jsx)("br", {}), "3. Fill out your qualifications"]
-    }), /*#__PURE__*/(0,jsx_runtime.jsxs)(AppBar_AppBar, {
-      sx: {
-        backgroundColor: '#fff',
-        color: 'rgb(16 73 129)',
-        boxShadow: 'none'
-      },
-      position: "sticky",
-      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-        children: /*#__PURE__*/(0,jsx_runtime.jsx)("strong", {
-          children: "Current Resume Status:"
-        })
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(LinearProgress_LinearProgress, {
-        variant: "determinate",
-        value: progress
-      })]
-    }), /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
+    children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_AddRequirements, {
+      progress: progress,
       onSubmit: handleSubmitRequirements(data => handleSaveRequirements(data)),
-      children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
-        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-          variant: "h2",
-          id: "requirements",
-          children: "Requirements"
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-          id: "requirements-desc",
-          children: "Enter the keywords for each job requirement. (Example: 'Documenting codebase'...) If a requirement exists in the dropdown that is similar to one in the job post, select the one that already exists. It's important to input ALL requirements even if you don't have those requirements. This will help your Job Match meter give you an accurate reading."
-        }), /*#__PURE__*/(0,jsx_runtime.jsxs)(FormControl_FormControl, {
-          children: [/*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
+      reqDisableState: reqDisableState,
+      children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+        render: _ref => {
+          let {
+            field: {
+              onChange,
+              value,
+              ref
+            }
+          } = _ref;
+          return /*#__PURE__*/(0,jsx_runtime.jsx)(Autocomplete_Autocomplete, {
             sx: {
-              marginTop: '50px'
+              marginTop: '100px'
             },
-            htmlFor: "enter-requirements",
-            children: "Input Each Job Requirement & Nice to Have's"
-          }), /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-            render: _ref => {
-              let {
-                field: {
-                  onChange
-                }
-              } = _ref;
-              return /*#__PURE__*/(0,jsx_runtime.jsx)(Autocomplete_Autocomplete, {
-                sx: {
-                  marginTop: '100px'
-                },
-                multiple: true,
-                disabled: reqDisableState,
-                id: "enter-requirements",
-                filterOptions: (options, params) => {
-                  const filtered = filter(options, params);
-                  const {
-                    inputValue
-                  } = params;
-                  const exists = options.some(option => inputValue === option.req_title);
-                  if (inputValue !== '' && !exists) {
-                    filtered.push({
-                      req_title: inputValue
-                    });
-                  }
-                  return filtered;
-                },
-                options: hasRequirements ? hasRequirements.map(req => req) : [{
-                  req_title: 'Example: Unit testing...'
-                }],
-                getOptionKey: option => option._id,
-                getOptionLabel: option => option.req_title,
-                renderInput: params => /*#__PURE__*/(0,jsx_runtime.jsx)(TextField_TextField, {
-                  ...params,
-                  variant: "outlined"
-                }),
-                onChange: (e, data) => onChange(data)
-              });
+            multiple: true,
+            disabled: reqDisableState,
+            id: "enter-requirements",
+            filterOptions: (options, params) => {
+              const filtered = filter(options, params);
+              const {
+                inputValue
+              } = params;
+              const exists = options.some(option => inputValue === option.req_title);
+              if (inputValue !== '' && !exists) {
+                filtered.push({
+                  req_title: inputValue
+                });
+              }
+              return filtered;
             },
-            onChange: _ref2 => {
-              let [, data] = _ref2;
-              return data;
-            },
-            name: "requirements",
-            control: controlReq
-          })]
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-          disabled: reqDisableState,
-          type: "submit",
-          children: "Save All"
-        })]
+            options: hasRequirements ? hasRequirements.map(req => req) : [{
+              req_title: 'Example: Unit testing...'
+            }],
+            getOptionKey: option => option._id,
+            getOptionLabel: option => option.req_title,
+            renderTags: renderTags,
+            renderInput: params => /*#__PURE__*/(0,jsx_runtime.jsx)(TextField_TextField, {
+              ...params,
+              variant: "outlined"
+            }),
+            onChange: (e, data) => onChange(data),
+            value: value,
+            inputRef: ref
+          });
+        },
+        onChange: _ref2 => {
+          let [, data] = _ref2;
+          return data;
+        },
+        name: "requirements",
+        control: controlReq,
+        defaultValue: defaultValueReqs
       })
     }, 1), reqIds && reqIds.length > 0 && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_AddJobPost, {
       onSubmit: handleSubmit(data => handleSaveJob(data)),
@@ -35584,7 +35964,7 @@ const CreateJob = () => {
             disabled: jobDisableState
           });
         },
-        defaultValue: ""
+        defaultValue: defaultValueJobTitle
       }),
       companyNameInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
         control: control,
@@ -35611,7 +35991,7 @@ const CreateJob = () => {
             disabled: jobDisableState
           });
         },
-        defaultValue: ""
+        defaultValue: defaultValueCompName
       }),
       jobFunctionInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
         control: control,
@@ -35638,7 +36018,7 @@ const CreateJob = () => {
             disabled: jobDisableState
           });
         },
-        defaultValue: ""
+        defaultValue: defaultValueJobFunc
       }),
       dateAppliedInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
         control: control,
@@ -35669,10 +36049,10 @@ const CreateJob = () => {
             disabled: jobDisableState
           });
         },
-        defaultValue: ""
+        defaultValue: defaultValueDateApplied
       }),
       submitButtonState: !isValid || jobDisableState,
-      submitButtonText: "Save"
+      submitButtonText: submitButtonText
     }, 2), requirementsArray && !noMoreRequirements && responseState && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_AddQualification, {
       onSubmit: handleSubmitResponses(data => handleAddResponse(data, requirementsArray[0]._id)),
       onMissing: () => handleNoResponse(requirementsArray[0]._id),
@@ -35709,20 +36089,46 @@ const CreateJob = () => {
             id: "add-response"
           });
         },
-        defaultValue: ""
+        defaultValue: defaultValueQualification
       })
-    }, 3), requirementsArray && noMoreRequirements && responseState && /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
-      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Resume, {
-        fetchUrl: `http://localhost:3000/api/job-post/${resumeLocation}`
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Button_Button, {
-        variant: "outlined",
-        href: `/job-post/${resumeLocation}`,
-        children: "Edit Resume"
+    }, 3), createJob && /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+      children: [requirementsArray && noMoreRequirements && responseState && /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Resume, {
+          fetchUrl: `http://localhost:3000/api/job-post/${resumeLocation}`
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Button_Button, {
+          variant: "outlined",
+          href: `/job-post/${resumeLocation}`,
+          children: "Edit Resume"
+        })]
+      }), progress > 60 && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+        onClick: () => window.location.reload(),
+        type: "button",
+        children: "Add a new job post"
       })]
-    }), progress > 60 && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-      onClick: () => window.location.reload(),
-      type: "button",
-      children: "Add a new job post"
+    })]
+  });
+};
+/* harmony default export */ const Blocks_JobForm = (JobForm);
+;// CONCATENATED MODULE: ./views/components/Blocks/CreateJob.js
+
+
+
+
+const CreateJob = () => {
+  return /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+    children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
+      children: ["After following these 3 steps your resume will be ready at the bottom of the page. If you need to make edits after you complete this page, you can click the \"Edit Resume\" button at the bottom.", /*#__PURE__*/(0,jsx_runtime.jsx)("br", {}), /*#__PURE__*/(0,jsx_runtime.jsx)("strong", {
+        children: "How to add a job post:"
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)("br", {}), "1. Fill out *ALL* of the Job Requirements. ", /*#__PURE__*/(0,jsx_runtime.jsx)("br", {}), "2. Enter the Job Post Information ", /*#__PURE__*/(0,jsx_runtime.jsx)("br", {}), "3. Fill out your qualifications"]
+    }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_JobForm, {
+      createJob: true,
+      saveJobUrl: 'http://localhost:3000/api/job-post',
+      defaultValueJobTitle: "",
+      defaultValueCompName: "",
+      defaultValueJobFunc: "",
+      defaultValueDateApplied: "",
+      submitButtonText: "Save",
+      defaultValueQualification: ""
     })]
   });
 };
@@ -36736,20 +37142,11 @@ class AdapterDayjs {
 
 
 
-
 const EditResume = () => {
   const location = dist_useLocation();
-  const {
-    control,
-    handleSubmit,
-    formState: {
-      isValid
-    }
-  } = useForm();
   const [path, setPath] = react.useState(null);
-  const [job, setJob] = react.useState({});
   const [value, setValue] = react.useState(0);
-  const [jobDisableState, setJobDisableState] = react.useState(false);
+  const [job, setJob] = react.useState({});
   react.useEffect(() => {
     if (location) {
       setPath(location.pathname);
@@ -36789,25 +37186,6 @@ const EditResume = () => {
       console.log(JSON.stringify(err));
     }
   };
-  const handleSaveJob = async data => {
-    setJobDisableState(true);
-    const parsedCompanyName = data.company.toLowerCase().replace(' ', '-');
-    setResumeLocation(`${parsedCompanyName}`);
-    const postJob = await fetch(`http://localhost:3000/api${path}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        job_title: data.jobTitle,
-        company_name: parsedCompanyName,
-        job_function: data.jobFunction,
-        date_applied: data.dateApplied,
-        requirements: reqIds
-      })
-    });
-    return postJob.json();
-  };
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
     children: /*#__PURE__*/(0,jsx_runtime.jsx)(Layout_MainBody, {
       sx: {
@@ -36818,126 +37196,26 @@ const EditResume = () => {
         children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
           variant: "h1",
           children: "Update Resume"
-        }), path && job && job.company_name && /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+        }), path && job && job.company_name && job.requirements && /*#__PURE__*/(0,jsx_runtime.jsxs)(Paper_Paper, {
           children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Guage, {
             value: value
-          }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_AddJobPost, {
-            onSubmit: handleSubmit(data => handleSaveJob(data)),
-            jobTitleInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-              control: control,
-              name: "jobTitle",
-              rules: {
-                required: true
-              },
-              render: _ref => {
-                let {
-                  field: {
-                    onChange,
-                    onBlur,
-                    value,
-                    ref
-                  }
-                } = _ref;
-                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-                  onChange: onChange,
-                  onBlur: onBlur,
-                  value: value,
-                  inputRef: ref,
-                  type: "text",
-                  id: "job-title",
-                  disabled: jobDisableState
-                });
-              },
-              defaultValue: job.job_title
-            }),
-            companyNameInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-              control: control,
-              name: "company",
-              rules: {
-                required: true
-              },
-              render: _ref2 => {
-                let {
-                  field: {
-                    onChange,
-                    onBlur,
-                    value,
-                    ref
-                  }
-                } = _ref2;
-                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-                  onChange: onChange,
-                  onBlur: onBlur,
-                  value: value,
-                  inputRef: ref,
-                  type: "text",
-                  id: "company",
-                  disabled: jobDisableState
-                });
-              },
-              defaultValue: job.company_name
-            }),
-            jobFunctionInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-              control: control,
-              name: "jobFunction",
-              rules: {
-                required: true
-              },
-              render: _ref3 => {
-                let {
-                  field: {
-                    onChange,
-                    onBlur,
-                    value,
-                    ref
-                  }
-                } = _ref3;
-                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-                  onChange: onChange,
-                  onBlur: onBlur,
-                  value: value,
-                  inputRef: ref,
-                  type: "text",
-                  id: "job-function",
-                  disabled: jobDisableState
-                });
-              },
-              defaultValue: job.job_function
-            }),
-            dateAppliedInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-              control: control,
-              name: "dateApplied",
-              rules: {
-                required: 'Please enter the first date you started in this position'
-              },
-              render: _ref4 => {
-                let {
-                  field: {
-                    onChange,
-                    onBlur,
-                    ref,
-                    value
-                  }
-                } = _ref4;
-                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-                  sx: {
-                    marginTop: '100px !important',
-                    maxWidth: '200px'
-                  },
-                  type: "date",
-                  inputRef: ref,
-                  onChange: onChange,
-                  onBlur: onBlur,
-                  value: value,
-                  id: "date-applied",
-                  disabled: jobDisableState
-                });
-              },
-              defaultValue: job.date_applied
-            }),
-            submitButtonState: !isValid || jobDisableState,
-            submitButtonText: "Update"
-          }, 2)]
+          }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_JobForm, {
+            createJob: false,
+            saveJobUrl: `http://localhost:3000/api${path}`,
+            renderTags: (v, getTagProps) => v.map((option, index) => /*#__PURE__*/(0,jsx_runtime.jsx)(Chip_Chip, {
+              ...getTagProps({
+                index
+              }),
+              label: option.req_title
+            })),
+            defaultValueReqs: job.requirements.map(req => req),
+            defaultValueJobTitle: job.job_title,
+            defaultValueCompName: job.company_name,
+            defaultValueJobFunc: job.job_function,
+            defaultValueDateApplied: job.date_applied,
+            submitButtonText: "Update",
+            defaultValueQualification: "fill this in later"
+          })]
         }), path && (!job || !job.company_name) && /*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
           children: ["That company name isn't found. Try searching at", ' ', /*#__PURE__*/(0,jsx_runtime.jsx)(Button_Button, {
             variant: "outlined",
