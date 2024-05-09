@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
 	Autocomplete,
+	Button,
 	FormControl,
 	Paper,
 	Stack,
@@ -90,11 +91,16 @@ const SearchJob = () => {
 						'No jobs, go to job post to input new jobs'
 					)}
 				</Stack>
-				<Paper>
+				<Paper elevation={0}>
 					{resumeLocation && (
+						<>
 						<Resume
 							fetchUrl={`http://localhost:3000/api/job-post/${resumeLocation}`}
 						/>
+						<Button sx={{minWidth: '100%', marginTop: '20px'}} variant='outlined' href={`/job-post/${resumeLocation}`}>
+						Edit Resume
+					</Button>
+					</>
 					)}
 				</Paper>
 			</MainBody>

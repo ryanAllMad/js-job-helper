@@ -7,7 +7,7 @@ import {
 	Input,
 	InputLabel,
 	LinearProgress,
-	Link,
+	Button,
 	Stack,
 	TextField,
 	Typography,
@@ -18,6 +18,7 @@ import { useForm, Controller } from 'react-hook-form';
 import fetchData from '../getters/fetchData.js';
 import Resume from './Resume.js';
 import AddQualification from './AddQualification.js';
+import AddJobPost from './AddJobPost.js';
 
 const getRequirements = fetchData('http://localhost:3000/api/requirements');
 
@@ -46,15 +47,18 @@ const CreateJob = () => {
 	const [resumeLocation, setResumeLocation] = React.useState('');
 	const [reqDisableState, setReqDisableState] = React.useState(false);
 	const [jobDisableState, setJobDisableState] = React.useState(false);
-	const [progress, setProgress] = React.useState(0)
+	const [progress, setProgress] = React.useState(0);
 
 	const theRequirements = getRequirements.read();
 	const hasRequirements = theRequirements.length > 0 ? theRequirements : null;
-	const noMoreRequirements = React.useMemo(() => requirementsArray.length === 0, [requirementsArray])
+	const noMoreRequirements = React.useMemo(
+		() => requirementsArray.length === 0,
+		[requirementsArray]
+	);
 
 	const handleSaveJob = async (data) => {
 		setJobDisableState(true);
-		setProgress(60)
+		setProgress(60);
 		const parsedCompanyName = data.company.toLowerCase().replace(' ', '-');
 		setResumeLocation(`${parsedCompanyName}`);
 		const postJob = await fetch('http://localhost:3000/api/job-post', {
@@ -116,14 +120,14 @@ const CreateJob = () => {
 		}
 	}, [isSubmitSuccessful, setRequirementsArray, setReqIds]);
 	React.useEffect(() => {
-		if(progress === 60 && noMoreRequirements) {
-			setProgress(100)
+		if (progress === 60 && noMoreRequirements) {
+			setProgress(100);
 		}
-	}, [setProgress, progress, noMoreRequirements])
+	}, [setProgress, progress, noMoreRequirements]);
 
 	const handleSaveRequirements = async (data) => {
 		setReqDisableState(true);
-		setProgress(30)
+		setProgress(30);
 		const newReqTitles = [];
 		const newDataToSave = data.requirements.filter((d) => !d._id);
 		data.requirements.forEach((d) => newReqTitles.push(d.req_title));
@@ -143,7 +147,7 @@ const CreateJob = () => {
 		}
 	};
 	const handleAddResponse = async (data, id) => {
-		setProgress(100)
+		setProgress(100);
 		const newRequirementsArr = requirementsArray.filter(
 			(d) => d._id !== id
 		);
@@ -172,19 +176,33 @@ const CreateJob = () => {
 
 	return (
 		<>
-		<Typography>
-			After following these 3 steps your resume will be ready at the bottom of the page.
-			If you need to make edits after you complete this page, head over to the{' '}
-			<Link href="/search-job">search job</Link> page and search by company name.<br />
-			<strong>How to add a job post:</strong><br />
-			1. Fill out all of the Job Requirements. <br />
-			2. Enter the Job Post Information <br />
-			3. Fill out your qualifications
-		</Typography>
-		<AppBar sx={{backgroundColor: '#fff', color: 'rgb(16 73 129)', boxShadow: 'none'}} position='sticky'>
-		<Typography><strong>Current Resume Status:</strong></Typography>
-		<LinearProgress variant="determinate" value={progress} />
-		</AppBar>
+			<Typography>
+				After following these 3 steps your resume will be ready at the
+				bottom of the page. If you need to make edits after you complete
+				this page, you can click the "Edit Resume" button at the bottom.
+				<br />
+				<strong>How to add a job post:</strong>
+				<br />
+				1. Fill out *ALL* of the Job Requirements. <br />
+				2. Enter the Job Post Information <br />
+				3. Fill out your qualifications
+			</Typography>
+			<AppBar
+				sx={{
+					backgroundColor: '#fff',
+					color: 'rgb(16 73 129)',
+					boxShadow: 'none',
+				}}
+				position='sticky'
+			>
+				<Typography>
+					<strong>Current Resume Status:</strong>
+				</Typography>
+				<LinearProgress
+					variant='determinate'
+					value={progress}
+				/>
+			</AppBar>
 			<form
 				key={1}
 				onSubmit={handleSubmitRequirements((data) =>
@@ -192,28 +210,32 @@ const CreateJob = () => {
 				)}
 			>
 				<Stack>
-				<Typography
-							variant='h2'
-							id='requirements'
-						>
-							Requirements
-						</Typography>
-						<Typography id='requirements-desc'>
-							Enter the keywords for each job requirement.
-							(Example: 'Documenting codebase'...) If a
-							requirement exists in the dropdown that is similar
-							to one in the job post, select the one that already
-							exists. It's important to input ALL requirements
-							even if you don't have those requirements. This will
-							help your Job Match meter give you an accurate
-							reading.
-						</Typography>
+					<Typography
+						variant='h2'
+						id='requirements'
+					>
+						Requirements
+					</Typography>
+					<Typography id='requirements-desc'>
+						Enter the keywords for each job requirement. (Example:
+						'Documenting codebase'...) If a requirement exists in
+						the dropdown that is similar to one in the job post,
+						select the one that already exists. It's important to
+						input ALL requirements even if you don't have those
+						requirements. This will help your Job Match meter give
+						you an accurate reading.
+					</Typography>
 					<FormControl>
-						<InputLabel sx={{ marginTop: '50px'}} htmlFor="enter-requirements">Input Each Job Requirement & Nice to Have's</InputLabel>
+						<InputLabel
+							sx={{ marginTop: '50px' }}
+							htmlFor='enter-requirements'
+						>
+							Input Each Job Requirement & Nice to Have's
+						</InputLabel>
 						<Controller
 							render={({ field: { onChange } }) => (
 								<Autocomplete
-									sx={{ marginTop: '100px'}}
+									sx={{ marginTop: '100px' }}
 									multiple
 									disabled={reqDisableState}
 									id='enter-requirements'
@@ -271,146 +293,13 @@ const CreateJob = () => {
 				</Stack>
 			</form>
 			{reqIds && reqIds.length > 0 && (
-				<form
+				<AddJobPost
 					key={2}
 					onSubmit={handleSubmit((data) => handleSaveJob(data))}
-				>
-					<Stack>
-						<Typography
-							variant='h2'
-							id='job-post-form-heading'
-						>
-							Job You're Applying to
-						</Typography>
-						<BasicInput
-							label='Job Title'
-							id='job-title'
-						>
-							<Controller
-								control={control}
-								name='jobTitle'
-								rules={{ required: true }}
-								render={({
-									field: { onChange, onBlur, value, ref },
-								}) => (
-									<Input
-										onChange={onChange}
-										onBlur={onBlur}
-										value={value}
-										inputRef={ref}
-										type='text'
-										id='job-title'
-										disabled={jobDisableState}
-									/>
-								)}
-								defaultValue=''
-							/>
-						</BasicInput>
-						<BasicInput
-							label='Company name'
-							id='company'
-						>
-							<Controller
-								control={control}
-								name='company'
-								rules={{ required: true }}
-								render={({
-									field: { onChange, onBlur, value, ref },
-								}) => (
-									<Input
-										onChange={onChange}
-										onBlur={onBlur}
-										value={value}
-										inputRef={ref}
-										type='text'
-										id='company'
-										disabled={jobDisableState}
-									/>
-								)}
-								defaultValue=''
-							/>
-						</BasicInput>
-						<BasicInput
-							label='Job Function'
-							id='job-function'
-						>
-							<Controller
-								control={control}
-								name='jobFunction'
-								rules={{ required: true }}
-								render={({
-									field: { onChange, onBlur, value, ref },
-								}) => (
-									<Input
-										onChange={onChange}
-										onBlur={onBlur}
-										value={value}
-										inputRef={ref}
-										type='text'
-										id='job-function'
-										disabled={jobDisableState}
-									/>
-								)}
-								defaultValue=''
-							/>
-						</BasicInput>
-						<BasicInput
-							label='Date Applied'
-							id='date-applied'
-							labelSx={{ marginTop: '50px'}}
-						>
-							<Controller
-								control={control}
-								name='dateApplied'
-								rules={{
-									required:
-										'Please enter the first date you started in this position',
-								}}
-								render={({
-									field: { onChange, onBlur, ref, value },
-								}) => (
-									<Input
-										sx={{ marginTop: '100px !important', maxWidth: '200px'}}
-										type='date'
-										inputRef={ref}
-										onChange={onChange}
-										onBlur={onBlur}
-										value={value}
-										id='date-applied'
-										disabled={jobDisableState}
-									/>
-								)}
-								defaultValue=''
-							/>
-						</BasicInput>
-						<ContainedButton
-							disabled={!isValid || jobDisableState}
-							type='submit'
-						>
-							Save
-						</ContainedButton>
-					</Stack>
-				</form>
-			)}
-			{requirementsArray &&
-				!noMoreRequirements &&
-				responseState && (
-					<AddQualification
-						key={3}
-						onSubmit={handleSubmitResponses((data) =>
-							handleAddResponse(data, requirementsArray[0]._id)
-						)}
-						onMissing={() => handleNoResponse(requirementsArray[0]._id)}
-						thisReq={requirementsArray[0].req_title}
-						addButtonText="Add Qualification"
-						removeButtonText="Missing Qualification"
-						qualificationDesc={`Enter the qualifications for each job requirement you've input into the form. 
-				If you don't meet this requirement, click the "Missing Qualification" button. 
-				This will help your Job Match meter be more accurate."`}
-					>
+					jobTitleInput={
 						<Controller
-							control={controlRes}
-							name='response'
+							control={control}
+							name='jobTitle'
 							rules={{ required: true }}
 							render={({
 								field: { onChange, onBlur, value, ref },
@@ -418,27 +307,145 @@ const CreateJob = () => {
 								<Input
 									onChange={onChange}
 									onBlur={onBlur}
-									placeholder='Enter qualifications'
 									value={value}
 									inputRef={ref}
 									type='text'
-									multiline
-									rows={4}
-									id='add-response'
+									id='job-title'
+									disabled={jobDisableState}
 								/>
 							)}
 							defaultValue=''
 						/>
-					</AddQualification>
-				)}
-			{requirementsArray &&
-				noMoreRequirements &&
-				responseState && (
+					}
+					companyNameInput={
+						<Controller
+							control={control}
+							name='company'
+							rules={{ required: true }}
+							render={({
+								field: { onChange, onBlur, value, ref },
+							}) => (
+								<Input
+									onChange={onChange}
+									onBlur={onBlur}
+									value={value}
+									inputRef={ref}
+									type='text'
+									id='company'
+									disabled={jobDisableState}
+								/>
+							)}
+							defaultValue=''
+						/>
+					}
+					jobFunctionInput={
+						<Controller
+							control={control}
+							name='jobFunction'
+							rules={{ required: true }}
+							render={({
+								field: { onChange, onBlur, value, ref },
+							}) => (
+								<Input
+									onChange={onChange}
+									onBlur={onBlur}
+									value={value}
+									inputRef={ref}
+									type='text'
+									id='job-function'
+									disabled={jobDisableState}
+								/>
+							)}
+							defaultValue=''
+						/>
+					}
+					dateAppliedInput={
+						<Controller
+							control={control}
+							name='dateApplied'
+							rules={{
+								required:
+									'Please enter the first date you started in this position',
+							}}
+							render={({
+								field: { onChange, onBlur, ref, value },
+							}) => (
+								<Input
+									sx={{
+										marginTop: '100px !important',
+										maxWidth: '200px',
+									}}
+									type='date'
+									inputRef={ref}
+									onChange={onChange}
+									onBlur={onBlur}
+									value={value}
+									id='date-applied'
+									disabled={jobDisableState}
+								/>
+							)}
+							defaultValue=''
+						/>
+					}
+					submitButtonState={!isValid || jobDisableState}
+					submitButtonText='Save'
+				/>
+			)}
+			{requirementsArray && !noMoreRequirements && responseState && (
+				<AddQualification
+					key={3}
+					onSubmit={handleSubmitResponses((data) =>
+						handleAddResponse(data, requirementsArray[0]._id)
+					)}
+					onMissing={() => handleNoResponse(requirementsArray[0]._id)}
+					thisReq={requirementsArray[0].req_title}
+					addButtonText='Add Qualification'
+					removeButtonText='Missing Qualification'
+					qualificationDesc={`Enter the qualifications for each job requirement you've input into the form. 
+				If you don't meet this requirement, click the "Missing Qualification" button. 
+				This will help your Job Match meter be more accurate."`}
+				>
+					<Controller
+						control={controlRes}
+						name='response'
+						rules={{ required: true }}
+						render={({
+							field: { onChange, onBlur, value, ref },
+						}) => (
+							<Input
+								onChange={onChange}
+								onBlur={onBlur}
+								placeholder='Enter qualifications'
+								value={value}
+								inputRef={ref}
+								type='text'
+								multiline
+								rows={4}
+								id='add-response'
+							/>
+						)}
+						defaultValue=''
+					/>
+				</AddQualification>
+			)}
+			{requirementsArray && noMoreRequirements && responseState && (
+				<>
 					<Resume
 						fetchUrl={`http://localhost:3000/api/job-post/${resumeLocation}`}
 					/>
-				)}
-				{progress > 60 && <ContainedButton onClick={() => window.location.reload()} type="button">Add a new job post</ContainedButton>}
+					<Button variant='outlined' href={`/job-post/${resumeLocation}`}>
+						Edit Resume
+					</Button>
+				</>
+			)}
+			{progress > 60 && (
+				<ContainedButton
+					onClick={() => window.location.reload()}
+					type='button'
+				>
+					Add a new job post
+				</ContainedButton>
+			)}
 		</>
 	);
 };

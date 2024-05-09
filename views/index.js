@@ -6,6 +6,9 @@ import UpdateRequirements from './components/Views/UpdateRequirements.js';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs/index.js';
+import EditResume from './components/Views/EditResume.js';
+
+
 
 const router = createBrowserRouter([
 	{
@@ -17,6 +20,10 @@ const router = createBrowserRouter([
 		element: <JobsLanding />,
 	},
 	{
+		path: '/job-post/:company_name',
+		element: <EditResume />,
+	},
+	{
 		path: '/update-qualifications',
 		element: <UpdateRequirements />,
 	},
@@ -24,6 +31,10 @@ const router = createBrowserRouter([
 		path: '/search-job',
 		element: <SearchJob />,
 	},
+	{
+		path: '*',
+		element: <UserLanding />
+	}
 ]);
 
 hydrateRoot(

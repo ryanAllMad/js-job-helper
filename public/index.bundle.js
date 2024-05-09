@@ -22795,201 +22795,6 @@ const UserLanding = () => {
   });
 };
 /* harmony default export */ const Views_UserLanding = (UserLanding);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/Link/linkClasses.js
-
-
-function getLinkUtilityClass(slot) {
-  return generateUtilityClass_generateUtilityClass('MuiLink', slot);
-}
-const linkClasses = generateUtilityClasses('MuiLink', ['root', 'underlineNone', 'underlineHover', 'underlineAlways', 'button', 'focusVisible']);
-/* harmony default export */ const Link_linkClasses = (linkClasses);
-// EXTERNAL MODULE: ./node_modules/@mui/system/esm/style.js
-var esm_style = __webpack_require__(6481);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/Link/getTextDecoration.js
-
-
-const getTextDecoration_colorTransformations = {
-  primary: 'primary.main',
-  textPrimary: 'text.primary',
-  secondary: 'secondary.main',
-  textSecondary: 'text.secondary',
-  error: 'error.main'
-};
-const getTextDecoration_transformDeprecatedColors = color => {
-  return getTextDecoration_colorTransformations[color] || color;
-};
-const getTextDecoration = ({
-  theme,
-  ownerState
-}) => {
-  const transformedColor = getTextDecoration_transformDeprecatedColors(ownerState.color);
-  const color = (0,esm_style/* getPath */.Yn)(theme, `palette.${transformedColor}`, false) || ownerState.color;
-  const channelColor = (0,esm_style/* getPath */.Yn)(theme, `palette.${transformedColor}Channel`);
-  if ('vars' in theme && channelColor) {
-    return `rgba(${channelColor} / 0.4)`;
-  }
-  return (0,colorManipulator/* alpha */.X4)(color, 0.4);
-};
-/* harmony default export */ const Link_getTextDecoration = (getTextDecoration);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/Link/Link.js
-'use client';
-
-
-
-const Link_excluded = ["className", "color", "component", "onBlur", "onFocus", "TypographyClasses", "underline", "variant", "sx"];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const Link_useUtilityClasses = ownerState => {
-  const {
-    classes,
-    component,
-    focusVisible,
-    underline
-  } = ownerState;
-  const slots = {
-    root: ['root', `underline${utils_capitalize(underline)}`, component === 'button' && 'button', focusVisible && 'focusVisible']
-  };
-  return composeClasses(slots, getLinkUtilityClass, classes);
-};
-const LinkRoot = styles_styled(Typography_Typography, {
-  name: 'MuiLink',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const {
-      ownerState
-    } = props;
-    return [styles.root, styles[`underline${utils_capitalize(ownerState.underline)}`], ownerState.component === 'button' && styles.button];
-  }
-})(({
-  theme,
-  ownerState
-}) => {
-  return (0,esm_extends/* default */.A)({}, ownerState.underline === 'none' && {
-    textDecoration: 'none'
-  }, ownerState.underline === 'hover' && {
-    textDecoration: 'none',
-    '&:hover': {
-      textDecoration: 'underline'
-    }
-  }, ownerState.underline === 'always' && (0,esm_extends/* default */.A)({
-    textDecoration: 'underline'
-  }, ownerState.color !== 'inherit' && {
-    textDecorationColor: Link_getTextDecoration({
-      theme,
-      ownerState
-    })
-  }, {
-    '&:hover': {
-      textDecorationColor: 'inherit'
-    }
-  }), ownerState.component === 'button' && {
-    position: 'relative',
-    WebkitTapHighlightColor: 'transparent',
-    backgroundColor: 'transparent',
-    // Reset default value
-    // We disable the focus ring for mouse, touch and keyboard users.
-    outline: 0,
-    border: 0,
-    margin: 0,
-    // Remove the margin in Safari
-    borderRadius: 0,
-    padding: 0,
-    // Remove the padding in Firefox
-    cursor: 'pointer',
-    userSelect: 'none',
-    verticalAlign: 'middle',
-    MozAppearance: 'none',
-    // Reset
-    WebkitAppearance: 'none',
-    // Reset
-    '&::-moz-focus-inner': {
-      borderStyle: 'none' // Remove Firefox dotted outline.
-    },
-    [`&.${Link_linkClasses.focusVisible}`]: {
-      outline: 'auto'
-    }
-  });
-});
-const Link_Link = /*#__PURE__*/react.forwardRef(function Link(inProps, ref) {
-  const props = useThemeProps_useThemeProps({
-    props: inProps,
-    name: 'MuiLink'
-  });
-  const {
-      className,
-      color = 'primary',
-      component = 'a',
-      onBlur,
-      onFocus,
-      TypographyClasses,
-      underline = 'always',
-      variant = 'inherit',
-      sx
-    } = props,
-    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, Link_excluded);
-  const {
-    isFocusVisibleRef,
-    onBlur: handleBlurVisible,
-    onFocus: handleFocusVisible,
-    ref: focusVisibleRef
-  } = utils_useIsFocusVisible();
-  const [focusVisible, setFocusVisible] = react.useState(false);
-  const handlerRef = utils_useForkRef(ref, focusVisibleRef);
-  const handleBlur = event => {
-    handleBlurVisible(event);
-    if (isFocusVisibleRef.current === false) {
-      setFocusVisible(false);
-    }
-    if (onBlur) {
-      onBlur(event);
-    }
-  };
-  const handleFocus = event => {
-    handleFocusVisible(event);
-    if (isFocusVisibleRef.current === true) {
-      setFocusVisible(true);
-    }
-    if (onFocus) {
-      onFocus(event);
-    }
-  };
-  const ownerState = (0,esm_extends/* default */.A)({}, props, {
-    color,
-    component,
-    focusVisible,
-    underline,
-    variant
-  });
-  const classes = Link_useUtilityClasses(ownerState);
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(LinkRoot, (0,esm_extends/* default */.A)({
-    color: color,
-    className: dist_clsx(classes.root, className),
-    classes: TypographyClasses,
-    component: component,
-    onBlur: handleBlur,
-    onFocus: handleFocus,
-    ref: handlerRef,
-    ownerState: ownerState,
-    variant: variant,
-    sx: [...(!Object.keys(getTextDecoration_colorTransformations).includes(color) ? [{
-      color
-    }] : []), ...(Array.isArray(sx) ? sx : [sx])]
-  }, other));
-});
- false ? 0 : void 0;
-/* harmony default export */ const material_Link_Link = (Link_Link);
 ;// CONCATENATED MODULE: ./node_modules/@mui/system/esm/RtlProvider/index.js
 
 
@@ -33001,6 +32806,201 @@ const TextField = /*#__PURE__*/react.forwardRef(function TextField(inProps, ref)
 });
  false ? 0 : void 0;
 /* harmony default export */ const TextField_TextField = (TextField);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/Link/linkClasses.js
+
+
+function getLinkUtilityClass(slot) {
+  return generateUtilityClass_generateUtilityClass('MuiLink', slot);
+}
+const linkClasses = generateUtilityClasses('MuiLink', ['root', 'underlineNone', 'underlineHover', 'underlineAlways', 'button', 'focusVisible']);
+/* harmony default export */ const Link_linkClasses = (linkClasses);
+// EXTERNAL MODULE: ./node_modules/@mui/system/esm/style.js
+var esm_style = __webpack_require__(6481);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/Link/getTextDecoration.js
+
+
+const getTextDecoration_colorTransformations = {
+  primary: 'primary.main',
+  textPrimary: 'text.primary',
+  secondary: 'secondary.main',
+  textSecondary: 'text.secondary',
+  error: 'error.main'
+};
+const getTextDecoration_transformDeprecatedColors = color => {
+  return getTextDecoration_colorTransformations[color] || color;
+};
+const getTextDecoration = ({
+  theme,
+  ownerState
+}) => {
+  const transformedColor = getTextDecoration_transformDeprecatedColors(ownerState.color);
+  const color = (0,esm_style/* getPath */.Yn)(theme, `palette.${transformedColor}`, false) || ownerState.color;
+  const channelColor = (0,esm_style/* getPath */.Yn)(theme, `palette.${transformedColor}Channel`);
+  if ('vars' in theme && channelColor) {
+    return `rgba(${channelColor} / 0.4)`;
+  }
+  return (0,colorManipulator/* alpha */.X4)(color, 0.4);
+};
+/* harmony default export */ const Link_getTextDecoration = (getTextDecoration);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/Link/Link.js
+'use client';
+
+
+
+const Link_excluded = ["className", "color", "component", "onBlur", "onFocus", "TypographyClasses", "underline", "variant", "sx"];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const Link_useUtilityClasses = ownerState => {
+  const {
+    classes,
+    component,
+    focusVisible,
+    underline
+  } = ownerState;
+  const slots = {
+    root: ['root', `underline${utils_capitalize(underline)}`, component === 'button' && 'button', focusVisible && 'focusVisible']
+  };
+  return composeClasses(slots, getLinkUtilityClass, classes);
+};
+const LinkRoot = styles_styled(Typography_Typography, {
+  name: 'MuiLink',
+  slot: 'Root',
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [styles.root, styles[`underline${utils_capitalize(ownerState.underline)}`], ownerState.component === 'button' && styles.button];
+  }
+})(({
+  theme,
+  ownerState
+}) => {
+  return (0,esm_extends/* default */.A)({}, ownerState.underline === 'none' && {
+    textDecoration: 'none'
+  }, ownerState.underline === 'hover' && {
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline'
+    }
+  }, ownerState.underline === 'always' && (0,esm_extends/* default */.A)({
+    textDecoration: 'underline'
+  }, ownerState.color !== 'inherit' && {
+    textDecorationColor: Link_getTextDecoration({
+      theme,
+      ownerState
+    })
+  }, {
+    '&:hover': {
+      textDecorationColor: 'inherit'
+    }
+  }), ownerState.component === 'button' && {
+    position: 'relative',
+    WebkitTapHighlightColor: 'transparent',
+    backgroundColor: 'transparent',
+    // Reset default value
+    // We disable the focus ring for mouse, touch and keyboard users.
+    outline: 0,
+    border: 0,
+    margin: 0,
+    // Remove the margin in Safari
+    borderRadius: 0,
+    padding: 0,
+    // Remove the padding in Firefox
+    cursor: 'pointer',
+    userSelect: 'none',
+    verticalAlign: 'middle',
+    MozAppearance: 'none',
+    // Reset
+    WebkitAppearance: 'none',
+    // Reset
+    '&::-moz-focus-inner': {
+      borderStyle: 'none' // Remove Firefox dotted outline.
+    },
+    [`&.${Link_linkClasses.focusVisible}`]: {
+      outline: 'auto'
+    }
+  });
+});
+const Link_Link = /*#__PURE__*/react.forwardRef(function Link(inProps, ref) {
+  const props = useThemeProps_useThemeProps({
+    props: inProps,
+    name: 'MuiLink'
+  });
+  const {
+      className,
+      color = 'primary',
+      component = 'a',
+      onBlur,
+      onFocus,
+      TypographyClasses,
+      underline = 'always',
+      variant = 'inherit',
+      sx
+    } = props,
+    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, Link_excluded);
+  const {
+    isFocusVisibleRef,
+    onBlur: handleBlurVisible,
+    onFocus: handleFocusVisible,
+    ref: focusVisibleRef
+  } = utils_useIsFocusVisible();
+  const [focusVisible, setFocusVisible] = react.useState(false);
+  const handlerRef = utils_useForkRef(ref, focusVisibleRef);
+  const handleBlur = event => {
+    handleBlurVisible(event);
+    if (isFocusVisibleRef.current === false) {
+      setFocusVisible(false);
+    }
+    if (onBlur) {
+      onBlur(event);
+    }
+  };
+  const handleFocus = event => {
+    handleFocusVisible(event);
+    if (isFocusVisibleRef.current === true) {
+      setFocusVisible(true);
+    }
+    if (onFocus) {
+      onFocus(event);
+    }
+  };
+  const ownerState = (0,esm_extends/* default */.A)({}, props, {
+    color,
+    component,
+    focusVisible,
+    underline,
+    variant
+  });
+  const classes = Link_useUtilityClasses(ownerState);
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(LinkRoot, (0,esm_extends/* default */.A)({
+    color: color,
+    className: dist_clsx(classes.root, className),
+    classes: TypographyClasses,
+    component: component,
+    onBlur: handleBlur,
+    onFocus: handleFocus,
+    ref: handlerRef,
+    ownerState: ownerState,
+    variant: variant,
+    sx: [...(!Object.keys(getTextDecoration_colorTransformations).includes(color) ? [{
+      color
+    }] : []), ...(Array.isArray(sx) ? sx : [sx])]
+  }, other));
+});
+ false ? 0 : void 0;
+/* harmony default export */ const material_Link_Link = (Link_Link);
 ;// CONCATENATED MODULE: ./node_modules/@mui/material/ListItem/listItemClasses.js
 
 
@@ -35268,7 +35268,62 @@ const AddQualification = props => {
   });
 };
 /* harmony default export */ const Blocks_AddQualification = (AddQualification);
+;// CONCATENATED MODULE: ./views/components/Blocks/AddJobPost.js
+
+
+
+
+
+const AddJobPost = props => {
+  const {
+    key,
+    onSubmit,
+    jobTitleInput,
+    companyNameInput,
+    jobFunctionInput,
+    dateAppliedInput,
+    submitButtonState,
+    submitButtonText
+  } = props;
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
+    children: /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
+      onSubmit: onSubmit,
+      children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
+        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          variant: "h2",
+          id: "job-post-form-heading",
+          children: "Job You're Applying to"
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
+          label: "Job Title",
+          id: "job-title",
+          children: jobTitleInput
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
+          label: "Company name",
+          id: "company",
+          children: companyNameInput
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
+          label: "Job Function",
+          id: "job-function",
+          children: jobFunctionInput
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
+          label: "Date Applied",
+          id: "date-applied",
+          labelSx: {
+            marginTop: '50px'
+          },
+          children: dateAppliedInput
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+          disabled: submitButtonState,
+          type: "submit",
+          children: submitButtonText
+        })]
+      })
+    }, key)
+  });
+};
+/* harmony default export */ const Blocks_AddJobPost = (AddJobPost);
 ;// CONCATENATED MODULE: ./views/components/Blocks/CreateJob.js
+
 
 
 
@@ -35415,12 +35470,9 @@ const CreateJob = () => {
   };
   return /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
     children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
-      children: ["After following these 3 steps your resume will be ready at the bottom of the page. If you need to make edits after you complete this page, head over to the", ' ', /*#__PURE__*/(0,jsx_runtime.jsx)(material_Link_Link, {
-        href: "/search-job",
-        children: "search job"
-      }), " page and search by company name.", /*#__PURE__*/(0,jsx_runtime.jsx)("br", {}), /*#__PURE__*/(0,jsx_runtime.jsx)("strong", {
+      children: ["After following these 3 steps your resume will be ready at the bottom of the page. If you need to make edits after you complete this page, you can click the \"Edit Resume\" button at the bottom.", /*#__PURE__*/(0,jsx_runtime.jsx)("br", {}), /*#__PURE__*/(0,jsx_runtime.jsx)("strong", {
         children: "How to add a job post:"
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)("br", {}), "1. Fill out all of the Job Requirements. ", /*#__PURE__*/(0,jsx_runtime.jsx)("br", {}), "2. Enter the Job Post Information ", /*#__PURE__*/(0,jsx_runtime.jsx)("br", {}), "3. Fill out your qualifications"]
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)("br", {}), "1. Fill out *ALL* of the Job Requirements. ", /*#__PURE__*/(0,jsx_runtime.jsx)("br", {}), "2. Enter the Job Post Information ", /*#__PURE__*/(0,jsx_runtime.jsx)("br", {}), "3. Fill out your qualifications"]
     }), /*#__PURE__*/(0,jsx_runtime.jsxs)(AppBar_AppBar, {
       sx: {
         backgroundColor: '#fff',
@@ -35505,146 +35557,122 @@ const CreateJob = () => {
           children: "Save All"
         })]
       })
-    }, 1), reqIds && reqIds.length > 0 && /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
+    }, 1), reqIds && reqIds.length > 0 && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_AddJobPost, {
       onSubmit: handleSubmit(data => handleSaveJob(data)),
-      children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
-        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-          variant: "h2",
-          id: "job-post-form-heading",
-          children: "Job You're Applying to"
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
-          label: "Job Title",
-          id: "job-title",
-          children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-            control: control,
-            name: "jobTitle",
-            rules: {
-              required: true
+      jobTitleInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+        control: control,
+        name: "jobTitle",
+        rules: {
+          required: true
+        },
+        render: _ref3 => {
+          let {
+            field: {
+              onChange,
+              onBlur,
+              value,
+              ref
+            }
+          } = _ref3;
+          return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+            onChange: onChange,
+            onBlur: onBlur,
+            value: value,
+            inputRef: ref,
+            type: "text",
+            id: "job-title",
+            disabled: jobDisableState
+          });
+        },
+        defaultValue: ""
+      }),
+      companyNameInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+        control: control,
+        name: "company",
+        rules: {
+          required: true
+        },
+        render: _ref4 => {
+          let {
+            field: {
+              onChange,
+              onBlur,
+              value,
+              ref
+            }
+          } = _ref4;
+          return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+            onChange: onChange,
+            onBlur: onBlur,
+            value: value,
+            inputRef: ref,
+            type: "text",
+            id: "company",
+            disabled: jobDisableState
+          });
+        },
+        defaultValue: ""
+      }),
+      jobFunctionInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+        control: control,
+        name: "jobFunction",
+        rules: {
+          required: true
+        },
+        render: _ref5 => {
+          let {
+            field: {
+              onChange,
+              onBlur,
+              value,
+              ref
+            }
+          } = _ref5;
+          return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+            onChange: onChange,
+            onBlur: onBlur,
+            value: value,
+            inputRef: ref,
+            type: "text",
+            id: "job-function",
+            disabled: jobDisableState
+          });
+        },
+        defaultValue: ""
+      }),
+      dateAppliedInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+        control: control,
+        name: "dateApplied",
+        rules: {
+          required: 'Please enter the first date you started in this position'
+        },
+        render: _ref6 => {
+          let {
+            field: {
+              onChange,
+              onBlur,
+              ref,
+              value
+            }
+          } = _ref6;
+          return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+            sx: {
+              marginTop: '100px !important',
+              maxWidth: '200px'
             },
-            render: _ref3 => {
-              let {
-                field: {
-                  onChange,
-                  onBlur,
-                  value,
-                  ref
-                }
-              } = _ref3;
-              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-                onChange: onChange,
-                onBlur: onBlur,
-                value: value,
-                inputRef: ref,
-                type: "text",
-                id: "job-title",
-                disabled: jobDisableState
-              });
-            },
-            defaultValue: ""
-          })
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
-          label: "Company name",
-          id: "company",
-          children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-            control: control,
-            name: "company",
-            rules: {
-              required: true
-            },
-            render: _ref4 => {
-              let {
-                field: {
-                  onChange,
-                  onBlur,
-                  value,
-                  ref
-                }
-              } = _ref4;
-              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-                onChange: onChange,
-                onBlur: onBlur,
-                value: value,
-                inputRef: ref,
-                type: "text",
-                id: "company",
-                disabled: jobDisableState
-              });
-            },
-            defaultValue: ""
-          })
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
-          label: "Job Function",
-          id: "job-function",
-          children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-            control: control,
-            name: "jobFunction",
-            rules: {
-              required: true
-            },
-            render: _ref5 => {
-              let {
-                field: {
-                  onChange,
-                  onBlur,
-                  value,
-                  ref
-                }
-              } = _ref5;
-              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-                onChange: onChange,
-                onBlur: onBlur,
-                value: value,
-                inputRef: ref,
-                type: "text",
-                id: "job-function",
-                disabled: jobDisableState
-              });
-            },
-            defaultValue: ""
-          })
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
-          label: "Date Applied",
-          id: "date-applied",
-          labelSx: {
-            marginTop: '50px'
-          },
-          children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-            control: control,
-            name: "dateApplied",
-            rules: {
-              required: 'Please enter the first date you started in this position'
-            },
-            render: _ref6 => {
-              let {
-                field: {
-                  onChange,
-                  onBlur,
-                  ref,
-                  value
-                }
-              } = _ref6;
-              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-                sx: {
-                  marginTop: '100px !important',
-                  maxWidth: '200px'
-                },
-                type: "date",
-                inputRef: ref,
-                onChange: onChange,
-                onBlur: onBlur,
-                value: value,
-                id: "date-applied",
-                disabled: jobDisableState
-              });
-            },
-            defaultValue: ""
-          })
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-          disabled: !isValid || jobDisableState,
-          type: "submit",
-          children: "Save"
-        })]
-      })
+            type: "date",
+            inputRef: ref,
+            onChange: onChange,
+            onBlur: onBlur,
+            value: value,
+            id: "date-applied",
+            disabled: jobDisableState
+          });
+        },
+        defaultValue: ""
+      }),
+      submitButtonState: !isValid || jobDisableState,
+      submitButtonText: "Save"
     }, 2), requirementsArray && !noMoreRequirements && responseState && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_AddQualification, {
       onSubmit: handleSubmitResponses(data => handleAddResponse(data, requirementsArray[0]._id)),
       onMissing: () => handleNoResponse(requirementsArray[0]._id),
@@ -35683,8 +35711,14 @@ const CreateJob = () => {
         },
         defaultValue: ""
       })
-    }, 3), requirementsArray && noMoreRequirements && responseState && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Resume, {
-      fetchUrl: `http://localhost:3000/api/job-post/${resumeLocation}`
+    }, 3), requirementsArray && noMoreRequirements && responseState && /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Resume, {
+        fetchUrl: `http://localhost:3000/api/job-post/${resumeLocation}`
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Button_Button, {
+        variant: "outlined",
+        href: `/job-post/${resumeLocation}`,
+        children: "Edit Resume"
+      })]
     }), progress > 60 && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
       onClick: () => window.location.reload(),
       type: "button",
@@ -35806,8 +35840,19 @@ const SearchJob = () => {
           })
         }) : 'No jobs, go to job post to input new jobs']
       }), /*#__PURE__*/(0,jsx_runtime.jsx)(Paper_Paper, {
-        children: resumeLocation && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Resume, {
-          fetchUrl: `http://localhost:3000/api/job-post/${resumeLocation}`
+        elevation: 0,
+        children: resumeLocation && /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+          children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Resume, {
+            fetchUrl: `http://localhost:3000/api/job-post/${resumeLocation}`
+          }), /*#__PURE__*/(0,jsx_runtime.jsx)(Button_Button, {
+            sx: {
+              minWidth: '100%',
+              marginTop: '20px'
+            },
+            variant: "outlined",
+            href: `/job-post/${resumeLocation}`,
+            children: "Edit Resume"
+          })]
         })
       })]
     })
@@ -36683,7 +36728,234 @@ class AdapterDayjs {
     return value.day() + 1;
   }
 }
+;// CONCATENATED MODULE: ./views/components/Views/EditResume.js
+
+
+
+
+
+
+
+
+const EditResume = () => {
+  const location = dist_useLocation();
+  const {
+    control,
+    handleSubmit,
+    formState: {
+      isValid
+    }
+  } = useForm();
+  const [path, setPath] = react.useState(null);
+  const [job, setJob] = react.useState({});
+  const [value, setValue] = react.useState(0);
+  const [jobDisableState, setJobDisableState] = react.useState(false);
+  react.useEffect(() => {
+    if (location) {
+      setPath(location.pathname);
+      getJob().then(res => {
+        if (res && res.length > 0) {
+          setJob(res[0]);
+          const allRequirements = [];
+          const allQualifications = [];
+          res[0].requirements.forEach(req => allRequirements.push(req.req_title));
+          res[0].requirements.forEach(req => {
+            if (req.res_content && (req.res_content !== '' || req.res_content !== ' ')) {
+              allQualifications.push(req.res_content);
+            }
+          });
+          const guage = Math.round(allQualifications.length / allRequirements.length * 100);
+          setValue(guage);
+        }
+      });
+    }
+  }, [location, path]);
+  const getJob = async () => {
+    try {
+      const reqPromise = await fetch(`http://localhost:3000/api${path}`, {
+        method: 'GET'
+      }).then(res => res.json()).then(res => {
+        if (res.status === 'success') {
+          if (!res.data) {
+            console.log('no data');
+          }
+          return res.data;
+        } else {
+          console.log(res.status);
+        }
+      });
+      return reqPromise;
+    } catch (err) {
+      console.log(JSON.stringify(err));
+    }
+  };
+  const handleSaveJob = async data => {
+    setJobDisableState(true);
+    const parsedCompanyName = data.company.toLowerCase().replace(' ', '-');
+    setResumeLocation(`${parsedCompanyName}`);
+    const postJob = await fetch(`http://localhost:3000/api${path}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        job_title: data.jobTitle,
+        company_name: parsedCompanyName,
+        job_function: data.jobFunction,
+        date_applied: data.dateApplied,
+        requirements: reqIds
+      })
+    });
+    return postJob.json();
+  };
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
+    children: /*#__PURE__*/(0,jsx_runtime.jsx)(Layout_MainBody, {
+      sx: {
+        paddingTop: '200px'
+      },
+      children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
+        spacing: 2,
+        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          variant: "h1",
+          children: "Update Resume"
+        }), path && job && job.company_name && /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+          children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Guage, {
+            value: value
+          }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_AddJobPost, {
+            onSubmit: handleSubmit(data => handleSaveJob(data)),
+            jobTitleInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+              control: control,
+              name: "jobTitle",
+              rules: {
+                required: true
+              },
+              render: _ref => {
+                let {
+                  field: {
+                    onChange,
+                    onBlur,
+                    value,
+                    ref
+                  }
+                } = _ref;
+                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                  onChange: onChange,
+                  onBlur: onBlur,
+                  value: value,
+                  inputRef: ref,
+                  type: "text",
+                  id: "job-title",
+                  disabled: jobDisableState
+                });
+              },
+              defaultValue: job.job_title
+            }),
+            companyNameInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+              control: control,
+              name: "company",
+              rules: {
+                required: true
+              },
+              render: _ref2 => {
+                let {
+                  field: {
+                    onChange,
+                    onBlur,
+                    value,
+                    ref
+                  }
+                } = _ref2;
+                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                  onChange: onChange,
+                  onBlur: onBlur,
+                  value: value,
+                  inputRef: ref,
+                  type: "text",
+                  id: "company",
+                  disabled: jobDisableState
+                });
+              },
+              defaultValue: job.company_name
+            }),
+            jobFunctionInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+              control: control,
+              name: "jobFunction",
+              rules: {
+                required: true
+              },
+              render: _ref3 => {
+                let {
+                  field: {
+                    onChange,
+                    onBlur,
+                    value,
+                    ref
+                  }
+                } = _ref3;
+                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                  onChange: onChange,
+                  onBlur: onBlur,
+                  value: value,
+                  inputRef: ref,
+                  type: "text",
+                  id: "job-function",
+                  disabled: jobDisableState
+                });
+              },
+              defaultValue: job.job_function
+            }),
+            dateAppliedInput: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+              control: control,
+              name: "dateApplied",
+              rules: {
+                required: 'Please enter the first date you started in this position'
+              },
+              render: _ref4 => {
+                let {
+                  field: {
+                    onChange,
+                    onBlur,
+                    ref,
+                    value
+                  }
+                } = _ref4;
+                return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                  sx: {
+                    marginTop: '100px !important',
+                    maxWidth: '200px'
+                  },
+                  type: "date",
+                  inputRef: ref,
+                  onChange: onChange,
+                  onBlur: onBlur,
+                  value: value,
+                  id: "date-applied",
+                  disabled: jobDisableState
+                });
+              },
+              defaultValue: job.date_applied
+            }),
+            submitButtonState: !isValid || jobDisableState,
+            submitButtonText: "Update"
+          }, 2)]
+        }), path && (!job || !job.company_name) && /*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
+          children: ["That company name isn't found. Try searching at", ' ', /*#__PURE__*/(0,jsx_runtime.jsx)(Button_Button, {
+            variant: "outlined",
+            href: "/search-job",
+            children: "search job"
+          }), /*#__PURE__*/(0,jsx_runtime.jsx)("br", {}), " Or try adding a new", ' ', /*#__PURE__*/(0,jsx_runtime.jsx)(Button_Button, {
+            variant: "outlined",
+            href: "/add-job",
+            children: "job post"
+          })]
+        })]
+      })
+    })
+  });
+};
+/* harmony default export */ const Views_EditResume = (EditResume);
 ;// CONCATENATED MODULE: ./views/index.js
+
 
 
 
@@ -36700,11 +36972,17 @@ const router = createBrowserRouter([{
   path: '/add-job',
   element: /*#__PURE__*/(0,jsx_runtime.jsx)(Views_JobsLanding, {})
 }, {
+  path: '/job-post/:company_name',
+  element: /*#__PURE__*/(0,jsx_runtime.jsx)(Views_EditResume, {})
+}, {
   path: '/update-qualifications',
   element: /*#__PURE__*/(0,jsx_runtime.jsx)(Views_UpdateRequirements, {})
 }, {
   path: '/search-job',
   element: /*#__PURE__*/(0,jsx_runtime.jsx)(Views_SearchJob, {})
+}, {
+  path: '*',
+  element: /*#__PURE__*/(0,jsx_runtime.jsx)(Views_UserLanding, {})
 }]);
 (0,client/* hydrateRoot */.c)(document.getElementById('root'), /*#__PURE__*/(0,jsx_runtime.jsx)(LocalizationProvider, {
   dateAdapter: AdapterDayjs,

@@ -49,4 +49,13 @@ export const getSingleJobPost = async (req, res) => {
 	}
 };
 
-export const updateJobPost = updateOne(JobPost)
+export const updateSingleJobPost = async (req, res) => {
+	const document = await JobPost.findOneAndUpdate({ company_name: req.params.company_name }, req.body)
+	if(!document) {
+		return next(new Error('No document found with id'))
+	}
+	res.status(200).json({
+		status: 'success',
+		data: document
+	})
+}
