@@ -9,6 +9,17 @@ const getUser = fetchData('http://localhost:3000/api/user');
 const PositionView = (props) => {
 	const { jobTitle, jobFunction, requirements, guageValue } = props;
 	const userDetails = getUser.read();
+	const [firstReqs, setFirstReqs] = React.useState()
+	const [nextReqs, setNextReqs] = React.useState()
+	React.useEffect(() => {
+		if(requirements && requirements.length > 0) {
+			const expMath = Math.round(requirements.length/userDetails[0].experience.length) + 1
+			setFirstReqs(requirements.filter((req, idx) => idx < expMath))
+			setNextReqs(requirements.filter((req, idx) => idx >= expMath))
+		}
+	}, [requirements])
+
+	
 	return (
 		<>
 			<Paper
@@ -22,6 +33,7 @@ const PositionView = (props) => {
 				elevation={2}
 			>
 				<Guage value={guageValue} />
+				{userDetails && userDetails.length > 0 && 
 				<Stack>
 					<Typography variant='h1'>{userDetails[0].name}</Typography>
 					<Typography variant='h2'>{jobTitle}</Typography>
@@ -58,13 +70,34 @@ const PositionView = (props) => {
 					<List>
 						{requirements &&
 							requirements.length > 0 &&
-							requirements.map((req) => (
+							firstReqs &&
+							firstReqs.map((req) => (
 								<ListItem key={req._id}>
 									{req.res_content}
 								</ListItem>
 							))}
 					</List>
-				</Stack>
+					<Typography variant='h3'>
+						{userDetails[0].experience[1].title}
+					</Typography>
+					<Typography variant='h4'>
+						{userDetails[0].experience[1].company}
+					</Typography>
+					<Typography>
+						From: {userDetails[0].experience[1].year_started} - To:{' '}
+						{userDetails[0].experience[1].year_ended}
+					</Typography>
+					<List>
+						{requirements &&
+							requirements.length > 0 &&
+							nextReqs &&
+							nextReqs.map((req) => (
+								<ListItem key={req._id}>
+									{req.res_content}
+								</ListItem>
+							))}
+					</List>
+				</Stack>}
 			</Paper>
 		</>
 	);

@@ -17,16 +17,18 @@ import fetchData from '../getters/fetchData.js';
 const getRequirements = fetchData('http://localhost:3000/api/requirements/');
 
 const UpdateRequirements = () => {
-	const { control, handleSubmit } = useForm();
+	const { control, handleSubmit, formState: { isValid: reqValid, isSubmitting, isSubmitSuccessful } } = useForm();
 	const {
 		control: controlRes,
 		handleSubmit: handleSubmitResponses,
-		formState: { isSubmitSuccessful },
+		formState: { isValid },
 		reset,
 	} = useForm();
 	const allReqs = getRequirements.read();
-	const [reqTitleLocation, setReqTitleLocation] = React.useState(null)
+	const [reqIDLocation, setReqIDLocation] = React.useState(null)
 	const [qualification, setQualification] = React.useState()
+	const [addQualState, setAddQualState] = React.useState(false)
+	const [remQualState, setRemQualState] = React.useState(false)
 
 	const getRequriement = async (reqLocation) => {
 		try {
@@ -53,11 +55,16 @@ const UpdateRequirements = () => {
 		}
 	};
 	const handleSetReqLocation = (data) => {
-		setReqTitleLocation(data.searchRequirements)
-		getRequriement(data.searchRequirements).then((res => {
-			setQualification(res)
-			reset({ updateQualification: res[0].res_content})
-		}))
+		const thisReq = allReqs.filter((req) => req.req_title === data.searchRequirements)
+		if(thisReq && thisReq.length > 0) {
+			if(!thisReq[0]._id) {
+				return
+			}
+			setReqIDLocation(thisReq[0]._id)
+			getRequriement(thisReq[0]._id).then((res => {
+				setQualification(res)
+			}))
+		}
 	};
 
 	const handleAddResponse = async (data, id) => {
@@ -73,6 +80,13 @@ const UpdateRequirements = () => {
 				}),
 			}
 		);
+		if (updateRequirement.status === 200) {
+			setAddQualState(true)
+			setTimeout(() => {
+				setAddQualState(false)
+			}, [500])
+
+		}
 		return updateRequirement.json();
 	};
 	const handleMissing = async (id) => {
@@ -82,14 +96,24 @@ const UpdateRequirements = () => {
 				method: 'DELETE',
 			}
 		);
-		setReqTitleLocation(null)
+		if(updateRequirement.status === 204) {
+			setRemQualState(true)
+			setTimeout(() => {
+				setRemQualState(false)
+			}, [500])
+		}
+		setReqIDLocation(null)
 		return updateRequirement;
 	}
 	React.useEffect(() => {
-		if(isSubmitSuccessful) {
-			reset()
+		if((isSubmitting || isSubmitSuccessful) && qualification) {
+			if(!qualification.res_content) {
+				reset({updateQualification: ''})
+			} else {
+				reset({updateQualification: qualification.res_content})
+			}
 		}
-	}, [isSubmitSuccessful])
+	}, [qualification, isSubmitting, isSubmitSuccessful])
 
 	return (
 		<>
@@ -119,8 +143,9 @@ const UpdateRequirements = () => {
 											control={control}
 											onChange={(data) => data}
 											name='searchRequirements'
+											rules={{ required: true }}
 											render={({
-												field: { onChange },
+												field: { onChange, value, ref },
 											}) => (
 												<Autocomplete
 													disableClearable
@@ -139,9 +164,11 @@ const UpdateRequirements = () => {
 														/>
 													)}
 													onChange={(e, data) => {
-														setReqTitleLocation(null);
+														setReqIDLocation(null);
 														onChange(data);
 													}}
+													value={value}
+													ref={ref}
 												/>
 											)}
 											defaultValue=''
@@ -154,6 +181,7 @@ const UpdateRequirements = () => {
 									>
 										<ContainedButton
 											type='submit'
+											disabled={!reqValid}
 											sx={{
 												margin: '0.33em auto 0.25em !important;',
 											}}
@@ -168,15 +196,21 @@ const UpdateRequirements = () => {
 						'No job requirements have been input. Go to "add a job" to add requirements.'
 					)}
 				</Stack>
-				{reqTitleLocation && qualification && qualification.length > 0 && (
+				{reqIDLocation && qualification && 
+				<>
+				{qualification.res_content &&
+				(
 					<AddQualification key={2} onSubmit={handleSubmitResponses((data) =>
-						handleAddResponse(data, qualification[0]._id)
+						handleAddResponse(data, qualification._id)
 					)}
 					qualificationDesc={`Update this qualification`}
-					thisReq={qualification[0].req_title}
-					addButtonText="Update Qualification"
-					removeButtonText="Set to Missing Qualification"
-					onMissing={() => handleMissing(qualification[0]._id)}>
+					thisReq={qualification.req_title}
+					addButtonText={!addQualState ? 'Update Qualification' : 'Qualification Updated!'}
+					removeButtonText={!remQualState ? 'Set to Missing Qualification' : 'Qualification Removed'}
+					addButtonState={!isValid}
+					addPessedButtonState={addQualState}
+					removePressedButtonState={remQualState}
+					onMissing={() => handleMissing(qualification._id)}>
 						<Controller
 							control={controlRes}
 							name='updateQualification'
@@ -196,10 +230,49 @@ const UpdateRequirements = () => {
 									id='add-response'
 								/>
 							)}
-							defaultValue={qualification[0].res_content}
+							defaultValue={qualification.res_content}
 						/>
 					</AddQualification>
 				)}
+				{!qualification.res_content &&
+				(
+					<AddQualification key={2} onSubmit={handleSubmitResponses((data) =>
+						handleAddResponse(data, qualification._id)
+					)}
+					qualificationDesc={`Update this qualification`}
+					thisReq={qualification.req_title}
+					addButtonText={!addQualState ? 'Update Qualification' : 'Qualification Updated!'}
+					removeButtonText={!remQualState ? 'Set to Missing Qualification' : 'Qualification Removed'}
+					addButtonState={!isValid}
+					addPessedButtonState={addQualState}
+					removePressedButtonState={remQualState}
+					onMissing={() => handleMissing(qualification._id)}>
+						<Controller
+							control={controlRes}
+							name='updateQualification'
+							rules={{ required: true }}
+							render={({
+								field: { onChange, onBlur, value, ref },
+							}) => (
+								<Input
+									onChange={onChange}
+									onBlur={onBlur}
+									placeholder='Update qualification'
+									value={value}
+									inputRef={ref}
+									type='text'
+									multiline
+									rows={4}
+									id='add-response'
+								/>
+							)}
+							defaultValue=""
+						/>
+					</AddQualification>
+				)
+				}
+				</>
+				}
 			</MainBody>
 		</>
 	);

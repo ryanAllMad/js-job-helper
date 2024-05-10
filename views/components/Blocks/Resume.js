@@ -32,20 +32,22 @@ const Resume = (props) => {
 		}
 	};
 	React.useEffect(() => {
-		getJob().then((res => {
-			setJob(res[0])
-			const allRequirements = []
-			const allQualifications = []
-			res[0].requirements.forEach((req) => allRequirements.push(req.req_title))
-			res[0].requirements.forEach((req) => {
-				if(req.res_content && (req.res_content !== "" || req.res_content !== " ")) {
-					allQualifications.push(req.res_content)
-				}
-			})
-			const guage = Math.round((allQualifications.length/allRequirements.length) * 100)
-			setValue(guage)
+		if(fetchUrl) {
+			getJob().then((res => {
+				setJob(res[0])
+				const allRequirements = []
+				const allQualifications = []
+				res[0].requirements.forEach((req) => allRequirements.push(req.req_title))
+				res[0].requirements.forEach((req) => {
+					if(req.res_content && (req.res_content !== "" || req.res_content !== " ")) {
+						allQualifications.push(req.res_content)
+					}
+				})
+				const guage = Math.round((allQualifications.length/allRequirements.length) * 100)
+				setValue(guage)
+			}
+			))
 		}
-		))
 	}, [])
 	return (
 		<>

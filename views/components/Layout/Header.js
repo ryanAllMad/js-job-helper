@@ -41,7 +41,7 @@ const Header = () => {
 							component='li'
 							sx={{ paddingTop: '16px'}}
 						>
-							<NavLink to='/search-job'>Search Job</NavLink>
+							<NavLink to='/search-resume'>Search Resume</NavLink>
 						</Grid>
 					</Grid>
 				</nav>

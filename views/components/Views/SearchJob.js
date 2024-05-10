@@ -19,7 +19,7 @@ const getJobs = fetchData('http://localhost:3000/api/job-post/');
 
 const SearchJob = () => {
 	const [resumeLocation, setResumeLocation] = React.useState(null);
-	const { control, handleSubmit } = useForm();
+	const { control, handleSubmit, formState: {isValid} } = useForm();
 	const allJobs = getJobs.read();
 	const handleSetCompanyName = (data) => {
 		setResumeLocation(data.searchJob)
@@ -46,6 +46,7 @@ const SearchJob = () => {
 											control={control}
 											onChange={(data) => data}
 											name='searchJob'
+											rules={{ required: true }}
 											render={({
 												field: { onChange },
 											}) => (
@@ -80,7 +81,7 @@ const SearchJob = () => {
 										xs={12}
 										md={6}
 									>
-										<ContainedButton type='submit' sx={{margin: '0.33em auto 0.25em !important;'}}>
+										<ContainedButton disabled={!isValid} type='submit' sx={{margin: '0.33em auto 0.25em !important;'}}>
 											Ok
 										</ContainedButton>
 									</Grid>

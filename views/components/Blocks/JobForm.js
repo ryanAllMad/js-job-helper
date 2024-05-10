@@ -24,6 +24,7 @@ const JobForm = (props) => {
 		defaultValueJobFunc,
 		defaultValueDateApplied,
 		submitButtonText,
+		onSaveJob
 	} = props;
 	const {
 		control,
@@ -138,7 +139,7 @@ const JobForm = (props) => {
 	const handleSaveJob = async (data) => {
 		setJobDisableState(true);
 		setProgress(60);
-		const parsedCompanyName = data.company.toLowerCase().replace(' ', '-');
+		const parsedCompanyName = data.company.toLowerCase().replaceAll('/', '-').replaceAll(' ', '-');
 		setResumeLocation(`${parsedCompanyName}`);
 		const postJob = await fetch(saveJobUrl, {
 			method: 'POST',
@@ -162,6 +163,7 @@ const JobForm = (props) => {
 		);
 		if (newRequirementsArr.length === 0) {
 			setProgress(100);
+			onSaveJob()
 		}
 		const updateRequirement = await fetch(
 			`http://localhost:3000/api/requirements/${id}`,
@@ -197,19 +199,20 @@ const JobForm = (props) => {
 			);
 			if(newRequirementsArr.length === 0) {
 				setProgress(100);
+				onSaveJob()
 			}
 			setRequirementsArray(newRequirementsArr);
 			setRemQualState(true)
+			setTimeout(() => {
+				setRemQualState(false)
+			}, [500])
 			if (newRequirementsArr.length > 0 && newRequirementsArr[0].res_content) {
 				reset({response: newRequirementsArr[0].res_content});
 			} else {
 				reset({response: ''});
 			}
-			setTimeout(() => {
-				setRemQualState(false)
-			}, [500])
 		} 
-		if (!createJob && requirementsArray[0].res_content) {
+		if (!createJob && requirementsArray.length > 0 && requirementsArray[0].res_content) {
 			const updateRequirement = await fetch(
 				`http://localhost:3000/api/requirements/${id}`,
 				{

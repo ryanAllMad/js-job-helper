@@ -15667,8 +15667,8 @@ const Header = () => {
               paddingTop: '16px'
             },
             children: /*#__PURE__*/(0,jsx_runtime.jsx)(NavLink, {
-              to: "/search-job",
-              children: "Search Job"
+              to: "/search-resume",
+              children: "Search Resume"
             })
           })]
         })
@@ -34829,6 +34829,15 @@ const PositionView = props => {
     guageValue
   } = props;
   const userDetails = PositionView_getUser.read();
+  const [firstReqs, setFirstReqs] = react.useState();
+  const [nextReqs, setNextReqs] = react.useState();
+  react.useEffect(() => {
+    if (requirements && requirements.length > 0) {
+      const expMath = Math.round(requirements.length / userDetails[0].experience.length) + 1;
+      setFirstReqs(requirements.filter((req, idx) => idx < expMath));
+      setNextReqs(requirements.filter((req, idx) => idx >= expMath));
+    }
+  }, [requirements]);
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
     children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Paper_Paper, {
       sx: {
@@ -34841,7 +34850,7 @@ const PositionView = props => {
       elevation: 2,
       children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Guage, {
         value: guageValue
-      }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
+      }), userDetails && userDetails.length > 0 && /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
         children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
           variant: "h1",
           children: userDetails[0].name
@@ -34875,7 +34884,19 @@ const PositionView = props => {
         }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
           children: ["From: ", userDetails[0].experience[0].year_started, " - To:", ' ', userDetails[0].experience[0].year_ended]
         }), /*#__PURE__*/(0,jsx_runtime.jsx)(List_List, {
-          children: requirements && requirements.length > 0 && requirements.map(req => /*#__PURE__*/(0,jsx_runtime.jsx)(ListItem_ListItem, {
+          children: requirements && requirements.length > 0 && firstReqs && firstReqs.map(req => /*#__PURE__*/(0,jsx_runtime.jsx)(ListItem_ListItem, {
+            children: req.res_content
+          }, req._id))
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          variant: "h3",
+          children: userDetails[0].experience[1].title
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          variant: "h4",
+          children: userDetails[0].experience[1].company
+        }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
+          children: ["From: ", userDetails[0].experience[1].year_started, " - To:", ' ', userDetails[0].experience[1].year_ended]
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(List_List, {
+          children: requirements && requirements.length > 0 && nextReqs && nextReqs.map(req => /*#__PURE__*/(0,jsx_runtime.jsx)(ListItem_ListItem, {
             children: req.res_content
           }, req._id))
         })]
@@ -34915,19 +34936,21 @@ const Resume = props => {
     }
   };
   react.useEffect(() => {
-    getJob().then(res => {
-      setJob(res[0]);
-      const allRequirements = [];
-      const allQualifications = [];
-      res[0].requirements.forEach(req => allRequirements.push(req.req_title));
-      res[0].requirements.forEach(req => {
-        if (req.res_content && (req.res_content !== "" || req.res_content !== " ")) {
-          allQualifications.push(req.res_content);
-        }
+    if (fetchUrl) {
+      getJob().then(res => {
+        setJob(res[0]);
+        const allRequirements = [];
+        const allQualifications = [];
+        res[0].requirements.forEach(req => allRequirements.push(req.req_title));
+        res[0].requirements.forEach(req => {
+          if (req.res_content && (req.res_content !== "" || req.res_content !== " ")) {
+            allQualifications.push(req.res_content);
+          }
+        });
+        const guage = Math.round(allQualifications.length / allRequirements.length * 100);
+        setValue(guage);
       });
-      const guage = Math.round(allQualifications.length / allRequirements.length * 100);
-      setValue(guage);
-    });
+    }
   }, []);
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
     children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
@@ -35754,7 +35777,8 @@ const JobForm = props => {
     defaultValueCompName,
     defaultValueJobFunc,
     defaultValueDateApplied,
-    submitButtonText
+    submitButtonText,
+    onSaveJob
   } = props;
   const {
     control,
@@ -35857,7 +35881,7 @@ const JobForm = props => {
   const handleSaveJob = async data => {
     setJobDisableState(true);
     setProgress(60);
-    const parsedCompanyName = data.company.toLowerCase().replace(' ', '-');
+    const parsedCompanyName = data.company.toLowerCase().replaceAll('/', '-').replaceAll(' ', '-');
     setResumeLocation(`${parsedCompanyName}`);
     const postJob = await fetch(saveJobUrl, {
       method: 'POST',
@@ -35879,6 +35903,7 @@ const JobForm = props => {
     const newRequirementsArr = requirementsArray.filter(d => d._id !== id);
     if (newRequirementsArr.length === 0) {
       setProgress(100);
+      onSaveJob();
     }
     const updateRequirement = await fetch(`http://localhost:3000/api/requirements/${id}`, {
       method: 'POST',
@@ -35912,9 +35937,13 @@ const JobForm = props => {
       const newRequirementsArr = requirementsArray.filter(d => d._id !== id);
       if (newRequirementsArr.length === 0) {
         setProgress(100);
+        onSaveJob();
       }
       setRequirementsArray(newRequirementsArr);
       setRemQualState(true);
+      setTimeout(() => {
+        setRemQualState(false);
+      }, [500]);
       if (newRequirementsArr.length > 0 && newRequirementsArr[0].res_content) {
         reset({
           response: newRequirementsArr[0].res_content
@@ -35924,11 +35953,8 @@ const JobForm = props => {
           response: ''
         });
       }
-      setTimeout(() => {
-        setRemQualState(false);
-      }, [500]);
     }
-    if (!createJob && requirementsArray[0].res_content) {
+    if (!createJob && requirementsArray.length > 0 && requirementsArray[0].res_content) {
       const updateRequirement = await fetch(`http://localhost:3000/api/requirements/${id}`, {
         method: 'DELETE'
       });
@@ -36206,10 +36232,7 @@ const CreateJob = () => {
 
 
 
-
-const getJobs = getters_fetchData(`http://localhost:3000/api/job-post`);
 const JobsLanding = () => {
-  const jobsExist = getJobs.read();
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
     children: /*#__PURE__*/(0,jsx_runtime.jsx)(Layout_MainBody, {
       sx: {
@@ -36235,14 +36258,17 @@ const JobsLanding = () => {
 
 
 
-const SearchJob_getJobs = getters_fetchData('http://localhost:3000/api/job-post/');
+const getJobs = getters_fetchData('http://localhost:3000/api/job-post/');
 const SearchJob = () => {
   const [resumeLocation, setResumeLocation] = react.useState(null);
   const {
     control,
-    handleSubmit
+    handleSubmit,
+    formState: {
+      isValid
+    }
   } = useForm();
-  const allJobs = SearchJob_getJobs.read();
+  const allJobs = getJobs.read();
   const handleSetCompanyName = data => {
     setResumeLocation(data.searchJob);
   };
@@ -36272,6 +36298,9 @@ const SearchJob = () => {
                   control: control,
                   onChange: data => data,
                   name: "searchJob",
+                  rules: {
+                    required: true
+                  },
                   render: _ref => {
                     let {
                       field: {
@@ -36302,6 +36331,7 @@ const SearchJob = () => {
                 xs: 12,
                 md: 6,
                 children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+                  disabled: !isValid,
                   type: "submit",
                   sx: {
                     margin: '0.33em auto 0.25em !important;'
@@ -36345,19 +36375,26 @@ const UpdateRequirements_getRequirements = getters_fetchData('http://localhost:3
 const UpdateRequirements = () => {
   const {
     control,
-    handleSubmit
+    handleSubmit,
+    formState: {
+      isValid: reqValid,
+      isSubmitting,
+      isSubmitSuccessful
+    }
   } = useForm();
   const {
     control: controlRes,
     handleSubmit: handleSubmitResponses,
     formState: {
-      isSubmitSuccessful
+      isValid
     },
     reset
   } = useForm();
   const allReqs = UpdateRequirements_getRequirements.read();
-  const [reqTitleLocation, setReqTitleLocation] = react.useState(null);
+  const [reqIDLocation, setReqIDLocation] = react.useState(null);
   const [qualification, setQualification] = react.useState();
+  const [addQualState, setAddQualState] = react.useState(false);
+  const [remQualState, setRemQualState] = react.useState(false);
   const getRequriement = async reqLocation => {
     try {
       const reqPromise = await fetch(`http://localhost:3000/api/requirements/${reqLocation}`, {
@@ -36378,13 +36415,16 @@ const UpdateRequirements = () => {
     }
   };
   const handleSetReqLocation = data => {
-    setReqTitleLocation(data.searchRequirements);
-    getRequriement(data.searchRequirements).then(res => {
-      setQualification(res);
-      reset({
-        updateQualification: res[0].res_content
+    const thisReq = allReqs.filter(req => req.req_title === data.searchRequirements);
+    if (thisReq && thisReq.length > 0) {
+      if (!thisReq[0]._id) {
+        return;
+      }
+      setReqIDLocation(thisReq[0]._id);
+      getRequriement(thisReq[0]._id).then(res => {
+        setQualification(res);
       });
-    });
+    }
   };
   const handleAddResponse = async (data, id) => {
     const updateRequirement = await fetch(`http://localhost:3000/api/requirements/${id}`, {
@@ -36396,20 +36436,40 @@ const UpdateRequirements = () => {
         res_content: data.updateQualification
       })
     });
+    if (updateRequirement.status === 200) {
+      setAddQualState(true);
+      setTimeout(() => {
+        setAddQualState(false);
+      }, [500]);
+    }
     return updateRequirement.json();
   };
   const handleMissing = async id => {
     const updateRequirement = await fetch(`http://localhost:3000/api/requirements/${id}`, {
       method: 'DELETE'
     });
-    setReqTitleLocation(null);
+    if (updateRequirement.status === 204) {
+      setRemQualState(true);
+      setTimeout(() => {
+        setRemQualState(false);
+      }, [500]);
+    }
+    setReqIDLocation(null);
     return updateRequirement;
   };
   react.useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset();
+    if ((isSubmitting || isSubmitSuccessful) && qualification) {
+      if (!qualification.res_content) {
+        reset({
+          updateQualification: ''
+        });
+      } else {
+        reset({
+          updateQualification: qualification.res_content
+        });
+      }
     }
-  }, [isSubmitSuccessful]);
+  }, [qualification, isSubmitting, isSubmitSuccessful]);
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
     children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Layout_MainBody, {
       children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
@@ -36436,10 +36496,15 @@ const UpdateRequirements = () => {
                   control: control,
                   onChange: data => data,
                   name: "searchRequirements",
+                  rules: {
+                    required: true
+                  },
                   render: _ref => {
                     let {
                       field: {
-                        onChange
+                        onChange,
+                        value,
+                        ref
                       }
                     } = _ref;
                     return /*#__PURE__*/(0,jsx_runtime.jsx)(Autocomplete_Autocomplete, {
@@ -36454,9 +36519,11 @@ const UpdateRequirements = () => {
                         type: "search"
                       }),
                       onChange: (e, data) => {
-                        setReqTitleLocation(null);
+                        setReqIDLocation(null);
                         onChange(data);
-                      }
+                      },
+                      value: value,
+                      ref: ref
                     });
                   },
                   defaultValue: ""
@@ -36467,6 +36534,7 @@ const UpdateRequirements = () => {
                 md: 6,
                 children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
                   type: "submit",
+                  disabled: !reqValid,
                   sx: {
                     margin: '0.33em auto 0.25em !important;'
                   },
@@ -36476,43 +36544,87 @@ const UpdateRequirements = () => {
             })
           })
         }, 1) : 'No job requirements have been input. Go to "add a job" to add requirements.']
-      }), reqTitleLocation && qualification && qualification.length > 0 && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_AddQualification, {
-        onSubmit: handleSubmitResponses(data => handleAddResponse(data, qualification[0]._id)),
-        qualificationDesc: `Update this qualification`,
-        thisReq: qualification[0].req_title,
-        addButtonText: "Update Qualification",
-        removeButtonText: "Set to Missing Qualification",
-        onMissing: () => handleMissing(qualification[0]._id),
-        children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
-          control: controlRes,
-          name: "updateQualification",
-          rules: {
-            required: true
-          },
-          render: _ref2 => {
-            let {
-              field: {
-                onChange,
-                onBlur,
-                value,
-                ref
-              }
-            } = _ref2;
-            return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
-              onChange: onChange,
-              onBlur: onBlur,
-              placeholder: "Update qualification",
-              value: value,
-              inputRef: ref,
-              type: "text",
-              multiline: true,
-              rows: 4,
-              id: "add-response"
-            });
-          },
-          defaultValue: qualification[0].res_content
-        })
-      }, 2)]
+      }), reqIDLocation && qualification && /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+        children: [qualification.res_content && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_AddQualification, {
+          onSubmit: handleSubmitResponses(data => handleAddResponse(data, qualification._id)),
+          qualificationDesc: `Update this qualification`,
+          thisReq: qualification.req_title,
+          addButtonText: !addQualState ? 'Update Qualification' : 'Qualification Updated!',
+          removeButtonText: !remQualState ? 'Set to Missing Qualification' : 'Qualification Removed',
+          addButtonState: !isValid,
+          addPessedButtonState: addQualState,
+          removePressedButtonState: remQualState,
+          onMissing: () => handleMissing(qualification._id),
+          children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: controlRes,
+            name: "updateQualification",
+            rules: {
+              required: true
+            },
+            render: _ref2 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  value,
+                  ref
+                }
+              } = _ref2;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                onChange: onChange,
+                onBlur: onBlur,
+                placeholder: "Update qualification",
+                value: value,
+                inputRef: ref,
+                type: "text",
+                multiline: true,
+                rows: 4,
+                id: "add-response"
+              });
+            },
+            defaultValue: qualification.res_content
+          })
+        }, 2), !qualification.res_content && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_AddQualification, {
+          onSubmit: handleSubmitResponses(data => handleAddResponse(data, qualification._id)),
+          qualificationDesc: `Update this qualification`,
+          thisReq: qualification.req_title,
+          addButtonText: !addQualState ? 'Update Qualification' : 'Qualification Updated!',
+          removeButtonText: !remQualState ? 'Set to Missing Qualification' : 'Qualification Removed',
+          addButtonState: !isValid,
+          addPessedButtonState: addQualState,
+          removePressedButtonState: remQualState,
+          onMissing: () => handleMissing(qualification._id),
+          children: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: controlRes,
+            name: "updateQualification",
+            rules: {
+              required: true
+            },
+            render: _ref3 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  value,
+                  ref
+                }
+              } = _ref3;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                onChange: onChange,
+                onBlur: onBlur,
+                placeholder: "Update qualification",
+                value: value,
+                inputRef: ref,
+                type: "text",
+                multiline: true,
+                rows: 4,
+                id: "add-response"
+              });
+            },
+            defaultValue: ""
+          })
+        }, 2)]
+      })]
     })
   });
 };
@@ -37258,6 +37370,22 @@ const EditResume = () => {
       console.log(err);
     }
   };
+  const handleUpdateGuage = () => {
+    getJob().then(res => {
+      if (res && res.length > 0) {
+        const allRequirements = [];
+        const allQualifications = [];
+        res[0].requirements.forEach(req => allRequirements.push(req.req_title));
+        res[0].requirements.forEach(req => {
+          if (req.res_content && (req.res_content !== '' || req.res_content !== ' ')) {
+            allQualifications.push(req.res_content);
+          }
+        });
+        const guage = Math.round(allQualifications.length / allRequirements.length * 100);
+        setValue(guage);
+      }
+    });
+  };
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
     children: /*#__PURE__*/(0,jsx_runtime.jsx)(Layout_MainBody, {
       sx: {
@@ -37285,6 +37413,7 @@ const EditResume = () => {
             defaultValueCompName: job.company_name,
             defaultValueJobFunc: job.job_function,
             defaultValueDateApplied: job.date_applied,
+            onSaveJob: handleUpdateGuage,
             submitButtonText: "Update"
           })]
         }), path && (!job || !job.company_name) && /*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
@@ -37327,7 +37456,7 @@ const router = createBrowserRouter([{
   path: '/update-qualifications',
   element: /*#__PURE__*/(0,jsx_runtime.jsx)(Views_UpdateRequirements, {})
 }, {
-  path: '/search-job',
+  path: '/search-resume',
   element: /*#__PURE__*/(0,jsx_runtime.jsx)(Views_SearchJob, {})
 }, {
   path: '*',

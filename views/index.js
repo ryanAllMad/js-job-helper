@@ -28,7 +28,7 @@ const router = createBrowserRouter([
 		element: <UpdateRequirements />,
 	},
 	{
-		path: '/search-job',
+		path: '/search-resume',
 		element: <SearchJob />,
 	},
 	{
