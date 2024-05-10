@@ -21547,9 +21547,11 @@ const ContainedButton = props => {
     type,
     onClick,
     sx,
-    disabled
+    disabled,
+    ariaPressed
   } = props;
   return /*#__PURE__*/(0,jsx_runtime.jsx)(Button_Button, {
+    "aria-pressed": ariaPressed,
     disabled: disabled,
     type: type,
     onClick: onClick,
@@ -35674,6 +35676,9 @@ const AddQualification = props => {
     qualificationDesc,
     addButtonText,
     removeButtonText,
+    addButtonState,
+    addPessedButtonState,
+    removePressedButtonState,
     children
   } = props;
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
@@ -35705,6 +35710,8 @@ const AddQualification = props => {
           marginTop: '1em'
         },
         type: "submit",
+        disabled: addButtonState,
+        ariaPressed: addPessedButtonState,
         children: addButtonText
       }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
         sx: {
@@ -35715,6 +35722,7 @@ const AddQualification = props => {
           }
         },
         type: "button",
+        ariaPressed: removePressedButtonState,
         onClick: onMissing,
         children: removeButtonText
       })]
@@ -35746,8 +35754,7 @@ const JobForm = props => {
     defaultValueCompName,
     defaultValueJobFunc,
     defaultValueDateApplied,
-    submitButtonText,
-    defaultValueQualification
+    submitButtonText
   } = props;
   const {
     control,
@@ -35766,7 +35773,10 @@ const JobForm = props => {
   const {
     control: controlRes,
     handleSubmit: handleSubmitResponses,
-    reset
+    reset,
+    formState: {
+      isValid: qualsValid
+    }
   } = useForm();
   const [reqIds, setReqIds] = react.useState(null);
   const [reqTitles, setReqTitles] = react.useState([]);
@@ -35776,6 +35786,8 @@ const JobForm = props => {
   const [reqDisableState, setReqDisableState] = react.useState(false);
   const [jobDisableState, setJobDisableState] = react.useState(false);
   const [resumeLocation, setResumeLocation] = react.useState('');
+  const [addQualState, setAddQualState] = react.useState(false);
+  const [remQualState, setRemQualState] = react.useState(false);
   const theRequirements = getRequirements.read();
   const hasRequirements = theRequirements.length > 0 ? theRequirements : null;
   const noMoreRequirements = react.useMemo(() => requirementsArray.length === 0, [requirementsArray]);
@@ -35806,7 +35818,10 @@ const JobForm = props => {
         res.forEach(d => {
           if (reqTitles.includes(d.req_title)) {
             newIds.push(d._id);
-            if (!d.res_content) {
+            if (createJob && !d.res_content) {
+              newReqs.push(d);
+            }
+            if (!createJob) {
               newReqs.push(d);
             }
           }
@@ -35861,8 +35876,10 @@ const JobForm = props => {
     return postJob.json();
   };
   const handleAddResponse = async (data, id) => {
-    setProgress(100);
     const newRequirementsArr = requirementsArray.filter(d => d._id !== id);
+    if (newRequirementsArr.length === 0) {
+      setProgress(100);
+    }
     const updateRequirement = await fetch(`http://localhost:3000/api/requirements/${id}`, {
       method: 'POST',
       headers: {
@@ -35872,13 +35889,60 @@ const JobForm = props => {
         res_content: data.response
       })
     });
+    if (updateRequirement.status === 200) {
+      setAddQualState(true);
+      setTimeout(() => {
+        setAddQualState(false);
+      }, [500]);
+    }
     setRequirementsArray(newRequirementsArr);
-    reset();
+    if (newRequirementsArr.length > 0 && newRequirementsArr[0].res_content) {
+      reset({
+        response: newRequirementsArr[0].res_content
+      });
+    } else {
+      reset({
+        response: ''
+      });
+    }
     return updateRequirement.json();
   };
-  const handleNoResponse = id => {
-    const newRequirementsArr = requirementsArray.filter(d => d._id !== id);
-    setRequirementsArray(newRequirementsArr);
+  const handleNoResponse = async id => {
+    if (createJob || !requirementsArray[0].res_content) {
+      const newRequirementsArr = requirementsArray.filter(d => d._id !== id);
+      if (newRequirementsArr.length === 0) {
+        setProgress(100);
+      }
+      setRequirementsArray(newRequirementsArr);
+      setRemQualState(true);
+      if (newRequirementsArr.length > 0 && newRequirementsArr[0].res_content) {
+        reset({
+          response: newRequirementsArr[0].res_content
+        });
+      } else {
+        reset({
+          response: ''
+        });
+      }
+      setTimeout(() => {
+        setRemQualState(false);
+      }, [500]);
+    }
+    if (!createJob && requirementsArray[0].res_content) {
+      const updateRequirement = await fetch(`http://localhost:3000/api/requirements/${id}`, {
+        method: 'DELETE'
+      });
+      if (updateRequirement.status === 204) {
+        setRemQualState(true);
+        reset({
+          response: requirementsArray[0].res_content
+        });
+        setTimeout(() => {
+          setRemQualState(false);
+        }, [500]);
+      }
+      return updateRequirement;
+    }
   };
   return /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
     children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_AddRequirements, {
@@ -36057,8 +36121,11 @@ const JobForm = props => {
       onSubmit: handleSubmitResponses(data => handleAddResponse(data, requirementsArray[0]._id)),
       onMissing: () => handleNoResponse(requirementsArray[0]._id),
       thisReq: requirementsArray[0].req_title,
-      addButtonText: "Add Qualification",
-      removeButtonText: "Missing Qualification",
+      addButtonState: !qualsValid,
+      addPessedButtonState: addQualState,
+      removePressedButtonState: remQualState,
+      addButtonText: !addQualState ? 'Add Qualification' : 'Qualification Added!',
+      removeButtonText: !remQualState ? 'Missing Qualification' : 'Qualification Skipped!',
       qualificationDesc: `Enter the qualifications for each job requirement you've input into the form. 
 				If you don't meet this requirement, click the "Missing Qualification" button. 
 				This will help your Job Match meter be more accurate."`,
@@ -36089,7 +36156,7 @@ const JobForm = props => {
             id: "add-response"
           });
         },
-        defaultValue: defaultValueQualification
+        defaultValue: createJob ? '' : requirementsArray[0].res_content
       })
     }, 3), createJob && /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
       children: [requirementsArray && noMoreRequirements && responseState && /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
@@ -37147,24 +37214,29 @@ const EditResume = () => {
   const [path, setPath] = react.useState(null);
   const [value, setValue] = react.useState(0);
   const [job, setJob] = react.useState({});
+  const [pageHead, setPageHead] = react.useState('');
   react.useEffect(() => {
     if (location) {
       setPath(location.pathname);
-      getJob().then(res => {
-        if (res && res.length > 0) {
-          setJob(res[0]);
-          const allRequirements = [];
-          const allQualifications = [];
-          res[0].requirements.forEach(req => allRequirements.push(req.req_title));
-          res[0].requirements.forEach(req => {
-            if (req.res_content && (req.res_content !== '' || req.res_content !== ' ')) {
-              allQualifications.push(req.res_content);
-            }
-          });
-          const guage = Math.round(allQualifications.length / allRequirements.length * 100);
-          setValue(guage);
-        }
-      });
+      if (path) {
+        const parsedPath = path.replaceAll('/', '').replace('job-post', '');
+        setPageHead(`${parsedPath.charAt(0).toUpperCase()}${parsedPath.slice(1).replaceAll('-', ' ')}`);
+        getJob().then(res => {
+          if (res && res.length > 0) {
+            setJob(res[0]);
+            const allRequirements = [];
+            const allQualifications = [];
+            res[0].requirements.forEach(req => allRequirements.push(req.req_title));
+            res[0].requirements.forEach(req => {
+              if (req.res_content && (req.res_content !== '' || req.res_content !== ' ')) {
+                allQualifications.push(req.res_content);
+              }
+            });
+            const guage = Math.round(allQualifications.length / allRequirements.length * 100);
+            setValue(guage);
+          }
+        });
+      }
     }
   }, [location, path]);
   const getJob = async () => {
@@ -37183,7 +37255,7 @@ const EditResume = () => {
       });
       return reqPromise;
     } catch (err) {
-      console.log(JSON.stringify(err));
+      console.log(err);
     }
   };
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
@@ -37193,9 +37265,9 @@ const EditResume = () => {
       },
       children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
         spacing: 2,
-        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+        children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
           variant: "h1",
-          children: "Update Resume"
+          children: ["Update Resume ", path && `for ${pageHead}`]
         }), path && job && job.company_name && job.requirements && /*#__PURE__*/(0,jsx_runtime.jsxs)(Paper_Paper, {
           children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Guage, {
             value: value
@@ -37213,8 +37285,7 @@ const EditResume = () => {
             defaultValueCompName: job.company_name,
             defaultValueJobFunc: job.job_function,
             defaultValueDateApplied: job.date_applied,
-            submitButtonText: "Update",
-            defaultValueQualification: "fill this in later"
+            submitButtonText: "Update"
           })]
         }), path && (!job || !job.company_name) && /*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
           children: ["That company name isn't found. Try searching at", ' ', /*#__PURE__*/(0,jsx_runtime.jsx)(Button_Button, {

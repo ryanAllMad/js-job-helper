@@ -16,33 +16,38 @@ const EditResume = () => {
 	const [path, setPath] = React.useState(null);
 	const [value, setValue] = React.useState(0);
 	const [job, setJob] = React.useState({});
+	const [pageHead, setPageHead] = React.useState('')
 
 	React.useEffect(() => {
 		if (location) {
 			setPath(location.pathname);
-			getJob().then((res) => {
-				if (res && res.length > 0) {
-					setJob(res[0]);
-					const allRequirements = [];
-					const allQualifications = [];
-					res[0].requirements.forEach((req) =>
-						allRequirements.push(req.req_title)
-					);
-					res[0].requirements.forEach((req) => {
-						if (
-							req.res_content &&
-							(req.res_content !== '' || req.res_content !== ' ')
-						) {
-							allQualifications.push(req.res_content);
-						}
-					});
-					const guage = Math.round(
-						(allQualifications.length / allRequirements.length) *
-							100
-					);
-					setValue(guage);
-				}
-			});
+			if(path) {
+				const parsedPath = path.replaceAll('/', '').replace('job-post', '')
+				setPageHead(`${parsedPath.charAt(0).toUpperCase()}${parsedPath.slice(1).replaceAll('-', ' ')}`)
+				getJob().then((res) => {
+					if (res && res.length > 0) {
+						setJob(res[0]);
+						const allRequirements = [];
+						const allQualifications = [];
+						res[0].requirements.forEach((req) =>
+							allRequirements.push(req.req_title)
+						);
+						res[0].requirements.forEach((req) => {
+							if (
+								req.res_content &&
+								(req.res_content !== '' || req.res_content !== ' ')
+							) {
+								allQualifications.push(req.res_content);
+							}
+						});
+						const guage = Math.round(
+							(allQualifications.length / allRequirements.length) *
+								100
+						);
+						setValue(guage);
+					}
+				});
+			}
 		}
 	}, [location, path]);
 
@@ -64,7 +69,7 @@ const EditResume = () => {
 				});
 			return reqPromise;
 		} catch (err) {
-			console.log(JSON.stringify(err));
+			console.log(err);
 		}
 	};
 
@@ -72,7 +77,7 @@ const EditResume = () => {
 		<>
 			<MainBody sx={{ paddingTop: '200px' }}>
 				<Stack spacing={2}>
-					<Typography variant='h1'>Update Resume</Typography>
+					<Typography variant='h1'>Update Resume {path && `for ${pageHead}`}</Typography>
 					{path && job && job.company_name && job.requirements && (
 						<Paper>
 							<Guage value={value} />
@@ -97,7 +102,6 @@ const EditResume = () => {
 							defaultValueJobFunc={job.job_function}
 							defaultValueDateApplied={job.date_applied}
 							submitButtonText='Update'
-							defaultValueQualification='fill this in later'
 						/>
 						</Paper>
 					)}

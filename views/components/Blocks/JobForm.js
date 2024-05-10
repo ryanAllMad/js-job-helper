@@ -24,7 +24,6 @@ const JobForm = (props) => {
 		defaultValueJobFunc,
 		defaultValueDateApplied,
 		submitButtonText,
-		defaultValueQualification,
 	} = props;
 	const {
 		control,
@@ -41,6 +40,7 @@ const JobForm = (props) => {
 		control: controlRes,
 		handleSubmit: handleSubmitResponses,
 		reset,
+		formState: {isValid: qualsValid }
 		} = useForm();
 	const [reqIds, setReqIds] = React.useState(null);
 	const [reqTitles, setReqTitles] = React.useState([]);
@@ -50,6 +50,8 @@ const JobForm = (props) => {
 	const [reqDisableState, setReqDisableState] = React.useState(false);
 	const [jobDisableState, setJobDisableState] = React.useState(false);
 	const [resumeLocation, setResumeLocation] = React.useState('');
+	const [addQualState, setAddQualState] = React.useState(false)
+	const [remQualState, setRemQualState] = React.useState(false)
 
 	const theRequirements = getRequirements.read();
 	const hasRequirements = theRequirements.length > 0 ? theRequirements : null;
@@ -91,7 +93,10 @@ const JobForm = (props) => {
 				res.forEach((d) => {
 					if (reqTitles.includes(d.req_title)) {
 						newIds.push(d._id);
-						if (!d.res_content) {
+						if (createJob && !d.res_content) {
+							newReqs.push(d);
+						}
+						if(!createJob) {
 							newReqs.push(d);
 						}
 					}
@@ -152,10 +157,12 @@ const JobForm = (props) => {
 		return postJob.json();
 	};
 	const handleAddResponse = async (data, id) => {
-		setProgress(100);
 		const newRequirementsArr = requirementsArray.filter(
 			(d) => d._id !== id
 		);
+		if (newRequirementsArr.length === 0) {
+			setProgress(100);
+		}
 		const updateRequirement = await fetch(
 			`http://localhost:3000/api/requirements/${id}`,
 			{
@@ -168,16 +175,57 @@ const JobForm = (props) => {
 				}),
 			}
 		);
+		if (updateRequirement.status === 200) {
+			setAddQualState(true)
+			setTimeout(() => {
+				setAddQualState(false)
+			}, [500])
+		}
 		setRequirementsArray(newRequirementsArr);
-		reset();
+		if (newRequirementsArr.length > 0 && newRequirementsArr[0].res_content) {
+			reset({response: newRequirementsArr[0].res_content});
+		} else {
+			reset({response: ''});
+		}
 		return updateRequirement.json();
 	};
 
-	const handleNoResponse = (id) => {
-		const newRequirementsArr = requirementsArray.filter(
-			(d) => d._id !== id
-		);
-		setRequirementsArray(newRequirementsArr);
+	const handleNoResponse = async (id) => {
+		if(createJob || !requirementsArray[0].res_content) {
+			const newRequirementsArr = requirementsArray.filter(
+				(d) => d._id !== id
+			);
+			if(newRequirementsArr.length === 0) {
+				setProgress(100);
+			}
+			setRequirementsArray(newRequirementsArr);
+			setRemQualState(true)
+			if (newRequirementsArr.length > 0 && newRequirementsArr[0].res_content) {
+				reset({response: newRequirementsArr[0].res_content});
+			} else {
+				reset({response: ''});
+			}
+			setTimeout(() => {
+				setRemQualState(false)
+			}, [500])
+		} 
+		if (!createJob && requirementsArray[0].res_content) {
+			const updateRequirement = await fetch(
+				`http://localhost:3000/api/requirements/${id}`,
+				{
+					method: 'DELETE',
+				}
+			);
+			if(updateRequirement.status === 204) {
+				setRemQualState(true)
+				reset({response: requirementsArray[0].res_content});
+				setTimeout(() => {
+					setRemQualState(false)
+				}, [500])
+			}
+			return updateRequirement;
+		}
+		
 	};
 
 	return (
@@ -347,8 +395,11 @@ const JobForm = (props) => {
 					)}
 					onMissing={() => handleNoResponse(requirementsArray[0]._id)}
 					thisReq={requirementsArray[0].req_title}
-					addButtonText='Add Qualification'
-					removeButtonText='Missing Qualification'
+					addButtonState={!qualsValid}
+					addPessedButtonState={addQualState}
+					removePressedButtonState={remQualState}
+					addButtonText={!addQualState ? 'Add Qualification' : 'Qualification Added!'}
+					removeButtonText={!remQualState ? 'Missing Qualification' : 'Qualification Skipped!'}
 					qualificationDesc={`Enter the qualifications for each job requirement you've input into the form. 
 				If you don't meet this requirement, click the "Missing Qualification" button. 
 				This will help your Job Match meter be more accurate."`}
@@ -372,7 +423,7 @@ const JobForm = (props) => {
 								id='add-response'
 							/>
 						)}
-						defaultValue={defaultValueQualification}
+						defaultValue={createJob ? '' : requirementsArray[0].res_content}
 					/>
 				</AddQualification>
 			)}

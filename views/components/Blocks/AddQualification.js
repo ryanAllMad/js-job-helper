@@ -4,7 +4,7 @@ import ContainedButton from './ContainedButton.js';
 import { Typography, FormHelperText, Stack } from '@mui/material';
 
 const AddQualification = (props) => {
-	const { key, onSubmit, onMissing, thisReq, qualificationDesc, addButtonText, removeButtonText, children } = props;
+	const { key, onSubmit, onMissing, thisReq, qualificationDesc, addButtonText, removeButtonText, addButtonState, addPessedButtonState, removePressedButtonState, children } = props;
 	return (
 		<>
 			<form
@@ -36,6 +36,9 @@ const AddQualification = (props) => {
 				<ContainedButton
 					sx={{ marginTop: '1em' }}
 					type='submit'
+					disabled={addButtonState}
+					ariaPressed={addPessedButtonState}
+
 				>
 				{addButtonText}
 					
@@ -47,6 +50,7 @@ const AddQualification = (props) => {
 						'&:hover': { backgroundColor: '#e72d28' },
 					}}
 					type='button'
+					ariaPressed={removePressedButtonState}
 					onClick={onMissing}
 				>
 					{removeButtonText}
