@@ -36184,20 +36184,24 @@ const JobForm = props => {
         },
         defaultValue: createJob ? '' : requirementsArray[0].res_content
       })
-    }, 3), createJob && /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
-      children: [requirementsArray && noMoreRequirements && responseState && /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
-        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Resume, {
-          fetchUrl: `http://localhost:3000/api/job-post/${resumeLocation}`
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Button_Button, {
-          variant: "outlined",
-          href: `/job-post/${resumeLocation}`,
-          children: "Edit Resume"
-        })]
-      }), progress > 60 && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+    }, 3), requirementsArray && noMoreRequirements && responseState && /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Resume, {
+        fetchUrl: `http://localhost:3000/api/job-post/${resumeLocation}`
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Button_Button, {
+        variant: "outlined",
+        sx: {
+          minWidth: '100%',
+          marginTop: '20px'
+        },
+        href: `/job-post/${resumeLocation}`,
+        children: "Edit Resume"
+      })]
+    }), createJob && /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
+      children: progress > 60 && /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
         onClick: () => window.location.reload(),
         type: "button",
         children: "Add a new job post"
-      })]
+      })
     })]
   });
 };
@@ -36208,6 +36212,9 @@ const JobForm = props => {
 
 
 const CreateJob = () => {
+  const handleSaveJob = () => {
+    console.log('qualifications updated');
+  };
   return /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
     children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
       children: ["After following these 3 steps your resume will be ready at the bottom of the page. If you need to make edits after you complete this page, you can click the \"Edit Resume\" button at the bottom.", /*#__PURE__*/(0,jsx_runtime.jsx)("br", {}), /*#__PURE__*/(0,jsx_runtime.jsx)("strong", {
@@ -36221,7 +36228,8 @@ const CreateJob = () => {
       defaultValueJobFunc: "",
       defaultValueDateApplied: "",
       submitButtonText: "Save",
-      defaultValueQualification: ""
+      defaultValueQualification: "",
+      onSaveJob: handleSaveJob
     })]
   });
 };
@@ -37397,6 +37405,7 @@ const EditResume = () => {
           variant: "h1",
           children: ["Update Resume ", path && `for ${pageHead}`]
         }), path && job && job.company_name && job.requirements && /*#__PURE__*/(0,jsx_runtime.jsxs)(Paper_Paper, {
+          elevation: 0,
           children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Guage, {
             value: value
           }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_JobForm, {

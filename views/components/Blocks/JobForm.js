@@ -430,8 +430,6 @@ const JobForm = (props) => {
 					/>
 				</AddQualification>
 			)}
-			{createJob && (
-			<>
 			{requirementsArray && noMoreRequirements && responseState && (
 				<>
 					<Resume
@@ -439,12 +437,15 @@ const JobForm = (props) => {
 					/>
 					<Button
 						variant='outlined'
+						sx={{minWidth: '100%', marginTop: '20px'}}
 						href={`/job-post/${resumeLocation}`}
 					>
 						Edit Resume
 					</Button>
 				</>
 			)}
+			{createJob && (
+			<>
 			{progress > 60 && (
 				<ContainedButton
 					onClick={() => window.location.reload()}

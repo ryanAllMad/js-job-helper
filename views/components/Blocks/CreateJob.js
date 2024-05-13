@@ -6,6 +6,9 @@ import JobForm from './JobForm.js';
 
 
 const CreateJob = () => {
+	const handleSaveJob = () => {
+		console.log('qualifications updated')
+	}
 	return (
 		<>
 			<Typography>
@@ -28,6 +31,7 @@ const CreateJob = () => {
 				defaultValueDateApplied=""
 				submitButtonText="Save"
 				defaultValueQualification=""
+				onSaveJob={handleSaveJob}
 			/>
 			</>
 	);

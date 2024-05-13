@@ -19,7 +19,7 @@ const dbName = process.env.DB_NAME
 mongoose.connect(db, {
 	dbName: dbName
 }).then(() => {
-	console.log('connected!')
+	console.log('Connected to DB! See app at: http://localhost:3000/')
 })
 
 // api code:

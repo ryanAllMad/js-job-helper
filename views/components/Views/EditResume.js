@@ -103,7 +103,7 @@ const EditResume = () => {
 				<Stack spacing={2}>
 					<Typography variant='h1'>Update Resume {path && `for ${pageHead}`}</Typography>
 					{path && job && job.company_name && job.requirements && (
-						<Paper>
+						<Paper elevation={0}>
 							<Guage value={value} />
 						<JobForm
 							createJob={false}
