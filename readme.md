@@ -25,7 +25,7 @@ Create a connection string for a node.js app: https://www.mongodb.com/docs/drive
 ### Third:
 Create a database name in your MongoDB Cluster
 ### Fourth:
-Create a `config.env file` in the root of your project then update the null values to your connection string and database name respectively.
+Create a `config.env file` in the root of your project then add the below strings and update the null values to your connection string and database name respectively.
 
 ```
 MONGODB_CONNECTION_STRING=NULL
