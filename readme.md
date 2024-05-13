@@ -11,9 +11,10 @@ This project requires at least node 20. If you don't have nvm installed, we reco
 2. Pull down this repo
 3. Connect your mongodb cluster using the instructions below
 4. Run `npm install`
-5. Run `npm run start`
-6. Visit [localhost:3000](http://localhost:3000/) in your browser
-7. Enjoy :tada:
+5. Run `npm build`
+6. Run `npm run start`
+7. Visit [localhost:3000](http://localhost:3000/) in your browser
+8. Enjoy :tada:
 
 
 ## CONNECT TO YOUR MONGODB CLUSTER
@@ -24,7 +25,7 @@ Create a connection string for a node.js app: https://www.mongodb.com/docs/drive
 ### Third:
 Create a database name in your MongoDB Cluster
 ### Fourth:
-Createa `config.env file` in the root of your project then update the null values to your connection string and database name respectively.
+Create a `config.env file` in the root of your project then update the null values to your connection string and database name respectively.
 
 ```
 MONGODB_CONNECTION_STRING=NULL
