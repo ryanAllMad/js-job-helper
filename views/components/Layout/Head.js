@@ -32,6 +32,54 @@ const Head = (props) => {
 					async
 					defer
 				/>
+				<script
+					type='text/javascript'
+					src="/86.bundle.js"
+					async
+					defer
+				/>
+				<script
+					type='text/javascript'
+					src="/222.bundle.js"
+					async
+					defer
+				/>
+				<script
+					type='text/javascript'
+					src="/445.bundle.js"
+					async
+					defer
+				/>
+				<script
+					type='text/javascript'
+					src="/530.bundle.js"
+					async
+					defer
+				/>
+				<script
+					type='text/javascript'
+					src="/687.bundle.js"
+					async
+					defer
+				/>
+				<script
+					type='text/javascript'
+					src="/783.bundle.js"
+					async
+					defer
+				/>
+				<script
+					type='text/javascript'
+					src="/800.bundle.js"
+					async
+					defer
+				/>
+				<script
+					type='text/javascript'
+					src="/847.bundle.js"
+					async
+					defer
+				/>
 			</head>
 		</>
 	);
