@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link, List, ListItem, Typography, Paper, Stack } from '@mui/material';
+import { Button, Link, List, ListItem, Typography, Paper, Stack } from '@mui/material';
 import Guage from './Guage.js';
 import fetchData from '../getters/fetchData.js';
 
@@ -11,6 +11,7 @@ const PositionView = (props) => {
 	const userDetails = getUser.read();
 	const [firstReqs, setFirstReqs] = React.useState()
 	const [nextReqs, setNextReqs] = React.useState()
+	const resumeRef = React.useRef()
 	React.useEffect(() => {
 		if(requirements && requirements.length > 0) {
 			const expMath = Math.round(requirements.length/userDetails[0].experience.length) + 1
@@ -19,9 +20,19 @@ const PositionView = (props) => {
 		}
 	}, [requirements])
 
+	const writeToClipboard = async () => {
+		const thisResume = resumeRef.current.innerText
+		try {
+			await navigator.clipboard.writeText(thisResume)
+		} catch (error) {
+			console.log(error.message)
+		}
+	}
+
 	
 	return (
 		<>
+			<Button variant='contained' onClick={writeToClipboard}>&#x2398; Copy Plain To clipboard</Button>
 			<Paper
 				sx={{
 					padding: '2em',
@@ -29,12 +40,13 @@ const PositionView = (props) => {
 					position: 'relative',
 					maxWidth: '1200px',
 					margin: '0 auto',
+					backgroundColor: '#f3ebeb'
 				}}
 				elevation={2}
 			>
 				<Guage value={guageValue} />
 				{userDetails && userDetails.length > 0 && 
-				<Stack>
+				<Stack ref={resumeRef} id="resume">
 					<Typography variant='h1'>{userDetails[0].name}</Typography>
 					<Typography variant='h2'>{jobTitle}</Typography>
 					<Typography>{jobFunction}</Typography>

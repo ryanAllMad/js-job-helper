@@ -1585,6 +1585,7 @@ const PositionView = props => {
   const userDetails = PositionView_getUser.read();
   const [firstReqs, setFirstReqs] = react.useState();
   const [nextReqs, setNextReqs] = react.useState();
+  const resumeRef = react.useRef();
   react.useEffect(() => {
     if (requirements && requirements.length > 0) {
       const expMath = Math.round(requirements.length / userDetails[0].experience.length) + 1;
@@ -1592,19 +1593,34 @@ const PositionView = props => {
       setNextReqs(requirements.filter((req, idx) => idx >= expMath));
     }
   }, [requirements]);
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
-    children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Paper/* default */.A, {
+  const writeToClipboard = async () => {
+    const thisResume = resumeRef.current.innerText;
+    try {
+      await navigator.clipboard.writeText(thisResume);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  return /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+    children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Button/* default */.A, {
+      variant: "contained",
+      onClick: writeToClipboard,
+      children: "\u2398 Copy To clipboard"
+    }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Paper/* default */.A, {
       sx: {
         padding: '2em',
         paddingTop: '200px',
         position: 'relative',
         maxWidth: '1200px',
-        margin: '0 auto'
+        margin: '0 auto',
+        backgroundColor: '#f3ebeb'
       },
       elevation: 2,
       children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Guage, {
         value: guageValue
       }), userDetails && userDetails.length > 0 && /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack/* default */.A, {
+        ref: resumeRef,
+        id: "resume",
         children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography/* default */.A, {
           variant: "h1",
           children: userDetails[0].name
@@ -1655,7 +1671,7 @@ const PositionView = props => {
           }, req._id))
         })]
       })]
-    })
+    })]
   });
 };
 /* harmony default export */ const Blocks_PositionView = (PositionView);
