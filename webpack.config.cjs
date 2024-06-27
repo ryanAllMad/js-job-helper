@@ -50,26 +50,6 @@ module.exports = {
 	},
 	optimization: {
 		minimizer: [new CssMinimizerPlugin()],
-		splitChunks: {
-			chunks: 'all',
-			minSize: 20000,
-			minRemainingSize: 0,
-			minChunks: 1,
-			maxSize: 512000,
-			enforceSizeThreshold: 50000,
-			cacheGroups: {
-				defaultVendors: {
-					test: /[\\/]node_modules[\\/]/,
-					priority: -10,
-					reuseExistingChunk: true,
-				},
-				default: {
-					minChunks: 2,
-					priority: -20,
-					reuseExistingChunk: true,
-				},
-			},
-		}
 	},
 	plugins: [
 		new MiniCssExtractPlugin({

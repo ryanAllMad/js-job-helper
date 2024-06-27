@@ -50,3 +50,53 @@ nav a:hover {
     margin: 2em;
     padding: .5em;
 }
+
+.item {
+	box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 1px -2px;
+	border-radius: 4px;
+	overflow: hidden;
+	padding-left: 20px;
+	background: transparent;
+	max-height: 100%;
+	position: relative;
+	margin-top: 2em;
+}
+.item .dragHandle {
+	visibility: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+	cursor: move;
+	width: 50px;
+	height: 50px;
+}
+.item:hover .dragHandle,
+.item.dragged .dragHandle {
+	visibility: visible;
+}
+.dragHandle.hide {
+	display: none !important;
+}
+.item #title {
+	position: relative;
+	z-index: 3;
+	min-height: 112px;
+}
+.drop-text {
+	position: absolute;
+	font-size: 3rem;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	color: transparent;
+	background-color: transparent;
+	transition: color 0.5s, background-color 0.5s;
+	text-align: center;
+	margin-top: -3rem;
+	padding-top: 5rem;
+}
+.drop-text.show {
+	background-color: #000000a0;
+	color: #fff;
+}

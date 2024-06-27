@@ -58,6 +58,7 @@ const Resume = (props) => {
 						jobFunction={job.job_function}
 						requirements={job.requirements}
 						guageValue={value}
+						companyName={job.company_name}
 					/>
 				</Stack>
 		</>

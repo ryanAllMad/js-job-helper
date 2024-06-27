@@ -31,3 +31,25 @@ Create a `config.env file` in the root of your project then add the below string
 MONGODB_CONNECTION_STRING=NULL
 DB_NAME=NULL
 ```
+
+// Basically idk if i want to split chunks or not right now...
+		splitChunks: {
+			chunks: 'all',
+			minSize: 20000,
+			minRemainingSize: 0,
+			minChunks: 1,
+			maxSize: 512000,
+			enforceSizeThreshold: 50000,
+			cacheGroups: {
+				defaultVendors: {
+					test: /[\\/]node_modules[\\/]/,
+					priority: -10,
+					reuseExistingChunk: true,
+				},
+				default: {
+					minChunks: 2,
+					priority: -20,
+					reuseExistingChunk: true,
+				},
+			},
+		}
