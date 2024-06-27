@@ -246,6 +246,11 @@ const JobForm = (props) => {
 						<Autocomplete
 							sx={{ marginTop: '100px' }}
 							multiple
+							onKeyDown={(e) => {
+								if(e.key === 'Enter') {
+									e.preventDefault()
+								}
+							}}
 							disabled={reqDisableState}
 							id='enter-requirements'
 							filterOptions={(options, params) => {

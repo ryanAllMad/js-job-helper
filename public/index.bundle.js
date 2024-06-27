@@ -36100,6 +36100,11 @@ const JobForm = props => {
               marginTop: '100px'
             },
             multiple: true,
+            onKeyDown: e => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+              }
+            },
             disabled: reqDisableState,
             id: "enter-requirements",
             filterOptions: (options, params) => {
