@@ -27,6 +27,7 @@ const PositionView = (props) => {
 	const [dragging, setIsDragging] = React.useState('')
 	const [elementMoving, setElementMoving] = React.useState()
 	const [copied, setCopied] = React.useState(false)
+	const [removeMe, setRemoveMe] = React.useState('Drop qualifications for experience here.')
 	const resumeRef = React.useRef();
 	React.useEffect(() => {
 		const hasSortedResume = window.localStorage.getItem(companyName)
@@ -55,12 +56,14 @@ const PositionView = (props) => {
 		const thisResume = resumeRef.current.innerText;
 		//remove drag handles:
 		setCopied(true)
+		setRemoveMe('')
 		try {
 			if(copied) {
 				// copy text to clipboard:
 				await navigator.clipboard.writeText(thisResume);
 				// add drag handles back:
 				setCopied(false)
+				setRemoveMe('Drop qualifications for experience here.')
 			}
 		} catch (error) {
 			console.log(error.message);
@@ -196,7 +199,7 @@ const PositionView = (props) => {
 													</div>
 												{item.title ? (
 													<>
-														<p className="drop-text"> Drop qualifications for experience here.</p>
+														<p className="drop-text"> {removeMe}</p>
 														<Typography id="title" variant='h3'>
 															{item.title}
 														</Typography>

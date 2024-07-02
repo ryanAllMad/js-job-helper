@@ -34839,6 +34839,7 @@ const PositionView = props => {
   const [dragging, setIsDragging] = react.useState('');
   const [elementMoving, setElementMoving] = react.useState();
   const [copied, setCopied] = react.useState(false);
+  const [removeMe, setRemoveMe] = react.useState('Drop qualifications for experience here.');
   const resumeRef = react.useRef();
   react.useEffect(() => {
     const hasSortedResume = window.localStorage.getItem(companyName);
@@ -34861,12 +34862,14 @@ const PositionView = props => {
     const thisResume = resumeRef.current.innerText;
     //remove drag handles:
     setCopied(true);
+    setRemoveMe('');
     try {
       if (copied) {
         // copy text to clipboard:
         await navigator.clipboard.writeText(thisResume);
         // add drag handles back:
         setCopied(false);
+        setRemoveMe('Drop qualifications for experience here.');
       }
     } catch (error) {
       console.log(error.message);
@@ -34988,9 +34991,9 @@ const PositionView = props => {
                     className: `dragHandle ${copied ? 'hide' : ''}`,
                     children: "\u28FF"
                   }), item.title ? /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
-                    children: [/*#__PURE__*/(0,jsx_runtime.jsx)("p", {
+                    children: [/*#__PURE__*/(0,jsx_runtime.jsxs)("p", {
                       className: "drop-text",
-                      children: " Drop qualifications for experience here."
+                      children: [" ", removeMe]
                     }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
                       id: "title",
                       variant: "h3",
