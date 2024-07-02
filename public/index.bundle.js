@@ -34838,8 +34838,9 @@ const PositionView = props => {
   const [experienceList, setExperienceList] = react.useState(initialDummyContent);
   const [dragging, setIsDragging] = react.useState('');
   const [elementMoving, setElementMoving] = react.useState();
-  const [copied, setCopied] = react.useState(false);
+  const [copied, setCopied] = react.useState(null);
   const [removeMe, setRemoveMe] = react.useState('Drop qualifications for experience here.');
+  const [copyButtonText, setCopyButtonText] = react.useState('Copy Plain to clipboard');
   const resumeRef = react.useRef();
   react.useEffect(() => {
     const hasSortedResume = window.localStorage.getItem(companyName);
@@ -34856,22 +34857,34 @@ const PositionView = props => {
     }
   }, [requirements, userDetails]);
   const writeToClipboard = async () => {
-    // save sorted list into local storage:
-    window.localStorage.setItem(companyName, JSON.stringify(experienceList));
-    //get inner text of resume doc:
     const thisResume = resumeRef.current.innerText;
-    //remove drag handles:
     setCopied(true);
     setRemoveMe('');
+    if (!copied || removeMe !== '') {
+      setCopyButtonText('Parsing text.. Click once more please');
+    }
+    // save sorted list into local storage:
+    window.localStorage.setItem(companyName, JSON.stringify(experienceList));
     try {
-      if (copied) {
-        // copy text to clipboard:
-        await navigator.clipboard.writeText(thisResume);
+      // copy text to clipboard:
+      await navigator.clipboard.writeText(thisResume);
+      // get text in clipboard
+      const hasClipped = await navigator.clipboard.readText();
+      console.log(removeMe);
+      if (thisResume !== hasClipped && copied) {
+        setCopyButtonText('Ooops! Try Again!');
+      }
+      if (hasClipped === thisResume && copied) {
         // add drag handles back:
         setCopied(false);
-        setRemoveMe('Drop qualifications for experience here.');
+        setCopyButtonText('Copy Plain to clipboard');
+        if (!copied) {
+          await navigator.clipboard.writeText('');
+          setRemoveMe('Drop qualifications for experience here.');
+        }
       }
     } catch (error) {
+      setCopyButtonText('Ooops! Try Again!');
       console.log(error.message);
     }
   };
@@ -34903,7 +34916,7 @@ const PositionView = props => {
           marginBottom: '-18px'
         },
         children: "\u2398"
-      }), ' ', "Copy Plain To clipboard"]
+      }), copyButtonText]
     }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Paper_Paper, {
       sx: {
         padding: '2em',

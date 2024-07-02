@@ -26,9 +26,11 @@ const PositionView = (props) => {
 	const [experienceList, setExperienceList] = React.useState(initialDummyContent);
 	const [dragging, setIsDragging] = React.useState('')
 	const [elementMoving, setElementMoving] = React.useState()
-	const [copied, setCopied] = React.useState(false)
+	const [copied, setCopied] = React.useState(null)
 	const [removeMe, setRemoveMe] = React.useState('Drop qualifications for experience here.')
+	const [copyButtonText, setCopyButtonText] = React.useState('Copy Plain to clipboard')
 	const resumeRef = React.useRef();
+
 	React.useEffect(() => {
 		const hasSortedResume = window.localStorage.getItem(companyName)
 		// if the resume has previously been edited then load it:
@@ -49,27 +51,39 @@ const PositionView = (props) => {
 		}
 	}, [requirements, userDetails]);
 
+
 	const writeToClipboard = async () => {
-		// save sorted list into local storage:
-		window.localStorage.setItem(companyName, JSON.stringify(experienceList))
-		//get inner text of resume doc:
 		const thisResume = resumeRef.current.innerText;
-		//remove drag handles:
 		setCopied(true)
 		setRemoveMe('')
+		if(!copied || removeMe !== '') {
+			setCopyButtonText('Parsing text.. Click once more please')
+		}
+		// save sorted list into local storage:
+		window.localStorage.setItem(companyName, JSON.stringify(experienceList))
 		try {
-			if(copied) {
-				// copy text to clipboard:
-				await navigator.clipboard.writeText(thisResume);
+			// copy text to clipboard:
+			await navigator.clipboard.writeText(thisResume);
+			// get text in clipboard
+			const hasClipped = await navigator.clipboard.readText()
+			console.log(removeMe)
+			if(thisResume !== hasClipped && copied) {
+				setCopyButtonText('Ooops! Try Again!')
+			}
+			if(hasClipped === thisResume && copied) {
 				// add drag handles back:
 				setCopied(false)
-				setRemoveMe('Drop qualifications for experience here.')
+				setCopyButtonText('Copy Plain to clipboard')
+				if(!copied) {
+					await navigator.clipboard.writeText('');
+					setRemoveMe('Drop qualifications for experience here.')
+				}
 			}
 		} catch (error) {
+			setCopyButtonText('Ooops! Try Again!')
 			console.log(error.message);
 		}
 	};
-
 	const getIndex = (innerText) => {
 		const emptArr = []
 		const list = experienceList
@@ -102,8 +116,7 @@ const PositionView = (props) => {
 					}}
 				>
 					&#x2398;
-				</span>{' '}
-				Copy Plain To clipboard
+				</span>{copyButtonText}
 			</Button>
 			<Paper
 				sx={{
