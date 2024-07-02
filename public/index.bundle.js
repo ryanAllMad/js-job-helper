@@ -34872,9 +34872,9 @@ const PositionView = props => {
       console.log(error.message);
     }
   };
-  const getIndex = async innerText => {
+  const getIndex = innerText => {
     const emptArr = [];
-    const list = await experienceList;
+    const list = experienceList;
     if (list.length > 0) {
       list.forEach(obj => {
         if (obj.res_content && innerText === obj.res_content) {
@@ -34946,8 +34946,6 @@ const PositionView = props => {
             e.preventDefault();
             if (e.target.outerHTML.includes('drop-text')) {
               e.target.classList.add('show');
-            } else {
-              e.target.classList.remove('show');
             }
           },
           onDrop: async e => {
@@ -34956,7 +34954,12 @@ const PositionView = props => {
               e.target.classList.remove('show');
             }
             const dropElIndex = await getIndex(e.target.innerText);
-            const addIndex = dropElIndex + 1;
+            let addIndex;
+            if (dropElIndex >= 0 && dropElIndex < experienceList.length) {
+              addIndex = dropElIndex + 1;
+            } else {
+              addIndex = dropElIndex - 1;
+            }
             const arr = experienceList.toSpliced(addIndex, 0, elementMoving);
             const oldIndex = arr.lastIndexOf(elementMoving);
             const nextArr = arr.toSpliced(oldIndex, 1);
@@ -35001,6 +35004,7 @@ const PositionView = props => {
                   }) : /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
                     children: /*#__PURE__*/(0,jsx_runtime.jsx)(List_List, {
                       children: /*#__PURE__*/(0,jsx_runtime.jsx)(ListItem_ListItem, {
+                        className: "list-item",
                         children: item.res_content
                       }, item._id)
                     })

@@ -53,7 +53,6 @@ nav a:hover {
 
 .item {
 	box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 1px -2px;
-	border-radius: 4px;
 	overflow: hidden;
 	padding-left: 20px;
 	background: transparent;
@@ -77,7 +76,7 @@ nav a:hover {
 .dragHandle.hide {
 	display: none !important;
 }
-.item #title {
+.item #title, .item .list-item {
 	position: relative;
 	z-index: 3;
 	min-height: 112px;
@@ -97,6 +96,6 @@ nav a:hover {
 	padding-top: 5rem;
 }
 .drop-text.show {
-	background-color: #000000a0;
+	background-color: rgba(17, 77, 138, 0.486);
 	color: #fff;
 }
