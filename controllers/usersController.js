@@ -61,5 +61,19 @@ export const deleteExp = async (req, res) => {
 		});
 	}
 }
+export const deleteEd = async (req, res) => {
+	try {
+		await User.updateOne({_id: req.params.userId }, {$pull: {education: {_id: req.params.id }}});
+		res.status(204).json({
+			status: 'success',
+			data: null
+		});
+	} catch (err) {
+		res.status(404).json({
+			status: 'not found',
+			message: `${err}`,
+		});
+	}
+}
 
 export const updateUser = updateOne(User)

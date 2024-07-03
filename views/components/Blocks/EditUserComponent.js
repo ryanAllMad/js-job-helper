@@ -17,6 +17,10 @@ const EditUserComponent = () => {
 		userDetails && userDetails.length > 0
 			? userDetails[0].experience
 			: null;
+	const allSavedEd =
+	userDetails && userDetails.length > 0
+		? userDetails[0].education
+		: null;
 	const {
 		handleSubmit,
 		control,
@@ -26,6 +30,8 @@ const EditUserComponent = () => {
 	const [newLinksArr, setNewLinksArr] = React.useState([]);
 	const [expArr, setExpArr] = React.useState(allSavedExp);
 	const [newExpsArr, setNewExpsArr] = React.useState([]);
+	const [edArr, setEdArr] = React.useState(allSavedEd)
+	const [newEdArr, setNewEdArr] = React.useState([])
 
 	const addMoreLinks = () => {
 		setNewLinksArr((prev) => prev.concat(prev.length));
@@ -41,6 +47,9 @@ const EditUserComponent = () => {
 	const addMoreExp = () => {
 		setNewExpsArr((prev) => prev.concat(prev.length));
 	};
+	const addMoreEd = () => {
+		setNewEdArr((prev) => prev.concat(prev.length))
+	}
 
 	const deleteNewExp = (id) => {
 		if (newExpsArr.length === 1) {
@@ -75,6 +84,19 @@ const EditUserComponent = () => {
 			(exp) => exp._id !== id
 		);
 		setExpArr(newExpArr);
+		return promise;
+	};
+	const deleteThisEd = async (id) => {
+		const promise = await fetch(
+			`http://localhost:3000/api/user/education/${id}/${userDetails[0]._id}`,
+			{
+				method: 'DELETE',
+			}
+		);
+		const newEdArr = userDetails[0].education.filter(
+			(ed) => ed._id !== id
+		);
+		setEdArr(newEdArr);
 		return promise;
 	};
 
@@ -189,14 +211,76 @@ const EditUserComponent = () => {
 		});
 		return expArr;
 	};
+	const getEditedEducationData = (data) => {
+		let edArr = [];
+		if (!allSavedEd || allSavedEd.length === 0) {
+			return;
+		}
+		const dataExist = allSavedEd.filter((l) => l._id);
+		const expIds = dataExist.map((d) => d._id);
+		expIds.forEach((exp) => {
+			let obj = {};
+			const edSchool = `school_${exp}`;
+			const edDegree = `degree_${exp}`;
+			const expStart = `start_date_${exp}`;
+			const expEnd = `end_date_${exp}`;
+			if (edSchool) {
+				obj['school'] = data[edSchool];
+			}
+			if (edDegree) {
+				obj['degree'] = data[edDegree];
+			}
+			if (expStart) {
+				obj['year_started'] = data[expStart];
+			}
+			if (expEnd) {
+				obj['year_ended'] = data[expEnd];
+			}
+			obj['_id'] = exp;
+			edArr.push(obj);
+		});
+		return edArr;
+	};
+	const getNewEducationData = (data) => {
+		let edArr = [];
+		const dataKeys = Object.keys(data);
+		const expData = dataKeys.filter((d) => d.includes('school_'));
+		expData.forEach((key, idx) => {
+			let obj = {};
+			const edSchool = `school_${idx}`;
+			if (!edSchool) {
+				return;
+			}
+			const edDegree = `degree_${idx}`;
+			const expStart = `start_date_${idx}`;
+			const expEnd = `end_date_${idx}`;
+			if (edSchool) {
+				obj['school'] = data[edSchool];
+			}
+			if (edDegree) {
+				obj['degree'] = data[edDegree];
+			}
+			if (expStart) {
+				obj['year_started'] = data[expStart];
+			}
+			if (expEnd) {
+				obj['year_ended'] = data[expEnd];
+			}
+			edArr.push(obj);
+		});
+		return edArr;
+	};
 
 	const handleSave = async (data) => {
 		let validNewLinks = [];
 		let validNewExp = [];
+		let validNewEd = []
 		let editedLinks = getEditedLinkData(data);
 		const newLinks = getNewLinkData(data);
 		let editedExp = getEditedExperienceData(data);
 		const newExp = getNewExperienceData(data);
+		let editedEd = getEditedEducationData(data)
+		const newEd = getNewEducationData(data)
 		if (newLinks && newLinks.length > 0) {
 			validNewLinks = newLinks.filter((li) => li.title !== undefined);
 			if (editedLinks && editedLinks.length > 0) {
@@ -213,6 +297,14 @@ const EditUserComponent = () => {
 				editedExp = validNewExp;
 			}
 		}
+		if (newEd && newEd.length > 0) {
+			validNewEd = newEd.filter((ed) => ed.school !== undefined);
+			if (editedEd && editedEd.length > 0) {
+				validNewEd.forEach((ed) => editedEd.push(ed));
+			} else {
+				editedEd = validNewEd;
+			}
+		}
 		const postUserName = await fetch(
 			`http://localhost:3000/api/user/${userDetails[0]._id}`,
 			{
@@ -223,7 +315,7 @@ const EditUserComponent = () => {
 				body: JSON.stringify({
 					name: data.fullName,
 					email: data.email,
-					$set: { links: editedLinks, experience: editedExp },
+					$set: { links: editedLinks, experience: editedExp, education: editedEd },
 				}),
 			}
 		);
@@ -439,6 +531,8 @@ const EditUserComponent = () => {
 								idTitle={`job-title-${exp._id}`}
 								idStart={`start-${exp._id}`}
 								idEnd={`end-${exp._id}`}
+								companyLabel="Company Name:"
+								jobLabel="Job Title:"
 								deleteOne={() => deleteThisExp(exp._id)}
 								companyNameComp={
 									<Controller
@@ -566,6 +660,8 @@ const EditUserComponent = () => {
 								idTitle={`job-title-${newExpsArr.indexOf(exp)}`}
 								idStart={`start-${newExpsArr.indexOf(exp)}`}
 								idEnd={`end-${newExpsArr.indexOf(exp)}`}
+								companyLabel="Company Name:"
+								jobLabel="Job Title:"
 								deleteOne={() =>
 									deleteNewExp(newExpsArr.indexOf(exp))
 								}
@@ -701,6 +797,284 @@ const EditUserComponent = () => {
 						sx={{marginBottom: '2em !important'}}
 					>
 						Add Experience?
+					</ContainedButton>
+				</FormGroup>
+				<FormGroup className='user-form-group'>
+					<Typography variant='h2'>Education</Typography>
+					{edArr.length > 0 &&
+						edArr.map((ed) => (
+							<ExperienceForm
+								key={ed._id}
+								idComp={`school-${ed._id}`}
+								idTitle={`degree-${ed._id}`}
+								idStart={`start-${ed._id}`}
+								idEnd={`end-${ed._id}`}
+								deleteOne={() => deleteThisEd(ed._id)}
+								companyLabel="School name:"
+								jobLabel="Degree earned/Field of Study"
+								companyNameComp={
+									<Controller
+										control={control}
+										name={`school_${ed._id}`}
+										rules={{
+											required:
+												'Please enter the name of the school',
+										}}
+										render={({
+											field: {
+												onChange,
+												onBlur,
+												value,
+												ref,
+											},
+										}) => (
+											<Input
+												onChange={onChange}
+												onBlur={onBlur}
+												value={value}
+												inputRef={ref}
+												type='text'
+												id={`school-${ed._id}`}
+											/>
+										)}
+										defaultValue={ed.school}
+									/>
+								}
+								jobTitleComp={
+									<Controller
+										control={control}
+										name={`degree_${ed._id}`}
+										rules={{
+											required:
+												'Please enter the degree earned or field of study.',
+										}}
+										render={({
+											field: {
+												onChange,
+												onBlur,
+												value,
+												ref,
+											},
+										}) => (
+											<Input
+												onChange={onChange}
+												onBlur={onBlur}
+												value={value}
+												inputRef={ref}
+												type='text'
+												id={`degree-${ed._id}`}
+											/>
+										)}
+										defaultValue={ed.degree}
+									/>
+								}
+								startDateComp={
+									<Controller
+										control={control}
+										name={`start_date_${ed._id}`}
+										rules={{
+											required:
+												'Please enter the first date you started at this school',
+										}}
+										render={({
+											field: {
+												onChange,
+												onBlur,
+												ref,
+												value,
+											},
+										}) => (
+											<Input
+												type='date'
+												sx={{ maxWidth: '200px'}}
+												inputRef={ref}
+												onChange={onChange}
+												onBlur={onBlur}
+												value={value}
+												id={`start-${ed._id}`}
+											/>
+										)}
+										defaultValue={parseDate(
+											ed.year_started
+										)}
+									/>
+								}
+								endDateComp={
+									<Controller
+										control={control}
+										name={`end_date_${ed._id}`}
+										rules={{
+											required:
+												'Please Enter the date of your last day attending this school.',
+										}}
+										render={({
+											field: {
+												onChange,
+												onBlur,
+												ref,
+												value,
+											},
+										}) => (
+											<Input
+												type='date'
+												sx={{ maxWidth: '200px'}}
+												onChange={onChange}
+												onBlur={onBlur}
+												inputRef={ref}
+												value={value}
+												id={`end-${ed._id}`}
+											/>
+										)}
+										defaultValue={parseDate(ed.year_ended)}
+									/>
+								}
+							/>
+						))}
+					{newEdArr.length > 0 &&
+						newEdArr.map((ed) => (
+							<ExperienceForm
+								key={newEdArr.indexOf(ed)}
+								idComp={`school-${newEdArr.indexOf(ed)}`}
+								idTitle={`degree-${newEdArr.indexOf(ed)}`}
+								idStart={`start-${newEdArr.indexOf(ed)}`}
+								idEnd={`end-${newEdArr.indexOf(ed)}`}
+								deleteOne={() =>
+									deleteNewExp(newEdArr.indexOf(ed))
+								}
+								companyLabel="School name:"
+								jobLabel="Degree earned/Field of Study:"
+								companyNameComp={
+									<Controller
+										control={control}
+										name={`school_${newEdArr.indexOf(
+											ed
+										)}`}
+										rules={{
+											required:
+												'Please enter the name of the school.',
+										}}
+										render={({
+											field: {
+												onChange,
+												onBlur,
+												value,
+												ref,
+											},
+										}) => (
+											<Input
+												onChange={onChange}
+												onBlur={onBlur}
+												value={value}
+												inputRef={ref}
+												type='text'
+												id={`school-${newEdArr.indexOf(ed)}`}
+											/>
+										)}
+										defaultValue=''
+									/>
+								}
+								jobTitleComp={
+									<Controller
+										control={control}
+										name={`degree_${newEdArr.indexOf(
+											ed
+										)}`}
+										rules={{
+											required:
+												'Please enter the degree earned or field of study.',
+										}}
+										render={({
+											field: {
+												onChange,
+												onBlur,
+												value,
+												ref,
+											},
+										}) => (
+											<Input
+												onChange={onChange}
+												onBlur={onBlur}
+												value={value}
+												inputRef={ref}
+												type='text'
+												id={`degree-${newEdArr.indexOf(ed)}`}
+											/>
+										)}
+										defaultValue=''
+									/>
+								}
+								startDateComp={
+									<Controller
+										control={control}
+										name={`start_date_${newEdArr.indexOf(
+											ed
+										)}`}
+										rules={{
+											required:
+												'Please enter the date you started school.',
+										}}
+										render={({
+											field: {
+												onChange,
+												onBlur,
+												ref,
+												value,
+											},
+										}) => (
+											<Input
+												type='date'
+												sx={{ maxWidth: '200px'}}
+												inputRef={ref}
+												onChange={onChange}
+												onBlur={onBlur}
+												value={value}
+												id={`start-${newEdArr.indexOf(ed)}`}
+											/>
+										)}
+										defaultValue=''
+									/>
+								}
+								endDateComp={
+									<Controller
+										control={control}
+										name={`end_date_${newEdArr.indexOf(
+											ed
+										)}`}
+										rules={{
+											required:
+												'Please Enter the date you completed school',
+										}}
+										render={({
+											field: {
+												onChange,
+												onBlur,
+												ref,
+												value,
+											},
+										}) => (
+											<Input
+												type='date'
+												sx={{ maxWidth: '200px'}}
+												onChange={onChange}
+												onBlur={onBlur}
+												inputRef={ref}
+												value={value}
+												id={`end-${newEdArr.indexOf(ed)}`}
+											/>
+										)}
+										defaultValue=''
+									/>
+								}
+							/>
+						))}
+				</FormGroup>
+				<FormGroup className='user-form-group'>
+					<ContainedButton
+						onClick={addMoreEd}
+						type='button'
+						sx={{marginBottom: '2em !important'}}
+					>
+						Add Education?
 					</ContainedButton>
 				</FormGroup>
 				<FormGroup className='user-form-group'>

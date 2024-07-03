@@ -5,7 +5,9 @@ import { FormGroup, Grid, InputLabel } from '@mui/material';
 
 const ExperienceForm = (props) => {
 	const {
+		companyLabel,
 		companyNameComp,
+		jobLabel,
 		jobTitleComp,
 		startDateComp,
 		endDateComp,
@@ -20,13 +22,13 @@ const ExperienceForm = (props) => {
 		<FormGroup key={key}>
 			<BasicInput
 				id={idComp}
-				label='Company Name'
+				label={companyLabel}
 			>
 				{companyNameComp}
 			</BasicInput>
 			<BasicInput
 				id={idTitle}
-				label='Job Title'
+				label={jobLabel}
 			>
 				{jobTitleComp}
 			</BasicInput>
@@ -60,7 +62,7 @@ const ExperienceForm = (props) => {
 						onClick={deleteOne}
 						type='button'
 					>
-						Delete Experience
+						Delete
 					</ContainedButton>
 				</Grid>
 			</Grid>

@@ -11,12 +11,19 @@ const experienceSchema = new mongoose.Schema({
 	year_started: String,
 	year_ended: String,
 })
+const educationSchema = new mongoose.Schema({
+	school: String,
+	degree: String,
+	year_started: String,
+	year_ended: String,
+})
 
 const userSchema = new mongoose.Schema({
 	name: String,
 	email: String,
 	links: [linksSchema],
-	experience: [experienceSchema]
+	experience: [experienceSchema],
+	education: [educationSchema]
 })
 
 export const User = mongoose.model('User', userSchema)

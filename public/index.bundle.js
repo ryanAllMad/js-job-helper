@@ -21622,7 +21622,9 @@ const UserLinkInputs = props => {
 
 const ExperienceForm = props => {
   const {
+    companyLabel,
     companyNameComp,
+    jobLabel,
     jobTitleComp,
     startDateComp,
     endDateComp,
@@ -21636,11 +21638,11 @@ const ExperienceForm = props => {
   return /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
     children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
       id: idComp,
-      label: "Company Name",
+      label: companyLabel,
       children: companyNameComp
     }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
       id: idTitle,
-      label: "Job Title",
+      label: jobLabel,
       children: jobTitleComp
     }), /*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
       sx: {
@@ -21669,7 +21671,7 @@ const ExperienceForm = props => {
         children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
           onClick: deleteOne,
           type: "button",
-          children: "Delete Experience"
+          children: "Delete"
         })
       })
     })]
@@ -21729,6 +21731,7 @@ const EditUserComponent = () => {
   const userDetails = getUser.read();
   const allSavedLinks = userDetails && userDetails.length > 0 ? userDetails[0].links : null;
   const allSavedExp = userDetails && userDetails.length > 0 ? userDetails[0].experience : null;
+  const allSavedEd = userDetails && userDetails.length > 0 ? userDetails[0].education : null;
   const {
     handleSubmit,
     control,
@@ -21740,6 +21743,8 @@ const EditUserComponent = () => {
   const [newLinksArr, setNewLinksArr] = react.useState([]);
   const [expArr, setExpArr] = react.useState(allSavedExp);
   const [newExpsArr, setNewExpsArr] = react.useState([]);
+  const [edArr, setEdArr] = react.useState(allSavedEd);
+  const [newEdArr, setNewEdArr] = react.useState([]);
   const addMoreLinks = () => {
     setNewLinksArr(prev => prev.concat(prev.length));
   };
@@ -21752,6 +21757,9 @@ const EditUserComponent = () => {
   };
   const addMoreExp = () => {
     setNewExpsArr(prev => prev.concat(prev.length));
+  };
+  const addMoreEd = () => {
+    setNewEdArr(prev => prev.concat(prev.length));
   };
   const deleteNewExp = id => {
     if (newExpsArr.length === 1) {
@@ -21774,6 +21782,14 @@ const EditUserComponent = () => {
     });
     const newExpArr = userDetails[0].experience.filter(exp => exp._id !== id);
     setExpArr(newExpArr);
+    return promise;
+  };
+  const deleteThisEd = async id => {
+    const promise = await fetch(`http://localhost:3000/api/user/education/${id}/${userDetails[0]._id}`, {
+      method: 'DELETE'
+    });
+    const newEdArr = userDetails[0].education.filter(ed => ed._id !== id);
+    setEdArr(newEdArr);
     return promise;
   };
   const parseDate = date => {
@@ -21889,13 +21905,75 @@ const EditUserComponent = () => {
     });
     return expArr;
   };
+  const getEditedEducationData = data => {
+    let edArr = [];
+    if (!allSavedEd || allSavedEd.length === 0) {
+      return;
+    }
+    const dataExist = allSavedEd.filter(l => l._id);
+    const expIds = dataExist.map(d => d._id);
+    expIds.forEach(exp => {
+      let obj = {};
+      const edSchool = `school_${exp}`;
+      const edDegree = `degree_${exp}`;
+      const expStart = `start_date_${exp}`;
+      const expEnd = `end_date_${exp}`;
+      if (edSchool) {
+        obj['school'] = data[edSchool];
+      }
+      if (edDegree) {
+        obj['degree'] = data[edDegree];
+      }
+      if (expStart) {
+        obj['year_started'] = data[expStart];
+      }
+      if (expEnd) {
+        obj['year_ended'] = data[expEnd];
+      }
+      obj['_id'] = exp;
+      edArr.push(obj);
+    });
+    return edArr;
+  };
+  const getNewEducationData = data => {
+    let edArr = [];
+    const dataKeys = Object.keys(data);
+    const expData = dataKeys.filter(d => d.includes('school_'));
+    expData.forEach((key, idx) => {
+      let obj = {};
+      const edSchool = `school_${idx}`;
+      if (!edSchool) {
+        return;
+      }
+      const edDegree = `degree_${idx}`;
+      const expStart = `start_date_${idx}`;
+      const expEnd = `end_date_${idx}`;
+      if (edSchool) {
+        obj['school'] = data[edSchool];
+      }
+      if (edDegree) {
+        obj['degree'] = data[edDegree];
+      }
+      if (expStart) {
+        obj['year_started'] = data[expStart];
+      }
+      if (expEnd) {
+        obj['year_ended'] = data[expEnd];
+      }
+      edArr.push(obj);
+    });
+    return edArr;
+  };
   const handleSave = async data => {
     let validNewLinks = [];
     let validNewExp = [];
+    let validNewEd = [];
     let editedLinks = getEditedLinkData(data);
     const newLinks = getNewLinkData(data);
     let editedExp = getEditedExperienceData(data);
     const newExp = getNewExperienceData(data);
+    let editedEd = getEditedEducationData(data);
+    const newEd = getNewEducationData(data);
     if (newLinks && newLinks.length > 0) {
       validNewLinks = newLinks.filter(li => li.title !== undefined);
       if (editedLinks && editedLinks.length > 0) {
@@ -21912,6 +21990,14 @@ const EditUserComponent = () => {
         editedExp = validNewExp;
       }
     }
+    if (newEd && newEd.length > 0) {
+      validNewEd = newEd.filter(ed => ed.school !== undefined);
+      if (editedEd && editedEd.length > 0) {
+        validNewEd.forEach(ed => editedEd.push(ed));
+      } else {
+        editedEd = validNewEd;
+      }
+    }
     const postUserName = await fetch(`http://localhost:3000/api/user/${userDetails[0]._id}`, {
       method: 'POST',
       headers: {
@@ -21922,7 +22008,8 @@ const EditUserComponent = () => {
         email: data.email,
         $set: {
           links: editedLinks,
-          experience: editedExp
+          experience: editedExp,
+          education: editedEd
         }
       })
     });
@@ -22138,6 +22225,8 @@ const EditUserComponent = () => {
           idTitle: `job-title-${exp._id}`,
           idStart: `start-${exp._id}`,
           idEnd: `end-${exp._id}`,
+          companyLabel: "Company Name:",
+          jobLabel: "Job Title:",
           deleteOne: () => deleteThisExp(exp._id),
           companyNameComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
             control: control,
@@ -22254,6 +22343,8 @@ const EditUserComponent = () => {
           idTitle: `job-title-${newExpsArr.indexOf(exp)}`,
           idStart: `start-${newExpsArr.indexOf(exp)}`,
           idEnd: `end-${newExpsArr.indexOf(exp)}`,
+          companyLabel: "Company Name:",
+          jobLabel: "Job Title:",
           deleteOne: () => deleteNewExp(newExpsArr.indexOf(exp)),
           companyNameComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
             control: control,
@@ -22375,6 +22466,258 @@ const EditUserComponent = () => {
             marginBottom: '2em !important'
           },
           children: "Add Experience?"
+        })
+      }), /*#__PURE__*/(0,jsx_runtime.jsxs)(FormGroup_FormGroup, {
+        className: "user-form-group",
+        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          variant: "h2",
+          children: "Education"
+        }), edArr.length > 0 && edArr.map(ed => /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ExperienceForm, {
+          idComp: `school-${ed._id}`,
+          idTitle: `degree-${ed._id}`,
+          idStart: `start-${ed._id}`,
+          idEnd: `end-${ed._id}`,
+          deleteOne: () => deleteThisEd(ed._id),
+          companyLabel: "School name:",
+          jobLabel: "Degree earned/Field of Study",
+          companyNameComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `school_${ed._id}`,
+            rules: {
+              required: 'Please enter the name of the school'
+            },
+            render: _ref15 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  value,
+                  ref
+                }
+              } = _ref15;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                inputRef: ref,
+                type: "text",
+                id: `school-${ed._id}`
+              });
+            },
+            defaultValue: ed.school
+          }),
+          jobTitleComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `degree_${ed._id}`,
+            rules: {
+              required: 'Please enter the degree earned or field of study.'
+            },
+            render: _ref16 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  value,
+                  ref
+                }
+              } = _ref16;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                inputRef: ref,
+                type: "text",
+                id: `degree-${ed._id}`
+              });
+            },
+            defaultValue: ed.degree
+          }),
+          startDateComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `start_date_${ed._id}`,
+            rules: {
+              required: 'Please enter the first date you started at this school'
+            },
+            render: _ref17 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  ref,
+                  value
+                }
+              } = _ref17;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                type: "date",
+                sx: {
+                  maxWidth: '200px'
+                },
+                inputRef: ref,
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                id: `start-${ed._id}`
+              });
+            },
+            defaultValue: parseDate(ed.year_started)
+          }),
+          endDateComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `end_date_${ed._id}`,
+            rules: {
+              required: 'Please Enter the date of your last day attending this school.'
+            },
+            render: _ref18 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  ref,
+                  value
+                }
+              } = _ref18;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                type: "date",
+                sx: {
+                  maxWidth: '200px'
+                },
+                onChange: onChange,
+                onBlur: onBlur,
+                inputRef: ref,
+                value: value,
+                id: `end-${ed._id}`
+              });
+            },
+            defaultValue: parseDate(ed.year_ended)
+          })
+        }, ed._id)), newEdArr.length > 0 && newEdArr.map(ed => /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ExperienceForm, {
+          idComp: `school-${newEdArr.indexOf(ed)}`,
+          idTitle: `degree-${newEdArr.indexOf(ed)}`,
+          idStart: `start-${newEdArr.indexOf(ed)}`,
+          idEnd: `end-${newEdArr.indexOf(ed)}`,
+          deleteOne: () => deleteNewExp(newEdArr.indexOf(ed)),
+          companyLabel: "School name:",
+          jobLabel: "Degree earned/Field of Study:",
+          companyNameComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `school_${newEdArr.indexOf(ed)}`,
+            rules: {
+              required: 'Please enter the name of the school.'
+            },
+            render: _ref19 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  value,
+                  ref
+                }
+              } = _ref19;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                inputRef: ref,
+                type: "text",
+                id: `school-${newEdArr.indexOf(ed)}`
+              });
+            },
+            defaultValue: ""
+          }),
+          jobTitleComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `degree_${newEdArr.indexOf(ed)}`,
+            rules: {
+              required: 'Please enter the degree earned or field of study.'
+            },
+            render: _ref20 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  value,
+                  ref
+                }
+              } = _ref20;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                inputRef: ref,
+                type: "text",
+                id: `degree-${newEdArr.indexOf(ed)}`
+              });
+            },
+            defaultValue: ""
+          }),
+          startDateComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `start_date_${newEdArr.indexOf(ed)}`,
+            rules: {
+              required: 'Please enter the date you started school.'
+            },
+            render: _ref21 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  ref,
+                  value
+                }
+              } = _ref21;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                type: "date",
+                sx: {
+                  maxWidth: '200px'
+                },
+                inputRef: ref,
+                onChange: onChange,
+                onBlur: onBlur,
+                value: value,
+                id: `start-${newEdArr.indexOf(ed)}`
+              });
+            },
+            defaultValue: ""
+          }),
+          endDateComp: /*#__PURE__*/(0,jsx_runtime.jsx)(Controller, {
+            control: control,
+            name: `end_date_${newEdArr.indexOf(ed)}`,
+            rules: {
+              required: 'Please Enter the date you completed school'
+            },
+            render: _ref22 => {
+              let {
+                field: {
+                  onChange,
+                  onBlur,
+                  ref,
+                  value
+                }
+              } = _ref22;
+              return /*#__PURE__*/(0,jsx_runtime.jsx)(Input_Input, {
+                type: "date",
+                sx: {
+                  maxWidth: '200px'
+                },
+                onChange: onChange,
+                onBlur: onBlur,
+                inputRef: ref,
+                value: value,
+                id: `end-${newEdArr.indexOf(ed)}`
+              });
+            },
+            defaultValue: ""
+          })
+        }, newEdArr.indexOf(ed)))]
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(FormGroup_FormGroup, {
+        className: "user-form-group",
+        children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+          onClick: addMoreEd,
+          type: "button",
+          sx: {
+            marginBottom: '2em !important'
+          },
+          children: "Add Education?"
         })
       }), /*#__PURE__*/(0,jsx_runtime.jsx)(FormGroup_FormGroup, {
         className: "user-form-group",
