@@ -2,6 +2,7 @@ import * as React from 'react';
 import BasicInput from './BasicInput.js';
 import ContainedButton from './ContainedButton.js';
 import { Typography, FormHelperText, Stack } from '@mui/material';
+import { theme } from '../../index.js'
 
 const AddQualification = (props) => {
 	const { key, onSubmit, onMissing, thisReq, qualificationDesc, addButtonText, removeButtonText, addButtonState, addPessedButtonState, removePressedButtonState, children } = props;
@@ -9,10 +10,9 @@ const AddQualification = (props) => {
 		<>
 			<form
 				key={key}
-				style={{ display: 'flex', flexFlow: 'row wrap' }}
 				onSubmit={onSubmit}
 			>
-				<Stack>
+				<Stack direction="column">
 				<Typography
 					variant='h2'
 					id='qualifications'
@@ -22,7 +22,6 @@ const AddQualification = (props) => {
 				<FormHelperText id='add-response'>
 					{qualificationDesc}
 				</FormHelperText>
-				</Stack>
 				<BasicInput
 					sx={{
 						width: '-webkit-fill-available',
@@ -46,7 +45,7 @@ const AddQualification = (props) => {
 				<ContainedButton
 					sx={{
 						marginTop: '1em',
-						backgroundColor: '#ba000d',
+						backgroundColor: theme.palette.error.main,
 						'&:hover': { backgroundColor: '#e72d28' },
 					}}
 					type='button'
@@ -55,6 +54,7 @@ const AddQualification = (props) => {
 				>
 					{removeButtonText}
 				</ContainedButton>
+				</Stack>
 			</form>
 		</>
 	);

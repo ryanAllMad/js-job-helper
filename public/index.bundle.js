@@ -6265,6 +6265,12 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
+var __webpack_exports__ = {};
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, {
+  w: () => (/* binding */ theme)
+});
 
 // EXTERNAL MODULE: ./node_modules/react-dom/client.js
 var client = __webpack_require__(5338);
@@ -13484,7 +13490,7 @@ function react_router_dom_dist_extends() {
   };
   return react_router_dom_dist_extends.apply(this, arguments);
 }
-function dist_objectWithoutPropertiesLoose(source, excluded) {
+function _objectWithoutPropertiesLoose(source, excluded) {
   if (source == null) return {};
   var target = {};
   var sourceKeys = Object.keys(source);
@@ -14182,7 +14188,7 @@ const Link = /*#__PURE__*/react.forwardRef(function LinkWithRef(_ref7, ref) {
       preventScrollReset,
       unstable_viewTransition
     } = _ref7,
-    rest = dist_objectWithoutPropertiesLoose(_ref7, dist_excluded);
+    rest = _objectWithoutPropertiesLoose(_ref7, dist_excluded);
   let {
     basename
   } = react.useContext(NavigationContext);
@@ -14254,7 +14260,7 @@ const NavLink = /*#__PURE__*/react.forwardRef(function NavLinkWithRef(_ref8, ref
       unstable_viewTransition,
       children
     } = _ref8,
-    rest = dist_objectWithoutPropertiesLoose(_ref8, dist_excluded2);
+    rest = _objectWithoutPropertiesLoose(_ref8, dist_excluded2);
   let path = dist_useResolvedPath(to, {
     relative: rest.relative
   });
@@ -14335,7 +14341,7 @@ const Form = /*#__PURE__*/(/* unused pure expression or super */ null && (React.
       preventScrollReset,
       unstable_viewTransition
     } = _ref9,
-    props = dist_objectWithoutPropertiesLoose(_ref9, dist_excluded3);
+    props = _objectWithoutPropertiesLoose(_ref9, dist_excluded3);
   let submit = useSubmit();
   let formAction = useFormAction(action, {
     relative
@@ -15620,6 +15626,9 @@ if (false) {}
 const Header = () => {
   return /*#__PURE__*/(0,jsx_runtime.jsx)("header", {
     children: /*#__PURE__*/(0,jsx_runtime.jsx)(AppBar_AppBar, {
+      sx: {
+        backgroundColor: 'rgb(115, 25, 242)'
+      },
       position: "sticky",
       children: /*#__PURE__*/(0,jsx_runtime.jsx)("nav", {
         children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Grid_Grid, {
@@ -21560,7 +21569,8 @@ const ContainedButton = props => {
       ...sx,
       maxWidth: 250,
       marginTop: '2em',
-      marginRight: '1em'
+      marginRight: '1em',
+      display: 'inline-block'
     },
     size: "medium",
     children: children
@@ -29053,7 +29063,7 @@ var react_is = __webpack_require__(4363);
 ;// CONCATENATED MODULE: ./node_modules/@mui/system/esm/RtlProvider/index.js
 
 
-const RtlProvider_excluded = (/* unused pure expression or super */ null && (["value"]));
+const RtlProvider_excluded = ["value"];
 
 
 
@@ -29062,8 +29072,8 @@ function RtlProvider(_ref) {
   let {
       value
     } = _ref,
-    props = _objectWithoutPropertiesLoose(_ref, RtlProvider_excluded);
-  return /*#__PURE__*/_jsx(RtlContext.Provider, _extends({
+    props = (0,objectWithoutPropertiesLoose/* default */.A)(_ref, RtlProvider_excluded);
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(RtlContext.Provider, (0,esm_extends/* default */.A)({
     value: value != null ? value : true
   }, props));
 }
@@ -29072,7 +29082,7 @@ const useRtl = () => {
   const value = react.useContext(RtlContext);
   return value != null ? value : false;
 };
-/* harmony default export */ const esm_RtlProvider = ((/* unused pure expression or super */ null && (RtlProvider)));
+/* harmony default export */ const esm_RtlProvider = (RtlProvider);
 ;// CONCATENATED MODULE: ./node_modules/@mui/material/List/ListContext.js
 'use client';
 
@@ -35349,7 +35359,7 @@ const PositionView = props => {
                   }), item.title ? /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
                     children: [/*#__PURE__*/(0,jsx_runtime.jsxs)("p", {
                       className: "drop-text",
-                      children: [" ", removeMe]
+                      children: [' ', removeMe]
                     }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
                       id: "title",
                       variant: "h3",
@@ -35372,7 +35382,17 @@ const PositionView = props => {
               }, item._id)
             })
           }))]
-        })]
+        }), userDetails[0].education.map(ed => /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
+          children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+            variant: "h2",
+            children: "Education"
+          }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
+            variant: "h3",
+            children: [ed.school, " - ", ed.degree]
+          }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
+            children: ["From: ", ed.year_started, " - To:", ' ', ed.year_ended]
+          })]
+        }, userDetails[0].education.indexOf(ed)))]
       })]
     })]
   });
@@ -36164,6 +36184,7 @@ const AddRequirements = props => {
 
 
 
+
 const AddQualification = props => {
   const {
     key,
@@ -36179,13 +36200,10 @@ const AddQualification = props => {
     children
   } = props;
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
-    children: /*#__PURE__*/(0,jsx_runtime.jsxs)("form", {
-      style: {
-        display: 'flex',
-        flexFlow: 'row wrap'
-      },
+    children: /*#__PURE__*/(0,jsx_runtime.jsx)("form", {
       onSubmit: onSubmit,
-      children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
+      children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
+        direction: "column",
         children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
           variant: "h2",
           id: "qualifications",
@@ -36193,36 +36211,36 @@ const AddQualification = props => {
         }), /*#__PURE__*/(0,jsx_runtime.jsx)(FormHelperText_FormHelperText, {
           id: "add-response",
           children: qualificationDesc
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
+          sx: {
+            width: '-webkit-fill-available',
+            paddingRight: '15px'
+          },
+          label: `Add qualifications for: ${thisReq}`,
+          id: "add-response",
+          children: children
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+          sx: {
+            marginTop: '1em'
+          },
+          type: "submit",
+          disabled: addButtonState,
+          ariaPressed: addPessedButtonState,
+          children: addButtonText
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+          sx: {
+            marginTop: '1em',
+            backgroundColor: theme.palette.error.main,
+            '&:hover': {
+              backgroundColor: '#e72d28'
+            }
+          },
+          type: "button",
+          ariaPressed: removePressedButtonState,
+          onClick: onMissing,
+          children: removeButtonText
         })]
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_BasicInput, {
-        sx: {
-          width: '-webkit-fill-available',
-          paddingRight: '15px'
-        },
-        label: `Add qualifications for: ${thisReq}`,
-        id: "add-response",
-        children: children
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-        sx: {
-          marginTop: '1em'
-        },
-        type: "submit",
-        disabled: addButtonState,
-        ariaPressed: addPessedButtonState,
-        children: addButtonText
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-        sx: {
-          marginTop: '1em',
-          backgroundColor: '#ba000d',
-          '&:hover': {
-            backgroundColor: '#e72d28'
-          }
-        },
-        type: "button",
-        ariaPressed: removePressedButtonState,
-        onClick: onMissing,
-        children: removeButtonText
-      })]
+      })
     }, key)
   });
 };
@@ -37920,6 +37938,159 @@ const EditResume = () => {
   });
 };
 /* harmony default export */ const Views_EditResume = (EditResume);
+;// CONCATENATED MODULE: ./node_modules/@mui/private-theming/useTheme/ThemeContext.js
+
+const ThemeContext = /*#__PURE__*/react.createContext(null);
+if (false) {}
+/* harmony default export */ const useTheme_ThemeContext = (ThemeContext);
+;// CONCATENATED MODULE: ./node_modules/@mui/private-theming/useTheme/useTheme.js
+
+
+function useTheme_useTheme_useTheme() {
+  const theme = react.useContext(useTheme_ThemeContext);
+  if (false) {}
+  return theme;
+}
+;// CONCATENATED MODULE: ./node_modules/@mui/private-theming/ThemeProvider/nested.js
+const hasSymbol = typeof Symbol === 'function' && Symbol.for;
+/* harmony default export */ const nested = (hasSymbol ? Symbol.for('mui.nested') : '__THEME_NESTED__');
+;// CONCATENATED MODULE: ./node_modules/@mui/private-theming/ThemeProvider/ThemeProvider.js
+
+
+
+
+
+
+
+
+// To support composition of theme.
+
+function mergeOuterLocalTheme(outerTheme, localTheme) {
+  if (typeof localTheme === 'function') {
+    const mergedTheme = localTheme(outerTheme);
+    if (false) {}
+    return mergedTheme;
+  }
+  return (0,esm_extends/* default */.A)({}, outerTheme, localTheme);
+}
+
+/**
+ * This component takes a `theme` prop.
+ * It makes the `theme` available down the React tree thanks to React context.
+ * This component should preferably be used at **the root of your component tree**.
+ */
+function ThemeProvider(props) {
+  const {
+    children,
+    theme: localTheme
+  } = props;
+  const outerTheme = useTheme_useTheme_useTheme();
+  if (false) {}
+  const theme = react.useMemo(() => {
+    const output = outerTheme === null ? localTheme : mergeOuterLocalTheme(outerTheme, localTheme);
+    if (output != null) {
+      output[nested] = outerTheme !== null;
+    }
+    return output;
+  }, [localTheme, outerTheme]);
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(useTheme_ThemeContext.Provider, {
+    value: theme,
+    children: children
+  });
+}
+ false ? 0 : void 0;
+if (false) {}
+/* harmony default export */ const ThemeProvider_ThemeProvider = (ThemeProvider);
+;// CONCATENATED MODULE: ./node_modules/@mui/system/esm/ThemeProvider/ThemeProvider.js
+'use client';
+
+
+
+
+
+
+
+
+
+
+const EMPTY_THEME = {};
+function useThemeScoping(themeId, upperTheme, localTheme, isPrivate = false) {
+  return react.useMemo(() => {
+    const resolvedTheme = themeId ? upperTheme[themeId] || upperTheme : upperTheme;
+    if (typeof localTheme === 'function') {
+      const mergedTheme = localTheme(resolvedTheme);
+      const result = themeId ? (0,esm_extends/* default */.A)({}, upperTheme, {
+        [themeId]: mergedTheme
+      }) : mergedTheme;
+      // must return a function for the private theme to NOT merge with the upper theme.
+      // see the test case "use provided theme from a callback" in ThemeProvider.test.js
+      if (isPrivate) {
+        return () => result;
+      }
+      return result;
+    }
+    return themeId ? (0,esm_extends/* default */.A)({}, upperTheme, {
+      [themeId]: localTheme
+    }) : (0,esm_extends/* default */.A)({}, upperTheme, localTheme);
+  }, [themeId, upperTheme, localTheme, isPrivate]);
+}
+
+/**
+ * This component makes the `theme` available down the React tree.
+ * It should preferably be used at **the root of your component tree**.
+ *
+ * <ThemeProvider theme={theme}> // existing use case
+ * <ThemeProvider theme={{ id: theme }}> // theme scoping
+ */
+function ThemeProvider_ThemeProvider_ThemeProvider(props) {
+  const {
+    children,
+    theme: localTheme,
+    themeId
+  } = props;
+  const upperTheme = useThemeWithoutDefault(EMPTY_THEME);
+  const upperPrivateTheme = useTheme_useTheme_useTheme() || EMPTY_THEME;
+  if (false) {}
+  const engineTheme = useThemeScoping(themeId, upperTheme, localTheme);
+  const privateTheme = useThemeScoping(themeId, upperPrivateTheme, localTheme, true);
+  const rtlValue = engineTheme.direction === 'rtl';
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(ThemeProvider_ThemeProvider, {
+    theme: privateTheme,
+    children: /*#__PURE__*/(0,jsx_runtime.jsx)(emotion_element_43c6fea0_browser_esm.T.Provider, {
+      value: engineTheme,
+      children: /*#__PURE__*/(0,jsx_runtime.jsx)(esm_RtlProvider, {
+        value: rtlValue,
+        children: children
+      })
+    })
+  });
+}
+ false ? 0 : void 0;
+if (false) {}
+/* harmony default export */ const esm_ThemeProvider_ThemeProvider = (ThemeProvider_ThemeProvider_ThemeProvider);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/styles/ThemeProvider.js
+'use client';
+
+
+
+const ThemeProvider_excluded = ["theme"];
+
+
+
+
+
+function styles_ThemeProvider_ThemeProvider(_ref) {
+  let {
+      theme: themeInput
+    } = _ref,
+    props = (0,objectWithoutPropertiesLoose/* default */.A)(_ref, ThemeProvider_excluded);
+  const scopedTheme = themeInput[identifier];
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(esm_ThemeProvider_ThemeProvider, (0,esm_extends/* default */.A)({}, props, {
+    themeId: scopedTheme ? identifier : undefined,
+    theme: scopedTheme || themeInput
+  }));
+}
+ false ? 0 : void 0;
 ;// CONCATENATED MODULE: ./views/index.js
 
 
@@ -37931,6 +38102,40 @@ const EditResume = () => {
 
 
 
+
+const theme = styles_createTheme({
+  palette: {
+    primary: {
+      main: 'rgb(115, 25, 242)',
+      light: '#a05cfd',
+      dark: '#340b6c'
+    },
+    secondary: {
+      main: '#9ad058',
+      light: '#f2ffa4',
+      dark: '#3f7300'
+    },
+    error: {
+      main: '#D32E05',
+      light: '#D32E0569'
+    }
+  },
+  typography: {
+    fontSize: '18px',
+    h1: {
+      fontSize: '3rem'
+    },
+    h2: {
+      fontSize: '2.5rem'
+    },
+    h3: {
+      fontSize: '2.22rem'
+    },
+    h4: {
+      fontSize: '1.88rem'
+    }
+  }
+});
 const router = createBrowserRouter([{
   path: '/',
   element: /*#__PURE__*/(0,jsx_runtime.jsx)(Views_UserLanding, {})
@@ -37950,10 +38155,13 @@ const router = createBrowserRouter([{
   path: '*',
   element: /*#__PURE__*/(0,jsx_runtime.jsx)(Views_UserLanding, {})
 }]);
-(0,client/* hydrateRoot */.c)(document.getElementById('root'), /*#__PURE__*/(0,jsx_runtime.jsx)(LocalizationProvider, {
-  dateAdapter: AdapterDayjs,
-  children: /*#__PURE__*/(0,jsx_runtime.jsx)(dist_RouterProvider, {
-    router: router
+(0,client/* hydrateRoot */.c)(document.getElementById('root'), /*#__PURE__*/(0,jsx_runtime.jsx)(styles_ThemeProvider_ThemeProvider, {
+  theme: theme,
+  children: /*#__PURE__*/(0,jsx_runtime.jsx)(LocalizationProvider, {
+    dateAdapter: AdapterDayjs,
+    children: /*#__PURE__*/(0,jsx_runtime.jsx)(dist_RouterProvider, {
+      router: router
+    })
   })
 }));
 })();

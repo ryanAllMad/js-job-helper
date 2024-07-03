@@ -5,7 +5,7 @@ import { AppBar, Grid } from '@mui/material';
 const Header = () => {
 	return (
 		<header>
-			<AppBar position='sticky'>
+			<AppBar sx={{ backgroundColor: 'rgb(115, 25, 242)'}} position='sticky'>
 				<nav>
 					<Grid
 						container

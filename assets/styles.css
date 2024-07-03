@@ -21,7 +21,13 @@
 }
 main {
 	padding: 2em;
-    background-color: #6fbf73;
+    background-color: #9AD058;
+}
+footer {
+	padding: 2em;
+}
+footer a {
+	color: #fff;
 }
 .MuiFormGroup-root > *:not(:first-child) {
     margin-top: 1em;
@@ -42,7 +48,7 @@ nav a:active {
 	text-decoration: underline;
 }
 nav a:hover {
-	color: #ffef62;
+	text-decoration: underline;
 }
 .user-form-group {
 	border: 1px solid #8080805c;
