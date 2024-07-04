@@ -16,7 +16,7 @@ This project requires at least node 20. If you don't have nvm installed, we reco
 ## Get started:
 1. Install/Update to node version 20>=
 2. Pull down this repo
-3. Connect your mongodb cluster using the instructions below
+3. Connect your mongodb cluster using the [instructions below](https://github.com/ryanAllMad/js-job-helper?tab=readme-ov-file#connect-to-your-mongodb-cluster)
 4. Add the mongodb cluster connection string and database name to a file titled config.env (instructions also below)
 5. Run `npm install`
 6. Run `npm build`
@@ -29,7 +29,7 @@ This project requires at least node 20. If you don't have nvm installed, we reco
 ### First:
 1. Follow the instructions here to create a free account: https://www.mongodb.com/docs/atlas/tutorial/create-atlas-account/#register-a-new-service-account
 2. Follow these steps to create and deploy a free cluster https://www.mongodb.com/docs/atlas/tutorial/deploy-free-tier-cluster/ (You can use the Atlas UI tab for easier to follow instructions.)
-3. Create a connection string with these instructions: https://www.mongodb.com/docs/drivers/node/current/quick-start/create-a-connection-string/ (you'll need this in the next step!)
+3. Create a connection string with these instructions: https://www.mongodb.com/docs/drivers/node/current/quick-start/create-a-connection-string/ (you'll need this in the [next step!](https://github.com/ryanAllMad/js-job-helper?tab=readme-ov-file#connect-to-your-mongodb-cluster))
 4. In your cluster data services tab -> database tab -> Collections tab -> click the create database button and give your database a name (you'll need this too!) add jobposts as the initial collection name then click create.
 
 ### Second:
