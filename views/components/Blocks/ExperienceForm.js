@@ -2,6 +2,7 @@ import * as React from 'react';
 import BasicInput from './BasicInput.js';
 import ContainedButton from './ContainedButton.js';
 import { FormGroup, Grid, InputLabel } from '@mui/material';
+import { theme } from '../../index.js'
 
 const ExperienceForm = (props) => {
 	const {
@@ -61,6 +62,11 @@ const ExperienceForm = (props) => {
 					<ContainedButton
 						onClick={deleteOne}
 						type='button'
+						sx={{
+							color: '#111',
+							backgroundColor: theme.palette.secondary.main,
+							'&:hover': { backgroundColor: theme.palette.secondary.dark, color: '#fff' },
+						}}
 					>
 						Delete
 					</ContainedButton>

@@ -7,23 +7,28 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs/index.js';
 import EditResume from './components/Views/EditResume.js';
-import { createTheme, ThemeProvider, styled } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material';
 
 export const theme = createTheme({
 	palette: {
 		primary: {
-			main: 'rgb(115, 25, 242)',
-			light: '#a05cfd',
-			dark: '#340b6c',
+			main: '#c52073',
+			light: '#feacd5', 
+			dark: '#640d39', 
 		},
 		secondary: {
-			main: '#9ad058',
-			light: '#f2ffa4',
-			dark: '#3f7300',
+			main: '#FFD700',
+			light: '#faeb98',
+			dark: '#9a840e',
 		},
 		error: {
 			main: '#D32E05',
 			light: '#D32E0569'
+		},
+		success: {
+			main: '#0ba558',
+			light: '#00FF7F',
+			dark: '#006934'
 		}
 	},
 	typography: {

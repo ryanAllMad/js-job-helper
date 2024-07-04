@@ -5,15 +5,16 @@ import {
 	GaugeReferenceArc,
 	GaugeValueArc,
 } from '@mui/x-charts';
+import { theme } from '../../index.js'
 
 const Guage = (props) => {
 	const {value} = props
-	const [color, setColor] = React.useState('#aa2e25')
+	const [color, setColor] = React.useState(theme.palette.error.main)
 	React.useEffect(() => {
 		if(value > 70) {
-			setColor('#357a38')
+			setColor(theme.palette.success.main)
 		} else {
-			setColor('#aa2e25')
+			setColor(theme.palette.error.main)
 		}
 	})
 	return (

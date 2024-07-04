@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ContainedButton from './ContainedButton.js';
 import { Dialog, Paper, Typography, Stack } from '@mui/material';
-
+import { theme } from '../../index.js'
 const ConfirmationBox = (props) => {
 	const { open, handleClose, handleSubmit } = props;
 	return (
@@ -25,8 +25,9 @@ const ConfirmationBox = (props) => {
 						</ContainedButton>
 						<ContainedButton
 							sx={{
-								backgroundColor: '#ba000d',
-								'&:hover': { backgroundColor: '#e72d28' },
+								color: '#111',
+								backgroundColor: theme.palette.secondary.main,
+								'&:hover': { backgroundColor: theme.palette.secondary.dark, color: '#fff' },
 							}}
 							onClick={handleClose}
 							type='button'

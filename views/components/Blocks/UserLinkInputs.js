@@ -1,6 +1,7 @@
 import * as React from 'react';
 import ContainedButton from './ContainedButton.js';
 import { FormControl, Grid } from '@mui/material';
+import { theme } from '../../index.js'
 
 const UserLinkInputs = (props) => {
 	const { titleInput, hrefInput, deleteOne, key } = props;
@@ -41,6 +42,11 @@ const UserLinkInputs = (props) => {
 					<ContainedButton
 						onClick={deleteOne}
 						type='button'
+						sx={{
+							color: '#111',
+							backgroundColor: theme.palette.secondary.main,
+							'&:hover': { backgroundColor: theme.palette.secondary.dark, color: '#fff' },
+						}}
 					>
 						Delete Link
 					</ContainedButton>

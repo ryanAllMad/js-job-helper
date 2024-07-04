@@ -21582,6 +21582,7 @@ const ContainedButton = props => {
 
 
 
+
 const UserLinkInputs = props => {
   const {
     titleInput,
@@ -21617,6 +21618,14 @@ const UserLinkInputs = props => {
         children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
           onClick: deleteOne,
           type: "button",
+          sx: {
+            color: '#111',
+            backgroundColor: theme.palette.secondary.main,
+            '&:hover': {
+              backgroundColor: theme.palette.secondary.dark,
+              color: '#fff'
+            }
+          },
           children: "Delete Link"
         })
       })]
@@ -21625,6 +21634,7 @@ const UserLinkInputs = props => {
 };
 /* harmony default export */ const Blocks_UserLinkInputs = (UserLinkInputs);
 ;// CONCATENATED MODULE: ./views/components/Blocks/ExperienceForm.js
+
 
 
 
@@ -21681,6 +21691,14 @@ const ExperienceForm = props => {
         children: /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
           onClick: deleteOne,
           type: "button",
+          sx: {
+            color: '#111',
+            backgroundColor: theme.palette.secondary.main,
+            '&:hover': {
+              backgroundColor: theme.palette.secondary.dark,
+              color: '#fff'
+            }
+          },
           children: "Delete"
         })
       })
@@ -35109,16 +35127,17 @@ function GaugeValueArc(props) {
 
 
 
+
 const Guage = props => {
   const {
     value
   } = props;
-  const [color, setColor] = react.useState('#aa2e25');
+  const [color, setColor] = react.useState(theme.palette.error.main);
   react.useEffect(() => {
     if (value > 70) {
-      setColor('#357a38');
+      setColor(theme.palette.success.main);
     } else {
-      setColor('#aa2e25');
+      setColor(theme.palette.error.main);
     }
   });
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
@@ -36062,6 +36081,7 @@ const Dialog = /*#__PURE__*/react.forwardRef(function Dialog(inProps, ref) {
 
 
 
+
 const ConfirmationBox = props => {
   const {
     open,
@@ -36089,9 +36109,11 @@ const ConfirmationBox = props => {
             children: "Yes! Save and move on"
           }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
             sx: {
-              backgroundColor: '#ba000d',
+              color: '#111',
+              backgroundColor: theme.palette.secondary.main,
               '&:hover': {
-                backgroundColor: '#e72d28'
+                backgroundColor: theme.palette.secondary.dark,
+                color: '#fff'
               }
             },
             onClick: handleClose,
@@ -36105,6 +36127,7 @@ const ConfirmationBox = props => {
 };
 /* harmony default export */ const Blocks_ConfirmationBox = (ConfirmationBox);
 ;// CONCATENATED MODULE: ./views/components/Blocks/AddRequirements.js
+
 
 
 
@@ -36133,7 +36156,7 @@ const AddRequirements = props => {
     children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(AppBar_AppBar, {
       sx: {
         backgroundColor: '#fff',
-        color: 'rgb(16 73 129)',
+        color: theme.palette.primary.dark,
         boxShadow: 'none'
       },
       position: "sticky",
@@ -36153,15 +36176,15 @@ const AddRequirements = props => {
           id: "requirements",
           children: "Requirements"
         }), /*#__PURE__*/(0,jsx_runtime.jsxs)(FormControl_FormControl, {
-          children: [/*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
+          children: [/*#__PURE__*/(0,jsx_runtime.jsx)(FormHelperText_FormHelperText, {
+            id: "enter-requirements",
+            children: "Enter the keywords for each job requirement. (Example: 'Documenting codebase'...) If a requirement exists in the dropdown that is similar to one in the job post, select the one that already exists. It's important to input ALL requirements even if you don't have those requirements. This will help your Job Match meter give you an accurate reading."
+          }), /*#__PURE__*/(0,jsx_runtime.jsx)(InputLabel_InputLabel, {
             sx: {
-              marginTop: '50px'
+              position: 'relative'
             },
             htmlFor: "enter-requirements",
             children: "Input Each Job Requirement & Nice to Have's"
-          }), /*#__PURE__*/(0,jsx_runtime.jsx)(FormHelperText_FormHelperText, {
-            id: "enter-requirements",
-            children: "Enter the keywords for each job requirement. (Example: 'Documenting codebase'...) If a requirement exists in the dropdown that is similar to one in the job post, select the one that already exists. It's important to input ALL requirements even if you don't have those requirements. This will help your Job Match meter give you an accurate reading."
           }), children]
         }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
           disabled: reqDisableState,
@@ -36219,26 +36242,31 @@ const AddQualification = props => {
           label: `Add qualifications for: ${thisReq}`,
           id: "add-response",
           children: children
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-          sx: {
-            marginTop: '1em'
-          },
-          type: "submit",
-          disabled: addButtonState,
-          ariaPressed: addPessedButtonState,
-          children: addButtonText
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
-          sx: {
-            marginTop: '1em',
-            backgroundColor: theme.palette.error.main,
-            '&:hover': {
-              backgroundColor: '#e72d28'
-            }
-          },
-          type: "button",
-          ariaPressed: removePressedButtonState,
-          onClick: onMissing,
-          children: removeButtonText
+        }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
+          direction: "row",
+          children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+            sx: {
+              marginTop: '1em'
+            },
+            type: "submit",
+            disabled: addButtonState,
+            ariaPressed: addPessedButtonState,
+            children: addButtonText
+          }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_ContainedButton, {
+            sx: {
+              marginTop: '1em',
+              color: '#111',
+              backgroundColor: theme.palette.secondary.main,
+              '&:hover': {
+                backgroundColor: theme.palette.secondary.dark,
+                color: '#fff'
+              }
+            },
+            type: "button",
+            ariaPressed: removePressedButtonState,
+            onClick: onMissing,
+            children: removeButtonText
+          })]
         })]
       })
     }, key)
@@ -38106,18 +38134,23 @@ function styles_ThemeProvider_ThemeProvider(_ref) {
 const theme = styles_createTheme({
   palette: {
     primary: {
-      main: 'rgb(115, 25, 242)',
-      light: '#a05cfd',
-      dark: '#340b6c'
+      main: '#c52073',
+      light: '#feacd5',
+      dark: '#640d39'
     },
     secondary: {
-      main: '#9ad058',
-      light: '#f2ffa4',
-      dark: '#3f7300'
+      main: '#FFD700',
+      light: '#faeb98',
+      dark: '#9a840e'
     },
     error: {
       main: '#D32E05',
       light: '#D32E0569'
+    },
+    success: {
+      main: '#0ba558',
+      light: '#00FF7F',
+      dark: '#006934'
     }
   },
   typography: {

@@ -32,8 +32,9 @@ const AddQualification = (props) => {
 				>
 					{children}
 				</BasicInput>
+				<Stack direction="row">
 				<ContainedButton
-					sx={{ marginTop: '1em' }}
+					sx={{ marginTop: '1em'}}
 					type='submit'
 					disabled={addButtonState}
 					ariaPressed={addPessedButtonState}
@@ -45,8 +46,9 @@ const AddQualification = (props) => {
 				<ContainedButton
 					sx={{
 						marginTop: '1em',
-						backgroundColor: theme.palette.error.main,
-						'&:hover': { backgroundColor: '#e72d28' },
+						color: '#111',
+						backgroundColor: theme.palette.secondary.main,
+						'&:hover': { backgroundColor: theme.palette.secondary.dark, color: '#fff' },
 					}}
 					type='button'
 					ariaPressed={removePressedButtonState}
@@ -54,6 +56,7 @@ const AddQualification = (props) => {
 				>
 					{removeButtonText}
 				</ContainedButton>
+				</Stack>
 				</Stack>
 			</form>
 		</>

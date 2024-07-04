@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import ContainedButton from './ContainedButton.js';
 import ConfirmationBox from './ConfirmationBox.js';
+import { theme } from '../../index.js'
 
 const AddRequirements = (props) => {
 	const { progress, key, onSubmit, reqDisableState, children } = props;
@@ -30,7 +31,7 @@ const AddRequirements = (props) => {
 			<AppBar
 				sx={{
 					backgroundColor: '#fff',
-					color: 'rgb(16 73 129)',
+					color: theme.palette.primary.dark,
 					boxShadow: 'none',
 				}}
 				position='sticky'
@@ -56,12 +57,6 @@ const AddRequirements = (props) => {
 					</Typography>
 
 					<FormControl>
-						<InputLabel
-							sx={{ marginTop: '50px' }}
-							htmlFor='enter-requirements'
-						>
-							Input Each Job Requirement & Nice to Have's
-						</InputLabel>
 						<FormHelperText id='enter-requirements'>
 							Enter the keywords for each job requirement.
 							(Example: 'Documenting codebase'...) If a
@@ -72,6 +67,12 @@ const AddRequirements = (props) => {
 							help your Job Match meter give you an accurate
 							reading.
 						</FormHelperText>
+						<InputLabel
+							sx={{ position: 'relative'}}
+							htmlFor='enter-requirements'
+						>
+							Input Each Job Requirement & Nice to Have's
+						</InputLabel>
 						{children}
 					</FormControl>
 					<ContainedButton
