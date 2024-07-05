@@ -8,7 +8,8 @@ const getUser = fetchData('http://localhost:3000/api/user');
 const Resume = (props) => {
 	const { fetchJobUrl, fetchResumeUrl } = props;
 	const resumeRef = React.useRef();
-
+	const userDeets = getUser.read();
+	const [resumeExists, setResumeExists] = React.useState(false);
 	const [job, setJob] = React.useState({});
 	const [value, setValue] = React.useState(0);
 	const [experienceList, setExperienceList] = React.useState([]);
@@ -73,9 +74,10 @@ const Resume = (props) => {
 		}
 		// save sorted list into DB:
 		try {
-			const reqPromise = await fetch(
-				`http://localhost:3000/api/resume/${job.company_name}`,
-				{
+			let reqPromise;
+			// if resume exists update it:
+			if (resumeExists) {
+				reqPromise = await fetch(fetchResumeUrl, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
@@ -84,8 +86,20 @@ const Resume = (props) => {
 						company_name: job.company_name,
 						resume_array: experienceList,
 					}),
-				}
-			);
+				});
+			} else {
+				// if not create a new sorted resume:
+				reqPromise = await fetch('http://localhost:3000/api/resume/', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						company_name: job.company_name,
+						resume_array: experienceList,
+					}),
+				});
+			}
 			// copy text to clipboard:
 			await navigator.clipboard.writeText(thisResume);
 			// get text in clipboard
@@ -151,32 +165,33 @@ const Resume = (props) => {
 	}, [fetchJobUrl]);
 
 	React.useEffect(() => {
+		//merge the experience and qualifications into an array if no sorted resume exists:
+		const hasRequirements =
+			job && job.requirements && job.requirements.length > 0;
+		const hasResume =
+			experienceList &&
+			typeof experienceList === 'array' &&
+			experienceList.length > 0;
+		const hasExperience =
+			userDeets[0].experience && userDeets[0].experience.length > 0;
+		const cleanedRequirements = hasRequirements && job.requirements.filter((item) => item.res_content)
+		if (hasRequirements && !hasResume && hasExperience) {
+			setExperienceList([
+				...userDeets[0].experience,
+				...cleanedRequirements,
+			]);
+		}
+		// get resume sorted list from DB
 		if (fetchResumeUrl) {
 			getResume().then((res) => {
 				if (res[0] && res[0].resume_array.length > 0) {
 					setExperienceList(res[0].resume_array);
+					setResumeExists(true);
 				}
 			});
 		}
-	}, [fetchResumeUrl]);
+	}, [fetchResumeUrl, job]);
 
-			//console.log('experienceListState', experienceList)
-		// if not merge the experience and qualifications into an array:
-		//if (
-		//	job.requirements &&
-		//	job.requirements.length > 0 &&
-		//	userDetails[0].experience &&
-		//	userDetails[0].experience.length > 0
-		//) {
-		//	const newArr = [...userDetails[0].experience, ...job.requirements];
-		//	if (
-		//		experienceList.length === 0 ||
-		//		(!experienceList.includes(userDetails[0].experience[0]) &&
-		//		!experienceList.includes(job.requirements[0]))
-		//	) {
-		//		setExperienceList(newArr);
-		//	}
-		//}
 	return (
 		<>
 			<Stack spacing={2}>
@@ -186,7 +201,7 @@ const Resume = (props) => {
 					jobFunction={job.job_function}
 					guageValue={value}
 					ref={resumeRef}
-					userDetails={getUser.read()}
+					userDetails={userDeets}
 				>
 					<Stack
 						sx={{
@@ -228,79 +243,80 @@ const Resume = (props) => {
 						}}
 					>
 						<Typography variant='h2'>Experience</Typography>
-						{experienceList['title'] || experienceList['res_content'] ? (
+						{experienceList['title'] ||
+						experienceList['res_content'] ? (
+							<>{'Still loading content...'}</>
+						) : (
 							<>
-							{'Still loading content...'}
-							</>
-						 ) : (
-						<>
-						{experienceList.map((item, idx) => (
-								<>
-									<div
-										key={item._id}
-										id={item._id}
-										draggable={true}
-										onDragStart={(e) => {
-											setIsDragging('dragged');
-											setElementMoving(item);
-										}}
-										onDragEnd={(e) => {
-											setIsDragging('');
-										}}
-									>
+								{experienceList.map((item, idx) => (
+									<>
 										<div
-											className={`item ${dragging}`}
-											style={{
-												position: 'relative',
+											key={item._id}
+											id={item._id}
+											draggable={true}
+											onDragStart={(e) => {
+												setIsDragging('dragged');
+												setElementMoving(item);
+											}}
+											onDragEnd={(e) => {
+												setIsDragging('');
 											}}
 										>
 											<div
-												className={`dragHandle ${
-													copied ? 'hide' : ''
-												}`}
+												className={`item ${dragging}`}
+												style={{
+													position: 'relative',
+												}}
 											>
-												&#10495;
-											</div>
-											{item.title ? (
-												<>
-													<p className='drop-text'>
-														{' '}
-														{removeMe}
-													</p>
-													<Typography
-														id='title'
-														variant='h3'
-													>
-														{item.title}
-													</Typography>
-													<Typography variant='h4'>
-														{item.company}
-													</Typography>
-													<Typography>
-														From:{' '}
-														{item.year_started} -
-														To: {item.year_ended}
-													</Typography>
-												</>
-											) : (
-												<>
-													<List>
-														<ListItem
-															className='list-item'
-															key={item._id}
+												<div
+													className={`dragHandle ${
+														copied ? 'hide' : ''
+													}`}
+												>
+													&#10495;
+												</div>
+												{item.title ? (
+													<>
+														<p className='drop-text'>
+															{' '}
+															{removeMe}
+														</p>
+														<Typography
+															id='title'
+															variant='h3'
 														>
-															{item.res_content}
-														</ListItem>
-													</List>
-												</>
-											)}
+															{item.title}
+														</Typography>
+														<Typography variant='h4'>
+															{item.company}
+														</Typography>
+														<Typography>
+															From:{' '}
+															{item.year_started}{' '}
+															- To:{' '}
+															{item.year_ended}
+														</Typography>
+													</>
+												) : (
+													<>
+														<List>
+															<ListItem
+																className='list-item'
+																key={item._id}
+															>
+																{
+																	item.res_content
+																}
+															</ListItem>
+														</List>
+													</>
+												)}
+											</div>
 										</div>
-									</div>
-								</>
-							))}
-						</>)
-						}
-						
+									</>
+								))}
+							</>
+						)}
 					</Stack>
 				</PositionView>
 				<Button

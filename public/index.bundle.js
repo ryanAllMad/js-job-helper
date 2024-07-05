@@ -35448,6 +35448,8 @@ const Resume = props => {
     fetchResumeUrl
   } = props;
   const resumeRef = react.useRef();
+  const userDeets = Resume_getUser.read();
+  const [resumeExists, setResumeExists] = react.useState(false);
   const [job, setJob] = react.useState({});
   const [value, setValue] = react.useState(0);
   const [experienceList, setExperienceList] = react.useState([]);
@@ -35503,16 +35505,32 @@ const Resume = props => {
     }
     // save sorted list into DB:
     try {
-      const reqPromise = await fetch(`http://localhost:3000/api/resume/${job.company_name}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          company_name: job.company_name,
-          resume_array: experienceList
-        })
-      });
+      let reqPromise;
+      // if resume exists update it:
+      if (resumeExists) {
+        reqPromise = await fetch(fetchResumeUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            company_name: job.company_name,
+            resume_array: experienceList
+          })
+        });
+      } else {
+        // if not create a new sorted resume:
+        reqPromise = await fetch('http://localhost:3000/api/resume/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            company_name: job.company_name,
+            resume_array: experienceList
+          })
+        });
+      }
       // copy text to clipboard:
       await navigator.clipboard.writeText(thisResume);
       // get text in clipboard
@@ -35570,32 +35588,24 @@ const Resume = props => {
     }
   }, [fetchJobUrl]);
   react.useEffect(() => {
+    //merge the experience and qualifications into an array if no sorted resume exists:
+    const hasRequirements = job && job.requirements && job.requirements.length > 0;
+    const hasResume = experienceList && typeof experienceList === 'array' && experienceList.length > 0;
+    const hasExperience = userDeets[0].experience && userDeets[0].experience.length > 0;
+    const cleanedRequirements = hasRequirements && job.requirements.filter(item => item.res_content);
+    if (hasRequirements && !hasResume && hasExperience) {
+      setExperienceList([...userDeets[0].experience, ...cleanedRequirements]);
+    }
+    // get resume sorted list from DB
     if (fetchResumeUrl) {
       getResume().then(res => {
         if (res[0] && res[0].resume_array.length > 0) {
           setExperienceList(res[0].resume_array);
+          setResumeExists(true);
         }
       });
     }
-  }, [fetchResumeUrl]);
-
-  //console.log('experienceListState', experienceList)
-  // if not merge the experience and qualifications into an array:
-  //if (
-  //	job.requirements &&
-  //	job.requirements.length > 0 &&
-  //	userDetails[0].experience &&
-  //	userDetails[0].experience.length > 0
-  //) {
-  //	const newArr = [...userDetails[0].experience, ...job.requirements];
-  //	if (
-  //		experienceList.length === 0 ||
-  //		(!experienceList.includes(userDetails[0].experience[0]) &&
-  //		!experienceList.includes(job.requirements[0]))
-  //	) {
-  //		setExperienceList(newArr);
-  //	}
-  //}
+  }, [fetchResumeUrl, job]);
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
     children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
       spacing: 2,
@@ -35607,7 +35617,7 @@ const Resume = props => {
         jobFunction: job.job_function,
         guageValue: value,
         ref: resumeRef,
-        userDetails: Resume_getUser.read(),
+        userDetails: userDeets,
         children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
           sx: {
             touchAction: 'none',
@@ -35673,7 +35683,7 @@ const Resume = props => {
                       variant: "h4",
                       children: item.company
                     }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
-                      children: ["From:", ' ', item.year_started, " - To: ", item.year_ended]
+                      children: ["From:", ' ', item.year_started, ' ', "- To:", ' ', item.year_ended]
                     })]
                   }) : /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
                     children: /*#__PURE__*/(0,jsx_runtime.jsx)(List_List, {
