@@ -7,6 +7,7 @@ import process from'process';
 import { userRouter } from './routes/userRoutes.js'
 import { requirementsRouter } from './routes/requirementRoutes.js';
 import { jobPostRouter } from './routes/jobPost.js';
+import { resumeRouter } from './routes/resumeRoutes.js';
 
 
 
@@ -27,6 +28,7 @@ app.use(express.json())
 app.use('/api', userRouter)
 app.use('/api', jobPostRouter)
 app.use('/api', requirementsRouter)
+app.use('/api', resumeRouter)
 
 
 
