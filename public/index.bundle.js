@@ -33096,201 +33096,6 @@ const AddJobPost = props => {
   });
 };
 /* harmony default export */ const Blocks_AddJobPost = (AddJobPost);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/Link/linkClasses.js
-
-
-function getLinkUtilityClass(slot) {
-  return generateUtilityClass_generateUtilityClass('MuiLink', slot);
-}
-const linkClasses = generateUtilityClasses('MuiLink', ['root', 'underlineNone', 'underlineHover', 'underlineAlways', 'button', 'focusVisible']);
-/* harmony default export */ const Link_linkClasses = (linkClasses);
-// EXTERNAL MODULE: ./node_modules/@mui/system/esm/style.js
-var esm_style = __webpack_require__(6481);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/Link/getTextDecoration.js
-
-
-const getTextDecoration_colorTransformations = {
-  primary: 'primary.main',
-  textPrimary: 'text.primary',
-  secondary: 'secondary.main',
-  textSecondary: 'text.secondary',
-  error: 'error.main'
-};
-const getTextDecoration_transformDeprecatedColors = color => {
-  return getTextDecoration_colorTransformations[color] || color;
-};
-const getTextDecoration = ({
-  theme,
-  ownerState
-}) => {
-  const transformedColor = getTextDecoration_transformDeprecatedColors(ownerState.color);
-  const color = (0,esm_style/* getPath */.Yn)(theme, `palette.${transformedColor}`, false) || ownerState.color;
-  const channelColor = (0,esm_style/* getPath */.Yn)(theme, `palette.${transformedColor}Channel`);
-  if ('vars' in theme && channelColor) {
-    return `rgba(${channelColor} / 0.4)`;
-  }
-  return (0,colorManipulator/* alpha */.X4)(color, 0.4);
-};
-/* harmony default export */ const Link_getTextDecoration = (getTextDecoration);
-;// CONCATENATED MODULE: ./node_modules/@mui/material/Link/Link.js
-'use client';
-
-
-
-const Link_excluded = ["className", "color", "component", "onBlur", "onFocus", "TypographyClasses", "underline", "variant", "sx"];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const Link_useUtilityClasses = ownerState => {
-  const {
-    classes,
-    component,
-    focusVisible,
-    underline
-  } = ownerState;
-  const slots = {
-    root: ['root', `underline${utils_capitalize(underline)}`, component === 'button' && 'button', focusVisible && 'focusVisible']
-  };
-  return composeClasses(slots, getLinkUtilityClass, classes);
-};
-const LinkRoot = styles_styled(Typography_Typography, {
-  name: 'MuiLink',
-  slot: 'Root',
-  overridesResolver: (props, styles) => {
-    const {
-      ownerState
-    } = props;
-    return [styles.root, styles[`underline${utils_capitalize(ownerState.underline)}`], ownerState.component === 'button' && styles.button];
-  }
-})(({
-  theme,
-  ownerState
-}) => {
-  return (0,esm_extends/* default */.A)({}, ownerState.underline === 'none' && {
-    textDecoration: 'none'
-  }, ownerState.underline === 'hover' && {
-    textDecoration: 'none',
-    '&:hover': {
-      textDecoration: 'underline'
-    }
-  }, ownerState.underline === 'always' && (0,esm_extends/* default */.A)({
-    textDecoration: 'underline'
-  }, ownerState.color !== 'inherit' && {
-    textDecorationColor: Link_getTextDecoration({
-      theme,
-      ownerState
-    })
-  }, {
-    '&:hover': {
-      textDecorationColor: 'inherit'
-    }
-  }), ownerState.component === 'button' && {
-    position: 'relative',
-    WebkitTapHighlightColor: 'transparent',
-    backgroundColor: 'transparent',
-    // Reset default value
-    // We disable the focus ring for mouse, touch and keyboard users.
-    outline: 0,
-    border: 0,
-    margin: 0,
-    // Remove the margin in Safari
-    borderRadius: 0,
-    padding: 0,
-    // Remove the padding in Firefox
-    cursor: 'pointer',
-    userSelect: 'none',
-    verticalAlign: 'middle',
-    MozAppearance: 'none',
-    // Reset
-    WebkitAppearance: 'none',
-    // Reset
-    '&::-moz-focus-inner': {
-      borderStyle: 'none' // Remove Firefox dotted outline.
-    },
-    [`&.${Link_linkClasses.focusVisible}`]: {
-      outline: 'auto'
-    }
-  });
-});
-const Link_Link = /*#__PURE__*/react.forwardRef(function Link(inProps, ref) {
-  const props = useThemeProps_useThemeProps({
-    props: inProps,
-    name: 'MuiLink'
-  });
-  const {
-      className,
-      color = 'primary',
-      component = 'a',
-      onBlur,
-      onFocus,
-      TypographyClasses,
-      underline = 'always',
-      variant = 'inherit',
-      sx
-    } = props,
-    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, Link_excluded);
-  const {
-    isFocusVisibleRef,
-    onBlur: handleBlurVisible,
-    onFocus: handleFocusVisible,
-    ref: focusVisibleRef
-  } = utils_useIsFocusVisible();
-  const [focusVisible, setFocusVisible] = react.useState(false);
-  const handlerRef = utils_useForkRef(ref, focusVisibleRef);
-  const handleBlur = event => {
-    handleBlurVisible(event);
-    if (isFocusVisibleRef.current === false) {
-      setFocusVisible(false);
-    }
-    if (onBlur) {
-      onBlur(event);
-    }
-  };
-  const handleFocus = event => {
-    handleFocusVisible(event);
-    if (isFocusVisibleRef.current === true) {
-      setFocusVisible(true);
-    }
-    if (onFocus) {
-      onFocus(event);
-    }
-  };
-  const ownerState = (0,esm_extends/* default */.A)({}, props, {
-    color,
-    component,
-    focusVisible,
-    underline,
-    variant
-  });
-  const classes = Link_useUtilityClasses(ownerState);
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(LinkRoot, (0,esm_extends/* default */.A)({
-    color: color,
-    className: dist_clsx(classes.root, className),
-    classes: TypographyClasses,
-    component: component,
-    onBlur: handleBlur,
-    onFocus: handleFocus,
-    ref: handlerRef,
-    ownerState: ownerState,
-    variant: variant,
-    sx: [...(!Object.keys(getTextDecoration_colorTransformations).includes(color) ? [{
-      color
-    }] : []), ...(Array.isArray(sx) ? sx : [sx])]
-  }, other));
-});
- false ? 0 : void 0;
-/* harmony default export */ const material_Link_Link = (Link_Link);
 ;// CONCATENATED MODULE: ./node_modules/@mui/material/ListItem/listItemClasses.js
 
 
@@ -33646,6 +33451,201 @@ const ListItem = /*#__PURE__*/react.forwardRef(function ListItem(inProps, ref) {
 });
  false ? 0 : void 0;
 /* harmony default export */ const ListItem_ListItem = (ListItem);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/Link/linkClasses.js
+
+
+function getLinkUtilityClass(slot) {
+  return generateUtilityClass_generateUtilityClass('MuiLink', slot);
+}
+const linkClasses = generateUtilityClasses('MuiLink', ['root', 'underlineNone', 'underlineHover', 'underlineAlways', 'button', 'focusVisible']);
+/* harmony default export */ const Link_linkClasses = (linkClasses);
+// EXTERNAL MODULE: ./node_modules/@mui/system/esm/style.js
+var esm_style = __webpack_require__(6481);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/Link/getTextDecoration.js
+
+
+const getTextDecoration_colorTransformations = {
+  primary: 'primary.main',
+  textPrimary: 'text.primary',
+  secondary: 'secondary.main',
+  textSecondary: 'text.secondary',
+  error: 'error.main'
+};
+const getTextDecoration_transformDeprecatedColors = color => {
+  return getTextDecoration_colorTransformations[color] || color;
+};
+const getTextDecoration = ({
+  theme,
+  ownerState
+}) => {
+  const transformedColor = getTextDecoration_transformDeprecatedColors(ownerState.color);
+  const color = (0,esm_style/* getPath */.Yn)(theme, `palette.${transformedColor}`, false) || ownerState.color;
+  const channelColor = (0,esm_style/* getPath */.Yn)(theme, `palette.${transformedColor}Channel`);
+  if ('vars' in theme && channelColor) {
+    return `rgba(${channelColor} / 0.4)`;
+  }
+  return (0,colorManipulator/* alpha */.X4)(color, 0.4);
+};
+/* harmony default export */ const Link_getTextDecoration = (getTextDecoration);
+;// CONCATENATED MODULE: ./node_modules/@mui/material/Link/Link.js
+'use client';
+
+
+
+const Link_excluded = ["className", "color", "component", "onBlur", "onFocus", "TypographyClasses", "underline", "variant", "sx"];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const Link_useUtilityClasses = ownerState => {
+  const {
+    classes,
+    component,
+    focusVisible,
+    underline
+  } = ownerState;
+  const slots = {
+    root: ['root', `underline${utils_capitalize(underline)}`, component === 'button' && 'button', focusVisible && 'focusVisible']
+  };
+  return composeClasses(slots, getLinkUtilityClass, classes);
+};
+const LinkRoot = styles_styled(Typography_Typography, {
+  name: 'MuiLink',
+  slot: 'Root',
+  overridesResolver: (props, styles) => {
+    const {
+      ownerState
+    } = props;
+    return [styles.root, styles[`underline${utils_capitalize(ownerState.underline)}`], ownerState.component === 'button' && styles.button];
+  }
+})(({
+  theme,
+  ownerState
+}) => {
+  return (0,esm_extends/* default */.A)({}, ownerState.underline === 'none' && {
+    textDecoration: 'none'
+  }, ownerState.underline === 'hover' && {
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline'
+    }
+  }, ownerState.underline === 'always' && (0,esm_extends/* default */.A)({
+    textDecoration: 'underline'
+  }, ownerState.color !== 'inherit' && {
+    textDecorationColor: Link_getTextDecoration({
+      theme,
+      ownerState
+    })
+  }, {
+    '&:hover': {
+      textDecorationColor: 'inherit'
+    }
+  }), ownerState.component === 'button' && {
+    position: 'relative',
+    WebkitTapHighlightColor: 'transparent',
+    backgroundColor: 'transparent',
+    // Reset default value
+    // We disable the focus ring for mouse, touch and keyboard users.
+    outline: 0,
+    border: 0,
+    margin: 0,
+    // Remove the margin in Safari
+    borderRadius: 0,
+    padding: 0,
+    // Remove the padding in Firefox
+    cursor: 'pointer',
+    userSelect: 'none',
+    verticalAlign: 'middle',
+    MozAppearance: 'none',
+    // Reset
+    WebkitAppearance: 'none',
+    // Reset
+    '&::-moz-focus-inner': {
+      borderStyle: 'none' // Remove Firefox dotted outline.
+    },
+    [`&.${Link_linkClasses.focusVisible}`]: {
+      outline: 'auto'
+    }
+  });
+});
+const Link_Link = /*#__PURE__*/react.forwardRef(function Link(inProps, ref) {
+  const props = useThemeProps_useThemeProps({
+    props: inProps,
+    name: 'MuiLink'
+  });
+  const {
+      className,
+      color = 'primary',
+      component = 'a',
+      onBlur,
+      onFocus,
+      TypographyClasses,
+      underline = 'always',
+      variant = 'inherit',
+      sx
+    } = props,
+    other = (0,objectWithoutPropertiesLoose/* default */.A)(props, Link_excluded);
+  const {
+    isFocusVisibleRef,
+    onBlur: handleBlurVisible,
+    onFocus: handleFocusVisible,
+    ref: focusVisibleRef
+  } = utils_useIsFocusVisible();
+  const [focusVisible, setFocusVisible] = react.useState(false);
+  const handlerRef = utils_useForkRef(ref, focusVisibleRef);
+  const handleBlur = event => {
+    handleBlurVisible(event);
+    if (isFocusVisibleRef.current === false) {
+      setFocusVisible(false);
+    }
+    if (onBlur) {
+      onBlur(event);
+    }
+  };
+  const handleFocus = event => {
+    handleFocusVisible(event);
+    if (isFocusVisibleRef.current === true) {
+      setFocusVisible(true);
+    }
+    if (onFocus) {
+      onFocus(event);
+    }
+  };
+  const ownerState = (0,esm_extends/* default */.A)({}, props, {
+    color,
+    component,
+    focusVisible,
+    underline,
+    variant
+  });
+  const classes = Link_useUtilityClasses(ownerState);
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(LinkRoot, (0,esm_extends/* default */.A)({
+    color: color,
+    className: dist_clsx(classes.root, className),
+    classes: TypographyClasses,
+    component: component,
+    onBlur: handleBlur,
+    onFocus: handleFocus,
+    ref: handlerRef,
+    ownerState: ownerState,
+    variant: variant,
+    sx: [...(!Object.keys(getTextDecoration_colorTransformations).includes(color) ? [{
+      color
+    }] : []), ...(Array.isArray(sx) ? sx : [sx])]
+  }, other));
+});
+ false ? 0 : void 0;
+/* harmony default export */ const material_Link_Link = (Link_Link);
 ;// CONCATENATED MODULE: ./node_modules/@mui/system/esm/createBox.js
 'use client';
 
@@ -35370,43 +35370,130 @@ const Guage = props => {
 
 
 
-
-const PositionView_getUser = getters_fetchData('http://localhost:3000/api/user');
-const PositionView = props => {
+const PositionView = /*#__PURE__*/react.forwardRef((props, ref) => {
   const {
-    companyName,
+    userDetails,
     jobTitle,
     jobFunction,
-    requirements,
-    guageValue
+    guageValue,
+    children
   } = props;
-  const userDetails = PositionView_getUser.read();
-  const initialDummyContent = [{
-    id: 'loading',
-    res_content: 'Requirements are loading...',
-    title: 'Loading...'
-  }];
-  const [experienceList, setExperienceList] = react.useState(initialDummyContent);
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
+    children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Paper_Paper, {
+      sx: {
+        padding: '2em',
+        paddingTop: '200px',
+        position: 'relative',
+        maxWidth: '1200px',
+        margin: '0 auto',
+        backgroundColor: '#f3ebeb'
+      },
+      elevation: 2,
+      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Guage, {
+        value: guageValue
+      }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
+        ref: ref,
+        id: "resume",
+        children: [userDetails && userDetails.length > 0 && /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+          children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+            variant: "h1",
+            children: userDetails[0].name
+          }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+            variant: "h2",
+            children: jobTitle
+          }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+            children: jobFunction
+          }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+            variant: "body1",
+            children: /*#__PURE__*/(0,jsx_runtime.jsx)(material_Link_Link, {
+              href: `mailto:${userDetails[0].email}`,
+              children: userDetails[0].email
+            })
+          })]
+        }), userDetails[0].links.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+          variant: "body1",
+          children: /*#__PURE__*/(0,jsx_runtime.jsx)(material_Link_Link, {
+            target: "_blank",
+            href: link.href,
+            children: link.title
+          })
+        }, userDetails[0].links.indexOf(link))), /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
+          children: children
+        }), userDetails[0].education.map(ed => /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
+          children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+            variant: "h2",
+            children: "Education"
+          }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
+            variant: "h3",
+            children: [ed.school, " - ", ed.degree]
+          }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
+            children: ["From: ", ed.year_started, " - To: ", ed.year_ended]
+          })]
+        }, userDetails[0].education.indexOf(ed)))]
+      })]
+    })
+  });
+});
+/* harmony default export */ const Blocks_PositionView = (PositionView);
+;// CONCATENATED MODULE: ./views/components/Blocks/Resume.js
+
+
+
+
+
+const Resume_getUser = getters_fetchData('http://localhost:3000/api/user');
+const Resume = props => {
+  const {
+    fetchJobUrl,
+    fetchResumeUrl
+  } = props;
+  const resumeRef = react.useRef();
+  const [job, setJob] = react.useState({});
+  const [value, setValue] = react.useState(0);
+  const [experienceList, setExperienceList] = react.useState([]);
   const [dragging, setIsDragging] = react.useState('');
   const [elementMoving, setElementMoving] = react.useState();
   const [copied, setCopied] = react.useState(null);
   const [removeMe, setRemoveMe] = react.useState('Drop qualifications for experience here.');
   const [copyButtonText, setCopyButtonText] = react.useState('Copy Plain to clipboard');
-  const resumeRef = react.useRef();
-  react.useEffect(() => {
-    const hasSortedResume = window.localStorage.getItem(companyName);
-    // if the resume has previously been edited then load it:
-    if (hasSortedResume) {
-      setExperienceList(JSON.parse(hasSortedResume));
+  const getJob = async () => {
+    try {
+      const reqPromise = await fetch(fetchJobUrl, {
+        method: 'GET'
+      }).then(res => res.json()).then(res => {
+        if (res.status === 'success') {
+          if (!res.data) {
+            console.log('no data');
+          }
+          return res.data;
+        } else {
+          console.log(res.status);
+        }
+      });
+      return reqPromise;
+    } catch (err) {
+      console.log(err);
     }
-    // if not merge the experience and qualifications into an array:
-    if (!hasSortedResume && requirements && requirements.length > 0 && userDetails[0].experience && userDetails[0].experience.length > 0) {
-      const newArr = [...userDetails[0].experience, ...requirements];
-      if (!experienceList.includes(userDetails[0].experience[0]) && !experienceList.includes(requirements[0])) {
-        setExperienceList(newArr);
-      }
+  };
+  const getResume = async () => {
+    try {
+      const reqPromise = await fetch(fetchResumeUrl, {
+        method: 'GET'
+      }).then(res => res.json()).then(res => {
+        if (res.status === 'success') {
+          if (!res.data) {
+            console.log('no data');
+          }
+          return res.data;
+        } else {
+          console.log(res.status);
+        }
+      });
+      return reqPromise;
+    } catch (err) {
+      console.log(err);
     }
-  }, [requirements, userDetails]);
+  };
   const writeToClipboard = async () => {
     const thisResume = resumeRef.current.innerText;
     setCopied(true);
@@ -35414,14 +35501,22 @@ const PositionView = props => {
     if (!copied || removeMe !== '') {
       setCopyButtonText('Parsing text.. Click once more please');
     }
-    // save sorted list into local storage:
-    window.localStorage.setItem(companyName, JSON.stringify(experienceList));
+    // save sorted list into DB:
     try {
+      const reqPromise = await fetch(`http://localhost:3000/api/resume/${job.company_name}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          company_name: job.company_name,
+          resume_array: experienceList
+        })
+      });
       // copy text to clipboard:
       await navigator.clipboard.writeText(thisResume);
       // get text in clipboard
       const hasClipped = await navigator.clipboard.readText();
-      console.log(removeMe);
       if (thisResume !== hasClipped && copied) {
         setCopyButtonText('Ooops! Try Again!');
       }
@@ -35434,9 +35529,10 @@ const PositionView = props => {
           setRemoveMe('Drop qualifications for experience here.');
         }
       }
-    } catch (error) {
+      return reqPromise.json();
+    } catch (err) {
       setCopyButtonText('Ooops! Try Again!');
-      console.log(error.message);
+      console.log(err);
     }
   };
   const getIndex = innerText => {
@@ -35456,55 +35552,63 @@ const PositionView = props => {
       return 0;
     }
   };
-  return /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
-    children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(Button_Button, {
-      variant: "contained",
-      onClick: writeToClipboard,
-      children: [/*#__PURE__*/(0,jsx_runtime.jsx)("span", {
-        style: {
-          fontSize: '50px',
-          marginTop: '-25px',
-          marginBottom: '-18px'
-        },
-        children: "\u2398"
-      }), copyButtonText]
-    }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Paper_Paper, {
-      sx: {
-        padding: '2em',
-        paddingTop: '200px',
-        position: 'relative',
-        maxWidth: '1200px',
-        margin: '0 auto',
-        backgroundColor: '#f3ebeb'
-      },
-      elevation: 2,
-      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Guage, {
-        value: guageValue
-      }), userDetails && userDetails.length > 0 && /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
+  react.useEffect(() => {
+    if (fetchJobUrl) {
+      getJob().then(res => {
+        setJob(res[0]);
+        const allRequirements = [];
+        const allQualifications = [];
+        res[0].requirements.forEach(req => allRequirements.push(req.req_title));
+        res[0].requirements.forEach(req => {
+          if (req.res_content && (req.res_content !== '' || req.res_content !== ' ')) {
+            allQualifications.push(req.res_content);
+          }
+        });
+        const guage = Math.round(allQualifications.length / allRequirements.length * 100);
+        setValue(guage);
+      });
+    }
+  }, [fetchJobUrl]);
+  react.useEffect(() => {
+    if (fetchResumeUrl) {
+      getResume().then(res => {
+        if (res[0] && res[0].resume_array.length > 0) {
+          setExperienceList(res[0].resume_array);
+        }
+      });
+    }
+  }, [fetchResumeUrl]);
+
+  //console.log('experienceListState', experienceList)
+  // if not merge the experience and qualifications into an array:
+  //if (
+  //	job.requirements &&
+  //	job.requirements.length > 0 &&
+  //	userDetails[0].experience &&
+  //	userDetails[0].experience.length > 0
+  //) {
+  //	const newArr = [...userDetails[0].experience, ...job.requirements];
+  //	if (
+  //		experienceList.length === 0 ||
+  //		(!experienceList.includes(userDetails[0].experience[0]) &&
+  //		!experienceList.includes(job.requirements[0]))
+  //	) {
+  //		setExperienceList(newArr);
+  //	}
+  //}
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
+    children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
+      spacing: 2,
+      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+        variant: "h2",
+        children: "Resume"
+      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_PositionView, {
+        jobTitle: job.job_title,
+        jobFunction: job.job_function,
+        guageValue: value,
         ref: resumeRef,
-        id: "resume",
-        children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-          variant: "h1",
-          children: userDetails[0].name
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-          variant: "h2",
-          children: jobTitle
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-          children: jobFunction
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-          variant: "body1",
-          children: /*#__PURE__*/(0,jsx_runtime.jsx)(material_Link_Link, {
-            href: `mailto:${userDetails[0].email}`,
-            children: userDetails[0].email
-          })
-        }), userDetails[0].links.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-          variant: "body1",
-          children: /*#__PURE__*/(0,jsx_runtime.jsx)(material_Link_Link, {
-            target: "_blank",
-            href: link.href,
-            children: link.title
-          })
-        }, userDetails[0].links.indexOf(link))), /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
+        userDetails: Resume_getUser.read(),
+        children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
           sx: {
             touchAction: 'none',
             position: 'relative'
@@ -35535,9 +35639,12 @@ const PositionView = props => {
           children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
             variant: "h2",
             children: "Experience"
-          }), experienceList && experienceList.length > 0 && experienceList.map((item, idx) => /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
-            children: !item.title && !item.res_content ? /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {}) : /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
+          }), experienceList['title'] || experienceList['res_content'] ? /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
+            children: 'Still loading content...'
+          }) : /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
+            children: experienceList.map((item, idx) => /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
               children: /*#__PURE__*/(0,jsx_runtime.jsx)("div", {
+                id: item._id,
                 draggable: true,
                 onDragStart: e => {
                   setIsDragging('dragged');
@@ -35566,7 +35673,7 @@ const PositionView = props => {
                       variant: "h4",
                       children: item.company
                     }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
-                      children: ["From:", ' ', item.year_started, ' ', "- To:", ' ', item.year_ended]
+                      children: ["From:", ' ', item.year_started, " - To: ", item.year_ended]
                     })]
                   }) : /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
                     children: /*#__PURE__*/(0,jsx_runtime.jsx)(List_List, {
@@ -35578,83 +35685,20 @@ const PositionView = props => {
                   })]
                 })
               }, item._id)
-            })
-          }))]
-        }), userDetails[0].education.map(ed => /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
-          children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-            variant: "h2",
-            children: "Education"
-          }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
-            variant: "h3",
-            children: [ed.school, " - ", ed.degree]
-          }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
-            children: ["From: ", ed.year_started, " - To:", ' ', ed.year_ended]
+            }))
           })]
-        }, userDetails[0].education.indexOf(ed)))]
-      })]
-    })]
-  });
-};
-/* harmony default export */ const Blocks_PositionView = (PositionView);
-;// CONCATENATED MODULE: ./views/components/Blocks/Resume.js
-
-
-
-
-const Resume = props => {
-  const {
-    fetchUrl
-  } = props;
-  const [job, setJob] = react.useState({});
-  const [value, setValue] = react.useState(0);
-  const getJob = async () => {
-    try {
-      const reqPromise = await fetch(fetchUrl, {
-        method: 'GET'
-      }).then(res => res.json()).then(res => {
-        if (res.status === 'success') {
-          if (!res.data) {
-            console.log('no data');
-          }
-          return res.data;
-        } else {
-          console.log(res.status);
-        }
-      });
-      return reqPromise;
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  react.useEffect(() => {
-    if (fetchUrl) {
-      getJob().then(res => {
-        setJob(res[0]);
-        const allRequirements = [];
-        const allQualifications = [];
-        res[0].requirements.forEach(req => allRequirements.push(req.req_title));
-        res[0].requirements.forEach(req => {
-          if (req.res_content && (req.res_content !== "" || req.res_content !== " ")) {
-            allQualifications.push(req.res_content);
-          }
-        });
-        const guage = Math.round(allQualifications.length / allRequirements.length * 100);
-        setValue(guage);
-      });
-    }
-  }, []);
-  return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
-    children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
-      spacing: 2,
-      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-        variant: "h2",
-        children: "Resume"
-      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_PositionView, {
-        jobTitle: job.job_title,
-        jobFunction: job.job_function,
-        requirements: job.requirements,
-        guageValue: value,
-        companyName: job.company_name
+        })
+      }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Button_Button, {
+        variant: "contained",
+        onClick: writeToClipboard,
+        children: [/*#__PURE__*/(0,jsx_runtime.jsx)("span", {
+          style: {
+            fontSize: '50px',
+            marginTop: '-25px',
+            marginBottom: '-18px'
+          },
+          children: "\u2398"
+        }), copyButtonText]
       })]
     })
   });
@@ -36890,7 +36934,8 @@ const JobForm = props => {
       })
     }, 3), requirementsArray && noMoreRequirements && responseState && /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
       children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Resume, {
-        fetchUrl: `http://localhost:3000/api/job-post/${resumeLocation}`
+        fetchJobUrl: `http://localhost:3000/api/job-post/${resumeLocation}`,
+        fetchResumeUrl: `http://localhost:3000/api/resume/${resumeLocation}`
       }), /*#__PURE__*/(0,jsx_runtime.jsx)(Button_Button, {
         variant: "outlined",
         sx: {
@@ -37058,7 +37103,8 @@ const SearchJob = () => {
         elevation: 0,
         children: resumeLocation && /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
           children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Blocks_Resume, {
-            fetchUrl: `http://localhost:3000/api/job-post/${resumeLocation}`
+            fetchJobUrl: `http://localhost:3000/api/job-post/${resumeLocation}`,
+            fetchResumeUrl: `http://localhost:3000/api/resume/${resumeLocation}`
           }), /*#__PURE__*/(0,jsx_runtime.jsx)(Button_Button, {
             sx: {
               minWidth: '100%',

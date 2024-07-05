@@ -438,7 +438,8 @@ const JobForm = (props) => {
 			{requirementsArray && noMoreRequirements && responseState && (
 				<>
 					<Resume
-						fetchUrl={`http://localhost:3000/api/job-post/${resumeLocation}`}
+						fetchJobUrl={`http://localhost:3000/api/job-post/${resumeLocation}`}
+						fetchResumeUrl={`http://localhost:3000/api/resume/${resumeLocation}`}
 					/>
 					<Button
 						variant='outlined'

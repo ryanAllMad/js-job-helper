@@ -7,7 +7,7 @@ import {
 	Stack,
 	Grid,
 	TextField,
-	Typography
+	Typography,
 } from '@mui/material';
 import MainBody from '../Layout/MainBody.js';
 import ContainedButton from '../Blocks/ContainedButton.js';
@@ -19,24 +19,36 @@ const getJobs = fetchData('http://localhost:3000/api/job-post/');
 
 const SearchJob = () => {
 	const [resumeLocation, setResumeLocation] = React.useState(null);
-	const { control, handleSubmit, formState: {isValid} } = useForm();
+	const {
+		control,
+		handleSubmit,
+		formState: { isValid },
+	} = useForm();
 	const allJobs = getJobs.read();
 	const handleSetCompanyName = (data) => {
-		setResumeLocation(data.searchJob)
-	}
+		setResumeLocation(data.searchJob);
+	};
 	return (
 		<>
 			<MainBody>
 				<Stack>
-				<Typography variant='h1'>Search Your Resume's by Company Name</Typography>
+					<Typography variant='h1'>
+						Search Your Resume's by Company Name
+					</Typography>
 					{allJobs &&
 					allJobs.jobPost &&
 					allJobs.jobPost.length > 0 ? (
 						<form
-							onSubmit={handleSubmit((data) => handleSetCompanyName(data))}
+							onSubmit={handleSubmit((data) =>
+								handleSetCompanyName(data)
+							)}
 						>
-							<FormControl sx={{width: '100%'}}>
-								<Grid container spacing={4} sx={{width: '100%'}}>
+							<FormControl sx={{ width: '100%' }}>
+								<Grid
+									container
+									spacing={4}
+									sx={{ width: '100%' }}
+								>
 									<Grid
 										item
 										xs={12}
@@ -67,10 +79,9 @@ const SearchJob = () => {
 														/>
 													)}
 													onChange={(e, data) => {
-														setResumeLocation(null)
-														onChange(data)
-													}
-													}
+														setResumeLocation(null);
+														onChange(data);
+													}}
 												/>
 											)}
 											defaultValue=''
@@ -81,7 +92,13 @@ const SearchJob = () => {
 										xs={12}
 										md={6}
 									>
-										<ContainedButton disabled={!isValid} type='submit' sx={{margin: '0.33em auto 0.25em !important;'}}>
+										<ContainedButton
+											disabled={!isValid}
+											type='submit'
+											sx={{
+												margin: '0.33em auto 0.25em !important;',
+											}}
+										>
 											Ok
 										</ContainedButton>
 									</Grid>
@@ -95,13 +112,18 @@ const SearchJob = () => {
 				<Paper elevation={0}>
 					{resumeLocation && (
 						<>
-						<Resume
-							fetchUrl={`http://localhost:3000/api/job-post/${resumeLocation}`}
-						/>
-						<Button sx={{minWidth: '100%', marginTop: '20px'}} variant='outlined' href={`/job-post/${resumeLocation}`}>
-						Edit Resume
-					</Button>
-					</>
+							<Resume
+								fetchJobUrl={`http://localhost:3000/api/job-post/${resumeLocation}`}
+								fetchResumeUrl={`http://localhost:3000/api/resume/${resumeLocation}`}
+							/>
+							<Button
+								sx={{ minWidth: '100%', marginTop: '20px' }}
+								variant='outlined'
+								href={`/job-post/${resumeLocation}`}
+							>
+								Edit Resume
+							</Button>
+						</>
 					)}
 				</Paper>
 			</MainBody>
