@@ -35453,10 +35453,9 @@ const Resume = props => {
   const [job, setJob] = react.useState({});
   const [value, setValue] = react.useState(0);
   const [experienceList, setExperienceList] = react.useState([]);
-  const [dragging, setIsDragging] = react.useState('');
   const [elementMoving, setElementMoving] = react.useState();
-  const [copied, setCopied] = react.useState(null);
-  const [removeMe, setRemoveMe] = react.useState('Drop qualifications for experience here.');
+  const [removeIdx, setRemoveIdx] = react.useState();
+  const [copied, setCopied] = react.useState(false);
   const [copyButtonText, setCopyButtonText] = react.useState('Copy Plain to clipboard');
   const getJob = async () => {
     try {
@@ -35499,10 +35498,6 @@ const Resume = props => {
   const writeToClipboard = async () => {
     const thisResume = resumeRef.current.innerText;
     setCopied(true);
-    setRemoveMe('');
-    if (!copied || removeMe !== '') {
-      setCopyButtonText('Parsing text.. Click once more please');
-    }
     // save sorted list into DB:
     try {
       let reqPromise;
@@ -35535,39 +35530,16 @@ const Resume = props => {
       await navigator.clipboard.writeText(thisResume);
       // get text in clipboard
       const hasClipped = await navigator.clipboard.readText();
-      if (thisResume !== hasClipped && copied) {
+      if (thisResume !== hasClipped) {
         setCopyButtonText('Ooops! Try Again!');
       }
-      if (hasClipped === thisResume && copied) {
-        // add drag handles back:
-        setCopied(false);
-        setCopyButtonText('Copy Plain to clipboard');
-        if (!copied) {
-          await navigator.clipboard.writeText('');
-          setRemoveMe('Drop qualifications for experience here.');
-        }
+      if (hasClipped === thisResume) {
+        setCopyButtonText('Copied!');
       }
       return reqPromise.json();
     } catch (err) {
       setCopyButtonText('Ooops! Try Again!');
       console.log(err);
-    }
-  };
-  const getIndex = innerText => {
-    const emptArr = [];
-    const list = experienceList;
-    if (list.length > 0) {
-      list.forEach(obj => {
-        if (obj.res_content && innerText === obj.res_content) {
-          emptArr.splice(0, 1, list.indexOf(obj));
-        }
-        if (obj.title && innerText.includes(obj.title)) {
-          emptArr.splice(0, 1, list.indexOf(obj));
-        }
-      });
-      return emptArr[0];
-    } else {
-      return 0;
     }
   };
   react.useEffect(() => {
@@ -35606,6 +35578,14 @@ const Resume = props => {
       });
     }
   }, [fetchResumeUrl, job]);
+  react.useEffect(() => {
+    setTimeout(() => {
+      if (copied) {
+        setCopied(false);
+        setCopyButtonText('Copy Plain to clipboard');
+      }
+    }, 1500);
+  }, [copied]);
   return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
     children: /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
       spacing: 2,
@@ -35625,26 +35605,29 @@ const Resume = props => {
           },
           onDragOver: e => {
             e.preventDefault();
-            if (e.target.outerHTML.includes('drop-text')) {
-              e.target.classList.add('show');
-            }
           },
           onDrop: async e => {
             e.preventDefault();
-            if (e.target.outerHTML.includes('show')) {
-              e.target.classList.remove('show');
+            let targetOrder;
+            if (e.target.dataset.order) {
+              targetOrder = e.target.dataset.order;
             }
-            const dropElIndex = await getIndex(e.target.innerText);
-            let addIndex;
-            if (dropElIndex >= 0 && dropElIndex < experienceList.length) {
-              addIndex = dropElIndex + 1;
-            } else {
-              addIndex = dropElIndex - 1;
+            if (e.target.parentElement.dataset.order) {
+              targetOrder = e.target.parentElement.dataset.order;
             }
-            const arr = experienceList.toSpliced(addIndex, 0, elementMoving);
-            const oldIndex = arr.lastIndexOf(elementMoving);
-            const nextArr = arr.toSpliced(oldIndex, 1);
-            setExperienceList(nextArr);
+            if (e.target.parentElement.parentElement.dataset.order) {
+              targetOrder = e.target.parentElement.parentElement.dataset.order;
+            }
+            if (e.target.parentElement.parentElement.parentElement.dataset.order) {
+              targetOrder = e.target.parentElement.parentElement.parentElement.dataset.order;
+            }
+            console.log(e.target.parentElement.parentElement.dataset.order);
+            console.log(targetOrder);
+            if (targetOrder && experienceList && elementMoving && removeIdx) {
+              const alteredList = experienceList.toSpliced(removeIdx, 1);
+              const addedArr = alteredList.toSpliced(targetOrder + 1, 0, elementMoving);
+              setExperienceList(addedArr);
+            }
           },
           children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
             variant: "h2",
@@ -35656,41 +35639,38 @@ const Resume = props => {
               children: /*#__PURE__*/(0,jsx_runtime.jsx)("div", {
                 id: item._id,
                 draggable: true,
+                className: "draggable-item",
                 onDragStart: e => {
-                  setIsDragging('dragged');
+                  setRemoveIdx(idx);
                   setElementMoving(item);
                 },
-                onDragEnd: e => {
-                  setIsDragging('');
-                },
+                "data-order": idx,
                 children: /*#__PURE__*/(0,jsx_runtime.jsxs)("div", {
-                  className: `item ${dragging}`,
+                  className: "item",
                   style: {
                     position: 'relative'
                   },
                   children: [/*#__PURE__*/(0,jsx_runtime.jsx)("div", {
-                    className: `dragHandle ${copied ? 'hide' : ''}`,
-                    children: "\u28FF"
-                  }), item.title ? /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
-                    children: [/*#__PURE__*/(0,jsx_runtime.jsxs)("p", {
-                      className: "drop-text",
-                      children: [' ', removeMe]
-                    }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-                      id: "title",
-                      variant: "h3",
-                      children: item.title
-                    }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
-                      variant: "h4",
-                      children: item.company
-                    }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
-                      children: ["From:", ' ', item.year_started, ' ', "- To:", ' ', item.year_ended]
-                    })]
-                  }) : /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
-                    children: /*#__PURE__*/(0,jsx_runtime.jsx)(List_List, {
-                      children: /*#__PURE__*/(0,jsx_runtime.jsx)(ListItem_ListItem, {
-                        className: "list-item",
-                        children: item.res_content
-                      }, item._id)
+                    className: "dragHandle"
+                  }), /*#__PURE__*/(0,jsx_runtime.jsx)("div", {
+                    children: item.title ? /*#__PURE__*/(0,jsx_runtime.jsxs)(jsx_runtime.Fragment, {
+                      children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+                        id: "title",
+                        variant: "h3",
+                        children: item.title
+                      }), /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+                        variant: "h4",
+                        children: item.company
+                      }), /*#__PURE__*/(0,jsx_runtime.jsxs)(Typography_Typography, {
+                        children: ["From:", ' ', item.year_started, ' ', "- To:", ' ', item.year_ended]
+                      })]
+                    }) : /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
+                      children: /*#__PURE__*/(0,jsx_runtime.jsx)(List_List, {
+                        children: /*#__PURE__*/(0,jsx_runtime.jsx)(ListItem_ListItem, {
+                          className: "list-item",
+                          children: item.res_content
+                        }, item._id)
+                      })
                     })
                   })]
                 })
