@@ -37,7 +37,7 @@ const PositionView = React.forwardRef((props, ref) => {
 							</Typography>
 						</>
 					)}
-					{userDetails[0].links.map((link) => (
+					{userDetails && userDetails.length > 0 && userDetails[0].links.map((link) => (
 						<Typography
 							key={userDetails[0].links.indexOf(link)}
 							variant='body1'
@@ -51,7 +51,7 @@ const PositionView = React.forwardRef((props, ref) => {
 						</Typography>
 					))}
 					<>{children}</>
-					{userDetails[0].education.map((ed) => (
+					{userDetails[0].education && userDetails[0].education.length > 0 && userDetails[0].education.map((ed) => (
 						<Stack key={userDetails[0].education.indexOf(ed)}>
 							<Typography variant='h2'>Education</Typography>
 							<Typography variant='h3'>

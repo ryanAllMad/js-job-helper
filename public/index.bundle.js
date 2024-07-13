@@ -35410,7 +35410,7 @@ const PositionView = /*#__PURE__*/react.forwardRef((props, ref) => {
               children: userDetails[0].email
             })
           })]
-        }), userDetails[0].links.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
+        }), userDetails && userDetails.length > 0 && userDetails[0].links.map(link => /*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
           variant: "body1",
           children: /*#__PURE__*/(0,jsx_runtime.jsx)(material_Link_Link, {
             target: "_blank",
@@ -35419,7 +35419,7 @@ const PositionView = /*#__PURE__*/react.forwardRef((props, ref) => {
           })
         }, userDetails[0].links.indexOf(link))), /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
           children: children
-        }), userDetails[0].education.map(ed => /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
+        }), userDetails[0].education && userDetails[0].education.length > 0 && userDetails[0].education.map(ed => /*#__PURE__*/(0,jsx_runtime.jsxs)(Stack_Stack, {
           children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Typography_Typography, {
             variant: "h2",
             children: "Education"
@@ -35621,8 +35621,6 @@ const Resume = props => {
             if (e.target.parentElement.parentElement.parentElement.dataset.order) {
               targetOrder = e.target.parentElement.parentElement.parentElement.dataset.order;
             }
-            console.log(e.target.parentElement.parentElement.dataset.order);
-            console.log(targetOrder);
             if (targetOrder && experienceList && elementMoving && removeIdx) {
               const alteredList = experienceList.toSpliced(removeIdx, 1);
               const addedArr = alteredList.toSpliced(targetOrder + 1, 0, elementMoving);
