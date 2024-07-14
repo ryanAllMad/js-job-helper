@@ -6,6 +6,8 @@ import ContainedButton from './ContainedButton.js';
 import UserLinkInputs from './UserLinkInputs.js';
 import ExperienceForm from './ExperienceForm.js';
 import fetchData from '../getters/fetchData.js';
+import { deleteEntry } from '../helpers/deleteEntry.js';
+import { deleteNewEntry } from '../helpers/deleteNewEntry.js';
 
 const getUser = fetchData('http://localhost:3000/api/user');
 
@@ -18,9 +20,7 @@ const EditUserComponent = () => {
 			? userDetails[0].experience
 			: null;
 	const allSavedEd =
-	userDetails && userDetails.length > 0
-		? userDetails[0].education
-		: null;
+		userDetails && userDetails.length > 0 ? userDetails[0].education : null;
 	const {
 		handleSubmit,
 		control,
@@ -30,82 +30,47 @@ const EditUserComponent = () => {
 	const [newLinksArr, setNewLinksArr] = React.useState([]);
 	const [expArr, setExpArr] = React.useState(allSavedExp);
 	const [newExpsArr, setNewExpsArr] = React.useState([]);
-	const [edArr, setEdArr] = React.useState(allSavedEd)
-	const [newEdArr, setNewEdArr] = React.useState([])
+	const [edArr, setEdArr] = React.useState(allSavedEd);
+	const [newEdArr, setNewEdArr] = React.useState([]);
 
 	const addMoreLinks = () => {
 		setNewLinksArr((prev) => prev.concat(prev.length));
 	};
-	const deleteNewLinks = (id) => {
-		if (newLinksArr.length === 1) {
-			setNewLinksArr([]);
-		} else {
-			setNewLinksArr((prev) => prev.splice(id, 1));
-		}
-	};
-	const deleteNewEd = (id) => {
-		if (newEdArr.length === 1) {
-			setNewEdArr([]);
-		} else {
-			setNewEdArr((prev) => prev.splice(id, 1));
-		}
-	};
-
 	const addMoreExp = () => {
 		setNewExpsArr((prev) => prev.concat(prev.length));
 	};
 	const addMoreEd = () => {
-		setNewEdArr((prev) => prev.concat(prev.length))
-	}
-
-	const deleteNewExp = (id) => {
-		if (newExpsArr.length === 1) {
-			setNewExpsArr([]);
-		} else {
-			setNewExpsArr((prev) => prev.splice(id, 1));
-		}
+		setNewEdArr((prev) => prev.concat(prev.length));
 	};
 
-	const deleteThisLink = async (id) => {
-		const promise = await fetch(
+	const deleteNewLinks = (id) => deleteNewEntry(id, newLinksArr, setNewLinksArr)
+	const deleteNewExp = (id) => deleteNewEntry(id, newExpsArr, setNewExpsArr)
+	const deleteNewEd = (id) => deleteNewEntry(id, newEdArr, setNewEdArr)
+
+	const deleteThisLink = (id) =>
+		deleteEntry(
+			id,
 			`http://localhost:3000/api/user/links/${id}/${userDetails[0]._id}`,
-			{
-				method: 'DELETE',
-			}
+			userDetails[0].links,
+			linksArr,
+			setLinksArr
 		);
-		const newLinksArr = userDetails[0].links.filter(
-			(link) => link._id !== id
-		);
-		setLinksArr(newLinksArr);
-		return promise;
-	};
-
-	const deleteThisExp = async (id) => {
-		const promise = await fetch(
+	const deleteThisExp = (id) => 
+		deleteEntry(
+			id,
 			`http://localhost:3000/api/user/experience/${id}/${userDetails[0]._id}`,
-			{
-				method: 'DELETE',
-			}
+			userDetails[0].experience,
+			expArr,
+			setExpArr
 		);
-		const newExpArr = userDetails[0].experience.filter(
-			(exp) => exp._id !== id
-		);
-		setExpArr(newExpArr);
-		return promise;
-	};
-	const deleteThisEd = async (id) => {
-		const promise = await fetch(
+	const deleteThisEd = (id) => 
+		deleteEntry(
+			id,
 			`http://localhost:3000/api/user/education/${id}/${userDetails[0]._id}`,
-			{
-				method: 'DELETE',
-			}
+			userDetails[0].education,
+			edArr,
+			setEdArr
 		);
-		const newEdArr = userDetails[0].education.filter(
-			(ed) => ed._id !== id
-		);
-		setEdArr(newEdArr);
-		return promise;
-	};
 
 	const parseDate = (date) => {
 		const dateFormat = new Date(date);
@@ -116,7 +81,7 @@ const EditUserComponent = () => {
 	};
 
 	const getEditedLinkData = (data) => {
-		let linksArr = [];
+		let thisLinksArr = [];
 		if (!allSavedLinks || allSavedLinks.length === 0) {
 			return;
 		}
@@ -133,12 +98,12 @@ const EditUserComponent = () => {
 				obj['href'] = data[linkHref];
 			}
 			obj['_id'] = link;
-			linksArr.push(obj);
+			thisLinksArr.push(obj);
 		});
-		return linksArr;
+		return thisLinksArr;
 	};
 	const getNewLinkData = (data) => {
-		let linksArr = [];
+		let thisLinksArr = [];
 		const dataKeys = Object.keys(data);
 		const linkData = dataKeys.filter((d) => d.includes('link_title'));
 		linkData.forEach((key, idx) => {
@@ -154,13 +119,13 @@ const EditUserComponent = () => {
 			if (linkHref) {
 				obj['href'] = data[linkHref];
 			}
-			linksArr.push(obj);
+			thisLinksArr.push(obj);
 		});
-		return linksArr;
+		return thisLinksArr;
 	};
 
 	const getEditedExperienceData = (data) => {
-		let expArr = [];
+		let thisExpArr = [];
 		if (!allSavedExp || allSavedExp.length === 0) {
 			return;
 		}
@@ -185,12 +150,12 @@ const EditUserComponent = () => {
 				obj['year_ended'] = data[expEnd];
 			}
 			obj['_id'] = exp;
-			expArr.push(obj);
+			thisExpArr.push(obj);
 		});
-		return expArr;
+		return thisExpArr;
 	};
 	const getNewExperienceData = (data) => {
-		let expArr = [];
+		let thisExpArr = [];
 		const dataKeys = Object.keys(data);
 		const expData = dataKeys.filter((d) => d.includes('job_title_'));
 		expData.forEach((key, idx) => {
@@ -214,12 +179,12 @@ const EditUserComponent = () => {
 			if (expEnd) {
 				obj['year_ended'] = data[expEnd];
 			}
-			expArr.push(obj);
+			thisExpArr.push(obj);
 		});
-		return expArr;
+		return thisExpArr;
 	};
 	const getEditedEducationData = (data) => {
-		let edArr = [];
+		let thisEdArr = [];
 		if (!allSavedEd || allSavedEd.length === 0) {
 			return;
 		}
@@ -237,19 +202,19 @@ const EditUserComponent = () => {
 			if (edDegree) {
 				obj['degree'] = data[edDegree];
 			}
-			if (expStart) {
+			if (edStart) {
 				obj['year_started'] = data[edStart];
 			}
-			if (expEnd) {
+			if (edEnd) {
 				obj['year_ended'] = data[edEnd];
 			}
-			obj['_id'] = exp;
-			edArr.push(obj);
+			obj['_id'] = ed;
+			thisEdArr.push(obj);
 		});
-		return edArr;
+		return thisEdArr;
 	};
 	const getNewEducationData = (data) => {
-		let edArr = [];
+		let thisEdArr = [];
 		const dataKeys = Object.keys(data);
 		const edData = dataKeys.filter((d) => d.includes('school_'));
 		edData.forEach((key, idx) => {
@@ -267,27 +232,27 @@ const EditUserComponent = () => {
 			if (edDegree) {
 				obj['degree'] = data[edDegree];
 			}
-			if (expStart) {
+			if (edStart) {
 				obj['year_started'] = data[edStart];
 			}
-			if (expEnd) {
+			if (edEnd) {
 				obj['year_ended'] = data[edEnd];
 			}
-			edArr.push(obj);
+			thisEdArr.push(obj);
 		});
-		return edArr;
+		return thisEdArr;
 	};
 
 	const handleSave = async (data) => {
 		let validNewLinks = [];
 		let validNewExp = [];
-		let validNewEd = []
+		let validNewEd = [];
 		let editedLinks = getEditedLinkData(data);
 		const newLinks = getNewLinkData(data);
 		let editedExp = getEditedExperienceData(data);
 		const newExp = getNewExperienceData(data);
-		let editedEd = getEditedEducationData(data)
-		const newEd = getNewEducationData(data)
+		let editedEd = getEditedEducationData(data);
+		const newEd = getNewEducationData(data);
 		if (newLinks && newLinks.length > 0) {
 			validNewLinks = newLinks.filter((li) => li.title !== undefined);
 			if (editedLinks && editedLinks.length > 0) {
@@ -322,7 +287,11 @@ const EditUserComponent = () => {
 				body: JSON.stringify({
 					name: data.fullName,
 					email: data.email,
-					$set: { links: editedLinks, experience: editedExp, education: editedEd },
+					$set: {
+						links: editedLinks,
+						experience: editedExp,
+						education: editedEd,
+					},
 				}),
 			}
 		);
@@ -388,64 +357,72 @@ const EditUserComponent = () => {
 								deleteOne={() => deleteThisLink(link._id)}
 								titleInput={
 									<>
-									<InputLabel htmlFor={`title-${link._id}`}>Title</InputLabel>
-									<Controller
-										control={control}
-										name={`link_title_${link._id}`}
-										rules={{
-											required: true,
-										}}
-										render={({
-											field: {
-												onChange,
-												onBlur,
-												value,
-												ref,
-											},
-										}) => (
-											<Input
-												onChange={onChange}
-												onBlur={onBlur}
-												value={value}
-												inputRef={ref}
-												type='text'
-												id={`title-${link._id}`}
-											/>
-										)}
-										defaultValue={link.title}
-									/>
+										<InputLabel
+											htmlFor={`title-${link._id}`}
+										>
+											Title
+										</InputLabel>
+										<Controller
+											control={control}
+											name={`link_title_${link._id}`}
+											rules={{
+												required: true,
+											}}
+											render={({
+												field: {
+													onChange,
+													onBlur,
+													value,
+													ref,
+												},
+											}) => (
+												<Input
+													onChange={onChange}
+													onBlur={onBlur}
+													value={value}
+													inputRef={ref}
+													type='text'
+													id={`title-${link._id}`}
+												/>
+											)}
+											defaultValue={link.title}
+										/>
 									</>
 								}
 								hrefInput={
 									<>
-									<InputLabel htmlFor={`href-${link._id}`}>Href</InputLabel>
-									<Controller
-										control={control}
-										name={`link_href_${link._id}`}
-										rules={{
-											required: true,
-										}}
-										render={({
-											field: {
-												onChange,
-												onBlur,
-												value,
-												ref,
-											},
-										}) => (
-											<Input
-												onChange={onChange}
-												onBlur={onBlur}
-												value={value}
-												inputRef={ref}
-												type='text'
-												id={`href-${link._id}`}
-											/>
-										)}
-										defaultValue={link.href}
-									/>
+										<InputLabel
+											htmlFor={`href-${link._id}`}
+										>
+											Href
+										</InputLabel>
+										<Controller
+											control={control}
+											name={`link_href_${link._id}`}
+											rules={{
+												required: true,
+											}}
+											render={({
+												field: {
+													onChange,
+													onBlur,
+													value,
+													ref,
+												},
+											}) => (
+												<Input
+													onChange={onChange}
+													onBlur={onBlur}
+													value={value}
+													inputRef={ref}
+													type='text'
+													id={`href-${link._id}`}
+												/>
+											)}
+											defaultValue={link.href}
+										/>
 									</>
-									}
+								}
 							/>
 						))}
 					{newLinksArr.length > 0 &&
@@ -457,66 +434,82 @@ const EditUserComponent = () => {
 								}
 								titleInput={
 									<>
-									<InputLabel htmlFor={`title-${newLinksArr.indexOf(link)}`}>Title</InputLabel>
-									<Controller
-										control={control}
-										name={`link_title_${newLinksArr.indexOf(
-											link
-										)}`}
-										rules={{
-											required: true,
-										}}
-										render={({
-											field: {
-												onChange,
-												onBlur,
-												value,
-												ref,
-											},
-										}) => (
-											<Input
-												onChange={onChange}
-												onBlur={onBlur}
-												value={value}
-												inputRef={ref}
-												type='text'
-												id={`title-${newLinksArr.indexOf(link)}`}
-											/>
-										)}
-										defaultValue=''
-									/>
+										<InputLabel
+											htmlFor={`title-${newLinksArr.indexOf(
+												link
+											)}`}
+										>
+											Title
+										</InputLabel>
+										<Controller
+											control={control}
+											name={`link_title_${newLinksArr.indexOf(
+												link
+											)}`}
+											rules={{
+												required: true,
+											}}
+											render={({
+												field: {
+													onChange,
+													onBlur,
+													value,
+													ref,
+												},
+											}) => (
+												<Input
+													onChange={onChange}
+													onBlur={onBlur}
+													value={value}
+													inputRef={ref}
+													type='text'
+													id={`title-${newLinksArr.indexOf(
+														link
+													)}`}
+												/>
+											)}
+											defaultValue=''
+										/>
 									</>
 								}
 								hrefInput={
 									<>
-									<InputLabel htmlFor={`href-${newLinksArr.indexOf(link)}`}>Href</InputLabel>
-									<Controller
-										control={control}
-										name={`link_href_${newLinksArr.indexOf(
-											link
-										)}`}
-										rules={{
-											required: true,
-										}}
-										render={({
-											field: {
-												onChange,
-												onBlur,
-												value,
-												ref,
-											},
-										}) => (
-											<Input
-												onChange={onChange}
-												onBlur={onBlur}
-												value={value}
-												inputRef={ref}
-												type='text'
-												id={`href-${newLinksArr.indexOf(link)}`}
-											/>
-										)}
-										defaultValue=''
-									/>
+										<InputLabel
+											htmlFor={`href-${newLinksArr.indexOf(
+												link
+											)}`}
+										>
+											Href
+										</InputLabel>
+										<Controller
+											control={control}
+											name={`link_href_${newLinksArr.indexOf(
+												link
+											)}`}
+											rules={{
+												required: true,
+											}}
+											render={({
+												field: {
+													onChange,
+													onBlur,
+													value,
+													ref,
+												},
+											}) => (
+												<Input
+													onChange={onChange}
+													onBlur={onBlur}
+													value={value}
+													inputRef={ref}
+													type='text'
+													id={`href-${newLinksArr.indexOf(
+														link
+													)}`}
+												/>
+											)}
+											defaultValue=''
+										/>
 									</>
 								}
 							/>
@@ -538,8 +531,8 @@ const EditUserComponent = () => {
 								idTitle={`job-title-${exp._id}`}
 								idStart={`start-${exp._id}`}
 								idEnd={`end-${exp._id}`}
-								companyLabel="Company Name:"
-								jobLabel="Job Title:"
+								companyLabel='Company Name:'
+								jobLabel='Job Title:'
 								deleteOne={() => deleteThisExp(exp._id)}
 								companyNameComp={
 									<Controller
@@ -615,7 +608,7 @@ const EditUserComponent = () => {
 										}) => (
 											<Input
 												type='date'
-												sx={{ maxWidth: '200px'}}
+												sx={{ maxWidth: '200px' }}
 												inputRef={ref}
 												onChange={onChange}
 												onBlur={onBlur}
@@ -646,7 +639,7 @@ const EditUserComponent = () => {
 										}) => (
 											<Input
 												type='date'
-												sx={{ maxWidth: '200px'}}
+												sx={{ maxWidth: '200px' }}
 												onChange={onChange}
 												onBlur={onBlur}
 												inputRef={ref}
@@ -663,12 +656,14 @@ const EditUserComponent = () => {
 						newExpsArr.map((exp) => (
 							<ExperienceForm
 								key={newExpsArr.indexOf(exp)}
-								idComp={`company-name-${newExpsArr.indexOf(exp)}`}
+								idComp={`company-name-${newExpsArr.indexOf(
+									exp
+								)}`}
 								idTitle={`job-title-${newExpsArr.indexOf(exp)}`}
 								idStart={`start-${newExpsArr.indexOf(exp)}`}
 								idEnd={`end-${newExpsArr.indexOf(exp)}`}
-								companyLabel="Company Name:"
-								jobLabel="Job Title:"
+								companyLabel='Company Name:'
+								jobLabel='Job Title:'
 								deleteOne={() =>
 									deleteNewExp(newExpsArr.indexOf(exp))
 								}
@@ -696,7 +691,9 @@ const EditUserComponent = () => {
 												value={value}
 												inputRef={ref}
 												type='text'
-												id={`company-name-${newExpsArr.indexOf(exp)}`}
+												id={`company-name-${newExpsArr.indexOf(
+													exp
+												)}`}
 											/>
 										)}
 										defaultValue=''
@@ -726,7 +723,9 @@ const EditUserComponent = () => {
 												value={value}
 												inputRef={ref}
 												type='text'
-												id={`job-title-${newExpsArr.indexOf(exp)}`}
+												id={`job-title-${newExpsArr.indexOf(
+													exp
+												)}`}
 											/>
 										)}
 										defaultValue=''
@@ -752,12 +751,14 @@ const EditUserComponent = () => {
 										}) => (
 											<Input
 												type='date'
-												sx={{ maxWidth: '200px'}}
+												sx={{ maxWidth: '200px' }}
 												inputRef={ref}
 												onChange={onChange}
 												onBlur={onBlur}
 												value={value}
-												id={`start-${newExpsArr.indexOf(exp)}`}
+												id={`start-${newExpsArr.indexOf(
+													exp
+												)}`}
 											/>
 										)}
 										defaultValue=''
@@ -783,12 +784,14 @@ const EditUserComponent = () => {
 										}) => (
 											<Input
 												type='date'
-												sx={{ maxWidth: '200px'}}
+												sx={{ maxWidth: '200px' }}
 												onChange={onChange}
 												onBlur={onBlur}
 												inputRef={ref}
 												value={value}
-												id={`end-${newExpsArr.indexOf(exp)}`}
+												id={`end-${newExpsArr.indexOf(
+													exp
+												)}`}
 											/>
 										)}
 										defaultValue=''
@@ -801,7 +804,7 @@ const EditUserComponent = () => {
 					<ContainedButton
 						onClick={addMoreExp}
 						type='button'
-						sx={{marginBottom: '2em !important'}}
+						sx={{ marginBottom: '2em !important' }}
 					>
 						Add Experience?
 					</ContainedButton>
@@ -812,13 +815,13 @@ const EditUserComponent = () => {
 						edArr.map((ed) => (
 							<ExperienceForm
 								key={ed._id}
-								idComp={`school-${ed._id}`}
-								idTitle={`degree-${ed._id}`}
-								idStart={`start-${ed._id}`}
-								idEnd={`end-${ed._id}`}
+								idComp={`school-ed-${ed._id}`}
+								idTitle={`degree-ed-${ed._id}`}
+								idStart={`start-ed-${ed._id}`}
+								idEnd={`end-ed-${ed._id}`}
 								deleteOne={() => deleteThisEd(ed._id)}
-								companyLabel="School name:"
-								jobLabel="Degree earned/Field of Study"
+								companyLabel='School name:'
+								jobLabel='Degree earned/Field of Study'
 								companyNameComp={
 									<Controller
 										control={control}
@@ -893,7 +896,7 @@ const EditUserComponent = () => {
 										}) => (
 											<Input
 												type='date'
-												sx={{ maxWidth: '200px'}}
+												sx={{ maxWidth: '200px' }}
 												inputRef={ref}
 												onChange={onChange}
 												onBlur={onBlur}
@@ -924,7 +927,7 @@ const EditUserComponent = () => {
 										}) => (
 											<Input
 												type='date'
-												sx={{ maxWidth: '200px'}}
+												sx={{ maxWidth: '200px' }}
 												onChange={onChange}
 												onBlur={onBlur}
 												inputRef={ref}
@@ -948,8 +951,8 @@ const EditUserComponent = () => {
 								deleteOne={() =>
 									deleteNewEd(newEdArr.indexOf(ed))
 								}
-								companyLabel="School name:"
-								jobLabel="Degree earned/Field of Study:"
+								companyLabel='School name:'
+								jobLabel='Degree earned/Field of Study:'
 								companyNameComp={
 									<Controller
 										control={control}
@@ -974,7 +977,9 @@ const EditUserComponent = () => {
 												value={value}
 												inputRef={ref}
 												type='text'
-												id={`school-ed-${newEdArr.indexOf(ed)}`}
+												id={`school-ed-${newEdArr.indexOf(
+													ed
+												)}`}
 											/>
 										)}
 										defaultValue=''
@@ -983,7 +988,7 @@ const EditUserComponent = () => {
 								jobTitleComp={
 									<Controller
 										control={control}
-										name={`degree_${newEdArr.indexOf(
+										name={`degree_ed_${newEdArr.indexOf(
 											ed
 										)}`}
 										rules={{
@@ -1004,7 +1009,9 @@ const EditUserComponent = () => {
 												value={value}
 												inputRef={ref}
 												type='text'
-												id={`degree-ed-${newEdArr.indexOf(ed)}`}
+												id={`degree-ed-${newEdArr.indexOf(
+													ed
+												)}`}
 											/>
 										)}
 										defaultValue=''
@@ -1030,12 +1037,14 @@ const EditUserComponent = () => {
 										}) => (
 											<Input
 												type='date'
-												sx={{ maxWidth: '200px'}}
+												sx={{ maxWidth: '200px' }}
 												inputRef={ref}
 												onChange={onChange}
 												onBlur={onBlur}
 												value={value}
-												id={`start-ed-${newEdArr.indexOf(ed)}`}
+												id={`start-ed-${newEdArr.indexOf(
+													ed
+												)}`}
 											/>
 										)}
 										defaultValue=''
@@ -1061,12 +1070,14 @@ const EditUserComponent = () => {
 										}) => (
 											<Input
 												type='date'
-												sx={{ maxWidth: '200px'}}
+												sx={{ maxWidth: '200px' }}
 												onChange={onChange}
 												onBlur={onBlur}
 												inputRef={ref}
 												value={value}
-												id={`end-ed-${newEdArr.indexOf(ed)}`}
+												id={`end-ed-${newEdArr.indexOf(
+													ed
+												)}`}
 											/>
 										)}
 										defaultValue=''
@@ -1079,7 +1090,7 @@ const EditUserComponent = () => {
 					<ContainedButton
 						onClick={addMoreEd}
 						type='button'
-						sx={{marginBottom: '2em !important'}}
+						sx={{ marginBottom: '2em !important' }}
 					>
 						Add Education?
 					</ContainedButton>
@@ -1088,7 +1099,7 @@ const EditUserComponent = () => {
 					<ContainedButton
 						disabled={!isValid}
 						type='submit'
-						sx={{marginBottom: '2em !important'}}
+						sx={{ marginBottom: '2em !important' }}
 					>
 						Save
 					</ContainedButton>

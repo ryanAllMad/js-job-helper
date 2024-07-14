@@ -5,6 +5,7 @@ import BasicInput from './BasicInput.js';
 import ContainedButton from './ContainedButton.js';
 import UserLinkInputs from './UserLinkInputs.js';
 import ExperienceForm from './ExperienceForm.js';
+import { deleteNewEntry } from '../helpers/deleteNewEntry.js'
 
 const CreateUserComponent = () => {
 	const {
@@ -19,39 +20,15 @@ const CreateUserComponent = () => {
 	const addMoreLinks = () => {
 		setNewLinksArr((prev) => prev.concat(prev.length));
 	};
-	const deleteNewLinks = (id) => {
-		if (newLinksArr.length === 1) {
-			setNewLinksArr([]);
-		} else {
-			setNewLinksArr((prev) => prev.splice(id, 1));
-		}
-	};
 	const addMoreExp = () => {
 		setNewExpsArr((prev) => prev.concat(prev.length));
-	};
-	const deleteNewExp = (id) => {
-		if (newExpsArr.length === 1) {
-			setNewExpsArr([]);
-		} else {
-			setNewExpsArr((prev) => prev.splice(id, 1));
-		}
 	};
 	const addMoreEd = () => {
 		setNewEdArr((prev) => prev.concat(prev.length))
 	}
-	const deleteThisEd = async (id) => {
-		const promise = await fetch(
-			`http://localhost:3000/api/user/education/${id}/${userDetails[0]._id}`,
-			{
-				method: 'DELETE',
-			}
-		);
-		const newEdArr = userDetails[0].education.filter(
-			(ed) => ed._id !== id
-		);
-		setEdArr(newEdArr);
-		return promise;
-	};
+	const deleteNewLinks = (id) => deleteNewEntry(id, newLinksArr, setNewLinksArr)
+	const deleteNewExp = (id) => deleteNewEntry(id, newExpsArr, setNewExpsArr)
+	const deleteNewEd = (id) => deleteNewEntry(id, newEdArr, setNewEdArr)
 
 	const getNewLinkData = (data) => {
 		let linksArr = [];
@@ -71,7 +48,6 @@ const CreateUserComponent = () => {
 		});
 		return linksArr;
 	};
-
 	const getNewExperienceData = (data) => {
 		let expArr = [];
 		const dataKeys = Object.keys(data);
@@ -101,26 +77,26 @@ const CreateUserComponent = () => {
 	const getNewEducationData = (data) => {
 		let edArr = [];
 		const dataKeys = Object.keys(data);
-		const expData = dataKeys.filter((d) => d.includes('school_'));
-		expData.forEach((key, idx) => {
+		const edData = dataKeys.filter((d) => d.includes('school_'));
+		edData.forEach((key, idx) => {
 			let obj = {};
-			const edSchool = `school_${idx}`;
+			const edSchool = `school_ed_${idx}`;
 			if (!edSchool) {
 				return;
 			}
-			const edDegree = `degree_${idx}`;
-			const expStart = `start_date_${idx}`;
-			const expEnd = `end_date_${idx}`;
+			const edDegree = `degree_ed_${idx}`;
+			const edStart = `start_ed_date_${idx}`;
+			const edEnd = `end_ed_date_${idx}`;
 			if (edSchool) {
 				obj['school'] = data[edSchool];
 			}
 			if (edDegree) {
 				obj['degree'] = data[edDegree];
 			}
-			if (expStart) {
+			if (edStart) {
 				obj['year_started'] = data[expStart];
 			}
-			if (expEnd) {
+			if (edEnd) {
 				obj['year_ended'] = data[expEnd];
 			}
 			edArr.push(obj);
@@ -434,19 +410,19 @@ const CreateUserComponent = () => {
 						newEdArr.map((ed) => (
 							<ExperienceForm
 								key={newEdArr.indexOf(ed)}
-								idComp={`school-${newEdArr.indexOf(ed)}`}
-								idTitle={`degree-${newEdArr.indexOf(ed)}`}
-								idStart={`start-${newEdArr.indexOf(ed)}`}
-								idEnd={`end-${newEdArr.indexOf(ed)}`}
+								idComp={`school-ed-${newEdArr.indexOf(ed)}`}
+								idTitle={`degree-ed-${newEdArr.indexOf(ed)}`}
+								idStart={`start-ed-${newEdArr.indexOf(ed)}`}
+								idEnd={`end-ed-${newEdArr.indexOf(ed)}`}
 								deleteOne={() =>
-									deleteNewExp(newEdArr.indexOf(ed))
+									deleteNewEd(newEdArr.indexOf(ed))
 								}
 								companyLabel="School name:"
 								jobLabel="Degree earned/Field of Study:"
 								companyNameComp={
 									<Controller
 										control={control}
-										name={`school_${newEdArr.indexOf(
+										name={`school_ed_${newEdArr.indexOf(
 											ed
 										)}`}
 										rules={{
@@ -467,7 +443,7 @@ const CreateUserComponent = () => {
 												value={value}
 												inputRef={ref}
 												type='text'
-												id={`school-${newEdArr.indexOf(ed)}`}
+												id={`school-ed-${newEdArr.indexOf(ed)}`}
 											/>
 										)}
 										defaultValue=''
@@ -476,7 +452,7 @@ const CreateUserComponent = () => {
 								jobTitleComp={
 									<Controller
 										control={control}
-										name={`degree_${newEdArr.indexOf(
+										name={`degree_ed_${newEdArr.indexOf(
 											ed
 										)}`}
 										rules={{
@@ -497,7 +473,7 @@ const CreateUserComponent = () => {
 												value={value}
 												inputRef={ref}
 												type='text'
-												id={`degree-${newEdArr.indexOf(ed)}`}
+												id={`degree-ed-${newEdArr.indexOf(ed)}`}
 											/>
 										)}
 										defaultValue=''
@@ -506,7 +482,7 @@ const CreateUserComponent = () => {
 								startDateComp={
 									<Controller
 										control={control}
-										name={`start_date_${newEdArr.indexOf(
+										name={`start_ed_date_${newEdArr.indexOf(
 											ed
 										)}`}
 										rules={{
@@ -528,7 +504,7 @@ const CreateUserComponent = () => {
 												onChange={onChange}
 												onBlur={onBlur}
 												value={value}
-												id={`start-${newEdArr.indexOf(ed)}`}
+												id={`start-ed-${newEdArr.indexOf(ed)}`}
 											/>
 										)}
 										defaultValue=''
@@ -537,7 +513,7 @@ const CreateUserComponent = () => {
 								endDateComp={
 									<Controller
 										control={control}
-										name={`end_date_${newEdArr.indexOf(
+										name={`end_ed_date_${newEdArr.indexOf(
 											ed
 										)}`}
 										rules={{
@@ -559,7 +535,7 @@ const CreateUserComponent = () => {
 												onBlur={onBlur}
 												inputRef={ref}
 												value={value}
-												id={`end-${newEdArr.indexOf(ed)}`}
+												id={`end-ed-${newEdArr.indexOf(ed)}`}
 											/>
 										)}
 										defaultValue=''
