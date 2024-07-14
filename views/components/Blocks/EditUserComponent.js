@@ -43,6 +43,13 @@ const EditUserComponent = () => {
 			setNewLinksArr((prev) => prev.splice(id, 1));
 		}
 	};
+	const deleteNewEd = (id) => {
+		if (newEdArr.length === 1) {
+			setNewEdArr([]);
+		} else {
+			setNewEdArr((prev) => prev.splice(id, 1));
+		}
+	};
 
 	const addMoreExp = () => {
 		setNewExpsArr((prev) => prev.concat(prev.length));
@@ -217,13 +224,13 @@ const EditUserComponent = () => {
 			return;
 		}
 		const dataExist = allSavedEd.filter((l) => l._id);
-		const expIds = dataExist.map((d) => d._id);
-		expIds.forEach((exp) => {
+		const edIds = dataExist.map((d) => d._id);
+		edIds.forEach((ed) => {
 			let obj = {};
-			const edSchool = `school_${exp}`;
-			const edDegree = `degree_${exp}`;
-			const expStart = `start_date_${exp}`;
-			const expEnd = `end_date_${exp}`;
+			const edSchool = `school_ed_${ed}`;
+			const edDegree = `degree_ed_${ed}`;
+			const edStart = `start_ed_date_${ed}`;
+			const edEnd = `end_ed_date_${ed}`;
 			if (edSchool) {
 				obj['school'] = data[edSchool];
 			}
@@ -231,10 +238,10 @@ const EditUserComponent = () => {
 				obj['degree'] = data[edDegree];
 			}
 			if (expStart) {
-				obj['year_started'] = data[expStart];
+				obj['year_started'] = data[edStart];
 			}
 			if (expEnd) {
-				obj['year_ended'] = data[expEnd];
+				obj['year_ended'] = data[edEnd];
 			}
 			obj['_id'] = exp;
 			edArr.push(obj);
@@ -244,16 +251,16 @@ const EditUserComponent = () => {
 	const getNewEducationData = (data) => {
 		let edArr = [];
 		const dataKeys = Object.keys(data);
-		const expData = dataKeys.filter((d) => d.includes('school_'));
-		expData.forEach((key, idx) => {
+		const edData = dataKeys.filter((d) => d.includes('school_'));
+		edData.forEach((key, idx) => {
 			let obj = {};
-			const edSchool = `school_${idx}`;
+			const edSchool = `school_ed_${idx}`;
 			if (!edSchool) {
 				return;
 			}
-			const edDegree = `degree_${idx}`;
-			const expStart = `start_date_${idx}`;
-			const expEnd = `end_date_${idx}`;
+			const edDegree = `degree_ed_${idx}`;
+			const edStart = `start_ed_date_${idx}`;
+			const edEnd = `end_ed_date_${idx}`;
 			if (edSchool) {
 				obj['school'] = data[edSchool];
 			}
@@ -261,10 +268,10 @@ const EditUserComponent = () => {
 				obj['degree'] = data[edDegree];
 			}
 			if (expStart) {
-				obj['year_started'] = data[expStart];
+				obj['year_started'] = data[edStart];
 			}
 			if (expEnd) {
-				obj['year_ended'] = data[expEnd];
+				obj['year_ended'] = data[edEnd];
 			}
 			edArr.push(obj);
 		});
@@ -815,7 +822,7 @@ const EditUserComponent = () => {
 								companyNameComp={
 									<Controller
 										control={control}
-										name={`school_${ed._id}`}
+										name={`school_ed_${ed._id}`}
 										rules={{
 											required:
 												'Please enter the name of the school',
@@ -834,7 +841,7 @@ const EditUserComponent = () => {
 												value={value}
 												inputRef={ref}
 												type='text'
-												id={`school-${ed._id}`}
+												id={`school-ed-${ed._id}`}
 											/>
 										)}
 										defaultValue={ed.school}
@@ -843,7 +850,7 @@ const EditUserComponent = () => {
 								jobTitleComp={
 									<Controller
 										control={control}
-										name={`degree_${ed._id}`}
+										name={`degree_ed_${ed._id}`}
 										rules={{
 											required:
 												'Please enter the degree earned or field of study.',
@@ -862,7 +869,7 @@ const EditUserComponent = () => {
 												value={value}
 												inputRef={ref}
 												type='text'
-												id={`degree-${ed._id}`}
+												id={`degree-ed-${ed._id}`}
 											/>
 										)}
 										defaultValue={ed.degree}
@@ -871,7 +878,7 @@ const EditUserComponent = () => {
 								startDateComp={
 									<Controller
 										control={control}
-										name={`start_date_${ed._id}`}
+										name={`start_ed_date_${ed._id}`}
 										rules={{
 											required:
 												'Please enter the first date you started at this school',
@@ -891,7 +898,7 @@ const EditUserComponent = () => {
 												onChange={onChange}
 												onBlur={onBlur}
 												value={value}
-												id={`start-${ed._id}`}
+												id={`start-ed-${ed._id}`}
 											/>
 										)}
 										defaultValue={parseDate(
@@ -902,7 +909,7 @@ const EditUserComponent = () => {
 								endDateComp={
 									<Controller
 										control={control}
-										name={`end_date_${ed._id}`}
+										name={`end_ed_date_${ed._id}`}
 										rules={{
 											required:
 												'Please Enter the date of your last day attending this school.',
@@ -922,7 +929,7 @@ const EditUserComponent = () => {
 												onBlur={onBlur}
 												inputRef={ref}
 												value={value}
-												id={`end-${ed._id}`}
+												id={`end-ed-${ed._id}`}
 											/>
 										)}
 										defaultValue={parseDate(ed.year_ended)}
@@ -934,19 +941,19 @@ const EditUserComponent = () => {
 						newEdArr.map((ed) => (
 							<ExperienceForm
 								key={newEdArr.indexOf(ed)}
-								idComp={`school-${newEdArr.indexOf(ed)}`}
-								idTitle={`degree-${newEdArr.indexOf(ed)}`}
-								idStart={`start-${newEdArr.indexOf(ed)}`}
-								idEnd={`end-${newEdArr.indexOf(ed)}`}
+								idComp={`school-ed-${newEdArr.indexOf(ed)}`}
+								idTitle={`degree-ed-${newEdArr.indexOf(ed)}`}
+								idStart={`start-ed-${newEdArr.indexOf(ed)}`}
+								idEnd={`end-ed-${newEdArr.indexOf(ed)}`}
 								deleteOne={() =>
-									deleteNewExp(newEdArr.indexOf(ed))
+									deleteNewEd(newEdArr.indexOf(ed))
 								}
 								companyLabel="School name:"
 								jobLabel="Degree earned/Field of Study:"
 								companyNameComp={
 									<Controller
 										control={control}
-										name={`school_${newEdArr.indexOf(
+										name={`school_ed_${newEdArr.indexOf(
 											ed
 										)}`}
 										rules={{
@@ -967,7 +974,7 @@ const EditUserComponent = () => {
 												value={value}
 												inputRef={ref}
 												type='text'
-												id={`school-${newEdArr.indexOf(ed)}`}
+												id={`school-ed-${newEdArr.indexOf(ed)}`}
 											/>
 										)}
 										defaultValue=''
@@ -997,7 +1004,7 @@ const EditUserComponent = () => {
 												value={value}
 												inputRef={ref}
 												type='text'
-												id={`degree-${newEdArr.indexOf(ed)}`}
+												id={`degree-ed-${newEdArr.indexOf(ed)}`}
 											/>
 										)}
 										defaultValue=''
@@ -1006,7 +1013,7 @@ const EditUserComponent = () => {
 								startDateComp={
 									<Controller
 										control={control}
-										name={`start_date_${newEdArr.indexOf(
+										name={`start_ed_date_${newEdArr.indexOf(
 											ed
 										)}`}
 										rules={{
@@ -1028,7 +1035,7 @@ const EditUserComponent = () => {
 												onChange={onChange}
 												onBlur={onBlur}
 												value={value}
-												id={`start-${newEdArr.indexOf(ed)}`}
+												id={`start-ed-${newEdArr.indexOf(ed)}`}
 											/>
 										)}
 										defaultValue=''
@@ -1037,7 +1044,7 @@ const EditUserComponent = () => {
 								endDateComp={
 									<Controller
 										control={control}
-										name={`end_date_${newEdArr.indexOf(
+										name={`end_ed_date_${newEdArr.indexOf(
 											ed
 										)}`}
 										rules={{
@@ -1059,7 +1066,7 @@ const EditUserComponent = () => {
 												onBlur={onBlur}
 												inputRef={ref}
 												value={value}
-												id={`end-${newEdArr.indexOf(ed)}`}
+												id={`end-ed-${newEdArr.indexOf(ed)}`}
 											/>
 										)}
 										defaultValue=''

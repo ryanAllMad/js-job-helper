@@ -8,7 +8,7 @@ userRouter.post('/user', createUser)
 userRouter.post('/user/:id', updateUser)
 userRouter.delete('/user/links/:id/:userId', deleteLink)
 userRouter.delete('/user/experience/:id/:userId', deleteExp)
-userRouter.delete('/user/education/:id/:userId', deleteExp)
+userRouter.delete('/user/education/:id/:userId', deleteEd)
 
 
 
