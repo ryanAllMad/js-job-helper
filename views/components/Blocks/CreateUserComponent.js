@@ -11,6 +11,7 @@ const CreateUserComponent = () => {
 	const {
 		handleSubmit,
 		control,
+		resetField,
 		formState: { isValid },
 	} = useForm();
 	const [newLinksArr, setNewLinksArr] = React.useState([]);
@@ -26,9 +27,9 @@ const CreateUserComponent = () => {
 	const addMoreEd = () => {
 		setNewEdArr((prev) => prev.concat(prev.length))
 	}
-	const deleteNewLinks = (id) => deleteNewEntry(id, newLinksArr, setNewLinksArr)
-	const deleteNewExp = (id) => deleteNewEntry(id, newExpsArr, setNewExpsArr)
-	const deleteNewEd = (id) => deleteNewEntry(id, newEdArr, setNewEdArr)
+	const deleteNewLinks = (id) => deleteNewEntry(id, newLinksArr, setNewLinksArr, resetField, 'link_title_', 'link_href_')
+	const deleteNewExp = (id) => deleteNewEntry(id, newExpsArr, setNewExpsArr, resetField, 'company_name_', 'job_title_', 'start_date_', 'end_date_' )
+	const deleteNewEd = (id) => deleteNewEntry(id, newEdArr, setNewEdArr, resetField, 'school_ed_', 'degree_ed_', 'start_ed_date_', 'end_ed_date_' )
 
 	const getNewLinkData = (data) => {
 		let linksArr = [];

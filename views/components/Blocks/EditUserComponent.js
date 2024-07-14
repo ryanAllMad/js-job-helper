@@ -24,7 +24,8 @@ const EditUserComponent = () => {
 	const {
 		handleSubmit,
 		control,
-		formState: { isValid },
+		resetField,
+		formState: { isValid, errors },
 	} = useForm();
 	const [linksArr, setLinksArr] = React.useState(allSavedLinks);
 	const [newLinksArr, setNewLinksArr] = React.useState([]);
@@ -43,9 +44,9 @@ const EditUserComponent = () => {
 		setNewEdArr((prev) => prev.concat(prev.length));
 	};
 
-	const deleteNewLinks = (id) => deleteNewEntry(id, newLinksArr, setNewLinksArr)
-	const deleteNewExp = (id) => deleteNewEntry(id, newExpsArr, setNewExpsArr)
-	const deleteNewEd = (id) => deleteNewEntry(id, newEdArr, setNewEdArr)
+	const deleteNewLinks = (id) => deleteNewEntry(id, newLinksArr, setNewLinksArr, resetField, 'link_title_', 'link_href_')
+	const deleteNewExp = (id) => deleteNewEntry(id, newExpsArr, setNewExpsArr, resetField, 'company_name_', 'job_title_', 'start_date_', 'end_date_' )
+	const deleteNewEd = (id) => deleteNewEntry(id, newEdArr, setNewEdArr, resetField, 'school_ed_', 'degree_ed_', 'start_ed_date_', 'end_ed_date_' )
 
 	const deleteThisLink = (id) =>
 		deleteEntry(
@@ -306,10 +307,11 @@ const EditUserComponent = () => {
 						id='full-name'
 						label='Full Name'
 					>
+						{errors.fullName && errors.fullName.message && errors.fullName.message}
 						<Controller
 							control={control}
 							name='fullName'
-							rules={{ required: true }}
+							rules={{ required: 'Enter full name' }}
 							render={({
 								field: { onChange, onBlur, value, ref },
 							}) => (
@@ -329,10 +331,11 @@ const EditUserComponent = () => {
 						id='email'
 						label='Email'
 					>
+						{errors.email && errors.email.message && errors.email.message}
 						<Controller
 							control={control}
 							name='email'
-							rules={{ required: true }}
+							rules={{ required: 'Enter email' }}
 							render={({
 								field: { onChange, onBlur, value, ref },
 							}) => (
@@ -366,7 +369,7 @@ const EditUserComponent = () => {
 											control={control}
 											name={`link_title_${link._id}`}
 											rules={{
-												required: true,
+												required: 'Enter link title',
 											}}
 											render={({
 												field: {
@@ -400,7 +403,7 @@ const EditUserComponent = () => {
 											control={control}
 											name={`link_href_${link._id}`}
 											rules={{
-												required: true,
+												required: 'Enter link href',
 											}}
 											render={({
 												field: {
@@ -447,7 +450,7 @@ const EditUserComponent = () => {
 												link
 											)}`}
 											rules={{
-												required: true,
+												required: 'Enter link title',
 											}}
 											render={({
 												field: {
@@ -487,7 +490,7 @@ const EditUserComponent = () => {
 												link
 											)}`}
 											rules={{
-												required: true,
+												required: 'Enter link href',
 											}}
 											render={({
 												field: {
