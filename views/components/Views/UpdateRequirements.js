@@ -203,7 +203,7 @@ const UpdateRequirements = () => {
 					<AddQualification key={2} onSubmit={handleSubmitResponses((data) =>
 						handleAddResponse(data, qualification._id)
 					)}
-					qualificationDesc={`Update this qualification`}
+					qualificationDesc={`Update this qualification. Remember to 'show' and not 'tell' by explaining not just what you can do but how you've used the qualification to be successful.`}
 					thisReq={qualification.req_title}
 					addButtonText={!addQualState ? 'Update Qualification' : 'Qualification Updated!'}
 					removeButtonText={!remQualState ? 'Set to Missing Qualification' : 'Qualification Removed'}

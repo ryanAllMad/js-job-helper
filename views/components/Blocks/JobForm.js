@@ -410,7 +410,7 @@ const JobForm = (props) => {
 					removeButtonText={!remQualState ? 'Missing Qualification' : 'Qualification Skipped!'}
 					qualificationDesc={`Enter the qualifications for each job requirement you've input into the form. 
 				If you don't meet this requirement, click the "Missing Qualification" button. 
-				This will help your Job Match meter be more accurate."`}
+				This will help your Job Match meter be more accurate. Remember to 'show' and not 'tell' by explaining not just what you can do but how you've used the qualification to be successful."`}
 				>
 					<Controller
 						control={controlRes}

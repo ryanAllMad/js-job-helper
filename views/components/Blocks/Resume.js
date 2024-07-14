@@ -17,7 +17,7 @@ const Resume = (props) => {
 	const [removeIdx, setRemoveIdx] = React.useState()
 	const [copied, setCopied] = React.useState(false);
 	const [copyButtonText, setCopyButtonText] = React.useState(
-		'Copy Plain to clipboard'
+		'Copy Plain to clipboard & Save'
 	);
 
 	const getJob = async () => {
@@ -101,7 +101,7 @@ const Resume = (props) => {
 				setCopyButtonText('Ooops! Try Again!');
 			}
 			if (hasClipped === thisResume) {
-				setCopyButtonText('Copied!');
+				setCopyButtonText('Copied & Saved!');
 			}
 			return reqPromise.json();
 		} catch (err) {
@@ -167,7 +167,7 @@ const Resume = (props) => {
 		setTimeout(() => {
 			if(copied) {
 				setCopied(false)
-				setCopyButtonText('Copy Plain to clipboard')
+				setCopyButtonText('Copy Plain to clipboard & Save')
 			}
 		}, 1500)
 	}, [copied])

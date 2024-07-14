@@ -4,7 +4,13 @@ import Guage from './Guage.js';
 
 const PositionView = React.forwardRef((props, ref) => {
 	const { userDetails, jobTitle, jobFunction, guageValue, children } = props;
-
+	const parseLink = (link) => {
+		if(link.includes('http')) {
+			return link
+		} else {
+			return `https://${link}`
+		}
+	}
 	return (
 		<>
 			<Paper
@@ -31,6 +37,7 @@ const PositionView = React.forwardRef((props, ref) => {
 							<Typography variant='h2'>{jobTitle}</Typography>
 							<Typography>{jobFunction}</Typography>
 							<Typography variant='body1'>
+								<strong>Email:{' '}</strong>
 								<Link href={`mailto:${userDetails[0].email}`}>
 									{userDetails[0].email}
 								</Link>
@@ -42,11 +49,12 @@ const PositionView = React.forwardRef((props, ref) => {
 							key={userDetails[0].links.indexOf(link)}
 							variant='body1'
 						>
+							<strong>{link.title}:{' '}</strong>
 							<Link
 								target='_blank'
-								href={link.href}
+								href={parseLink(link.href)}
 							>
-								{link.title}
+								{link.href}
 							</Link>
 						</Typography>
 					))}
