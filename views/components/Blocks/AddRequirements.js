@@ -64,7 +64,7 @@ const AddRequirements = (props) => {
 							to one in the job post, select the one that already
 							exists. It's important to input ALL requirements
 							even if you don't have those requirements. This will
-							help your Job Match meter give you an accurate
+							help your Job Match Guage give you an accurate
 							reading.
 						</FormHelperText>
 						<InputLabel

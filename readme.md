@@ -3,7 +3,7 @@ This app is intended to help you create tailored resume's more quickly and accur
 
 If you're enjoying using this app, please consider supporting this project so I can make this thing even better with Gemeni AI, and Google Docs API integrations.
 
-If you're interested in contributing to this project, hmu on [linkedin](https://www.linkedin.com/in/ryan-duer/). I currently need help optimizing the app, integrating hot module reloading, and fixing the issues with the drag and drop functionality on the PositionView component. Feel free to take this project and run with it, this is licensed under MIT because I want to help you succeed.
+If you're interested in contributing to this project, hmu on [linkedin](https://www.linkedin.com/in/ryan-duer/). I currently need help optimizing the app. Feel free to take this project and run with it, this is licensed under MIT because I want to help you succeed.
 
 ## Product Demo:
 Check out the [1 minute product demo here.](https://www.canva.com/design/DAGK1wvwwQI/9_J_b3jBfu8PgU9jNXiVjQ/watch?utm_content=DAGK1wvwwQI&utm_campaign=designshare&utm_medium=link&utm_source=editor)
