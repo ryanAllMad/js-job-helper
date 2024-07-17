@@ -8,6 +8,10 @@ import { userRouter } from './routes/userRoutes.js'
 import { requirementsRouter } from './routes/requirementRoutes.js';
 import { jobPostRouter } from './routes/jobPost.js';
 import { resumeRouter } from './routes/resumeRoutes.js';
+import { graphqlHTTP } from 'express-graphql';
+import buildSchema from './graphql/schema.cjs';
+import getData from './graphql/resolvers.cjs';
+
 
 
 
@@ -29,6 +33,11 @@ app.use('/api', userRouter)
 app.use('/api', jobPostRouter)
 app.use('/api', requirementsRouter)
 app.use('/api', resumeRouter)
+app.use('/graphql', graphqlHTTP({
+	schema: buildSchema,
+	rootValue: getData,
+	graphiql: true
+}))
 
 
 
