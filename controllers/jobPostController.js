@@ -1,5 +1,4 @@
 import { JobPost } from "../models/job-post.js";
-import { updateOne } from "./handlerFactory.js";
 
 export const createJobPost = async (req, res) => {
 	try {

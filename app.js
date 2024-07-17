@@ -1,45 +1,44 @@
 import express from 'express';
 import { renderToPipeableStream } from 'react-dom/server';
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import Doc from'./views/Doc.js';
-import process from'process';
-import { userRouter } from './routes/userRoutes.js'
+import Doc from './views/Doc.js';
+import process from 'process';
+import { userRouter } from './routes/userRoutes.js';
 import { requirementsRouter } from './routes/requirementRoutes.js';
 import { jobPostRouter } from './routes/jobPost.js';
 import { resumeRouter } from './routes/resumeRoutes.js';
-import { graphqlHTTP } from 'express-graphql';
-import buildSchema from './graphql/schema.cjs';
-import getData from './graphql/resolvers.cjs';
-
-
-
+import { createHandler } from 'graphql-http/lib/use/express';
+import schema from './graphql/schema.js';
+import rootValue from './graphql/resolvers.js';
 
 //nvm use 20 >=
 const app = express();
-dotenv.config({path: './config.env'})
-const db = process.env.MONGODB_CONNECTION_STRING
-const dbName = process.env.DB_NAME
+dotenv.config({ path: './config.env' });
+const db = process.env.MONGODB_CONNECTION_STRING;
+const dbName = process.env.DB_NAME;
 
-mongoose.connect(db, {
-	dbName: dbName
-}).then(() => {
-	console.log('Connected to DB! See app at: http://localhost:3000/')
-})
+mongoose
+	.connect(db, {
+		dbName: dbName,
+	})
+	.then(() => {
+		console.log('Connected to DB! See app at: http://localhost:3000/');
+	});
 
 // api code:
-app.use(express.json())
-app.use('/api', userRouter)
-app.use('/api', jobPostRouter)
-app.use('/api', requirementsRouter)
-app.use('/api', resumeRouter)
-app.use('/graphql', graphqlHTTP({
-	schema: buildSchema,
-	rootValue: getData,
-	graphiql: true
-}))
-
-
+app.use(express.json());
+app.use('/api', userRouter);
+app.use('/api', jobPostRouter);
+app.use('/api', requirementsRouter);
+app.use('/api', resumeRouter);
+app.all(
+	'/graphql',
+	createHandler({
+		schema,
+		rootValue,
+	})
+);
 
 // ui code:
 app.set('views', './views');
@@ -75,5 +74,3 @@ var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 app.listen(port);
-
-

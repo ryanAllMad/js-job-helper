@@ -24,14 +24,15 @@
     "@node-loader/babel": "^2.1.0",
     "dayjs": "^1.11.10",
     "express": "^4.19.2",
-    "express-graphql": "^0.12.0",
-    "graphql": "^15.3",
+    "graphql": "^16.9.0",
+    "graphql-http": "^1.22.1",
     "mongodb": "^6.5.0",
     "mongoose": "^8.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.3",
-    "react-router-dom": "^6.22.3"
+    "react-router-dom": "^6.22.3",
+    "ruru": "^2.0.0-beta.13"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.24.4",
