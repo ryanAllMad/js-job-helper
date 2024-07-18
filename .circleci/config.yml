@@ -6,6 +6,9 @@ jobs:
     # Steps to the job
     steps:
       - checkout
+      - run: npm i
+      - run: npm run build
+      - run: npm run start
       - run: npm i -D @playwright/test
       - run: npx playwright install
       - run: npx playwright install chrome
