@@ -3,7 +3,7 @@ const { test, expect } = require('@playwright/test');
 
 // Ony Run These Tests if database has user 
 
-test.only('Ensure user page loads', async ({ page }) => {
+test('Ensure user page loads', async ({ page }) => {
   await page.goto('http://localhost:3000');
 // Expect a title "to contain" a substring.
   await expect(page).toHaveTitle(/JS Job Helper/);
@@ -14,7 +14,7 @@ test.only('Ensure user page loads', async ({ page }) => {
 
 test.describe.serial('Run these tests in order', () => {
   // run test with database existing user
-  test.only('only run when you have a user in the database', async ({ page }) => {
+  test('run when you have a user in the database', async ({ page }) => {
     await page.goto('http://localhost:3000');
   
     await page.getByLabel('Full Name').click();
@@ -22,7 +22,7 @@ test.describe.serial('Run these tests in order', () => {
   })
   
   // Test links interface
-  test.only('to add new link, fill, and save', async ({ page }) => {
+  test('to add new link, fill, and save', async ({ page }) => {
     await page.goto('http://localhost:3000');
     await page.getByRole('button', {name: 'Add Links?'}).click()
     await page.getByTestId('title-0').click()
@@ -37,7 +37,7 @@ test.describe.serial('Run these tests in order', () => {
     await expect(page.getByTestId('title-0')).not.toBeInViewport()
     await expect(page.getByTestId('href-0')).not.toBeInViewport()
   })
-  test.only('find existing link, delete link, and save', async ({ page }) => {
+  test('find existing link, delete link, and save', async ({ page }) => {
     await page.goto('http://localhost:3000');
     await page.reload();
     await page.getByRole('button', {name: 'Add Links?'}).scrollIntoViewIfNeeded()
@@ -47,7 +47,7 @@ test.describe.serial('Run these tests in order', () => {
     await page.getByTestId('Fake').click()
     await expect(page.getByPlaceholder('fake.com', { exact: false })).not.toBeInViewport()
   })
-  test.only('add a new link then delete it', async ({ page }) => {
+  test('add a new link then delete it', async ({ page }) => {
     await page.goto('http://localhost:3000');
     await page.reload();
     await page.getByRole('button', {name: 'Add Links?'}).click()
@@ -61,10 +61,10 @@ test.describe.serial('Run these tests in order', () => {
 
 
 // Run tests when database has no user
-test('run when you dont have a user in the database', async ({ page }) => {
+//test('run when you dont have a user in the database', async ({ page }) => {
   
-  await page.goto('http://localhost:3000');
+//  await page.goto('http://localhost:3000');
 
-  await page.getByLabel('Full Name').click();
-  await expect(page.getByLabel('Full Name')).toBeEmpty()
-})
+//  await page.getByLabel('Full Name').click();
+//  await expect(page.getByLabel('Full Name')).toBeEmpty()
+//})
