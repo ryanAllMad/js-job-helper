@@ -7,7 +7,9 @@
   "scripts": {
     "start": "node --import ./register.js app.js",
     "dev": "node --import --watch ./register.js app.js",
-    "build": "npx webpack"
+    "build": "npx webpack",
+    "test": "npx playwright test",
+    "show-tests": "npx playwright test --ui"
   },
   "author": "ryan duer",
   "license": "ISC",

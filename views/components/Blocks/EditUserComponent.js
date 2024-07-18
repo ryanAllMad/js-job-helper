@@ -358,6 +358,7 @@ const EditUserComponent = () => {
 								key={link._id}
 								defaultHref={link.href}
 								deleteOne={() => deleteThisLink(link._id)}
+								dataTestId={link.title}
 								titleInput={
 									<>
 										<InputLabel
@@ -383,9 +384,11 @@ const EditUserComponent = () => {
 													onChange={onChange}
 													onBlur={onBlur}
 													value={value}
+													placeholder={value}
 													inputRef={ref}
 													type='text'
 													id={`title-${link._id}`}
+													inputProps={{'data-testid': `title-${link._id}`}}
 												/>
 											)}
 											defaultValue={link.title}
@@ -417,9 +420,11 @@ const EditUserComponent = () => {
 													onChange={onChange}
 													onBlur={onBlur}
 													value={value}
+													placeholder={value}
 													inputRef={ref}
 													type='text'
 													id={`href-${link._id}`}
+													inputProps={{'data-testid': `href-${link._id}`}}
 												/>
 											)}
 											defaultValue={link.href}
@@ -432,6 +437,7 @@ const EditUserComponent = () => {
 						newLinksArr.map((link) => (
 							<UserLinkInputs
 								key={newLinksArr.indexOf(link)}
+								dataTestId={newLinksArr.indexOf(link)}
 								deleteOne={() =>
 									deleteNewLinks(newLinksArr.indexOf(link))
 								}
@@ -464,11 +470,15 @@ const EditUserComponent = () => {
 													onChange={onChange}
 													onBlur={onBlur}
 													value={value}
+													placeholder={value}
 													inputRef={ref}
 													type='text'
 													id={`title-${newLinksArr.indexOf(
 														link
 													)}`}
+													inputProps={{'data-testid': `title-${newLinksArr.indexOf(
+														link
+													)}`}}
 												/>
 											)}
 											defaultValue=''
@@ -504,11 +514,16 @@ const EditUserComponent = () => {
 													onChange={onChange}
 													onBlur={onBlur}
 													value={value}
+													placeholder={value}
 													inputRef={ref}
+													inputProps={{'data-testid':`href-${newLinksArr.indexOf(
+														link
+													)}`}}
 													type='text'
 													id={`href-${newLinksArr.indexOf(
 														link
 													)}`}
+													
 												/>
 											)}
 											defaultValue=''
