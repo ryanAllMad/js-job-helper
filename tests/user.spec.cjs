@@ -17,8 +17,8 @@ test.describe.serial('Run these tests in order', () => {
   test('run when you have a user in the database', async ({ page }) => {
     await page.goto('http://localhost:3000');
   
-    await page.getByLabel('Full Name').click();
-    await expect(page.getByLabel('Full Name')).not.toBeEmpty()
+    await page.getByTestId('full-name').click();
+    await expect(page.getByTestId('full-name')).not.toBeEmpty()
   })
   
   // Test links interface

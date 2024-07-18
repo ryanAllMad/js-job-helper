@@ -318,6 +318,7 @@ const EditUserComponent = () => {
 								<Input
 									onChange={onChange}
 									onBlur={onBlur}
+									inputProps={{'data-testid': 'full-name'}}
 									value={value}
 									inputRef={ref}
 									type='text'
