@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   run-test:
     docker:
-      - image: mcr.microsoft.com/playwright:v1.23.1-focal
+      - image: cimg/node:20.6.1
     # Steps to the job
     steps:
       - checkout
