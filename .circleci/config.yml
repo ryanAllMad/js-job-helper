@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   run-test:
     docker:
-      - image: cimg/node:20.6.1
+      - image: cimg/node:20.11.1-browsers
     # Steps to the job
     steps:
       - checkout

@@ -5,8 +5,7 @@
   "type": "module",
   "main": "app.js",
   "scripts": {
-    "start": "node --import ./register.js app.js",
-    "dev": "node --import --watch ./register.js app.js",
+    "start": "node --import ./register.js ./app.js",
     "build": "npx webpack",
     "test": "npx playwright test",
     "show-tests": "npx playwright test --ui"
