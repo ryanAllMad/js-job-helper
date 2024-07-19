@@ -5,9 +5,9 @@ import {
 
 
 const ContainedButton = (props) => {
-	const {children, type, onClick, sx, disabled, ariaPressed} = props
+	const {children, type, onClick, sx, disabled, ariaPressed, dataTestId} = props
 
-	return <Button aria-pressed={ariaPressed} disabled={disabled} type={type} onClick={onClick} variant='contained' sx={{ ...sx, maxWidth: 250, marginTop: '2em', marginRight: '1em', display: 'inline-block'}} size='medium'>{children}</Button>
+	return <Button id={dataTestId} data-testid={dataTestId} aria-pressed={ariaPressed} disabled={disabled} type={type} onClick={onClick} variant='contained' sx={{ ...sx, maxWidth: 250, marginTop: '2em', marginRight: '1em', display: 'inline-block'}} size='medium'>{children}</Button>
 }
 
 export default ContainedButton

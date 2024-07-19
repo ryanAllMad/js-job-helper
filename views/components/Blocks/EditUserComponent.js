@@ -312,6 +312,7 @@ const EditUserComponent = () => {
 								<Input
 									onChange={onChange}
 									onBlur={onBlur}
+									inputProps={{'data-testid': 'full-name'}}
 									value={value}
 									inputRef={ref}
 									type='text'
@@ -352,6 +353,7 @@ const EditUserComponent = () => {
 								key={link._id}
 								defaultHref={link.href}
 								deleteOne={() => deleteThisLink(link._id)}
+								dataTestId={link.title}
 								titleInput={
 									<>
 										<InputLabel
@@ -377,9 +379,11 @@ const EditUserComponent = () => {
 													onChange={onChange}
 													onBlur={onBlur}
 													value={value}
+													placeholder={value}
 													inputRef={ref}
 													type='text'
 													id={`title-${link._id}`}
+													inputProps={{'data-testid': `title-${link._id}`}}
 												/>
 											)}
 											defaultValue={link.title}
@@ -411,9 +415,11 @@ const EditUserComponent = () => {
 													onChange={onChange}
 													onBlur={onBlur}
 													value={value}
+													placeholder={value}
 													inputRef={ref}
 													type='text'
 													id={`href-${link._id}`}
+													inputProps={{'data-testid': `href-${link._id}`}}
 												/>
 											)}
 											defaultValue={link.href}
@@ -426,6 +432,7 @@ const EditUserComponent = () => {
 						newLinksArr.map((link) => (
 							<UserLinkInputs
 								key={newLinksArr.indexOf(link)}
+								dataTestId={newLinksArr.indexOf(link)}
 								deleteOne={() =>
 									deleteNewLinks(newLinksArr.indexOf(link))
 								}
@@ -458,11 +465,15 @@ const EditUserComponent = () => {
 													onChange={onChange}
 													onBlur={onBlur}
 													value={value}
+													placeholder={value}
 													inputRef={ref}
 													type='text'
 													id={`title-${newLinksArr.indexOf(
 														link
 													)}`}
+													inputProps={{'data-testid': `title-${newLinksArr.indexOf(
+														link
+													)}`}}
 												/>
 											)}
 											defaultValue=''
@@ -498,11 +509,16 @@ const EditUserComponent = () => {
 													onChange={onChange}
 													onBlur={onBlur}
 													value={value}
+													placeholder={value}
 													inputRef={ref}
+													inputProps={{'data-testid':`href-${newLinksArr.indexOf(
+														link
+													)}`}}
 													type='text'
 													id={`href-${newLinksArr.indexOf(
 														link
 													)}`}
+													
 												/>
 											)}
 											defaultValue=''
@@ -512,6 +528,7 @@ const EditUserComponent = () => {
 							/>
 						))}
 					<ContainedButton
+						dataTestId="add-links-button"
 						type='button'
 						onClick={addMoreLinks}
 					>
@@ -523,6 +540,8 @@ const EditUserComponent = () => {
 					{expArr.length > 0 &&
 						expArr.map((exp) => (
 							<ExperienceForm
+								id={exp._id}
+								buttonText="Experience"
 								key={exp._id}
 								idComp={`company-name-${exp._id}`}
 								idTitle={`job-title-${exp._id}`}
@@ -656,7 +675,9 @@ const EditUserComponent = () => {
 					{newExpsArr.length > 0 &&
 						newExpsArr.map((exp) => (
 							<ExperienceForm
+								id={newExpsArr.indexOf(exp)}
 								key={newExpsArr.indexOf(exp)}
+								buttonText="Experience"
 								idComp={`company-name-${newExpsArr.indexOf(
 									exp
 								)}`}
@@ -691,6 +712,9 @@ const EditUserComponent = () => {
 												onBlur={onBlur}
 												value={value}
 												inputRef={ref}
+												inputProps={{'data-testid': `company-name-${newExpsArr.indexOf(
+													exp
+												)}`}}
 												type='text'
 												id={`company-name-${newExpsArr.indexOf(
 													exp
@@ -727,6 +751,9 @@ const EditUserComponent = () => {
 												id={`job-title-${newExpsArr.indexOf(
 													exp
 												)}`}
+												inputProps={{'data-testid': `job-title-${newExpsArr.indexOf(
+													exp
+												)}`}}
 											/>
 										)}
 										defaultValue=''
@@ -816,7 +843,9 @@ const EditUserComponent = () => {
 					{edArr.length > 0 &&
 						edArr.map((ed) => (
 							<ExperienceForm
+								id={ed._id}
 								key={ed._id}
+								buttonText="Education"
 								idComp={`school-ed-${ed._id}`}
 								idTitle={`degree-ed-${ed._id}`}
 								idStart={`start-ed-${ed._id}`}
@@ -845,6 +874,7 @@ const EditUserComponent = () => {
 												onBlur={onBlur}
 												value={value}
 												inputRef={ref}
+												inputProps={{'data-testid': `school-ed-${ed._id}`}}
 												type='text'
 												id={`school-ed-${ed._id}`}
 											/>
@@ -875,6 +905,7 @@ const EditUserComponent = () => {
 												inputRef={ref}
 												type='text'
 												id={`degree-ed-${ed._id}`}
+												inputProps={{'data-testid': `degree-ed-${ed._id}`}}
 											/>
 										)}
 										defaultValue={ed.degree}
@@ -945,6 +976,8 @@ const EditUserComponent = () => {
 					{newEdArr.length > 0 &&
 						newEdArr.map((ed) => (
 							<ExperienceForm
+								id={newEdArr.indexOf(ed)}
+								buttonText="Education"
 								key={newEdArr.indexOf(ed)}
 								idComp={`school-ed-${newEdArr.indexOf(ed)}`}
 								idTitle={`degree-ed-${newEdArr.indexOf(ed)}`}
@@ -982,6 +1015,9 @@ const EditUserComponent = () => {
 												id={`school-ed-${newEdArr.indexOf(
 													ed
 												)}`}
+												inputProps={{'data-testid': `school-ed-${newEdArr.indexOf(
+													ed
+												)}`}}
 											/>
 										)}
 										defaultValue=''
@@ -1014,6 +1050,9 @@ const EditUserComponent = () => {
 												id={`degree-ed-${newEdArr.indexOf(
 													ed
 												)}`}
+												inputProps={{'data-testid': `degree-ed-${newEdArr.indexOf(
+													ed
+												)}`}}
 											/>
 										)}
 										defaultValue=''
