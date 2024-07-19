@@ -24,3 +24,4 @@ workflows:
       - run-test:
           context: 
             - mongo_connection
+            - mongo_db
