@@ -263,6 +263,7 @@ const CreateUserComponent = () => {
 					{newExpsArr.length > 0 &&
 						newExpsArr.map((exp) => (
 							<ExperienceForm
+								id={newExpsArr.indexOf(exp)}
 								key={newExpsArr.indexOf(exp)}
 								idComp={`company-name-${newExpsArr.indexOf(exp)}`}
 								idTitle={`job-title-${newExpsArr.indexOf(exp)}`}
@@ -412,6 +413,7 @@ const CreateUserComponent = () => {
 					{newEdArr.length > 0 &&
 						newEdArr.map((ed) => (
 							<ExperienceForm
+								id={newEdArr.indexOf(ed)}
 								key={newEdArr.indexOf(ed)}
 								idComp={`school-ed-${newEdArr.indexOf(ed)}`}
 								idTitle={`degree-ed-${newEdArr.indexOf(ed)}`}

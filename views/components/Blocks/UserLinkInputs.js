@@ -41,7 +41,7 @@ const UserLinkInputs = (props) => {
 				>
 					<ContainedButton
 						onClick={deleteOne}
-						dataTestId={dataTestId}
+						dataTestId={`links-${dataTestId}`}
 						type='button'
 						sx={{
 							color: '#111',

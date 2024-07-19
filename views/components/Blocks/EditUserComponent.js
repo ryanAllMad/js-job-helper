@@ -540,6 +540,7 @@ const EditUserComponent = () => {
 					{expArr.length > 0 &&
 						expArr.map((exp) => (
 							<ExperienceForm
+								id={exp._id}
 								key={exp._id}
 								idComp={`company-name-${exp._id}`}
 								idTitle={`job-title-${exp._id}`}
@@ -673,6 +674,7 @@ const EditUserComponent = () => {
 					{newExpsArr.length > 0 &&
 						newExpsArr.map((exp) => (
 							<ExperienceForm
+								id={newExpsArr.indexOf(exp)}
 								key={newExpsArr.indexOf(exp)}
 								idComp={`company-name-${newExpsArr.indexOf(
 									exp
@@ -708,6 +710,9 @@ const EditUserComponent = () => {
 												onBlur={onBlur}
 												value={value}
 												inputRef={ref}
+												inputProps={{'data-testid': `company-name-${newExpsArr.indexOf(
+													exp
+												)}`}}
 												type='text'
 												id={`company-name-${newExpsArr.indexOf(
 													exp
@@ -744,6 +749,9 @@ const EditUserComponent = () => {
 												id={`job-title-${newExpsArr.indexOf(
 													exp
 												)}`}
+												inputProps={{'data-testid': `job-title-${newExpsArr.indexOf(
+													exp
+												)}`}}
 											/>
 										)}
 										defaultValue=''
@@ -833,6 +841,7 @@ const EditUserComponent = () => {
 					{edArr.length > 0 &&
 						edArr.map((ed) => (
 							<ExperienceForm
+								id={ed._id}
 								key={ed._id}
 								idComp={`school-ed-${ed._id}`}
 								idTitle={`degree-ed-${ed._id}`}
@@ -962,6 +971,7 @@ const EditUserComponent = () => {
 					{newEdArr.length > 0 &&
 						newEdArr.map((ed) => (
 							<ExperienceForm
+								id={newEdArr.indexOf(ed)}
 								key={newEdArr.indexOf(ed)}
 								idComp={`school-ed-${newEdArr.indexOf(ed)}`}
 								idTitle={`degree-ed-${newEdArr.indexOf(ed)}`}

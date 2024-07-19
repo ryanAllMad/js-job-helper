@@ -6,6 +6,7 @@ import { theme } from '../../index.js'
 
 const ExperienceForm = (props) => {
 	const {
+		id,
 		companyLabel,
 		companyNameComp,
 		jobLabel,
@@ -61,6 +62,7 @@ const ExperienceForm = (props) => {
 				>
 					<ContainedButton
 						onClick={deleteOne}
+						dataTestId={`experience-${id}`}
 						type='button'
 						sx={{
 							color: '#111',
