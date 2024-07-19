@@ -1,7 +1,7 @@
 
 const { test, expect } = require('@playwright/test');
 
-// Ony Run These Tests if database has user 
+// Ony Run These Tests if database has user
 test.describe.serial('Run these tests in order', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('http://localhost:3000');
@@ -23,7 +23,7 @@ test.describe.serial('Run these tests in order', () => {
   })
   
   // Test links interface
-  test('to add new link, fill, and save', async ({ page }) => {
+  test('to add new link, fill, and check save worked', async ({ page }) => {
     await page.getByRole('button', {name: 'Add Links?'}).click()
     await page.getByTestId('title-0').click()
     await expect(page.getByTestId('title-0')).toBeEmpty()
