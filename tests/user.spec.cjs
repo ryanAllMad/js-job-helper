@@ -1,7 +1,7 @@
 
 const { test, expect } = require('@playwright/test');
 
-// Ony Run These Tests if database has user
+// This tests the EditUserComponent:
 test.describe.serial('Run these tests in order', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('http://localhost:3000');
