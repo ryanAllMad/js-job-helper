@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Button, List, ListItem, Typography, Stack } from '@mui/material';
 import PositionView from './PositionView.js';
 import fetchData from '../getters/fetchData.js';
+import parseDate from '../helpers/parseDate.js';
 
 const getUser = fetchData('http://localhost:3000/api/user');
 
@@ -256,9 +257,9 @@ const Resume = (props) => {
 														</Typography>
 														<Typography>
 															From:{' '}
-															{item.year_started}{' '}
+															{parseDate(item.year_started)}{' '}
 															- To:{' '}
-															{item.year_ended}
+															{parseDate(item.year_ended)}
 														</Typography>
 													</>
 												) : (

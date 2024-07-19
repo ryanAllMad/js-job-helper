@@ -8,6 +8,8 @@ import ExperienceForm from './ExperienceForm.js';
 import fetchData from '../getters/fetchData.js';
 import { deleteEntry } from '../helpers/deleteEntry.js';
 import { deleteNewEntry } from '../helpers/deleteNewEntry.js';
+import { DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 
 const getUser = fetchData('http://localhost:3000/api/user');
 
@@ -72,14 +74,6 @@ const EditUserComponent = () => {
 			edArr,
 			setEdArr
 		);
-
-	const parseDate = (date) => {
-		const dateFormat = new Date(date);
-		const year = dateFormat.getFullYear();
-		const month = dateFormat.toLocaleString('en-US', { month: '2-digit' });
-		const day = dateFormat.toLocaleString('en-US', { day: '2-digit' });
-		return `${year}-${month}-${day}`;
-	};
 
 	const getEditedLinkData = (data) => {
 		let thisLinksArr = [];
@@ -557,6 +551,8 @@ const EditUserComponent = () => {
 												onChange={onChange}
 												onBlur={onBlur}
 												value={value}
+												placeholder={value}
+												inputProps={{'data-testid': `company_name_${exp._id}`}}
 												inputRef={ref}
 												type='text'
 												id={`company-name-${exp._id}`}
@@ -585,9 +581,11 @@ const EditUserComponent = () => {
 												onChange={onChange}
 												onBlur={onBlur}
 												value={value}
+												placeholder={value}
 												inputRef={ref}
 												type='text'
 												id={`job-title-${exp._id}`}
+												inputProps={{'data-testid': `job-title-${exp._id}`}}
 											/>
 										)}
 										defaultValue={exp.title}
@@ -609,7 +607,7 @@ const EditUserComponent = () => {
 												value,
 											},
 										}) => (
-											<Input
+											<DatePicker
 												type='date'
 												sx={{ maxWidth: '200px' }}
 												inputRef={ref}
@@ -619,9 +617,9 @@ const EditUserComponent = () => {
 												id={`start-${exp._id}`}
 											/>
 										)}
-										defaultValue={parseDate(
-											exp.year_started
-										)}
+										defaultValue={
+											dayjs(exp.year_started)
+										}
 									/>
 								}
 								endDateComp={
@@ -640,7 +638,7 @@ const EditUserComponent = () => {
 												value,
 											},
 										}) => (
-											<Input
+											<DatePicker
 												type='date'
 												sx={{ maxWidth: '200px' }}
 												onChange={onChange}
@@ -650,7 +648,7 @@ const EditUserComponent = () => {
 												id={`end-${exp._id}`}
 											/>
 										)}
-										defaultValue={parseDate(exp.year_ended)}
+										defaultValue={dayjs(exp.year_ended)}
 									/>
 								}
 							/>
@@ -752,7 +750,7 @@ const EditUserComponent = () => {
 												value,
 											},
 										}) => (
-											<Input
+											<DatePicker
 												type='date'
 												sx={{ maxWidth: '200px' }}
 												inputRef={ref}
@@ -764,7 +762,7 @@ const EditUserComponent = () => {
 												)}`}
 											/>
 										)}
-										defaultValue=''
+										defaultValue={dayjs('')}
 									/>
 								}
 								endDateComp={
@@ -785,7 +783,7 @@ const EditUserComponent = () => {
 												value,
 											},
 										}) => (
-											<Input
+											<DatePicker
 												type='date'
 												sx={{ maxWidth: '200px' }}
 												onChange={onChange}
@@ -797,7 +795,7 @@ const EditUserComponent = () => {
 												)}`}
 											/>
 										)}
-										defaultValue=''
+										defaultValue={dayjs('')}
 									/>
 								}
 							/>
@@ -807,6 +805,7 @@ const EditUserComponent = () => {
 					<ContainedButton
 						onClick={addMoreExp}
 						type='button'
+						dataTestId="add-exp-button"
 						sx={{ marginBottom: '2em !important' }}
 					>
 						Add Experience?
@@ -897,7 +896,7 @@ const EditUserComponent = () => {
 												value,
 											},
 										}) => (
-											<Input
+											<DatePicker
 												type='date'
 												sx={{ maxWidth: '200px' }}
 												inputRef={ref}
@@ -907,9 +906,9 @@ const EditUserComponent = () => {
 												id={`start-ed-${ed._id}`}
 											/>
 										)}
-										defaultValue={parseDate(
-											ed.year_started
-										)}
+										defaultValue={
+											dayjs(ed.year_started)
+										}
 									/>
 								}
 								endDateComp={
@@ -928,7 +927,7 @@ const EditUserComponent = () => {
 												value,
 											},
 										}) => (
-											<Input
+											<DatePicker
 												type='date'
 												sx={{ maxWidth: '200px' }}
 												onChange={onChange}
@@ -938,7 +937,7 @@ const EditUserComponent = () => {
 												id={`end-ed-${ed._id}`}
 											/>
 										)}
-										defaultValue={parseDate(ed.year_ended)}
+										defaultValue={dayjs(ed.year_ended)}
 									/>
 								}
 							/>
@@ -1038,7 +1037,7 @@ const EditUserComponent = () => {
 												value,
 											},
 										}) => (
-											<Input
+											<DatePicker
 												type='date'
 												sx={{ maxWidth: '200px' }}
 												inputRef={ref}
@@ -1050,7 +1049,7 @@ const EditUserComponent = () => {
 												)}`}
 											/>
 										)}
-										defaultValue=''
+										defaultValue={dayjs('')}
 									/>
 								}
 								endDateComp={
@@ -1071,7 +1070,7 @@ const EditUserComponent = () => {
 												value,
 											},
 										}) => (
-											<Input
+											<DatePicker
 												type='date'
 												sx={{ maxWidth: '200px' }}
 												onChange={onChange}
@@ -1083,7 +1082,7 @@ const EditUserComponent = () => {
 												)}`}
 											/>
 										)}
-										defaultValue=''
+										defaultValue={dayjs('')}
 									/>
 								}
 							/>
@@ -1093,6 +1092,7 @@ const EditUserComponent = () => {
 					<ContainedButton
 						onClick={addMoreEd}
 						type='button'
+						dataTestId="add-ed-button"
 						sx={{ marginBottom: '2em !important' }}
 					>
 						Add Education?
