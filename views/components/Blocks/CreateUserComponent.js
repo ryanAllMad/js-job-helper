@@ -6,6 +6,8 @@ import ContainedButton from './ContainedButton.js';
 import UserLinkInputs from './UserLinkInputs.js';
 import ExperienceForm from './ExperienceForm.js';
 import { deleteNewEntry } from '../helpers/deleteNewEntry.js'
+import { DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 
 const CreateUserComponent = () => {
 	const {
@@ -349,7 +351,7 @@ const CreateUserComponent = () => {
 												value,
 											},
 										}) => (
-											<Input
+											<DatePicker
 												sx={{ maxWidth: '200px'}}
 												type='date'
 												inputRef={ref}
@@ -359,7 +361,7 @@ const CreateUserComponent = () => {
 												id={`start-${newExpsArr.indexOf(exp)}`}
 											/>
 										)}
-										defaultValue=''
+										defaultValue={dayjs('')}
 									/>
 								}
 								endDateComp={
@@ -380,7 +382,7 @@ const CreateUserComponent = () => {
 												value,
 											},
 										}) => (
-											<Input
+											<DatePicker
 												type='date'
 												sx={{ maxWidth: '200px'}}
 												onChange={onChange}
@@ -390,7 +392,7 @@ const CreateUserComponent = () => {
 												id={`end-${newExpsArr.indexOf(exp)}`}
 											/>
 										)}
-										defaultValue=''
+										defaultValue={dayjs('')}
 									/>
 								}
 							/>
@@ -498,7 +500,7 @@ const CreateUserComponent = () => {
 												value,
 											},
 										}) => (
-											<Input
+											<DatePicker
 												type='date'
 												sx={{ maxWidth: '200px'}}
 												inputRef={ref}
@@ -508,7 +510,7 @@ const CreateUserComponent = () => {
 												id={`start-ed-${newEdArr.indexOf(ed)}`}
 											/>
 										)}
-										defaultValue=''
+										defaultValue={dayjs('')}
 									/>
 								}
 								endDateComp={
@@ -529,7 +531,7 @@ const CreateUserComponent = () => {
 												value,
 											},
 										}) => (
-											<Input
+											<DatePicker
 												type='date'
 												sx={{ maxWidth: '200px'}}
 												onChange={onChange}
@@ -539,7 +541,7 @@ const CreateUserComponent = () => {
 												id={`end-ed-${newEdArr.indexOf(ed)}`}
 											/>
 										)}
-										defaultValue=''
+										defaultValue={dayjs('')}
 									/>
 								}
 							/>
