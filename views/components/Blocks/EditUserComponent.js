@@ -534,6 +534,7 @@ const EditUserComponent = () => {
 							/>
 						))}
 					<ContainedButton
+						dataTestId="add-links-button"
 						type='button'
 						onClick={addMoreLinks}
 					>
