@@ -24,7 +24,7 @@ test.describe.serial('Run these tests in order', () => {
   // Test links interface
   test('to add new link, fill, and save', async ({ page }) => {
     await page.goto('http://localhost:3000');
-    await page.waitForSelector('#add-links-button')
+    await page.waitForSelector('[id="add-links-button"]')
     await page.getByRole('button', {name: 'Add Links?'}).click()
     await page.getByTestId('title-0').click()
     await expect(page.getByTestId('title-0')).toBeEmpty()
@@ -35,14 +35,14 @@ test.describe.serial('Run these tests in order', () => {
     await page.getByRole('button', {name: 'Save'}).click()
     // test saved to DB
     await page.reload();
-    await page.waitForSelector('#add-links-button')
+    await page.waitForSelector('[id="add-links-button"]')
     await expect(page.getByTestId('title-0')).not.toBeInViewport()
     await expect(page.getByTestId('href-0')).not.toBeInViewport()
   })
   test('find existing link, delete link, and save', async ({ page }) => {
     await page.goto('http://localhost:3000');
     await page.reload();
-    await page.waitForSelector('#add-links-button')
+    await page.waitForSelector('[id="add-links-button"]')
     await page.getByRole('button', {name: 'Add Links?'}).scrollIntoViewIfNeeded()
     await page.getByPlaceholder('fake.com', { exact: false }).click()
     await expect(page.getByPlaceholder('fake.com', { exact: false })).toBeInViewport()
@@ -53,7 +53,7 @@ test.describe.serial('Run these tests in order', () => {
   test('add a new link then delete it', async ({ page }) => {
     await page.goto('http://localhost:3000');
     await page.reload();
-    await page.waitForSelector('#add-links-button')
+    await page.waitForSelector('[id="add-links-button"]')
     await page.getByRole('button', {name: 'Add Links?'}).click()
     await page.getByTestId('title-0').fill('Fake')
     await expect(page.getByTestId('title-0')).not.toBeEmpty()
