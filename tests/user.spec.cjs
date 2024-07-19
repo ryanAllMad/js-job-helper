@@ -15,10 +15,12 @@ test.describe.serial('Run these tests in order', () => {
     await expect(page.getByRole('heading', {name: 'Your Info'})).toBeInViewport()
   
   });
+  // TODO redo test to run on create user comp and
+  // add user then delete for cleanup
   // run test with database existing user
-  test('run when you have a user in the database', async ({ page }) => {
+  test('add user and delete user', async ({ page }) => {
     await page.waitForSelector('[data-testid="full-name"]', { timeout: 30000})
-    await page.getByTestId('full-name').click();
+    await page.getByTestId('full-name').click()
     await expect(page.getByTestId('full-name')).not.toBeEmpty()
   })
   
@@ -81,6 +83,26 @@ test.describe.serial('Run these tests in order', () => {
     //expect these new elements not to be there anymore since they're coming from DB
     await expect(page.getByTestId('company-name-0')).not.toBeInViewport()
     await expect(page.getByTestId('job-title-0')).not.toBeInViewport()
+    // cleanup
+    await page.getByRole('button', { name: 'Delete Experience'}).scrollIntoViewIfNeeded()
+    await page.getByRole('button', { name: 'Delete Experience'}).click()
+    await page.reload();
+    await page.waitForSelector('[type="submit"]', { timeout: 30000})
+    await expect(page.getByLabel('Company Name:', {exact: false})).toHaveCount(0)
+  })
+
+  //test education
+  test('add 2 new educations then delete one and save', async ({page}) => {
+    await page.getByRole('button', {name: 'Add Education?'}).click()
+    // fill out experience form
+    await page.getByTestId('school-ed-0').fill('Fancy Pants High')
+    await page.getByTestId('degree-ed-0').fill('Diploma')
+    await page.getByRole('button', {name: 'Add Education?'}).click()
+    await page.getByTestId('school-ed-1').fill('Frankfuter U')
+    await page.getByTestId('degree-ed-1').fill('BS in EDU')
+    await page.getByTestId('experience-1').click()
+    await expect(page.getByTestId('school-ed-1')).not.toBeInViewport()
+    await expect(page.getByTestId('school-ed-0')).not.toBeInViewport()
   })
 })
 

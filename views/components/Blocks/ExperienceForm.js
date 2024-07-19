@@ -6,6 +6,7 @@ import { theme } from '../../index.js'
 
 const ExperienceForm = (props) => {
 	const {
+		buttonText,
 		id,
 		companyLabel,
 		companyNameComp,
@@ -70,7 +71,7 @@ const ExperienceForm = (props) => {
 							'&:hover': { backgroundColor: theme.palette.secondary.dark, color: '#fff' },
 						}}
 					>
-						Delete
+						Delete {buttonText}
 					</ContainedButton>
 				</Grid>
 			</Grid>

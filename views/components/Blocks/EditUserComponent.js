@@ -541,6 +541,7 @@ const EditUserComponent = () => {
 						expArr.map((exp) => (
 							<ExperienceForm
 								id={exp._id}
+								buttonText="Experience"
 								key={exp._id}
 								idComp={`company-name-${exp._id}`}
 								idTitle={`job-title-${exp._id}`}
@@ -676,6 +677,7 @@ const EditUserComponent = () => {
 							<ExperienceForm
 								id={newExpsArr.indexOf(exp)}
 								key={newExpsArr.indexOf(exp)}
+								buttonText="Experience"
 								idComp={`company-name-${newExpsArr.indexOf(
 									exp
 								)}`}
@@ -843,6 +845,7 @@ const EditUserComponent = () => {
 							<ExperienceForm
 								id={ed._id}
 								key={ed._id}
+								buttonText="Education"
 								idComp={`school-ed-${ed._id}`}
 								idTitle={`degree-ed-${ed._id}`}
 								idStart={`start-ed-${ed._id}`}
@@ -871,6 +874,7 @@ const EditUserComponent = () => {
 												onBlur={onBlur}
 												value={value}
 												inputRef={ref}
+												inputProps={{'data-testid': `school-ed-${ed._id}`}}
 												type='text'
 												id={`school-ed-${ed._id}`}
 											/>
@@ -901,6 +905,7 @@ const EditUserComponent = () => {
 												inputRef={ref}
 												type='text'
 												id={`degree-ed-${ed._id}`}
+												inputProps={{'data-testid': `degree-ed-${ed._id}`}}
 											/>
 										)}
 										defaultValue={ed.degree}
@@ -972,6 +977,7 @@ const EditUserComponent = () => {
 						newEdArr.map((ed) => (
 							<ExperienceForm
 								id={newEdArr.indexOf(ed)}
+								buttonText="Education"
 								key={newEdArr.indexOf(ed)}
 								idComp={`school-ed-${newEdArr.indexOf(ed)}`}
 								idTitle={`degree-ed-${newEdArr.indexOf(ed)}`}
@@ -1009,6 +1015,9 @@ const EditUserComponent = () => {
 												id={`school-ed-${newEdArr.indexOf(
 													ed
 												)}`}
+												inputProps={{'data-testid': `school-ed-${newEdArr.indexOf(
+													ed
+												)}`}}
 											/>
 										)}
 										defaultValue=''
@@ -1041,6 +1050,9 @@ const EditUserComponent = () => {
 												id={`degree-ed-${newEdArr.indexOf(
 													ed
 												)}`}
+												inputProps={{'data-testid': `degree-ed-${newEdArr.indexOf(
+													ed
+												)}`}}
 											/>
 										)}
 										defaultValue=''
