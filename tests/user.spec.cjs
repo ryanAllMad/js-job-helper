@@ -1,8 +1,8 @@
 
 const { test, expect } = require('@playwright/test');
 
-// This tests the EditUserComponent:
-test.describe.serial('Run these tests in order', () => {
+  // This tests the EditUserComponent:
+  test.describe.configure({mode: 'serial'})
   test.beforeEach(async ({ page }) => {
     await page.goto('http://localhost:3000');
     await page.reload();
@@ -35,7 +35,8 @@ test.describe.serial('Run these tests in order', () => {
     //delete user
     await page.getByTestId('user-delete').click()
     await page.reload();
-    await page.waitForSelector('[id="add-links-button"]', { timeout: 30000})
+    await page.waitForSelector('[id="full-name"]', { timeout: 30000})
+    await expect(page.getByTestId('user-delete')).not.toBeInViewport()
     await expect(page.getByTestId('full-name')).toBeEmpty()
     await expect(page.getByTestId('email')).toBeEmpty()
     await expect(page.getByTestId('user-delete')).not.toBeInViewport()
@@ -90,7 +91,6 @@ test.describe.serial('Run these tests in order', () => {
     await page.getByTestId('links-0').click()
     await expect(page.getByTestId('title-0')).not.toBeInViewport()
   })
-
   // test experience
   test('add new experience then delete', async ({page}) => {
     await page.getByRole('button', {name: 'Add Experience?'}).click()
@@ -124,7 +124,6 @@ test.describe.serial('Run these tests in order', () => {
     await page.waitForSelector('[type="submit"]', { timeout: 30000})
     await expect(page.getByLabel('Company Name:', {exact: false})).toHaveCount(0)
   })
-
   //test education
   test('add 2 new educations then delete one and save', async ({page}) => {
     await page.getByRole('button', {name: 'Add Education?'}).click()
@@ -141,13 +140,12 @@ test.describe.serial('Run these tests in order', () => {
   test('cleanup', async ({page}) => {
     await page.goto('http://localhost:3000');
     await page.reload();
-    await page.waitForSelector('[id="add-links-button"]', { timeout: 30000})
+    await page.waitForSelector('[id="full-name"]', { timeout: 30000})
     await page.getByTestId('user-delete').click()
     await page.reload();
-    await page.waitForSelector('[id="add-links-button"]', { timeout: 30000})
+    await page.waitForSelector('[id="full-name"]', { timeout: 30000})
     await expect(page.getByTestId('user-delete')).not.toBeInViewport()
     await expect(page.getByTestId('full-name')).toBeEmpty()
     await expect(page.getByTestId('email')).toBeEmpty()
   })
-})
 
