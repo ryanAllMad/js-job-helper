@@ -1,5 +1,5 @@
 import { User } from '../models/users.js';
-import { updateOne } from './handlerFactory.js';
+import { updateOne, deleteOne } from './handlerFactory.js';
 
 export const createUser = async (req, res) => {
 	try {
@@ -32,6 +32,8 @@ export const getUser = async (req, res) => {
 		});
 	}
 }
+
+export const deleteUser = deleteOne(User)
 
 export const deleteLink = async (req, res) => {
 	try {

@@ -10,11 +10,13 @@ import { deleteEntry } from '../helpers/deleteEntry.js';
 import { deleteNewEntry } from '../helpers/deleteNewEntry.js';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
+import { theme } from '../../index.js'
 
 const getUser = fetchData('http://localhost:3000/api/user');
 
 const EditUserComponent = () => {
 	const userDetails = getUser.read();
+	const postUrl = userDetails && userDetails.length > 0 ? `http://localhost:3000/api/user/${userDetails[0]._id}` : 'http://localhost:3000/api/user'
 	const allSavedLinks =
 		userDetails && userDetails.length > 0 ? userDetails[0].links : null;
 	const allSavedExp =
@@ -35,6 +37,7 @@ const EditUserComponent = () => {
 	const [newExpsArr, setNewExpsArr] = React.useState([]);
 	const [edArr, setEdArr] = React.useState(allSavedEd);
 	const [newEdArr, setNewEdArr] = React.useState([]);
+	const [deleteUserState, setDeleteUserState] = React.useState(userDetails && userDetails.length > 0)
 
 	const addMoreLinks = () => {
 		setNewLinksArr((prev) => prev.concat(prev.length));
@@ -50,6 +53,18 @@ const EditUserComponent = () => {
 	const deleteNewExp = (id) => deleteNewEntry(id, newExpsArr, setNewExpsArr, resetField, 'company_name_', 'job_title_', 'start_date_', 'end_date_' )
 	const deleteNewEd = (id) => deleteNewEntry(id, newEdArr, setNewEdArr, resetField, 'school_ed_', 'degree_ed_', 'start_ed_date_', 'end_ed_date_' )
 
+	const deleteUser = async () => {
+		const promise = await fetch(
+			`http://localhost:3000/api/user/${userDetails[0]._id}`,
+			{
+				method: 'DELETE',
+			}
+		);
+		resetField('fullName', {defaultValue: ''} )
+		resetField('email', {defaultValue: ''})
+		setDeleteUserState(false)
+		return promise
+	}
 	const deleteThisLink = (id) =>
 		deleteEntry(
 			id,
@@ -243,29 +258,29 @@ const EditUserComponent = () => {
 		let validNewExp = [];
 		let validNewEd = [];
 		let editedLinks = getEditedLinkData(data);
-		const newLinks = getNewLinkData(data);
+		const theseNewLinks = getNewLinkData(data);
 		let editedExp = getEditedExperienceData(data);
-		const newExp = getNewExperienceData(data);
+		const theseNewExp = getNewExperienceData(data);
 		let editedEd = getEditedEducationData(data);
-		const newEd = getNewEducationData(data);
-		if (newLinks && newLinks.length > 0) {
-			validNewLinks = newLinks.filter((li) => li.title !== undefined);
+		const theseNewEd = getNewEducationData(data);
+		if (theseNewLinks && theseNewLinks.length > 0) {
+			validNewLinks = theseNewLinks.filter((li) => li.title !== undefined);
 			if (editedLinks && editedLinks.length > 0) {
 				validNewLinks.forEach((link) => editedLinks.push(link));
 			} else {
 				editedLinks = validNewLinks;
 			}
 		}
-		if (newExp && newExp.length > 0) {
-			validNewExp = newExp.filter((ex) => ex.title !== undefined);
+		if (theseNewExp && theseNewExp.length > 0) {
+			validNewExp = theseNewExp.filter((ex) => ex.title !== undefined);
 			if (editedExp && editedExp.length > 0) {
 				validNewExp.forEach((exp) => editedExp.push(exp));
 			} else {
 				editedExp = validNewExp;
 			}
 		}
-		if (newEd && newEd.length > 0) {
-			validNewEd = newEd.filter((ed) => ed.school !== undefined);
+		if (theseNewEd && theseNewEd.length > 0) {
+			validNewEd = theseNewEd.filter((ed) => ed.school !== undefined);
 			if (editedEd && editedEd.length > 0) {
 				validNewEd.forEach((ed) => editedEd.push(ed));
 			} else {
@@ -273,7 +288,7 @@ const EditUserComponent = () => {
 			}
 		}
 		const postUserName = await fetch(
-			`http://localhost:3000/api/user/${userDetails[0]._id}`,
+			postUrl,
 			{
 				method: 'POST',
 				headers: {
@@ -282,11 +297,9 @@ const EditUserComponent = () => {
 				body: JSON.stringify({
 					name: data.fullName,
 					email: data.email,
-					$set: {
-						links: editedLinks,
-						experience: editedExp,
-						education: editedEd,
-					},
+					links: editedLinks,
+					experience: editedExp,
+					education: editedEd,
 				}),
 			}
 		);
@@ -319,7 +332,7 @@ const EditUserComponent = () => {
 									id='full-name'
 								/>
 							)}
-							defaultValue={userDetails[0].name}
+							defaultValue={userDetails && userDetails.length > 0 && userDetails[0].name ? userDetails[0].name : ''}
 						/>
 					</BasicInput>
 					<BasicInput
@@ -343,11 +356,24 @@ const EditUserComponent = () => {
 									id='email'
 								/>
 							)}
-							defaultValue={userDetails[0].email}
+							defaultValue={userDetails && userDetails.length > 0 && userDetails[0].email ? userDetails[0].email : ''}
 						/>
 					</BasicInput>
+					{deleteUserState && 
+					<ContainedButton
+						onClick={deleteUser}
+						dataTestId={`user-delete`}
+						type='button'
+						sx={{
+							color: '#111',
+							backgroundColor: theme.palette.secondary.main,
+							'&:hover': { backgroundColor: theme.palette.secondary.dark, color: '#fff' },
+						}}
+					>
+						Delete User
+					</ContainedButton>}
 					<Typography variant='body2'>Add Links</Typography>
-					{linksArr.length > 0 &&
+					{linksArr && linksArr.length > 0 &&
 						linksArr.map((link) => (
 							<UserLinkInputs
 								key={link._id}
@@ -386,7 +412,7 @@ const EditUserComponent = () => {
 													inputProps={{'data-testid': `title-${link._id}`}}
 												/>
 											)}
-											defaultValue={link.title}
+											defaultValue={link.title ? link.title : ''}
 										/>
 									</>
 								}
@@ -422,7 +448,7 @@ const EditUserComponent = () => {
 													inputProps={{'data-testid': `href-${link._id}`}}
 												/>
 											)}
-											defaultValue={link.href}
+											defaultValue={link.href ? link.href : ''}
 										/>
 									</>
 								}
@@ -537,7 +563,7 @@ const EditUserComponent = () => {
 				</FormGroup>
 				<FormGroup className='user-form-group'>
 					<Typography variant='h2'>Work Experience</Typography>
-					{expArr.length > 0 &&
+					{expArr && expArr.length > 0 &&
 						expArr.map((exp) => (
 							<ExperienceForm
 								id={exp._id}
@@ -577,7 +603,7 @@ const EditUserComponent = () => {
 												id={`company-name-${exp._id}`}
 											/>
 										)}
-										defaultValue={exp.company}
+										defaultValue={exp.company ? exp.company : ''}
 									/>
 								}
 								jobTitleComp={
@@ -607,7 +633,7 @@ const EditUserComponent = () => {
 												inputProps={{'data-testid': `job-title-${exp._id}`}}
 											/>
 										)}
-										defaultValue={exp.title}
+										defaultValue={exp.title ? exp.title : ''}
 									/>
 								}
 								startDateComp={
@@ -637,7 +663,7 @@ const EditUserComponent = () => {
 											/>
 										)}
 										defaultValue={
-											dayjs(exp.year_started)
+											exp.year_started ? dayjs(exp.year_started) : dayjs('')
 										}
 									/>
 								}
@@ -667,7 +693,7 @@ const EditUserComponent = () => {
 												id={`end-${exp._id}`}
 											/>
 										)}
-										defaultValue={dayjs(exp.year_ended)}
+										defaultValue={exp.year_ended ? dayjs(exp.year_ended) : dayjs('')}
 									/>
 								}
 							/>
@@ -840,7 +866,7 @@ const EditUserComponent = () => {
 				</FormGroup>
 				<FormGroup className='user-form-group'>
 					<Typography variant='h2'>Education</Typography>
-					{edArr.length > 0 &&
+					{edArr && edArr.length > 0 &&
 						edArr.map((ed) => (
 							<ExperienceForm
 								id={ed._id}
@@ -879,7 +905,7 @@ const EditUserComponent = () => {
 												id={`school-ed-${ed._id}`}
 											/>
 										)}
-										defaultValue={ed.school}
+										defaultValue={ed.school ? ed.school : ''}
 									/>
 								}
 								jobTitleComp={
@@ -908,7 +934,7 @@ const EditUserComponent = () => {
 												inputProps={{'data-testid': `degree-ed-${ed._id}`}}
 											/>
 										)}
-										defaultValue={ed.degree}
+										defaultValue={ed.degree ? ed.degree : ''}
 									/>
 								}
 								startDateComp={
@@ -938,7 +964,7 @@ const EditUserComponent = () => {
 											/>
 										)}
 										defaultValue={
-											dayjs(ed.year_started)
+											ed.year_started ? dayjs(ed.year_started) : dayjs('')
 										}
 									/>
 								}
@@ -968,7 +994,7 @@ const EditUserComponent = () => {
 												id={`end-ed-${ed._id}`}
 											/>
 										)}
-										defaultValue={dayjs(ed.year_ended)}
+										defaultValue={ed.year_ended ? dayjs(ed.year_ended) : dayjs('')}
 									/>
 								}
 							/>

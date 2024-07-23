@@ -117,7 +117,7 @@ const SearchJob = () => {
 								fetchResumeUrl={`http://localhost:3000/api/resume/${resumeLocation}`}
 							/>
 							<Button
-								sx={{ minWidth: '100%', marginTop: '20px' }}
+								sx={{ width: '300px', marginTop: '20px' }}
 								variant='outlined'
 								href={`/job-post/${resumeLocation}`}
 							>
