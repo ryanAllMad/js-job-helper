@@ -15,15 +15,49 @@ test.describe.serial('Run these tests in order', () => {
     await expect(page.getByRole('heading', {name: 'Your Info'})).toBeInViewport()
   
   });
-  // TODO redo test to run on create user comp and
-  // add user then delete for cleanup
-  // run test with database existing user
-  test('add user and delete user', async ({ page }) => {
+  // test add user then delete user
+  test('add and delete the user, then add back for tests', async ({page}) => {
     await page.waitForSelector('[data-testid="full-name"]', { timeout: 30000})
     await page.getByTestId('full-name').click()
+    await page.getByTestId('email').click()
+    await expect(page.getByTestId('full-name')).toBeEmpty()
+    await expect(page.getByTestId('email')).toBeEmpty()
+    await page.getByTestId('full-name').fill('fake user')
+    await page.getByTestId('email').fill('phony@fake.com')
+    // save, expects in next test
+    await page.getByRole('button', {name: 'Save'}).click()
+    // test saved to DB
+    await page.reload();
+    await page.waitForSelector('[id="add-links-button"]', { timeout: 30000})
     await expect(page.getByTestId('full-name')).not.toBeEmpty()
+    await expect(page.getByTestId('email')).not.toBeEmpty()
+    await expect(page.getByTestId('user-delete')).toBeInViewport()
+    //delete user
+    await page.getByTestId('user-delete').click()
+    await page.reload();
+    await page.waitForSelector('[id="add-links-button"]', { timeout: 30000})
+    await expect(page.getByTestId('full-name')).toBeEmpty()
+    await expect(page.getByTestId('email')).toBeEmpty()
+    await expect(page.getByTestId('user-delete')).not.toBeInViewport()
   })
-  
+  // add back user for other tests
+  test('add user and save', async ({ page }) => {
+    await page.waitForSelector('[data-testid="full-name"]', { timeout: 30000})
+    await page.getByTestId('full-name').click()
+    await page.getByTestId('email').click()
+    await expect(page.getByTestId('full-name')).toBeEmpty()
+    await expect(page.getByTestId('email')).toBeEmpty()
+    await page.getByTestId('full-name').fill('fake user')
+    await page.getByTestId('email').fill('phony@fake.com')
+    // save, expects in next test
+    await page.getByRole('button', {name: 'Save'}).click()
+    // test saved to DB
+    await page.reload();
+    await page.waitForSelector('[id="add-links-button"]', { timeout: 30000})
+    await expect(page.getByTestId('full-name')).not.toBeEmpty()
+    await expect(page.getByTestId('email')).not.toBeEmpty()
+    await expect(page.getByTestId('user-delete')).toBeInViewport()
+  })
   // Test links interface
   test('to add new link, fill, and check save worked', async ({ page }) => {
     await page.getByRole('button', {name: 'Add Links?'}).click()
@@ -103,6 +137,17 @@ test.describe.serial('Run these tests in order', () => {
     await page.getByTestId('experience-1').click()
     await expect(page.getByTestId('school-ed-1')).not.toBeInViewport()
     await expect(page.getByTestId('school-ed-0')).not.toBeInViewport()
+  })
+  test('cleanup', async ({page}) => {
+    await page.goto('http://localhost:3000');
+    await page.reload();
+    await page.waitForSelector('[id="add-links-button"]', { timeout: 30000})
+    await page.getByTestId('user-delete').click()
+    await page.reload();
+    await page.waitForSelector('[id="add-links-button"]', { timeout: 30000})
+    await expect(page.getByTestId('user-delete')).not.toBeInViewport()
+    await expect(page.getByTestId('full-name')).toBeEmpty()
+    await expect(page.getByTestId('email')).toBeEmpty()
   })
 })
 

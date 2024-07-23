@@ -352,6 +352,7 @@ const EditUserComponent = () => {
 									onBlur={onBlur}
 									value={value}
 									inputRef={ref}
+									inputProps={{'data-testid': 'email'}}
 									type='text'
 									id='email'
 								/>
