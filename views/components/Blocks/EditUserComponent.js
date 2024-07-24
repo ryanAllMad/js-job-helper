@@ -8,11 +8,15 @@ import ExperienceForm from './ExperienceForm.js';
 import fetchData from '../getters/fetchData.js';
 import { deleteEntry } from '../helpers/deleteEntry.js';
 import { deleteNewEntry } from '../helpers/deleteNewEntry.js';
+import { DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
+import { theme } from '../../index.js'
 
 const getUser = fetchData('http://localhost:3000/api/user');
 
 const EditUserComponent = () => {
 	const userDetails = getUser.read();
+	const postUrl = userDetails && userDetails.length > 0 ? `http://localhost:3000/api/user/${userDetails[0]._id}` : 'http://localhost:3000/api/user'
 	const allSavedLinks =
 		userDetails && userDetails.length > 0 ? userDetails[0].links : null;
 	const allSavedExp =
@@ -33,6 +37,7 @@ const EditUserComponent = () => {
 	const [newExpsArr, setNewExpsArr] = React.useState([]);
 	const [edArr, setEdArr] = React.useState(allSavedEd);
 	const [newEdArr, setNewEdArr] = React.useState([]);
+	const [deleteUserState, setDeleteUserState] = React.useState(userDetails && userDetails.length > 0)
 
 	const addMoreLinks = () => {
 		setNewLinksArr((prev) => prev.concat(prev.length));
@@ -48,6 +53,18 @@ const EditUserComponent = () => {
 	const deleteNewExp = (id) => deleteNewEntry(id, newExpsArr, setNewExpsArr, resetField, 'company_name_', 'job_title_', 'start_date_', 'end_date_' )
 	const deleteNewEd = (id) => deleteNewEntry(id, newEdArr, setNewEdArr, resetField, 'school_ed_', 'degree_ed_', 'start_ed_date_', 'end_ed_date_' )
 
+	const deleteUser = async () => {
+		const promise = await fetch(
+			`http://localhost:3000/api/user/${userDetails[0]._id}`,
+			{
+				method: 'DELETE',
+			}
+		);
+		resetField('fullName', {defaultValue: ''} )
+		resetField('email', {defaultValue: ''})
+		setDeleteUserState(false)
+		return promise
+	}
 	const deleteThisLink = (id) =>
 		deleteEntry(
 			id,
@@ -72,14 +89,6 @@ const EditUserComponent = () => {
 			edArr,
 			setEdArr
 		);
-
-	const parseDate = (date) => {
-		const dateFormat = new Date(date);
-		const year = dateFormat.getFullYear();
-		const month = dateFormat.toLocaleString('en-US', { month: '2-digit' });
-		const day = dateFormat.toLocaleString('en-US', { day: '2-digit' });
-		return `${year}-${month}-${day}`;
-	};
 
 	const getEditedLinkData = (data) => {
 		let thisLinksArr = [];
@@ -249,29 +258,29 @@ const EditUserComponent = () => {
 		let validNewExp = [];
 		let validNewEd = [];
 		let editedLinks = getEditedLinkData(data);
-		const newLinks = getNewLinkData(data);
+		const theseNewLinks = getNewLinkData(data);
 		let editedExp = getEditedExperienceData(data);
-		const newExp = getNewExperienceData(data);
+		const theseNewExp = getNewExperienceData(data);
 		let editedEd = getEditedEducationData(data);
-		const newEd = getNewEducationData(data);
-		if (newLinks && newLinks.length > 0) {
-			validNewLinks = newLinks.filter((li) => li.title !== undefined);
+		const theseNewEd = getNewEducationData(data);
+		if (theseNewLinks && theseNewLinks.length > 0) {
+			validNewLinks = theseNewLinks.filter((li) => li.title !== undefined);
 			if (editedLinks && editedLinks.length > 0) {
 				validNewLinks.forEach((link) => editedLinks.push(link));
 			} else {
 				editedLinks = validNewLinks;
 			}
 		}
-		if (newExp && newExp.length > 0) {
-			validNewExp = newExp.filter((ex) => ex.title !== undefined);
+		if (theseNewExp && theseNewExp.length > 0) {
+			validNewExp = theseNewExp.filter((ex) => ex.title !== undefined);
 			if (editedExp && editedExp.length > 0) {
 				validNewExp.forEach((exp) => editedExp.push(exp));
 			} else {
 				editedExp = validNewExp;
 			}
 		}
-		if (newEd && newEd.length > 0) {
-			validNewEd = newEd.filter((ed) => ed.school !== undefined);
+		if (theseNewEd && theseNewEd.length > 0) {
+			validNewEd = theseNewEd.filter((ed) => ed.school !== undefined);
 			if (editedEd && editedEd.length > 0) {
 				validNewEd.forEach((ed) => editedEd.push(ed));
 			} else {
@@ -279,7 +288,7 @@ const EditUserComponent = () => {
 			}
 		}
 		const postUserName = await fetch(
-			`http://localhost:3000/api/user/${userDetails[0]._id}`,
+			postUrl,
 			{
 				method: 'POST',
 				headers: {
@@ -288,11 +297,9 @@ const EditUserComponent = () => {
 				body: JSON.stringify({
 					name: data.fullName,
 					email: data.email,
-					$set: {
-						links: editedLinks,
-						experience: editedExp,
-						education: editedEd,
-					},
+					links: editedLinks,
+					experience: editedExp,
+					education: editedEd,
 				}),
 			}
 		);
@@ -318,13 +325,14 @@ const EditUserComponent = () => {
 								<Input
 									onChange={onChange}
 									onBlur={onBlur}
+									inputProps={{'data-testid': 'full-name'}}
 									value={value}
 									inputRef={ref}
 									type='text'
 									id='full-name'
 								/>
 							)}
-							defaultValue={userDetails[0].name}
+							defaultValue={userDetails && userDetails.length > 0 && userDetails[0].name ? userDetails[0].name : ''}
 						/>
 					</BasicInput>
 					<BasicInput
@@ -344,20 +352,35 @@ const EditUserComponent = () => {
 									onBlur={onBlur}
 									value={value}
 									inputRef={ref}
+									inputProps={{'data-testid': 'email'}}
 									type='text'
 									id='email'
 								/>
 							)}
-							defaultValue={userDetails[0].email}
+							defaultValue={userDetails && userDetails.length > 0 && userDetails[0].email ? userDetails[0].email : ''}
 						/>
 					</BasicInput>
+					{deleteUserState && 
+					<ContainedButton
+						onClick={deleteUser}
+						dataTestId={`user-delete`}
+						type='button'
+						sx={{
+							color: '#111',
+							backgroundColor: theme.palette.secondary.main,
+							'&:hover': { backgroundColor: theme.palette.secondary.dark, color: '#fff' },
+						}}
+					>
+						Delete User
+					</ContainedButton>}
 					<Typography variant='body2'>Add Links</Typography>
-					{linksArr.length > 0 &&
+					{linksArr && linksArr.length > 0 &&
 						linksArr.map((link) => (
 							<UserLinkInputs
 								key={link._id}
 								defaultHref={link.href}
 								deleteOne={() => deleteThisLink(link._id)}
+								dataTestId={link.title}
 								titleInput={
 									<>
 										<InputLabel
@@ -383,12 +406,14 @@ const EditUserComponent = () => {
 													onChange={onChange}
 													onBlur={onBlur}
 													value={value}
+													placeholder={value}
 													inputRef={ref}
 													type='text'
 													id={`title-${link._id}`}
+													inputProps={{'data-testid': `title-${link._id}`}}
 												/>
 											)}
-											defaultValue={link.title}
+											defaultValue={link.title ? link.title : ''}
 										/>
 									</>
 								}
@@ -417,12 +442,14 @@ const EditUserComponent = () => {
 													onChange={onChange}
 													onBlur={onBlur}
 													value={value}
+													placeholder={value}
 													inputRef={ref}
 													type='text'
 													id={`href-${link._id}`}
+													inputProps={{'data-testid': `href-${link._id}`}}
 												/>
 											)}
-											defaultValue={link.href}
+											defaultValue={link.href ? link.href : ''}
 										/>
 									</>
 								}
@@ -432,6 +459,7 @@ const EditUserComponent = () => {
 						newLinksArr.map((link) => (
 							<UserLinkInputs
 								key={newLinksArr.indexOf(link)}
+								dataTestId={newLinksArr.indexOf(link)}
 								deleteOne={() =>
 									deleteNewLinks(newLinksArr.indexOf(link))
 								}
@@ -464,11 +492,15 @@ const EditUserComponent = () => {
 													onChange={onChange}
 													onBlur={onBlur}
 													value={value}
+													placeholder={value}
 													inputRef={ref}
 													type='text'
 													id={`title-${newLinksArr.indexOf(
 														link
 													)}`}
+													inputProps={{'data-testid': `title-${newLinksArr.indexOf(
+														link
+													)}`}}
 												/>
 											)}
 											defaultValue=''
@@ -504,11 +536,16 @@ const EditUserComponent = () => {
 													onChange={onChange}
 													onBlur={onBlur}
 													value={value}
+													placeholder={value}
 													inputRef={ref}
+													inputProps={{'data-testid':`href-${newLinksArr.indexOf(
+														link
+													)}`}}
 													type='text'
 													id={`href-${newLinksArr.indexOf(
 														link
 													)}`}
+													
 												/>
 											)}
 											defaultValue=''
@@ -518,6 +555,7 @@ const EditUserComponent = () => {
 							/>
 						))}
 					<ContainedButton
+						dataTestId="add-links-button"
 						type='button'
 						onClick={addMoreLinks}
 					>
@@ -526,9 +564,11 @@ const EditUserComponent = () => {
 				</FormGroup>
 				<FormGroup className='user-form-group'>
 					<Typography variant='h2'>Work Experience</Typography>
-					{expArr.length > 0 &&
+					{expArr && expArr.length > 0 &&
 						expArr.map((exp) => (
 							<ExperienceForm
+								id={exp._id}
+								buttonText="Experience"
 								key={exp._id}
 								idComp={`company-name-${exp._id}`}
 								idTitle={`job-title-${exp._id}`}
@@ -557,12 +597,14 @@ const EditUserComponent = () => {
 												onChange={onChange}
 												onBlur={onBlur}
 												value={value}
+												placeholder={value}
+												inputProps={{'data-testid': `company_name_${exp._id}`}}
 												inputRef={ref}
 												type='text'
 												id={`company-name-${exp._id}`}
 											/>
 										)}
-										defaultValue={exp.company}
+										defaultValue={exp.company ? exp.company : ''}
 									/>
 								}
 								jobTitleComp={
@@ -585,12 +627,14 @@ const EditUserComponent = () => {
 												onChange={onChange}
 												onBlur={onBlur}
 												value={value}
+												placeholder={value}
 												inputRef={ref}
 												type='text'
 												id={`job-title-${exp._id}`}
+												inputProps={{'data-testid': `job-title-${exp._id}`}}
 											/>
 										)}
-										defaultValue={exp.title}
+										defaultValue={exp.title ? exp.title : ''}
 									/>
 								}
 								startDateComp={
@@ -609,7 +653,7 @@ const EditUserComponent = () => {
 												value,
 											},
 										}) => (
-											<Input
+											<DatePicker
 												type='date'
 												sx={{ maxWidth: '200px' }}
 												inputRef={ref}
@@ -619,9 +663,9 @@ const EditUserComponent = () => {
 												id={`start-${exp._id}`}
 											/>
 										)}
-										defaultValue={parseDate(
-											exp.year_started
-										)}
+										defaultValue={
+											exp.year_started ? dayjs(exp.year_started) : dayjs('')
+										}
 									/>
 								}
 								endDateComp={
@@ -640,7 +684,7 @@ const EditUserComponent = () => {
 												value,
 											},
 										}) => (
-											<Input
+											<DatePicker
 												type='date'
 												sx={{ maxWidth: '200px' }}
 												onChange={onChange}
@@ -650,7 +694,7 @@ const EditUserComponent = () => {
 												id={`end-${exp._id}`}
 											/>
 										)}
-										defaultValue={parseDate(exp.year_ended)}
+										defaultValue={exp.year_ended ? dayjs(exp.year_ended) : dayjs('')}
 									/>
 								}
 							/>
@@ -658,7 +702,9 @@ const EditUserComponent = () => {
 					{newExpsArr.length > 0 &&
 						newExpsArr.map((exp) => (
 							<ExperienceForm
+								id={newExpsArr.indexOf(exp)}
 								key={newExpsArr.indexOf(exp)}
+								buttonText="Experience"
 								idComp={`company-name-${newExpsArr.indexOf(
 									exp
 								)}`}
@@ -693,6 +739,9 @@ const EditUserComponent = () => {
 												onBlur={onBlur}
 												value={value}
 												inputRef={ref}
+												inputProps={{'data-testid': `company-name-${newExpsArr.indexOf(
+													exp
+												)}`}}
 												type='text'
 												id={`company-name-${newExpsArr.indexOf(
 													exp
@@ -729,6 +778,9 @@ const EditUserComponent = () => {
 												id={`job-title-${newExpsArr.indexOf(
 													exp
 												)}`}
+												inputProps={{'data-testid': `job-title-${newExpsArr.indexOf(
+													exp
+												)}`}}
 											/>
 										)}
 										defaultValue=''
@@ -752,7 +804,7 @@ const EditUserComponent = () => {
 												value,
 											},
 										}) => (
-											<Input
+											<DatePicker
 												type='date'
 												sx={{ maxWidth: '200px' }}
 												inputRef={ref}
@@ -764,7 +816,7 @@ const EditUserComponent = () => {
 												)}`}
 											/>
 										)}
-										defaultValue=''
+										defaultValue={dayjs('')}
 									/>
 								}
 								endDateComp={
@@ -785,7 +837,7 @@ const EditUserComponent = () => {
 												value,
 											},
 										}) => (
-											<Input
+											<DatePicker
 												type='date'
 												sx={{ maxWidth: '200px' }}
 												onChange={onChange}
@@ -797,7 +849,7 @@ const EditUserComponent = () => {
 												)}`}
 											/>
 										)}
-										defaultValue=''
+										defaultValue={dayjs('')}
 									/>
 								}
 							/>
@@ -807,6 +859,7 @@ const EditUserComponent = () => {
 					<ContainedButton
 						onClick={addMoreExp}
 						type='button'
+						dataTestId="add-exp-button"
 						sx={{ marginBottom: '2em !important' }}
 					>
 						Add Experience?
@@ -814,10 +867,12 @@ const EditUserComponent = () => {
 				</FormGroup>
 				<FormGroup className='user-form-group'>
 					<Typography variant='h2'>Education</Typography>
-					{edArr.length > 0 &&
+					{edArr && edArr.length > 0 &&
 						edArr.map((ed) => (
 							<ExperienceForm
+								id={ed._id}
 								key={ed._id}
+								buttonText="Education"
 								idComp={`school-ed-${ed._id}`}
 								idTitle={`degree-ed-${ed._id}`}
 								idStart={`start-ed-${ed._id}`}
@@ -846,11 +901,12 @@ const EditUserComponent = () => {
 												onBlur={onBlur}
 												value={value}
 												inputRef={ref}
+												inputProps={{'data-testid': `school-ed-${ed._id}`}}
 												type='text'
 												id={`school-ed-${ed._id}`}
 											/>
 										)}
-										defaultValue={ed.school}
+										defaultValue={ed.school ? ed.school : ''}
 									/>
 								}
 								jobTitleComp={
@@ -876,9 +932,10 @@ const EditUserComponent = () => {
 												inputRef={ref}
 												type='text'
 												id={`degree-ed-${ed._id}`}
+												inputProps={{'data-testid': `degree-ed-${ed._id}`}}
 											/>
 										)}
-										defaultValue={ed.degree}
+										defaultValue={ed.degree ? ed.degree : ''}
 									/>
 								}
 								startDateComp={
@@ -897,7 +954,7 @@ const EditUserComponent = () => {
 												value,
 											},
 										}) => (
-											<Input
+											<DatePicker
 												type='date'
 												sx={{ maxWidth: '200px' }}
 												inputRef={ref}
@@ -907,9 +964,9 @@ const EditUserComponent = () => {
 												id={`start-ed-${ed._id}`}
 											/>
 										)}
-										defaultValue={parseDate(
-											ed.year_started
-										)}
+										defaultValue={
+											ed.year_started ? dayjs(ed.year_started) : dayjs('')
+										}
 									/>
 								}
 								endDateComp={
@@ -928,7 +985,7 @@ const EditUserComponent = () => {
 												value,
 											},
 										}) => (
-											<Input
+											<DatePicker
 												type='date'
 												sx={{ maxWidth: '200px' }}
 												onChange={onChange}
@@ -938,7 +995,7 @@ const EditUserComponent = () => {
 												id={`end-ed-${ed._id}`}
 											/>
 										)}
-										defaultValue={parseDate(ed.year_ended)}
+										defaultValue={ed.year_ended ? dayjs(ed.year_ended) : dayjs('')}
 									/>
 								}
 							/>
@@ -946,6 +1003,8 @@ const EditUserComponent = () => {
 					{newEdArr.length > 0 &&
 						newEdArr.map((ed) => (
 							<ExperienceForm
+								id={newEdArr.indexOf(ed)}
+								buttonText="Education"
 								key={newEdArr.indexOf(ed)}
 								idComp={`school-ed-${newEdArr.indexOf(ed)}`}
 								idTitle={`degree-ed-${newEdArr.indexOf(ed)}`}
@@ -983,6 +1042,9 @@ const EditUserComponent = () => {
 												id={`school-ed-${newEdArr.indexOf(
 													ed
 												)}`}
+												inputProps={{'data-testid': `school-ed-${newEdArr.indexOf(
+													ed
+												)}`}}
 											/>
 										)}
 										defaultValue=''
@@ -1015,6 +1077,9 @@ const EditUserComponent = () => {
 												id={`degree-ed-${newEdArr.indexOf(
 													ed
 												)}`}
+												inputProps={{'data-testid': `degree-ed-${newEdArr.indexOf(
+													ed
+												)}`}}
 											/>
 										)}
 										defaultValue=''
@@ -1038,7 +1103,7 @@ const EditUserComponent = () => {
 												value,
 											},
 										}) => (
-											<Input
+											<DatePicker
 												type='date'
 												sx={{ maxWidth: '200px' }}
 												inputRef={ref}
@@ -1050,7 +1115,7 @@ const EditUserComponent = () => {
 												)}`}
 											/>
 										)}
-										defaultValue=''
+										defaultValue={dayjs('')}
 									/>
 								}
 								endDateComp={
@@ -1071,7 +1136,7 @@ const EditUserComponent = () => {
 												value,
 											},
 										}) => (
-											<Input
+											<DatePicker
 												type='date'
 												sx={{ maxWidth: '200px' }}
 												onChange={onChange}
@@ -1083,7 +1148,7 @@ const EditUserComponent = () => {
 												)}`}
 											/>
 										)}
-										defaultValue=''
+										defaultValue={dayjs('')}
 									/>
 								}
 							/>
@@ -1093,6 +1158,7 @@ const EditUserComponent = () => {
 					<ContainedButton
 						onClick={addMoreEd}
 						type='button'
+						dataTestId="add-ed-button"
 						sx={{ marginBottom: '2em !important' }}
 					>
 						Add Education?

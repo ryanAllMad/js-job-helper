@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Button, List, ListItem, Typography, Stack } from '@mui/material';
 import PositionView from './PositionView.js';
 import fetchData from '../getters/fetchData.js';
+import parseDate from '../helpers/parseDate.js';
 
 const getUser = fetchData('http://localhost:3000/api/user');
 
@@ -144,7 +145,7 @@ const Resume = (props) => {
 			typeof experienceList === 'array' &&
 			experienceList.length > 0;
 		const hasExperience =
-			userDeets[0].experience && userDeets[0].experience.length > 0;
+		userDeets && userDeets.length > 0 && userDeets[0].experience && userDeets[0].experience.length > 0;
 		const cleanedRequirements = hasRequirements && job.requirements.filter((item) => item.res_content)
 		if (hasRequirements && !hasResume && hasExperience) {
 			setExperienceList([
@@ -256,9 +257,9 @@ const Resume = (props) => {
 														</Typography>
 														<Typography>
 															From:{' '}
-															{item.year_started}{' '}
+															{parseDate(item.year_started)}{' '}
 															- To:{' '}
-															{item.year_ended}
+															{parseDate(item.year_ended)}
 														</Typography>
 													</>
 												) : (
@@ -287,6 +288,7 @@ const Resume = (props) => {
 				<Button
 					variant='contained'
 					onClick={writeToClipboard}
+					sx={{maxWidth: '300px'}}
 				>
 					<span
 						style={{

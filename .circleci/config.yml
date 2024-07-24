@@ -1,0 +1,27 @@
+version: 2.1
+jobs:
+  run-test:
+    circleci_ip_ranges: true # opts the job into the IP ranges feature
+    docker:
+      - image: cimg/node:20.11.1-browsers
+    # Steps to the job
+    steps:
+      - checkout
+      - run: npm i
+      - run: npm i -D @playwright/test
+      - run: npm run build
+      - run: npx playwright install
+      - run: npx playwright install chrome
+      - run:
+          name: Run test
+          command: PLAYWRIGHT_JUNIT_OUTPUT_NAME=results.xml npx playwright test --reporter=junit --project=chromium
+      - store_test_results:
+          path: results.xml
+# Invoke jobs via workflows
+workflows:
+  run-test-workflow:
+    jobs:
+      - run-test:
+          context: 
+            - mongo_connection
+            - mongo_db

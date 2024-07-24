@@ -4,7 +4,7 @@ import { FormControl, Grid } from '@mui/material';
 import { theme } from '../../index.js'
 
 const UserLinkInputs = (props) => {
-	const { titleInput, hrefInput, deleteOne, key } = props;
+	const { titleInput, hrefInput, deleteOne, key, dataTestId } = props;
 
 	return (
 		<>
@@ -41,6 +41,7 @@ const UserLinkInputs = (props) => {
 				>
 					<ContainedButton
 						onClick={deleteOne}
+						dataTestId={`links-${dataTestId}`}
 						type='button'
 						sx={{
 							color: '#111',

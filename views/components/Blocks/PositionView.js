@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Link, Typography, Paper, Stack } from '@mui/material';
 import Guage from './Guage.js';
+import parseDate from '../helpers/parseDate.js';
 
 const PositionView = React.forwardRef((props, ref) => {
 	const { userDetails, jobTitle, jobFunction, guageValue, children } = props;
@@ -59,14 +60,14 @@ const PositionView = React.forwardRef((props, ref) => {
 						</Typography>
 					))}
 					<>{children}</>
-					{userDetails[0].education && userDetails[0].education.length > 0 && userDetails[0].education.map((ed) => (
+					{userDetails && userDetails.length > 0 && userDetails[0].education && userDetails[0].education.length > 0 && userDetails[0].education.map((ed) => (
 						<Stack key={userDetails[0].education.indexOf(ed)}>
 							<Typography variant='h2'>Education</Typography>
 							<Typography variant='h3'>
 								{ed.school} - {ed.degree}
 							</Typography>
 							<Typography>
-								From: {ed.year_started} - To: {ed.year_ended}
+								From: {parseDate(ed.year_started)} - To: {parseDate(ed.year_ended)}
 							</Typography>
 						</Stack>
 					))}
