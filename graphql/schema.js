@@ -58,7 +58,7 @@ const schema = buildSchema(`
 		requirements: [RequirementsInput]
 	}
 	type User {
-		_id: String
+		_id: ID
 		name: String
 		email: String
 		links: [Links]
@@ -92,4 +92,5 @@ type DeleteMutation {
 	deleteLinks(userData: Links)
 }
 	
+experience: { company: \"jojosiwa\", title: \"weewa\", year_started: \"01/24/24\", year_ended: \"01/24/24\" }
 */
