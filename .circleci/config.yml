@@ -1,7 +1,6 @@
 version: 2.1
 jobs:
   run-test:
-    circleci_ip_ranges: true # opts the job into the IP ranges feature
     docker:
       - image: cimg/node:20.11.1-browsers
     # Steps to the job
@@ -21,7 +20,4 @@ jobs:
 workflows:
   run-test-workflow:
     jobs:
-      - run-test:
-          context: 
-            - mongo_connection
-            - mongo_db
+      - run-test
