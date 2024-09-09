@@ -20,4 +20,7 @@ jobs:
 workflows:
   run-test-workflow:
     jobs:
-      - run-test
+      - run-test:
+          context:
+            - mongo_connection
+            - mongo_db
