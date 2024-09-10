@@ -11,16 +11,16 @@ Check out the [1 minute product demo here.](https://www.canva.com/design/DAGK1wv
 ## Environment
 
 ### Node Version
-This project requires at least node 20. If you don't have nvm installed, we recommend getting it [installed and set](https://www.freecodecamp.org/news/node-version-manager-nvm-install-guide/) up for ease of use.
+This project requires at least node 18.2. If you don't have nvm installed, we recommend getting it [installed and set](https://www.freecodecamp.org/news/node-version-manager-nvm-install-guide/) up for ease of use.
 
 ## Get started:
-1. Install/Update to node version 20>=
+1. Install/Update to node version 18.2>=
 2. Pull down this repo
 3. Connect your mongodb cluster using the [instructions below](https://github.com/ryanAllMad/js-job-helper?tab=readme-ov-file#connect-to-your-mongodb-cluster)
 4. Add the mongodb cluster connection string and database name to a file titled config.env (instructions also below)
 5. Run `npm install`
-6. Run `npm build`
-7. Run `npm run start`
+6. Run `npm run build`
+7. Run `npm run dev` or `npm run start`
 8. Visit [localhost:3000](http://localhost:3000/) in your browser
 9. Start adding your information to buid out your first resume!
 
