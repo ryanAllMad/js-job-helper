@@ -3,6 +3,10 @@ import ReactDOMServer from 'react-dom/server';
 import Doc from './Doc'
 
 export function render() {
-  const html = ReactDOMServer.renderToPipeableStream(<Doc />);
-  return {html}
+  const html = ReactDOMServer.renderToString(
+    <React.StrictMode>
+      <Doc />
+    </React.StrictMode>
+  );
+  return { html }
 }

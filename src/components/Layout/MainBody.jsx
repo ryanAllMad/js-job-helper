@@ -31,7 +31,7 @@ const MainBody = ({ children, sx }) => {
 						</Paper>
 					</main>
 				</>
-			) : (`React client isn't working, try reloading...`)}
+			) : (<></>)}
 		</>
 	);
 };
