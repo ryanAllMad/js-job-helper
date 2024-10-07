@@ -23,3 +23,5 @@ dist-ssr
 *.sln
 *.sw?
 config.env
+credentials.json
+token.json
