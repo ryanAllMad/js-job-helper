@@ -25,3 +25,4 @@ dist-ssr
 config.env
 credentials.json
 token.json
+hiddenConsts.js

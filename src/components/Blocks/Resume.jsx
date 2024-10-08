@@ -3,6 +3,7 @@ import { Button, List, ListItem, Typography, Stack } from '@mui/material';
 import PositionView from './PositionView';
 import fetchData from '../getters/fetchData';
 import parseDate from '../helpers/parseDate';
+import GoogleDocsDialog from './GoogleDocsDialog';
 
 const getUser = fetchData('http://localhost:5173/api/user');
 
@@ -20,6 +21,7 @@ const Resume = (props) => {
 	const [copyButtonText, setCopyButtonText] = React.useState(
 		'Copy Plain to clipboard & Save'
 	);
+	const [googleDialog, setGoogleDialog] = React.useState(false)
 
 	const getJob = async () => {
 		try {
@@ -301,6 +303,8 @@ const Resume = (props) => {
 					</span>
 					{copyButtonText}
 				</Button>
+				<Button onClick={() => setGoogleDialog(true)}>Send to Google Docs</Button>
+				<GoogleDocsDialog open={googleDialog} onClose={() => setGoogleDialog(false)} />
 			</Stack>
 		</>
 	);
