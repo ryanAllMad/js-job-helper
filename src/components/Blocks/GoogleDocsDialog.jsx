@@ -1,5 +1,5 @@
 import { Dialog, Stack, Button } from "@mui/material";
-import { handleAuthClick, handleSignoutClick } from '../../../apis/google/googleapi';
+import { handleAuthClick, handleSignoutClick, saveDocument } from "../../../apis/google/googleapi";
 
 
 const GoogleDocsDialog = ({open, onClose}) => {
@@ -20,6 +20,7 @@ const GoogleDocsDialog = ({open, onClose}) => {
 			<Stack direction='row'>
 				<Button id="authorize_button" variant='contained' onClick={handleAuthClose}>Authorize Google Docs</Button>
 				<Button id="signout_button" variant='outlined' onClick={handleSignOutClose}>Sign Out Google Docs</Button>
+				<Button id="create-doc" variant="outlined" onClick={() => saveDocument().catch(console.error)}>Create Doc</Button>
 				</Stack>
 		</Dialog>
 	)

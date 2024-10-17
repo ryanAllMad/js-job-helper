@@ -1,11 +1,4 @@
-import { CLIENT_ID, API_KEY } from "./hiddenConsts";
-
-// Authorization scopes required by the API; multiple scopes can be
-// included, separated by spaces.
-const SCOPES = 'https://www.googleapis.com/auth/documents.readonly';
-
-// Discovery doc URL for APIs used by the quickstart
-const DISCOVERY_DOC = 'https://docs.googleapis.com/$discovery/rest?version=v1';
+import { CLIENT_ID, API_KEY, DISCOVERY_DOC, SCOPES } from "./hiddenConsts";
 
 let tokenClient;
 let gapiInited = false;
@@ -17,7 +10,7 @@ let gisInited = false;
  */
 async function initializeGapiClient() {
 	await gapi.client.init({
-		apiKey: API_KEY,
+		client_id: CLIENT_ID,
 		discoveryDocs: [DISCOVERY_DOC],
 	});
 	gapiInited = true;

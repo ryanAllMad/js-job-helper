@@ -1,18 +1,33 @@
-import { CLIENT_ID } from "./hiddenConsts";
+import { CLIENT_ID, API_KEY, DISCOVERY_DOC, SCOPES } from "./hiddenConsts";
 
 let tokenClient;
+let gapiInited = false;
 let gisInited = false;
 
-// Authorization scopes required by the API; multiple scopes can be
-// included, separated by spaces.
-const SCOPES = 'https://www.googleapis.com/auth/documents.readonly';
+async function initializeGapiClient() {
+	await gapi.client.init({
+		client_id: CLIENT_ID,
+		discoveryDocs: [DISCOVERY_DOC],
+	});
+	gapiInited = true;
+}
 /**
-		 * Callback after Google Identity Services are loaded.
-		 */
+ * Callback after api.js is loaded.
+ */
+function gapiLoaded() {
+	gapi.load('client', initializeGapiClient);
+}
+/**
+ * Callback after Google Identity Services are loaded.
+ */
 function gisLoaded() {
 	tokenClient = google.accounts.oauth2.initTokenClient({
 		client_id: CLIENT_ID,
-		scope: SCOPES,
+		scope: 'https://www.googleapis.com/auth/drive.metadata.readonly',
+		redirect_uri: 'YOUR_REDIRECT_URI',
+        response_type: 'token',
+        include_granted_scopes: 'true',
+        state: 'pass-through value',
 		callback: '', // defined later
 	});
 	gisInited = true;
@@ -28,17 +43,14 @@ export const handleAuthClick = () => {
 		if (resp.error !== undefined) {
 			throw resp;
 		}
-		await printDocTitle();
 	};
-	if(gapi && gapi.client) {
-		if (gapi.client.getToken() === null) {
-			// Prompt the user to select a Google Account and ask for consent to share their data
-			// when establishing a new session.
-			tokenClient.requestAccessToken({ prompt: 'consent' });
-		} else {
-			// Skip display of account chooser and consent dialog for an existing session.
-			tokenClient.requestAccessToken({ prompt: '' });
-		}
+	if (gapi.client.getToken() === null) {
+		// Prompt the user to select a Google Account and ask for consent to share their data
+		// when establishing a new session.
+		tokenClient.requestAccessToken({ prompt: 'consent' });
+	} else {
+		// Skip display of account chooser and consent dialog for an existing session.
+		tokenClient.requestAccessToken({ prompt: '' });
 	}
 	
 }
@@ -53,19 +65,27 @@ export function handleSignoutClick() {
 		gapi.client.setToken('');
 	}
 }
-
 /**
- * Prints the title of a sample doc:
- * https://docs.google.com/document/d/195j9eDD3ccgjQRttHhJPymLJUCOUjs-jmwTrekvdjFE/edit
+ * Create a sample doc:
  */
-async function printDocTitle() {
+export async function saveDocument() {
 	try {
-		const response = await gapi.client.docs.documents.get({
-			documentId: '195j9eDD3ccgjQRttHhJPymLJUCOUjs-jmwTrekvdjFE',
-		});
-		const doc = response.result;
-		const output = `Document ${doc.title} successfully found.\n`;
+		gapiLoaded()
+		handleAuthClick()
+
+		// try a get request for the oath
+		// then try a post?
+		const docs = gapi.client.request({
+			path: 'https://docs.googleapis.com/v1/documents',
+			method: 'POST',
+			body: {
+				title: 'Hellpo Blorb'
+			}
+		})
+		console.log(docs)
+		const response = await docs
+		console.log(response.data)
 	} catch (err) {
-		console.log(err);
+		console.error(err);
 	}
 }
