@@ -443,7 +443,7 @@ const JobForm = (props) => {
 					/>
 					<Button
 						variant='outlined'
-						sx={{width: '300px', marginTop: '20px'}}
+						sx={{marginTop: '20px', width: '100%'}}
 						href={`/job-post/${resumeLocation}`}
 					>
 						Edit Resume

@@ -287,8 +287,11 @@ const Resume = (props) => {
 						)}
 					</Stack>
 				</PositionView>
+				<Stack spacing={2} direction="row" justifyContent="space-evenly">
+				<Button variant='contained' sx={{maxWidth: '300px'}} onClick={() => setGoogleDialog(true)}>Send to Google Docs</Button>
+				<GoogleDocsDialog open={googleDialog} onClose={() => setGoogleDialog(false)} docTitle={job.company_name ? job.company_name : 'untitled' } insertText={resumeRef && resumeRef.current && resumeRef.current.innerText ? resumeRef.current.innerText : 'missing resume info' } />
 				<Button
-					variant='contained'
+					variant='outlined'
 					onClick={writeToClipboard}
 					sx={{maxWidth: '300px'}}
 				>
@@ -303,8 +306,7 @@ const Resume = (props) => {
 					</span>
 					{copyButtonText}
 				</Button>
-				<Button onClick={() => setGoogleDialog(true)}>Send to Google Docs</Button>
-				<GoogleDocsDialog open={googleDialog} onClose={() => setGoogleDialog(false)} />
+				</Stack>
 			</Stack>
 		</>
 	);

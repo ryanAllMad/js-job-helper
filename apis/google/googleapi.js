@@ -67,11 +67,9 @@ export function handleSignoutClick() {
 /**
  * Create a sample doc:
  */
-export async function saveDocument() {
-	// create arguments for title and insertText
+export async function saveDocument(docTitle, insertText) {
 	try {
 		gapiLoaded();
-		handleAuthClick();
 
 		// try a get request for the oath
 		// then try a post?
@@ -82,7 +80,7 @@ export async function saveDocument() {
 				'Cross-Origin-Opener-Policy': 'same-origin',
 			},
 			body: {
-				title: 'Hellpo Blorb',
+				title: docTitle,
 			},
 		});
 		const response = await docs;
@@ -101,14 +99,14 @@ export async function saveDocument() {
 							// `endOfSegmentLocation` instead, which assumes the Body if
 							// unspecified.
 							endOfSegmentLocation: {},
-							text: 'Hello there!',
+							text: insertText,
 						},
 					},
 				],
 			}
 		});
 		const updateResponse = await updateDocs;
-		alert(`Google doc ${response.result.title} was created!`);
+		alert(`Google doc ${response.result.title} was created! Open your google Doc's in a new tab to locate.`);
 		return updateResponse;
 	} catch (err) {
 		console.error(err);
