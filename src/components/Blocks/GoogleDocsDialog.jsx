@@ -1,7 +1,7 @@
 import { Dialog, Stack, Button } from "@mui/material";
 import { handleAuthClick, handleSignoutClick, saveDocument } from "../../../apis/google/googleapi";
 
-
+// create props to pass title and inserttext values to.
 const GoogleDocsDialog = ({open, onClose}) => {
 	const handleClose = () => {
 		onClose()

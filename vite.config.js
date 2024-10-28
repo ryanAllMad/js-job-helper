@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
-    exclude: ['chunk-L3IODK2Z.js?v=8b452e90', 'chunk-OHOWNLOC.js?v=8b452e90']
+    exclude: ['chunk-L3IODK2Z.js?v=8b452e90', 'chunk-OHOWNLOC.js?v=8b452e90', 'chunk-POSA54WF.js?v=546d9f4d']
   },
   test: {
 		globals: true,
