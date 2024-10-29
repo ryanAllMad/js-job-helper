@@ -142,11 +142,9 @@ const JobForm = (props) => {
 		setJobDisableState(true);
 		setProgress(60);
 		let parsedCompanyName = data.company.toLowerCase().replaceAll('/', '-').replaceAll(' ', '-');
-		const companyNameExists = allJobs.jobPost.filter((el) => el.company_name === data.company)
-		console.log(companyNameExists)
+		const companyNameExists = allJobs.jobPost.filter((el) => el.company_name.includes(data.company))
 		if (companyNameExists.length > 0) {
 			parsedCompanyName = `${parsedCompanyName}-${companyNameExists.length}`
-			console.log(parsedCompanyName)
 		}
 		
 		setResumeLocation(`${parsedCompanyName}`);
@@ -251,7 +249,7 @@ const JobForm = (props) => {
 				reqDisableState={reqDisableState}
 			>
 				<Controller
-					render={({ field: { onChange, value, ref } }) => (
+					render={({ field: { onChange, value } }) => (
 						<Autocomplete
 							sx={{ marginTop: '100px' }}
 							multiple
@@ -296,7 +294,6 @@ const JobForm = (props) => {
 							)}
 							onChange={(e, data) => onChange(data)}
 							value={value}
-							inputRef={ref}
 						/>
 					)}
 					onChange={([, data]) => data}
@@ -405,7 +402,6 @@ const JobForm = (props) => {
 			)}
 			{requirementsArray && !noMoreRequirements && responseState && (
 				<AddQualification
-					key={3}
 					onSubmit={handleSubmitResponses((data) =>
 						handleAddResponse(data, requirementsArray[0]._id)
 					)}

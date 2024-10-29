@@ -223,7 +223,6 @@ const Resume = (props) => {
 						) : (
 							<>
 								{experienceList.map((item, idx) => (
-									<>
 										<div
 											key={item._id}
 											id={item._id}
@@ -281,7 +280,6 @@ const Resume = (props) => {
 												</div>
 											</div>
 										</div>
-									</>
 								))}
 							</>
 						)}
