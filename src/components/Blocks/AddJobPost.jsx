@@ -5,7 +5,6 @@ import { Stack, Typography } from '@mui/material';
 
 const AddJobPost = (props) => {
 	const {
-		key,
 		onSubmit,
 		jobTitleInput,
 		companyNameInput,
@@ -18,7 +17,7 @@ const AddJobPost = (props) => {
 	return (
 		<>
 			<form
-				key={key}
+				key={2}
 				onSubmit={onSubmit}
 			>
 				<Stack>

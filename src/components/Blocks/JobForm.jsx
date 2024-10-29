@@ -10,6 +10,7 @@ import AddRequirements from './AddRequirements';
 import AddQualification from './AddQualification';
 
 const getRequirements = fetchData('http://localhost:5173/api/requirements');
+const getJobs = fetchData('http://localhost:5173/api/job-post/');
 
 const filter = createFilterOptions();
 
@@ -55,6 +56,7 @@ const JobForm = (props) => {
 	const [remQualState, setRemQualState] = React.useState(false)
 
 	const theRequirements = getRequirements.read();
+	const allJobs = getJobs.read();
 	const hasRequirements = theRequirements.length > 0 ? theRequirements : null;
 	const noMoreRequirements = React.useMemo(
 		() => requirementsArray.length === 0,
@@ -139,7 +141,14 @@ const JobForm = (props) => {
 	const handleSaveJob = async (data) => {
 		setJobDisableState(true);
 		setProgress(60);
-		const parsedCompanyName = data.company.toLowerCase().replaceAll('/', '-').replaceAll(' ', '-');
+		let parsedCompanyName = data.company.toLowerCase().replaceAll('/', '-').replaceAll(' ', '-');
+		const companyNameExists = allJobs.jobPost.filter((el) => el.company_name === data.company)
+		console.log(companyNameExists)
+		if (companyNameExists.length > 0) {
+			parsedCompanyName = `${parsedCompanyName}-${companyNameExists.length}`
+			console.log(parsedCompanyName)
+		}
+		
 		setResumeLocation(`${parsedCompanyName}`);
 		const postJob = await fetch(saveJobUrl, {
 			method: 'POST',
@@ -298,7 +307,6 @@ const JobForm = (props) => {
 			</AddRequirements>
 			{reqIds && reqIds.length > 0 && (
 				<AddJobPost
-					key={2}
 					onSubmit={handleSubmit((data) => handleSaveJob(data))}
 					jobTitleInput={
 						<Controller
