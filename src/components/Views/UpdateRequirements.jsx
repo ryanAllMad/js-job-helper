@@ -2,7 +2,7 @@ import * as React from 'react';
 import {
 	Autocomplete,
 	FormControl,
-	Grid,
+	Grid2 as Grid,
 	Stack,
 	TextField,
 	Input,
@@ -135,9 +135,7 @@ const UpdateRequirements = () => {
 									sx={{ width: '100%' }}
 								>
 									<Grid
-										item
-										xs={12}
-										md={6}
+										size={12}
 									>
 										<Controller
 											control={control}
@@ -175,7 +173,6 @@ const UpdateRequirements = () => {
 										/>
 									</Grid>
 									<Grid
-										item
 										xs={12}
 										md={6}
 									>

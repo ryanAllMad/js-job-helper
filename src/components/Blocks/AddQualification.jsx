@@ -5,12 +5,12 @@ import { Typography, FormHelperText, Stack } from '@mui/material';
 import { theme } from '../../entry-client.jsx'
 
 const AddQualification = (props) => {
-	const { key, onSubmit, onMissing, thisReq, qualificationDesc, addButtonText, removeButtonText, addButtonState, addPessedButtonState, removePressedButtonState, children } = props;
+	const { onSubmit, onMissing, thisReq, qualificationDesc, addButtonText, removeButtonText, addButtonState, addPessedButtonState, removePressedButtonState, children } = props;
 	return (
 		<>
 			<form
-				key={key}
 				onSubmit={onSubmit}
+				key={3}
 			>
 				<Stack direction="column">
 				<Typography

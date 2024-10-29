@@ -135,7 +135,7 @@ const EditResume = () => {
 							That company name isn't found. Try searching at{' '}
 							<Button
 								variant='outlined'
-								href='/search-job'
+								href='/search-resume'
 							>
 								search job
 							</Button>

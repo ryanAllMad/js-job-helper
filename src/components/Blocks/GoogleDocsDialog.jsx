@@ -1,5 +1,5 @@
 import { Dialog, Stack, Button, Typography, Paper } from '@mui/material';
-import { handleAuthClick, saveDocument } from '../../../apis/google/googleapi';
+import { handleAuthClick, saveDocument } from '../../../apis/google/googleapi.js';
 
 const GoogleDocsDialog = ({ open, onClose, docTitle, insertText }) => {
 	const handleClose = () => {

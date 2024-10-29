@@ -1,25 +1,22 @@
 import * as React from 'react';
 import ContainedButton from './ContainedButton.jsx';
-import { FormControl, Grid } from '@mui/material';
+import { FormControl, Grid2 as Grid } from '@mui/material';
 import { theme } from '../../entry-client.jsx'
 
 const UserLinkInputs = (props) => {
-	const { titleInput, hrefInput, deleteOne, key, dataTestId } = props;
+	const { titleInput, hrefInput, deleteOne, dataTestId } = props;
 
 	return (
 		<>
 			<Grid
-				key={key}
-				fullWidth
 				container
 				spacing={2}
 				alignItems='center'
-				justifyContent='center'
+				justifyContent='space-between'
 			>
 				<Grid
 					xs={12}
 					md={4}
-					item
 				>
 					<FormControl>
 						{titleInput}
@@ -28,7 +25,6 @@ const UserLinkInputs = (props) => {
 				<Grid
 					xs={12}
 					md={4}
-					item
 				>
 					<FormControl>
 						{hrefInput}
@@ -37,7 +33,6 @@ const UserLinkInputs = (props) => {
 				<Grid
 					xs={12}
 					md={4}
-					item
 				>
 					<ContainedButton
 						onClick={deleteOne}

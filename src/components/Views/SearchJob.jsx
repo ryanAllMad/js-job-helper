@@ -5,7 +5,7 @@ import {
 	FormControl,
 	Paper,
 	Stack,
-	Grid,
+	Grid2 as Grid,
 	TextField,
 	Typography,
 } from '@mui/material';
@@ -50,9 +50,7 @@ const SearchJob = () => {
 									sx={{ width: '100%' }}
 								>
 									<Grid
-										item
-										xs={12}
-										md={6}
+										size={12}
 									>
 										<Controller
 											control={control}
@@ -88,7 +86,6 @@ const SearchJob = () => {
 										/>
 									</Grid>
 									<Grid
-										item
 										xs={12}
 										md={6}
 									>
