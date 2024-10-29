@@ -2,7 +2,6 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta
 		name='viewport'
@@ -21,9 +20,8 @@
 		href='https://fonts.googleapis.com/css2?family=Readex+Pro:wght@160..700&display=swap'
 		rel='stylesheet'
 	/>
-	<script type="module" async defer src="./apis/google/googApiInit.js"></script>
-	<script async defer src="https://apis.google.com/js/api.js" id="apiScript"></script>
-    <script async defer src="https://accounts.google.com/gsi/client" id="gsiScript"></script>
+	<script type="text/javascript" async defer src="https://apis.google.com/js/api.js" id="apiScript"></script>
+    <script type="text/javascript" async defer src="https://accounts.google.com/gsi/client" id="gsiScript"></script>
 	<title>JS Job Helper: Resume Builder</title>
     <!--app-head-->
   </head>
@@ -33,5 +31,6 @@
 			Created with love by Ryan Duer - <a href="https://allmaddesigns.com" >allmaddesigns.com</a>
 		</footer>
     <script type="module" src="/src/entry-client.jsx"></script>
+	<script type="module" async defer src="./apis/google/googApiInit.js"></script>
   </body>
 </html>

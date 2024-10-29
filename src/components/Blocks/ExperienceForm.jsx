@@ -1,7 +1,7 @@
 import * as React from 'react';
 import BasicInput from './BasicInput.jsx';
 import ContainedButton from './ContainedButton.jsx';
-import { FormGroup, Grid, InputLabel } from '@mui/material';
+import { FormGroup, Grid2 as Grid, InputLabel } from '@mui/material';
 import { theme } from '../../entry-client.jsx'
 
 const ExperienceForm = (props) => {
@@ -15,14 +15,13 @@ const ExperienceForm = (props) => {
 		startDateComp,
 		endDateComp,
 		deleteOne,
-		key,
 		idComp,
 		idTitle,
 		idStart,
 		idEnd,
 	} = props;
 	return (
-		<FormGroup key={key}>
+		<FormGroup>
 			<BasicInput
 				id={idComp}
 				label={companyLabel}
@@ -50,15 +49,13 @@ const ExperienceForm = (props) => {
 			</InputLabel>
 			{endDateComp}
 			<Grid
-				fullWidth
 				container
 				spacing={2}
 				alignItems='center'
-				justifyContent='center'
+				justifyContent='flex-start'
 				sx={{ marginTop: '0' }}
 			>
 				<Grid
-					item
 					xs={12}
 				>
 					<ContainedButton

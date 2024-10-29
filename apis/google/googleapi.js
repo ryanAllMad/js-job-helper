@@ -14,13 +14,13 @@ async function initializeGapiClient() {
 /**
  * Callback after api.js is loaded.
  */
-function gapiLoaded() {
+export function gapiLoaded() {
 	gapi.load('client', initializeGapiClient);
 }
 /**
  * Callback after Google Identity Services are loaded.
  */
-function gisLoaded() {
+export function gisLoaded() {
 	tokenClient = google.accounts.oauth2.initTokenClient({
 		client_id: CLIENT_ID,
 		scope: 'https://www.googleapis.com/auth/documents',
