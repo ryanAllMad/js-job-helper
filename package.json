@@ -38,7 +38,7 @@
     "@vitejs/plugin-react": "^4.3.1",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
-    "happy-dom": "^15.7.3",
+    "happy-dom": "^15.10.2",
     "vite": "^5.4.10",
     "vitest": "^2.0.5"
   }
